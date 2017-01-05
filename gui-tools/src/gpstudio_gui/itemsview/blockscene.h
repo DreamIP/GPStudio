@@ -33,6 +33,7 @@
 
 class ModelFlow;
 class ModelFlowConnect;
+class BlockConnectorItem;
 
 class GPSTUDIO_GUI_EXPORT BlockScene : public QGraphicsScene
 {
@@ -56,12 +57,14 @@ public:
     void connectBlockPort(const ModelFlowConnect &flowConnect);
     void connectBlockPort(ModelFlow *fromflow, ModelFlow *toflow);
     void connectBlockPort(const QString &fromblock, const QString &fromflow, const QString &toblock, const QString &toflow);
+    void connectBlockPorts(const QList<ModelFlowConnect *> &connections);
 
     void disconnectBlockPort(const ModelFlowConnect &flowConnect);
     void disconnectBlockPort(ModelFlow *fromFlow, ModelFlow *toFlow);
     void disconnectBlockPort(const QString &fromblock, const QString &fromflow, const QString &toblock, const QString &toflow);
 
-    void connectBlockPorts(const QList<ModelFlowConnect *> &connections);
+    BlockConnectorItem *getConnector(const ModelFlowConnect &flowConnect);
+    BlockConnectorItem *getConnector(const QString &fromblock, const QString &fromflow, const QString &toblock, const QString &toflow);
 
 protected:
     QMap<QString, BlockItem* > _blocksName;

@@ -256,10 +256,15 @@ void BlockView::mouseReleaseEvent(QMouseEvent *event)
     if(_startConnectItem)
     {
         BlockPortItem *processItem = qgraphicsitem_cast<BlockPortItem*>(itemAt(event->pos()));
-        if(processItem && processItem!=_startConnectItem &&
-                _startConnectItem->modelFlow()->type() != processItem->modelFlow()->type())
-            emit blockPortConnected(ModelFlowConnect(_startConnectItem->blockName(), _startConnectItem->name(),
-                                                     processItem->blockName(),       processItem->name()));
+        if(processItem && processItem!=_startConnectItem
+                && _startConnectItem->modelFlow()->type() != processItem->modelFlow()->type()
+                && _startConnectItem->modelFlow()->parent() != processItem->modelFlow()->parent())
+        {
+            ModelFlowConnect connect(_startConnectItem->blockName(), _startConnectItem->name(),
+                                     processItem->blockName(),       processItem->name());
+            if(_scene->getConnector(connect)==NULL)
+                emit blockPortConnected(connect);
+        }
 
         _lineConector->disconnectPorts();
         scene()->removeItem(_lineConector);
@@ -558,6 +563,9 @@ void BlockView::contextMenuEvent(QContextMenuEvent *event)
                 }
             }
             QAction *infosIPAction = menu.addAction("View implementation files");
+            QFont boldFont = infosIPAction->font();
+            boldFont.setBold(true);
+            infosIPAction->setFont(boldFont);
             QAction *trigered = menu.exec(event->globalPos());
             if(trigered == deleteAction)
                 emit blockDeleted(blockItem->modelBlock());
@@ -565,6 +573,31 @@ void BlockView::contextMenuEvent(QContextMenuEvent *event)
                 emit blockRenamed(blockItem->name(), "");
             else if(trigered == infosIPAction)
                 emit blockDetailsRequest(blockItem->name());
+            return;
+        }
+
+        BlockConnectorItem *blockConnectorItem = qgraphicsitem_cast<BlockConnectorItem *>(item);
+        if(blockConnectorItem)
+        {
+            QMenu menu;
+            QAction *deleteAction=NULL;
+            if(_editMode)
+            {
+                deleteAction = menu.addAction("Delete");
+                deleteAction->setShortcut(Qt::Key_Delete);
+            }
+            else
+                return;
+            QAction *trigered = menu.exec(event->globalPos());
+            if(trigered == deleteAction)
+            {
+                ModelFlowConnect connect = ModelFlowConnect(blockConnectorItem->portItem1()->blockName(),
+                                                            blockConnectorItem->portItem1()->name(),
+                                                            blockConnectorItem->portItem2()->blockName(),
+                                                            blockConnectorItem->portItem2()->name());
+                emit blockPortDisconnected(connect);
+            }
+            return;
         }
     }
 }

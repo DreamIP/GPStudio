@@ -166,41 +166,6 @@ void BlockScene::connectBlockPort(const QString &fromblock, const QString &fromf
     connectBlockPort(fromflowItem, toflowItem);
 }
 
-void BlockScene::disconnectBlockPort(const ModelFlowConnect &flowConnect)
-{
-    disconnectBlockPort(flowConnect.fromblock(), flowConnect.fromflow(), flowConnect.toblock(), flowConnect.toflow());
-}
-
-void BlockScene::disconnectBlockPort(ModelFlow *fromFlow, ModelFlow *toFlow)
-{
-    if(fromFlow==NULL || toFlow==NULL)
-        return;
-
-    disconnectBlockPort(fromFlow->parent()->name(), fromFlow->name(), toFlow->parent()->name(), toFlow->name());
-}
-
-void BlockScene::disconnectBlockPort(const QString &fromblock, const QString &fromflow, const QString &toblock, const QString &toflow)
-{
-    BlockPortItem *fromflowItem = port(fromblock, fromflow);
-    if(!fromflowItem)
-        return;
-
-    BlockPortItem *toflowItem = port(toblock, toflow);
-    if(!toflowItem)
-        return;
-
-    foreach (BlockConnectorItem *connectorItem, fromflowItem->connects())
-    {
-        if((connectorItem->portItem1()==fromflowItem || connectorItem->portItem2()==fromflowItem) &&
-           (connectorItem->portItem1()==toflowItem || connectorItem->portItem2()==toflowItem))
-        {
-            connectorItem->disconnectPorts();
-            removeItem(connectorItem);
-            delete connectorItem;
-        }
-    }
-}
-
 void BlockScene::connectBlockPort(BlockPortItem *fromflowItem, BlockPortItem *toflowItem)
 {
     BlockConnectorItem *connectorItem = new BlockConnectorItem(fromflowItem, toflowItem);
@@ -221,6 +186,56 @@ void BlockScene::connectBlockPorts(const QList<ModelFlowConnect *> &connections)
 
         connectBlockPort(fromflowItem, toflowItem);
     }
+}
+
+void BlockScene::disconnectBlockPort(const ModelFlowConnect &flowConnect)
+{
+    disconnectBlockPort(flowConnect.fromblock(), flowConnect.fromflow(), flowConnect.toblock(), flowConnect.toflow());
+}
+
+void BlockScene::disconnectBlockPort(ModelFlow *fromFlow, ModelFlow *toFlow)
+{
+    if(fromFlow==NULL || toFlow==NULL)
+        return;
+
+    disconnectBlockPort(fromFlow->parent()->name(), fromFlow->name(), toFlow->parent()->name(), toFlow->name());
+}
+
+void BlockScene::disconnectBlockPort(const QString &fromblock, const QString &fromflow, const QString &toblock, const QString &toflow)
+{
+    BlockConnectorItem *connectorItem = getConnector(fromblock, fromflow, toblock, toflow);
+    if(connectorItem)
+    {
+        connectorItem->disconnectPorts();
+        removeItem(connectorItem);
+        delete connectorItem;
+    }
+}
+
+BlockConnectorItem *BlockScene::getConnector(const ModelFlowConnect &flowConnect)
+{
+    return getConnector(flowConnect.fromblock(), flowConnect.fromflow(), flowConnect.toblock(), flowConnect.toflow());
+}
+
+BlockConnectorItem *BlockScene::getConnector(const QString &fromblock, const QString &fromflow, const QString &toblock, const QString &toflow)
+{
+    BlockPortItem *fromflowItem = port(fromblock, fromflow);
+    if(!fromflowItem)
+        return NULL;
+
+    BlockPortItem *toflowItem = port(toblock, toflow);
+    if(!toflowItem)
+        return NULL;
+
+    foreach (BlockConnectorItem *connectorItem, fromflowItem->connects())
+    {
+        if((connectorItem->portItem1()==fromflowItem || connectorItem->portItem2()==fromflowItem) &&
+           (connectorItem->portItem1()==toflowItem || connectorItem->portItem2()==toflowItem))
+        {
+            return connectorItem;
+        }
+    }
+    return NULL;
 }
 
 void BlockScene::updateKeyBlock(BlockItem *block, const QString &oldKey, const QString &newKey)
