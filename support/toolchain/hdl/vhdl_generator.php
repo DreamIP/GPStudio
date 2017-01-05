@@ -252,7 +252,9 @@ class VHDL_generator
     }
 
     /** Add a block to list of blocks
-     *  @param Block $block block to add to the blocks * */
+     *  @param Block $block block to add to the blocks
+     *  @param bool $subblock indicate if the block is a sub block or not
+     */
     function addBlock($block, $subblock = FALSE)
     {
         array_push($this->blocks, array($block, $subblock));

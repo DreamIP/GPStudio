@@ -742,7 +742,8 @@ class Component
      * @brief internal function to fill this instance from input xml structure
      * 
      * Can be call only from this node into the constructor
-     * @param SimpleXMLElement $xml xml element to parse
+     * @param NULL $dummy dummy parameter to ensuze PHP7 object parent compatibility
+     * @param NULL $dummy2 dummy parameter to ensuze PHP7 object parent compatibility
      */
     protected function parse_xml($dummy=NULL, $dummy2=NULL)
     {

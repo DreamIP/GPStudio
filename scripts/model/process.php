@@ -174,6 +174,7 @@ class Process extends Block
     /**
      * @brief internal function to fill this instance from input xml structure
      * @param SimpleXMLElement $process_node_element element from io in lib
+     * @param NULL $dummy dummy parameter to ensuze PHP7 object parent compatibility
      */
     protected function parse_xml($process_node_element=NULL, $dummy=NULL)
     {

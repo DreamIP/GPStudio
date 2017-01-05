@@ -46,7 +46,7 @@ class IO extends Block
      * $io_device_element is an SimpleXMLElement object. Else, it open the file
      * with the path $io_device_element as string or the io with the name
      * $io_device_element in library
-     * @param SimpleXMLElement|string null $io_device_element if it's different
+     * @param SimpleXMLElement|string|null $io_device_element if it's different
      * of null, call the xml parser to fill members. In case of string type,
      * loads the IO in lib from the name or from the path in project.
      * @param SimpleXMLElement|null $io_node_element if it's different of null,
