@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>212</height>
+    <width>498</width>
+    <height>216</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item>
-    <widget class="CamTreeView" name="camTreeView"/>
+    <widget class="CamInfoTreeView" name="camTreeView"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -38,9 +38,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CamTreeView</class>
+   <class>CamInfoTreeView</class>
    <extends>QTreeView</extends>
-   <header>itemmodel/camtreeview.h</header>
+   <header>itemmodel/caminfotreeview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

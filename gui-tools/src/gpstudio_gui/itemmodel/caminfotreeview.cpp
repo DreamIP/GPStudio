@@ -18,33 +18,36 @@
 **
 ****************************************************************************/
 
-#ifndef CAMTREEVIEW_H
-#define CAMTREEVIEW_H
+#include "caminfotreeview.h"
 
-#include "gpstudio_gui_common.h"
-
-#include <QTreeView>
-#include "caminfoitemmodel.h"
-
-class GPSTUDIO_GUI_EXPORT CamTreeView : public QTreeView
+CamInfoTreeView::CamInfoTreeView(QWidget *parent) :
+    QTreeView(parent)
 {
-    Q_OBJECT
-public:
-    explicit CamTreeView(QWidget *parent = 0);
+    _model = new CamInfoItemModel();
+    setModel(_model);
 
-    CameraInfo camInfoSelected() const;
+    connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(cameraSelect(QModelIndex)));
 
-signals:
-    void cameraSelected(CameraInfo cameraInfo);
+    refreshCams();
+}
 
-public slots:
-    void refreshCams();
+void CamInfoTreeView::refreshCams()
+{
+    _model->refreshCams();
+    resizeColumnToContents(0);
+    resizeColumnToContents(1);
+    resizeColumnToContents(2);
+}
 
-private slots:
-    void cameraSelect(QModelIndex index);
+CameraInfo CamInfoTreeView::camInfoSelected() const
+{
+    if(!currentIndex().isValid()) return CameraInfo();
+    return _model->usbList()[currentIndex().row()];
+}
 
-private:
-    CamInfoItemModel *_model;
-};
+void CamInfoTreeView::cameraSelect(QModelIndex index)
+{
+    if(!index.isValid()) return;
 
-#endif // CAMTREEVIEW_H
+    emit cameraSelected(_model->usbList()[index.row()]);
+}

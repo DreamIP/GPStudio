@@ -49,7 +49,6 @@ SOURCES += \
     propertywidgets/propertyenumwidget.cpp \
     scriptwidget.cpp \
     scriptlineedit.cpp \
-    itemmodel/camtreeview.cpp \
     itemmodel/caminfoitemmodel.cpp \
     itemmodel/libitem.cpp \
     itemmodel/libitemmodel.cpp \
@@ -90,7 +89,8 @@ SOURCES += \
     itemmodel/propertycompleter.cpp \
     itemmodel/viewertreeview.cpp \
     viewer/viewerwidgets/feature.cpp \
-    viewer/viewerwidgets/featureitem.cpp
+    viewer/viewerwidgets/featureitem.cpp \
+    itemmodel/caminfotreeview.cpp
 
 HEADERS  += \
     gpstudio_gui_common.h \
@@ -105,7 +105,6 @@ HEADERS  += \
     propertywidgets/propertyenumwidget.h \
     scriptwidget.h \
     scriptlineedit.h \
-    itemmodel/camtreeview.h \
     itemmodel/caminfoitemmodel.h \
     itemmodel/libitemmodel.h \
     itemmodel/libitem.h \
@@ -146,7 +145,8 @@ HEADERS  += \
     itemmodel/propertycompleter.h \
     itemmodel/viewertreeview.h \
     viewer/viewerwidgets/feature.h \
-    viewer/viewerwidgets/featureitem.h
+    viewer/viewerwidgets/featureitem.h \
+    itemmodel/caminfotreeview.h
 
 RESOURCES += \
     icons.qrc \
