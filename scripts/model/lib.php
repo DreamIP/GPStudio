@@ -237,6 +237,10 @@ class Lib
                 if (!file_exists($path))
                     warning("File '" . $file->name . "' does not exist", 3);
             }
+
+            // check categ not empty
+            if ($proc->categ == "")
+                warning("Missing IP category", 4);
             echo $proc->name . " OK \n";
         }
         echo "=========== Devices ============\n";
