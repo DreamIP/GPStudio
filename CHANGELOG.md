@@ -7,9 +7,11 @@
 * HWLoop functionnalities (exemple project for test automation on real platform)
 * Auto test bench creation
 * Multi flows viewers (mask, rect, points...)
-* IP documentation integration
+* viewers manager
+* IP documentation integration in gpnode_gui
 * clocks, parameters and flow size editable in graphical mode
 * enhanced control on blocks view with gpviewer
+* size of flow graphically visible in gpnode_gui
 
 ### New IPs
 * roi
@@ -25,12 +27,13 @@
 * threshold
 
 ### Changes
-* Improved blocks view in gpnode_gui
+* Improved blocks view and interractions in gpnode_gui
 * Improved tutorial, documentation completed
 
 ### Bug fixes
 * PHP7 compatibility
 * gpviewer stabilized on disconnect/connect camera
+* gpnode_gui stabilized
 
 ## Release [v1.10](https://github.com/DreamIP/GPStudio/tree/v1.10) (2016-09-09)
 [Full changelog](https://github.com/DreamIP/GPStudio/compare/v1.00...v1.10)
@@ -39,7 +42,6 @@
 * Backend component introduction
 * Informations (author, version, licence...) ingregrated to IP
 * Base components for IP devellopement
-* New com/sensor block
 
 ### Changes
 * gpnode GUI completed for node generation
