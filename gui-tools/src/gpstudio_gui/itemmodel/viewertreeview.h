@@ -44,10 +44,8 @@ public:
     Camera *camera() const;
 
 signals:
-    void viewerAdded(QString viewerName);
-    void viewerFlowAdded(QString viewerName);
-
     void viewerDeleted(QString viewerName);
+    void viewerFlowDeleted(QString viewerName, QString viewerFlowName);
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);

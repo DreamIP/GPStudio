@@ -457,6 +457,8 @@ void GPNodeProject::cmdRenameViewer(const QString &viewerName, QString newName)
 
 void GPNodeProject::cmdAddViewer(ModelViewer *viewer)
 {
+    if(viewer->name().isEmpty())
+        viewer->setName(newViewerName());
     _node->gpViewer()->addViewer(viewer);
     setModified(true);
     emit viewerAdded(viewer);
@@ -476,7 +478,12 @@ void GPNodeProject::cmdRemoveViewer(const QString &viewerName)
 
 void GPNodeProject::cmdAddViewerFlow(const QString &viewerName, ModelViewerFlow *viewerFlow)
 {
-    ModelViewer *viewer = _node->gpViewer()->getViewer(viewerName);
+    ModelViewer *viewer;
+
+    if(viewerName.isEmpty())
+        viewer = new ModelViewer(newViewerName());
+    else
+        viewer = _node->gpViewer()->getViewer(viewerName);
     if(viewer)
     {
         if(viewer->getViewerFlow(viewerFlow->flowName()) == NULL)
@@ -524,6 +531,15 @@ QString GPNodeProject::newBlockName(const QString &driver) const
     QString name = QString("%1_%2").arg(driver).arg(i);
     while(_node->getBlock(name)!=NULL)
         name = QString("%1_%2").arg(driver).arg(++i);
+    return name;
+}
+
+QString GPNodeProject::newViewerName() const
+{
+    int i = 1;
+    QString name = QString("viewer_%1").arg(i);
+    while(_node->gpViewer()->getViewer(name)!=NULL)
+        name = QString("viewer_%1").arg(++i);
     return name;
 }
 

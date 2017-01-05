@@ -64,7 +64,7 @@ ModelViewerFlow *ModelGPViewer::getViewerFlow(const QString &viewerName, const Q
     ModelViewer *viewer = getViewer(viewerName);
     if(!viewer)
         return NULL;
-    ModelViewerFlow *viewerFlow = viewer->getViewerFlow(viewerName);
+    ModelViewerFlow *viewerFlow = viewer->getViewerFlow(flowName);
     return viewerFlow;
 }
 

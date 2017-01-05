@@ -199,6 +199,34 @@ const ModelViewerFlow *CameraItemModel::viewerFlow(const QModelIndex &index) con
     return item->modelViewerFlow();
 }
 
+QModelIndex CameraItemModel::indexViewer(const QString &viewerName) const
+{
+    if(_rootItem->type() != CameraItem::ModelGPViewerType)
+        return QModelIndex();
+
+    CameraItem *viewerItem = _rootItem->children(viewerName);
+    if(!viewerItem)
+        return QModelIndex();
+
+    return createIndex(viewerItem->row(), 0, viewerItem->ptr());
+}
+
+QModelIndex CameraItemModel::indexViewerFlow(const QString &viewerName, const QString &viewerFlowName) const
+{
+    if(_rootItem->type() != CameraItem::ModelGPViewerType)
+        return QModelIndex();
+
+    CameraItem *viewerItem = _rootItem->children(viewerName);
+    if(!viewerItem)
+        return QModelIndex();
+
+    CameraItem *viewerFlowItem = viewerItem->children(viewerFlowName);
+    if(!viewerFlowItem)
+        return QModelIndex();
+
+    return createIndex(viewerFlowItem->row(), 0, viewerFlowItem->ptr());
+}
+
 Qt::DropActions CameraItemModel::supportedDropActions() const
 {
     return Qt::CopyAction | Qt::MoveAction;
@@ -351,7 +379,7 @@ void CameraItemModel::addViewer(ModelViewer *viewer)
     endInsertRows();
 }
 
-void CameraItemModel::removeViewer(QString viewerName)
+void CameraItemModel::removeViewer(const QString &viewerName)
 {
     QModelIndexList items = match(
                 index(0,0,QModelIndex()),
@@ -364,23 +392,21 @@ void CameraItemModel::removeViewer(QString viewerName)
 
 void CameraItemModel::addViewerFlow(ModelViewerFlow *viewerFlow)
 {
-    if(_rootItem->type() != CameraItem::ModelGPViewerType)
-        return;
-
-    QModelIndexList items = match(
-                index(0,0,QModelIndex()),
-                Qt::DisplayRole,
-                viewerFlow->viewer()->name(),
-                Qt::MatchExactly || Qt::MatchRecursive);
-    if(items.size()>0)
+    QModelIndex index = indexViewer(viewerFlow->viewer()->name());
+    if(index.isValid())
     {
-        CameraItem *item = static_cast<CameraItem*>(items[0].internalPointer());
-        beginInsertRows(items[0], 0, 0);
+        CameraItem *item = static_cast<CameraItem*>(index.internalPointer());
+        beginInsertRows(index, 0, 0);
         item->insertRow(0, new CameraItem(viewerFlow));
         endInsertRows();
     }
-    //CameraItem *item = _rootItem->children(viewerFlow->viewer()->name());
-    //if(item)
+}
+
+void CameraItemModel::removeViewerFlow(const QString &viewerName, const QString &viewerFlowName)
+{
+    QModelIndex index = indexViewerFlow(viewerName, viewerFlowName);
+    if(index.isValid())
+        removeRow(index.row(), index.parent());
 }
 
 bool CameraItemModel::setData(const QModelIndex &index, const QVariant &value, int role)

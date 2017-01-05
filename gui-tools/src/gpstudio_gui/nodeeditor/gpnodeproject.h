@@ -46,6 +46,7 @@ public:
     ModelNode *node() const;
     Camera *camera() const;
 
+    QString newViewerName() const;
     QString newBlockName(const QString &driver) const;
     QPoint newBlockPos() const;
 
@@ -158,6 +159,7 @@ protected:
     void cmdAddViewer(ModelViewer *viewer);
     void cmdRemoveViewer(const QString &viewerName);
 
+    // viewerFlow commands
     friend class ViewerFlowCmdAdd;
     friend class ViewerFlowCmdRemove;
     void cmdAddViewerFlow(const QString &viewerName, ModelViewerFlow *viewerFlow);

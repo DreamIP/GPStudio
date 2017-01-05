@@ -45,9 +45,11 @@ public:
 
 signals:
     void viewerDeleted(ModelViewer*);
+    void viewerFlowDeleted(ModelViewerFlow*);
 
 private slots:
     void removeViewer(QString viewerName);
+    void removeViewerFlow(QString viewerName, QString viewerFlowName);
 
 private:
     void setupWidgets();

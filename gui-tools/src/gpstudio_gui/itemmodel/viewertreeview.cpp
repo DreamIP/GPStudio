@@ -43,6 +43,7 @@ void ViewerTreeView::attachProject(GPNodeProject *project)
     connect(_project, SIGNAL(viewerAdded(ModelViewer*)), _model, SLOT(addViewer(ModelViewer*)));
     connect(_project, SIGNAL(viewerFlowAdded(ModelViewerFlow*)), _model, SLOT(addViewerFlow(ModelViewerFlow*)));
     connect(_project, SIGNAL(viewerRemoved(QString)), _model, SLOT(removeViewer(QString)));
+    connect(_project, SIGNAL(viewerFlowRemoved(QString,QString)), _model, SLOT(removeViewerFlow(QString,QString)));
 
     connect(_model, SIGNAL(viewerAdded(ModelViewer*)), _project, SLOT(addViewer(ModelViewer*)));
     connect(_model, SIGNAL(viewerRenamed(QString,QString)), _project, SLOT(renameViewer(QString,QString)));
@@ -96,7 +97,7 @@ void ViewerTreeView::keyPressEvent(QKeyEvent *event)
         const ModelViewerFlow *viewerFlow = _model->viewerFlow(_modelSorted->mapToSource(currentIndex()));
         if(viewerFlow)
         {
-            emit viewerDeleted(viewerFlow->flowName());
+            emit viewerFlowDeleted(viewerFlow->viewer()->name(), viewerFlow->flowName());
             return;
         }
     }

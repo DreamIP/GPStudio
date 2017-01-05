@@ -55,6 +55,9 @@ public:
     const ModelViewer *viewer(const QModelIndex &index) const;
     const ModelViewerFlow *viewerFlow(const QModelIndex &index) const;
 
+    QModelIndex indexViewer(const QString &viewerName) const;
+    QModelIndex indexViewerFlow(const QString &viewerName, const QString &viewerFlowName) const;
+
     // QAbstractItemModel interface
 public:
     // Header:
@@ -94,15 +97,17 @@ signals:
 
     void viewerAdded(ModelViewer *viewer);
     void viewerRenamed(const QString &viewerName, const QString &newName);
+    void viewerFlowRenamed(const QString &viewerName, const QString &viewerFlowName, const QString &newName);
 
     void viewerFlowAdded(const QString &viewerName, ModelViewerFlow *viewerFlow);
 
 public slots:
     void updateViewer(ModelViewer *viewer);
     void addViewer(ModelViewer *viewer);
-    void removeViewer(QString viewerName);
+    void removeViewer(const QString &viewerName);
 
     void addViewerFlow(ModelViewerFlow *viewerFlow);
+    void removeViewerFlow(const QString &viewerName, const QString &viewerFlowName);
 };
 
 #endif // CAMERAITEMMODEL_H

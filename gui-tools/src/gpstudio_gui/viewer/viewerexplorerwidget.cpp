@@ -45,6 +45,9 @@ void ViewerExplorerWidget::attachProject(GPNodeProject *project)
 
     connect(_viewerTreeView, SIGNAL(viewerDeleted(QString)), this, SLOT(removeViewer(QString)));
     connect(this, SIGNAL(viewerDeleted(ModelViewer*)), _project, SLOT(removeViewer(ModelViewer*)));
+
+    connect(_viewerTreeView, SIGNAL(viewerFlowDeleted(QString,QString)), this, SLOT(removeViewerFlow(QString,QString)));
+    connect(this, SIGNAL(viewerFlowDeleted(ModelViewerFlow*)), _project, SLOT(removeViewerFlow(ModelViewerFlow*)));
 }
 
 GPNodeProject *ViewerExplorerWidget::project() const
@@ -75,6 +78,13 @@ void ViewerExplorerWidget::removeViewer(QString viewerName)
     ModelViewer *viewer = _camera->node()->gpViewer()->getViewer(viewerName);
     if(viewer)
         emit viewerDeleted(viewer);
+}
+
+void ViewerExplorerWidget::removeViewerFlow(QString viewerName, QString viewerFlowName)
+{
+    ModelViewerFlow *viewerFlow = _camera->node()->gpViewer()->getViewerFlow(viewerName, viewerFlowName);
+    if(viewerFlow)
+        emit viewerFlowDeleted(viewerFlow);
 }
 
 void ViewerExplorerWidget::setupWidgets()
