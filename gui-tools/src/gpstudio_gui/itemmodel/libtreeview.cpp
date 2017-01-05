@@ -112,8 +112,12 @@ void LibTreeView::contextMenuEvent(QContextMenuEvent *event)
     QStringList docFile = proc->modelBlock()->getPdfDoc();
 
     QMenu menu;
+    QAction *addIpAction = menu.addAction("Add IP to project");
     QAction *infosIPAction = menu.addAction("View implementation files");
     QAction *docIPAction = menu.addAction("View pdf documentation");
+    QFont boldFont = addIpAction->font();
+    boldFont.setBold(true);
+    addIpAction->setFont(boldFont);
     if(docFile.isEmpty())
         docIPAction->setEnabled(false);
     QAction *trigered = menu.exec(event->globalPos());
@@ -121,6 +125,8 @@ void LibTreeView::contextMenuEvent(QContextMenuEvent *event)
         PdfViewer::showDocument(docFile.first());
     if(trigered == infosIPAction)
         BlockEditorWindow::showImplementationsFiles(proc->name());
+    if(trigered == addIpAction)
+        emit blockAdded(proc->name(), QPoint());
 }
 #endif // QT_NO_CONTEXTMENU
 

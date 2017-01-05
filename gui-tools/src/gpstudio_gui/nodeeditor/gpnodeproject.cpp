@@ -527,6 +527,32 @@ QString GPNodeProject::newBlockName(const QString &driver) const
     return name;
 }
 
+QPoint GPNodeProject::newBlockPos() const
+{
+    QPoint pos(0,0);
+    bool find;
+    do
+    {
+        QRect rect = QRect(pos-QPoint(10,10), QSize(20,20));
+        find = false;
+        foreach (ModelBlock *block, _node->blocks())
+        {
+            foreach (ModelComponentPart *part, block->parts())
+            {
+                if(rect.contains(part->pos()))
+                {
+                    find = true;
+                    pos += QPoint(20,20);
+                    break;
+                }
+            }
+            if(find)
+                break;
+        }
+    } while(find);
+    return pos;
+}
+
 void GPNodeProject::moveBlock(const QString &block_name, const QString &part_name, const QPoint &oldPos, const QPoint &newPos)
 {
     _undoStack->push(new BlockCmdMove(this, block_name, part_name, oldPos, newPos));
@@ -579,9 +605,16 @@ void GPNodeProject::addBlock(const QString &driver, const QPoint &pos)
     if(!processLib)
         return;
 
+    QPoint posBlock = pos;
+    if(pos.isNull())
+        posBlock = newBlockPos();
+
     ModelProcess *modelProcess = new ModelProcess(*processLib->modelProcess());
     foreach (ModelComponentPart *part, modelProcess->parts())
-        part->setPos(pos);
+    {
+        part->setPos(posBlock);
+        posBlock += QPoint(20,20);
+    }
     addBlock(modelProcess);
 }
 

@@ -47,6 +47,7 @@ public:
     Camera *camera() const;
 
     QString newBlockName(const QString &driver) const;
+    QPoint newBlockPos() const;
 
     QUndoStack *undoStack() const;
 

@@ -335,6 +335,7 @@ void BlockView::updateBlock(ModelBlock *block)
 
 void BlockView::addBlock(ModelBlock *block)
 {
+    _scene->clearSelection();
     _scene->addBlock(block);
 }
 
