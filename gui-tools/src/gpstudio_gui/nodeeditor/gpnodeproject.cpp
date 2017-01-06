@@ -457,8 +457,6 @@ void GPNodeProject::cmdRenameViewer(const QString &viewerName, QString newName)
 
 void GPNodeProject::cmdAddViewer(ModelViewer *viewer)
 {
-    if(viewer->name().isEmpty())
-        viewer->setName(newViewerName());
     _node->gpViewer()->addViewer(viewer);
     setModified(true);
     emit viewerAdded(viewer);
@@ -693,21 +691,28 @@ void GPNodeProject::renameViewer(const QString &viewerName, const QString &newNa
 
 void GPNodeProject::addViewer(ModelViewer *viewer)
 {
-    _undoStack->push(new ViewerCmdAdd(this, viewer));
+    if(viewer->name().isEmpty())
+        viewer->setName(newViewerName());
+    if(_node->gpViewer()->getViewer(viewer->name()) == NULL)
+        _undoStack->push(new ViewerCmdAdd(this, viewer));
 }
 
 void GPNodeProject::removeViewer(ModelViewer *viewer)
 {
-    _undoStack->push(new ViewerCmdRemove(this, viewer));
+    if(_node->gpViewer()->viewers().contains(viewer))
+        _undoStack->push(new ViewerCmdRemove(this, viewer));
 }
 
 void GPNodeProject::addViewerFlow(const QString &viewerName, ModelViewerFlow *viewerFlow)
 {
-    _undoStack->push(new ViewerFlowCmdAdd(this, viewerName, viewerFlow));
+    if(_node->gpViewer()->getViewerFlow(viewerName, viewerFlow->flowName()) == NULL)
+        _undoStack->push(new ViewerFlowCmdAdd(this, viewerName, viewerFlow));
 }
 
 void GPNodeProject::removeViewerFlow(ModelViewerFlow *viewerFlow)
 {
+    if(!viewerFlow->viewer())
+        return;
     _undoStack->push(new ViewerFlowCmdRemove(this, viewerFlow));
 }
 

@@ -137,7 +137,7 @@ void ViewerFlowCmdAdd::redo()
 
 // Remove viewerFlow
 ViewerFlowCmdRemove::ViewerFlowCmdRemove(GPNodeProject *project, ModelViewerFlow *viewerFlow)
-    : ViewerCommand(project, ""), _viewerFlow(viewerFlow)
+    : ViewerCommand(project, ""), _viewerFlow(viewerFlow), _viewerFlowName(viewerFlow->flowName())
 {
     if(viewerFlow->viewer())
         _viewerName = viewerFlow->viewer()->name();
@@ -158,10 +158,10 @@ void ViewerFlowCmdRemove::undo()
 
 void ViewerFlowCmdRemove::redo()
 {
-    ModelViewerFlow *viewerFlow = _project->node()->gpViewer()->getViewerFlow(_viewerName, _viewerFlow->flowName());
+    ModelViewerFlow *viewerFlow = _project->node()->gpViewer()->getViewerFlow(_viewerName, _viewerFlowName);
     if(viewerFlow)
     {
         _backupViewerFlow = new ModelViewerFlow(*viewerFlow);
     }
-    _project->cmdRemoveViewerFlow(_viewerName, _viewerFlow->flowName());
+    _project->cmdRemoveViewerFlow(_viewerName, _viewerFlowName);
 }

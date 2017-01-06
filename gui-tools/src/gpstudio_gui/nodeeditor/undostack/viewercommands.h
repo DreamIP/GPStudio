@@ -106,6 +106,7 @@ public:
     int id() const { return Id; }
 
 protected:
+    QString _viewerFlowName;
     ModelViewerFlow *_viewerFlow;
     ModelViewerFlow *_backupViewerFlow;
 };

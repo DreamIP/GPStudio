@@ -120,7 +120,7 @@ void ViewerExplorerWidget::setupWidgets()
     _viewerTreeView->viewport()->setAcceptDrops(true);
     _viewerTreeView->setDropIndicatorShown(true);
     _viewerTreeView->setSortingEnabled(true);
-    _viewerTreeView->sortByColumn(0, Qt::DescendingOrder);
+    _viewerTreeView->sortByColumn(0, Qt::AscendingOrder);
     layoutBox2->addWidget(_viewerTreeView);
     groupBox2->setLayout(layoutBox2);
     layout->addWidget(groupBox2);
