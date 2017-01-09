@@ -79,10 +79,11 @@ ModelNode *GPNodeProject::node() const
 
 void GPNodeProject::newProject()
 {
-    closeProject();
+    if(!closeProject())
+        return;
 
     setPath("");
-    setNode(new ModelNode("new_project"));
+    setNode(new ModelNode("unsaved_project"));
     setModified(false);
 }
 
@@ -91,7 +92,8 @@ bool GPNodeProject::openProject(const QString &nodeFileName)
     ModelNode *node;
     QString fileName;
 
-    closeProject();
+    if(!closeProject())
+        return false;
 
     if(nodeFileName.isEmpty())
     {
