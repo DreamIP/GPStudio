@@ -55,15 +55,14 @@ GPNodeProject *ViewerTreeView::project() const
     return _project;
 }
 
-void ViewerTreeView::setCamera(Camera *camera)
+ModelGPViewer *ViewerTreeView::gpviewer() const
 {
-    _camera = camera;
-    _model->setViewer(_camera->node()->gpViewer());
+    return _gpviewer;
 }
 
-Camera *ViewerTreeView::camera() const
+void ViewerTreeView::setGpviewer(ModelGPViewer *gpviewer)
 {
-    return _camera;
+    _model->setViewer(_gpviewer);
 }
 
 void ViewerTreeView::dragEnterEvent(QDragEnterEvent *event)

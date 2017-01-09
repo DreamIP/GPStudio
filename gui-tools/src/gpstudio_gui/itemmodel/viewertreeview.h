@@ -40,8 +40,8 @@ public:
     void attachProject(GPNodeProject *project);
     GPNodeProject *project() const;
 
-    void setCamera(Camera *camera);
-    Camera *camera() const;
+    ModelGPViewer *gpviewer() const;
+    void setGpviewer(ModelGPViewer *gpviewer);
 
 signals:
     void viewerDeleted(QString viewerName);
@@ -62,7 +62,7 @@ private:
     QSortFilterProxyModel *_modelSorted;
 
     GPNodeProject *_project;
-    Camera *_camera;
+    ModelGPViewer *_gpviewer;
 };
 
 #endif // VIEWERTREEVIEW_H

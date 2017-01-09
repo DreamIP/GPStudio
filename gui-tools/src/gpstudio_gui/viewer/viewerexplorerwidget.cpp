@@ -64,7 +64,7 @@ void ViewerExplorerWidget::setCamera(Camera *camera)
     _flowTreeView->expandAll();
 
     if(_camera->node()->gpViewer())
-        _viewerTreeView->setCamera(_camera);
+        _viewerTreeView->setGpviewer(_camera->node()->gpViewer());
     _viewerTreeView->expandAll();
 }
 
