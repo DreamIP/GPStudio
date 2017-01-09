@@ -69,7 +69,7 @@ void BlockConnectorItem::setStyle(const BlockConnectorItem::DrawStyle &style)
 
 QRectF BlockConnectorItem::boundingRect() const
 {
-    return QRectF(_inPos, _outPos).normalized().adjusted(-5, -15, 5, 5);
+    return QRectF(_inPos, _outPos).normalized().adjusted(-5, -15, 5, 15);
 }
 
 QPainterPath BlockConnectorItem::shape() const
