@@ -25,6 +25,7 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QMessageBox>
+#include <QSettings>
 
 CompileLogWidget::CompileLogWidget(QWidget *parent) : QWidget(parent)
 {
@@ -51,10 +52,10 @@ void CompileLogWidget::launch(const QString &cmd, const QStringList &args)
     connect(_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(errorProcess()));
 
     checkAction();
+    qDebug()<<checkPhp();
 
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    env.insert("PATH", QCoreApplication::applicationDirPath()+":"+env.value("PATH"));
-    _process->setProcessEnvironment(env);
+    // environement variables
+    _process->setProcessEnvironment(getEnv());
 
     // _textWidget->clear();
     _program = cmd;
@@ -313,4 +314,36 @@ void CompileLogWidget::setProject(GPNodeProject *project)
     _project = project;
     connect(project, SIGNAL(nodePathChanged(QString)), this, SLOT(updatePath(QString)));
     checkAction();
+}
+
+bool CompileLogWidget::checkPhp()
+{
+    QProcess *process = new QProcess(this);
+    process->setProcessEnvironment(getEnv());
+    QStringList args;
+    args.append("-v");
+    process->start("php", args);
+    process->waitForFinished(3000);
+    QProcess::ExitStatus exitStatus = process->exitStatus();
+    delete process;
+    return (exitStatus==QProcess::NormalExit);
+}
+
+QProcessEnvironment CompileLogWidget::getEnv()
+{
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    QString path;
+    path += QCoreApplication::applicationDirPath();
+    path += ":"+env.value("PATH");
+
+    // php path from settings
+    QSettings settings("GPStudio", "gpnode");
+    settings.beginGroup("paths");
+    QString phpPath = settings.value("php", "").toString();
+    if(!phpPath.isEmpty())
+        path += phpPath;
+    settings.endGroup();
+
+    env.insert("PATH", path);
+    return env;
 }

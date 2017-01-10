@@ -40,6 +40,10 @@ public:
     GPNodeProject *project() const;
     void setProject(GPNodeProject *project);
 
+    bool checkPhp();
+
+    static QProcessEnvironment getEnv();
+
 protected:
     void launch(const QString &cmd, const QStringList &args);
     void checkAction();
