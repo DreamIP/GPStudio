@@ -33,6 +33,7 @@
 #include <QDockWidget>
 #include <QLayout>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "propertywidgets/propertywidgets.h"
 
@@ -58,6 +59,7 @@ NodeEditorWindows::NodeEditorWindows(QWidget *parent, GPNodeProject *nodeProject
 
     _blockEditor = NULL;
     showCamExplorer();
+    readSettings();
 }
 
 NodeEditorWindows::~NodeEditorWindows()
@@ -102,7 +104,10 @@ void NodeEditorWindows::attachProject(GPNodeProject *project)
 void NodeEditorWindows::closeEvent(QCloseEvent *event)
 {
     if(_project->closeProject())
+    {
+        writeSettings();
         event->accept();
+    }
     else
         event->ignore();
 }
@@ -223,13 +228,13 @@ void NodeEditorWindows::createToolBarAndMenu()
     nodeMenu->addSeparator();
     _mainToolBar->addSeparator();
 
-    QAction *configNode = new QAction("&Configure node",this);
+    QAction *configNode = new QAction("&Platform configuration",this);
     configNode->setStatusTip("Permits to choose the targeted platform and to choose associated periphericals");
     configNode->setIcon(QIcon(":/icons/img/settings.png"));
     configNode->setShortcut(QKeySequence::Preferences);
     nodeMenu->addAction(configNode);
     _mainToolBar->addAction(configNode);
-    connect(configNode, SIGNAL(triggered()), this, SLOT(configNode()));
+    connect(configNode, SIGNAL(triggered()), this, SLOT(configBoard()));
 
     nodeMenu->addSeparator();
     QAction *exit = new QAction("E&xit",this);
@@ -352,7 +357,7 @@ void NodeEditorWindows::createToolBarAndMenu()
     helpMenu->addAction(aboutQtAction);
 }
 
-void NodeEditorWindows::configNode()
+void NodeEditorWindows::configBoard()
 {
     _project->configBoard();
 }
@@ -416,4 +421,27 @@ void NodeEditorWindows::showCamExplorer()
 {
     _camExplorerDock->show();
     _camExplorerDock->raise();
+}
+
+void NodeEditorWindows::writeSettings()
+{
+    QSettings settings("GPStudio", "gpnode");
+
+    settings.beginGroup("MainWindow");
+    settings.setValue("size", normalGeometry().size());
+    settings.setValue("pos", normalGeometry().topLeft());
+    settings.setValue("maximized", isMaximized());
+    settings.endGroup();
+}
+
+void NodeEditorWindows::readSettings()
+{
+    QSettings settings("GPStudio", "gpnode");
+
+    settings.beginGroup("MainWindow");
+    resize(settings.value("size", QSize(600, 480)).toSize());
+    move(settings.value("pos", QPoint(200, 200)).toPoint());
+    if(settings.value("maximized", true).toBool())
+        showMaximized();
+    settings.endGroup();
 }

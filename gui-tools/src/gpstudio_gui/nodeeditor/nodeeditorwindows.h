@@ -48,8 +48,11 @@ public:
 protected:
     void closeEvent(QCloseEvent *event);
 
+    void writeSettings();
+    void readSettings();
+
 private slots:
-    void configNode();
+    void configBoard();
     void addProcess(QString driver);
 
     void reloadNode();

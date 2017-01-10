@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     }
 
     NodeEditorWindows nodeEditorWindows(NULL, nodeProject);
-    nodeEditorWindows.showMaximized();
+    nodeEditorWindows.show();
 
     return a.exec();
 }
