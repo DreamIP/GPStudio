@@ -25,6 +25,7 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QCoreApplication>
 
 #include <QStatusBar>
 #include <QToolBar>
@@ -34,6 +35,7 @@
 #include <QLayout>
 #include <QMessageBox>
 #include <QSettings>
+#include <QDir>
 
 #include "propertywidgets/propertywidgets.h"
 
@@ -54,6 +56,7 @@ NodeEditorWindows::NodeEditorWindows(QWidget *parent, GPNodeProject *nodeProject
     setupWidgets();
     createDocks();
     createToolBarAndMenu();
+    checkSettings();
 
     attachProject(nodeProject);
     if(!_project->node())
@@ -101,6 +104,24 @@ void NodeEditorWindows::attachProject(GPNodeProject *project)
         reloadNode();
         reloadNodePath();
     }
+}
+
+void NodeEditorWindows::checkSettings()
+{
+#if defined(Q_OS_WIN)
+    QSettings settings("GPStudio", "gpnode");
+    settings.beginGroup("paths");
+
+    QString phpPath = settings.value("php", "NULL").toString();
+    if(phpPath == "NULL")
+        settings.setValue("php", QDir::cleanPath(QCoreApplication::applicationDirPath() + "/../thirdparts/php"));
+
+    QString makePath = settings.value("make", "NULL").toString();
+    if(makePath == "NULL")
+        settings.setValue("make", QDir::cleanPath(QCoreApplication::applicationDirPath() + "/../thirdparts"));
+
+    settings.endGroup();
+#endif
 }
 
 void NodeEditorWindows::closeEvent(QCloseEvent *event)

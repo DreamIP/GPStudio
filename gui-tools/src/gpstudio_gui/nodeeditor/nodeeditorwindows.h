@@ -44,6 +44,7 @@ public:
     ~NodeEditorWindows();
 
     void attachProject(GPNodeProject *project);
+    void checkSettings();
 
 protected:
     void closeEvent(QCloseEvent *event);
