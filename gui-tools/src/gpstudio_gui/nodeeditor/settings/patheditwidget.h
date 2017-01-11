@@ -44,6 +44,7 @@ public:
     bool isValid() const;
 
     void setEnv(QProcessEnvironment env);
+    QString findExecutable(const QString &executableName, const QStringList &paths = QStringList());
 
 signals:
 

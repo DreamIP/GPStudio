@@ -26,7 +26,7 @@
 #include <QCoreApplication>
 #include <QMessageBox>
 #include <QSettings>
-#include <QStandardPaths>
+//#include <QStandardPaths>
 
 CompileLogWidget::CompileLogWidget(QWidget *parent) : QWidget(parent)
 {
@@ -315,7 +315,7 @@ void CompileLogWidget::setProject(GPNodeProject *project)
     checkAction();
 }
 
-bool CompileLogWidget::checkProgramm(const QString &programm)
+/*bool CompileLogWidget::checkProgramm(const QString &programm)
 {
     QString programmPath = programm;
     QProcess *process = new QProcess(this);
@@ -336,7 +336,7 @@ bool CompileLogWidget::checkProgramm(const QString &programm)
 bool CompileLogWidget::checkPhp()
 {
     return checkProgramm("php");
-}
+}*/
 
 QProcessEnvironment CompileLogWidget::getEnv()
 {

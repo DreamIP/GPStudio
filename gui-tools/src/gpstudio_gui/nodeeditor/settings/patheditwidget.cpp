@@ -23,7 +23,7 @@
 #include <QLayout>
 #include <QCompleter>
 #include <QFileDialog>
-#include <QStandardPaths>
+#include <QDir>
 #include <QDebug>
 
 #include "compilelogwidget.h"
@@ -77,6 +77,26 @@ void PathEditWidget::setEnv(QProcessEnvironment env)
     checkProgramm();
 }
 
+QString PathEditWidget::findExecutable(const QString &executableName, const QStringList &paths)
+{
+    QStringList pathsToSearch;
+    if(!paths.isEmpty())
+        pathsToSearch = paths;
+    else
+        pathsToSearch = _env.value("PATH").split(QDir::listSeparator());
+
+    QStringList filtersName;
+    filtersName<<executableName+".exe"<<executableName+".bat"<<executableName;
+    foreach (QString path, pathsToSearch)
+    {
+        QDir dir(path);
+        QFileInfoList results = dir.entryInfoList(filtersName);
+        if(!results.isEmpty())
+            return results[0].absoluteFilePath();
+    }
+    return QString();
+}
+
 void PathEditWidget::buttonClicked()
 {
     QString dir =QFileDialog::getExistingDirectory(this, "Choose existing directory", _pathLineEdit->text());
@@ -95,7 +115,8 @@ void PathEditWidget::checkProgramm()
     QProcessEnvironment env = _env;
     if(!_path.isEmpty())
         env.insert("PATH", _path + QDir::listSeparator() + env.value("PATH") );
-    QString path = QStandardPaths::findExecutable(_programm, env.value("PATH").split(QDir::listSeparator()));
+    qDebug()<<env.value("PATH");
+    QString path = findExecutable(_programm, env.value("PATH").split(QDir::listSeparator()));
     if(!path.isEmpty())
         programm = path;
     process->setProcessEnvironment(env);

@@ -33,6 +33,8 @@ PathsSettingsPage::PathsSettingsPage(QWidget *parent) : QWidget(parent)
     QSettings settings("GPStudio", "gpnode");
     settings.beginGroup("paths");
     _phpPathEdit->setPath(settings.value("php", "").toString());
+    _makePathEdit->setPath(settings.value("make", "").toString());
+    _quartusPathEdit->setPath(settings.value("quartus", "").toString());
     settings.endGroup();
 }
 
