@@ -137,7 +137,7 @@ void ViewerFlowCmdAdd::redo()
 
 // Remove viewerFlow
 ViewerFlowCmdRemove::ViewerFlowCmdRemove(GPNodeProject *project, ModelViewerFlow *viewerFlow)
-    : ViewerCommand(project, ""), _viewerFlow(viewerFlow), _viewerFlowName(viewerFlow->flowName())
+    : ViewerCommand(project, ""), _viewerFlowName(viewerFlow->flowName()), _viewerFlow(viewerFlow)
 {
     if(viewerFlow->viewer())
         _viewerName = viewerFlow->viewer()->name();

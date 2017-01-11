@@ -540,7 +540,7 @@ void BlockView::contextMenuEvent(QContextMenuEvent *event)
     item = _scene->itemAt(mapToScene(event->pos()), QTransform());
     if(item)
     {
-        if(!scene()->selectedItems().count()==1 || !item->isSelected())
+        if(scene()->selectedItems().count()>1 || !item->isSelected())
         {
             scene()->clearSelection();
             item->setSelected(true);

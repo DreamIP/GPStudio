@@ -32,6 +32,7 @@ LibTreeView::LibTreeView(QWidget *parent) :
     QTreeView(parent)
 {
     _model = new LibItemModel(this);
+    _project = NULL;
     setModel(_model);
     setSortingEnabled(true);
 

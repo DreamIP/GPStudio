@@ -379,6 +379,7 @@ void MainWindow::setupViewers()
         _blocksView->loadFromCam(_cam);
     QMdiSubWindow * windows = ui->mdiArea->addSubWindow(_blocksView);
     connect(_blocksView, SIGNAL(blockSelected(QString)), _camExplorerWidget, SLOT(selectBlock(QString)));
+    connect(_blocksView, SIGNAL(blockSelected(QString)), _camExplorerWidget, SLOT(raise()));
     connect(_camExplorerWidget, SIGNAL(blockSelected(QString)), _blocksView, SLOT(selectBlock(QString)));
     connect(_blocksView, SIGNAL(blockDetailsRequest(QString)), this, SLOT(showBlockDetails(QString)));
     windows->setWindowTitle("Blocks view");

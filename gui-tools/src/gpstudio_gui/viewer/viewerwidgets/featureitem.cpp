@@ -34,6 +34,9 @@ QRectF FeatureItem::boundingRect() const
 
 void FeatureItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
     // TODO get color from viewer properties
     painter->setPen(Qt::red);
 
