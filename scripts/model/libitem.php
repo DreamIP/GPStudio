@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2016 Dream IP
+ * Copyright (C) 2014-2017 Dream IP
  *
  * This file is part of GPStudio.
  *
