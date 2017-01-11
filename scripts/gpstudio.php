@@ -256,7 +256,7 @@ function mkdir_rec($dir_path)
     }
 }
 
-function cpy_dir($source, $dest, $filtered=false)
+function cpy_dir($source, $dest, $filtered=array())
 {
     if (is_dir($source))
     {
@@ -281,8 +281,11 @@ function cpy_dir($source, $dest, $filtered=false)
                     }
                     else
                     {
-                        echo $file . "\n";
-                        copy_with_rights($source . DIRECTORY_SEPARATOR . $file, $dest . DIRECTORY_SEPARATOR . $file);
+                        $ext = pathinfo($file, PATHINFO_EXTENSION);
+                        if(!in_array($ext, $filtered))
+                        {
+                            copy_with_rights($source . DIRECTORY_SEPARATOR . $file, $dest . DIRECTORY_SEPARATOR . $file);
+                        }
                     }
                 }
             }

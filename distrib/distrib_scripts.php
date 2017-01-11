@@ -64,7 +64,7 @@ function distrib_support($mainoutpath, $system, $archi, $qtver)
                 echo "	+ " . $dir . " " . $ip . "\n";
 
                 mkdirExists($path . $ip);
-                cpy_dir(SUPPORT_PATH . $dir . DIRECTORY_SEPARATOR . $ip, $path . $ip);
+                cpy_dir(SUPPORT_PATH . $dir . DIRECTORY_SEPARATOR . $ip, $path . $ip, array("aux", "out", "log"));
             }
             fclose($handle_read);
         }
@@ -85,7 +85,7 @@ function distrib_doc($mainoutpath, $system, $archi, $qtver)
         {
             if (!is_dir(LIB_PATH . "doc" . DIRECTORY_SEPARATOR . $file))
             {
-                echo "+ ".$file."\n";
+                echo "\t+ ".$file."\n";
                 copy_with_rights(LIB_PATH . "doc" . DIRECTORY_SEPARATOR . $file, $mainoutpath . "doc" . DIRECTORY_SEPARATOR . $file);
             }
         }
