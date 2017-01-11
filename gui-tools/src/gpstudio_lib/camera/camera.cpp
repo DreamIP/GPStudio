@@ -121,7 +121,12 @@ Block *Camera::fiBlock() const
 
 Block *Camera::comBlock() const
 {
-    return _comBlock;
+    if(!_modelNode)
+        return NULL;
+    ModelIOCom *iOCom = _modelNode->getIOCom();
+    if(iOCom)
+        return block(iOCom->name());
+    return NULL;
 }
 
 const Property &Camera::rootProperty() const

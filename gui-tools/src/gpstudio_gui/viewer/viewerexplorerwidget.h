@@ -51,6 +51,8 @@ private slots:
     void removeViewer(QString viewerName);
     void removeViewerFlow(QString viewerName, QString viewerFlowName);
 
+    void updateCom();
+
 private:
     void setupWidgets();
 

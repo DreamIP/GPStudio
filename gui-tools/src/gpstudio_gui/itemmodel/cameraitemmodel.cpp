@@ -149,9 +149,10 @@ void CameraItemModel::setBlock(const Block *block, uint filter)
 {
     beginResetModel();
     resetInternalData();
-    _rootItem->clear();
-    _rootItem->setType(CameraItem::ModelBlockType);
-    _rootItem->append(block, filter);
+    if(block)
+        setRootItem(new CameraItem(block, filter));
+    else
+        setRootItem(new CameraItem());
     endResetModel();
 }
 
@@ -159,9 +160,10 @@ void CameraItemModel::setNode(const ModelNode *node, uint filter)
 {
     beginResetModel();
     resetInternalData();
-    _rootItem->clear();
-    _rootItem->setType(CameraItem::ModelNodeType);
-    _rootItem->append(node, filter);
+    if(node)
+        setRootItem(new CameraItem(node, filter));
+    else
+        setRootItem(new CameraItem());
     endResetModel();
 }
 
@@ -169,7 +171,10 @@ void CameraItemModel::setViewer(const ModelGPViewer *gpViewer, uint filter)
 {
     beginResetModel();
     resetInternalData();
-    setRootItem(new CameraItem(gpViewer, filter));
+    if(gpViewer)
+        setRootItem(new CameraItem(gpViewer, filter));
+    else
+        setRootItem(new CameraItem());
     endResetModel();
 }
 

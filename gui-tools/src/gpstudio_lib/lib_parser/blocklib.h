@@ -61,6 +61,15 @@ public:
     ModelIO *modelIO() const;
     ModelIOCom *modelIOCom() const;
 
+    enum Type
+    {
+        Block,
+        Process,
+        IO,
+        IOCom
+    };
+    Type type() const;
+
 public:
     static BlockLib *readFromFile(const QString &fileName);
     static BlockLib *fromDomElement(const QDomElement &domElement);
@@ -72,6 +81,7 @@ protected:
     QString _configFile;
     QString _description;
     QIcon _icon;
+    Type _type;
 
     ModelBlock *_modelBlock;
 };

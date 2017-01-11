@@ -380,13 +380,29 @@ void GPNodeProject::cmdConfigBoard(QString boardName, QStringList iosName)
             if(ioLib)
             {
                 count++;
-                ModelIO *io = new ModelIO(*ioLib->modelIO());
+                ModelIO *io;
+                if(ioLib->type()==BlockLib::IOCom)
+                    io = new ModelIOCom(*ioLib->modelIOCom());
+                else
+                    io = new ModelIO(*ioLib->modelIO());
                 io->setName(ioName);
                 int count2=0;
                 foreach (ModelComponentPart *part, io->parts())
                     part->setPos(QPoint(count*200, (count2++)*200));
                 cmdAddBlock(io);
             }
+        }
+    }
+
+    count = 0;
+    if(_node->gpViewer()->viewers().isEmpty() && _node->getIOCom() != NULL)
+    {
+        foreach (ModelFlow *flow, _node->getIOCom()->flowsIn())
+        {
+            ModelViewer *viewer = new ModelViewer(QString("viewer %1").arg(count));
+            viewer->addViewerFlow(new ModelViewerFlow(flow->name()));
+            cmdAddViewer(viewer);
+            count++;
         }
     }
 }

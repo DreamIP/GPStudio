@@ -53,6 +53,9 @@ protected:
 
     void keyPressEvent(QKeyEvent *event);
 
+private slots:
+    void updateViewer();
+
 #ifndef QT_NO_CONTEXTMENU
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 #endif // QT_NO_CONTEXTMENU

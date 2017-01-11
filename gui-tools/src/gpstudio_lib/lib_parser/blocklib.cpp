@@ -127,9 +127,18 @@ BlockLib *BlockLib::fromDomElement(const QDomElement &domElement)
 {
     BlockLib *blockLib = new BlockLib();
     if(domElement.tagName()=="process")
+    {
+        blockLib->_type = Process;
         blockLib->setName(domElement.attribute("name","no_name"));
+    }
     else
+    {
+        if(domElement.attribute("categ","")=="communication")
+            blockLib->_type = IOCom;
+        else
+            blockLib->_type = IO;
         blockLib->setName(domElement.attribute("driver","no_name"));
+    }
 
     blockLib->setCateg(domElement.attribute("categ",""));
     blockLib->setDescription(domElement.attribute("desc",""));
@@ -186,4 +195,9 @@ ModelIO *BlockLib::modelIO() const
 ModelIOCom *BlockLib::modelIOCom() const
 {
     return static_cast<ModelIOCom*>(_modelBlock);
+}
+
+BlockLib::Type BlockLib::type() const
+{
+    return _type;
 }

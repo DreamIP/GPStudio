@@ -36,12 +36,14 @@ ViewerExplorerWidget::ViewerExplorerWidget(QWidget *parent) : QWidget(parent)
 void ViewerExplorerWidget::attachProject(GPNodeProject *project)
 {
     _project = project;
+    _viewerTreeView->attachProject(project);
 
     if(_project->camera())
-    {
         setCamera(_project->camera());
-        _viewerTreeView->attachProject(project);
-    }
+
+    connect(_project, SIGNAL(nodeChanged(ModelNode*)), this, SLOT(updateCom()));
+    connect(_project, SIGNAL(blockAdded(ModelBlock*)), this, SLOT(updateCom()));
+    connect(_project, SIGNAL(blockRemoved(QString)), this, SLOT(updateCom()));
 
     connect(_viewerTreeView, SIGNAL(viewerDeleted(QString)), this, SLOT(removeViewer(QString)));
     connect(this, SIGNAL(viewerDeleted(ModelViewer*)), _project, SLOT(removeViewer(ModelViewer*)));
@@ -61,11 +63,9 @@ void ViewerExplorerWidget::setCamera(Camera *camera)
 
     if(_camera->comBlock())
         _flowItemModel->setBlock(_camera->comBlock(), CameraItem::FFlowIn);
+    else
+        _flowItemModel->setBlock(NULL);
     _flowTreeView->expandAll();
-
-    if(_camera->node()->gpViewer())
-        _viewerTreeView->setGpviewer(_camera->node()->gpViewer());
-    _viewerTreeView->expandAll();
 }
 
 Camera *ViewerExplorerWidget::camera() const
@@ -85,6 +85,12 @@ void ViewerExplorerWidget::removeViewerFlow(QString viewerName, QString viewerFl
     ModelViewerFlow *viewerFlow = _camera->node()->gpViewer()->getViewerFlow(viewerName, viewerFlowName);
     if(viewerFlow)
         emit viewerFlowDeleted(viewerFlow);
+}
+
+void ViewerExplorerWidget::updateCom()
+{
+    if(_project->camera())
+        setCamera(_project->camera());
 }
 
 void ViewerExplorerWidget::setupWidgets()
