@@ -2,7 +2,7 @@ conv
 dilate
 erode
 gaussian
-gradienthw
+gradient
 laplacian
 lbp
 negate

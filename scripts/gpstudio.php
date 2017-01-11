@@ -256,7 +256,7 @@ function mkdir_rec($dir_path)
     }
 }
 
-function cpy_dir($source, $dest)
+function cpy_dir($source, $dest, $filtered=false)
 {
     if (is_dir($source))
     {
@@ -271,7 +271,7 @@ function cpy_dir($source, $dest)
                     {
                         mkdir($dest . DIRECTORY_SEPARATOR . $file);
                     }
-                    cpy_dir($source . DIRECTORY_SEPARATOR . $file, $dest . DIRECTORY_SEPARATOR . $file);
+                    cpy_dir($source . DIRECTORY_SEPARATOR . $file, $dest . DIRECTORY_SEPARATOR . $file, $filtered);
                 }
                 else
                 {
@@ -281,6 +281,7 @@ function cpy_dir($source, $dest)
                     }
                     else
                     {
+                        echo $file . "\n";
                         copy_with_rights($source . DIRECTORY_SEPARATOR . $file, $dest . DIRECTORY_SEPARATOR . $file);
                     }
                 }

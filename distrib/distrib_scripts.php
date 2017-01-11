@@ -78,7 +78,20 @@ function distrib_doc($mainoutpath, $system, $archi, $qtver)
 
     // create directory
     mkdirExists($mainoutpath . "doc");
-    cpy_dir(LIB_PATH . "doc", $mainoutpath . "doc");
+    $dir_handle = opendir(LIB_PATH . "doc");
+    while ($file = readdir($dir_handle))
+    {
+        if ($file != "." && $file != "..")
+        {
+            if (!is_dir(LIB_PATH . "doc" . DIRECTORY_SEPARATOR . $file))
+            {
+                echo "+ ".$file."\n";
+                copy_with_rights(LIB_PATH . "doc" . DIRECTORY_SEPARATOR . $file, $mainoutpath . "doc" . DIRECTORY_SEPARATOR . $file);
+            }
+        }
+    }
+    closedir($dir_handle);
+    
     echo "done." . "\n";
 }
 
@@ -91,34 +104,33 @@ function distrib_bin($mainoutpath, $system, $archi, $qtver)
 
     if ($system == "win")
     {
-        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpnode.bat", $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpnode.bat");
-        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gplib.bat", $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gplib.bat");
-        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpdevice.bat", $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpdevice.bat");
-        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpproc.bat", $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpproc.bat");
-        copy_with_rights(LIB_PATH . "setenv.bat", $mainoutpath . "setenv.bat");
-        copy_with_rights(LIB_PATH . "install.bat", $mainoutpath . "setenv.bat");
-        copy_with_rights(LIB_PATH . "license.txt", $mainoutpath . "license.txt");
-        copy_with_rights(LIB_PATH . "README.md", $mainoutpath . "readme.txt");
-        copy_with_rights(LIB_PATH . "INSTALL.md", $mainoutpath . "install.txt");
-        copy_with_rights(LIB_PATH . "CHANGELOG.md", $mainoutpath . "changelog.txt");
+        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpnode.bat",             $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpnode.bat");
+        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gplib.bat",              $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gplib.bat");
+        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpdevice.bat",           $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpdevice.bat");
+        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpproc.bat",             $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpproc.bat");
+        copy_with_rights(LIB_PATH . "LICENSE.md",                                           $mainoutpath . "license.txt");
+        copy_with_rights(LIB_PATH . "README.md",                                            $mainoutpath . "readme.txt");
+        copy_with_rights(LIB_PATH . "INSTALL.md",                                           $mainoutpath . "install.txt");
+        copy_with_rights(LIB_PATH . "CHANGELOG.md",                                         $mainoutpath . "changelog.txt");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "setenv.bat",           $mainoutpath . "setenv.bat");
     }
     else
     {
-        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpnode", $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpnode");
-        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gplib", $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gplib");
-        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpdevice", $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpdevice");
-        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpproc", $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpproc");
-        copy_with_rights(LIB_PATH . "setenv.sh", $mainoutpath . "setenv.sh");
-        copy_with_rights(LIB_PATH . "install.sh", $mainoutpath . "install.sh");
-        copy_with_rights(LIB_PATH . "license.txt", $mainoutpath . "license.txt");
-        copy_with_rights(LIB_PATH . "README.md", $mainoutpath . "README.md");
-        copy_with_rights(LIB_PATH . "INSTALL.md", $mainoutpath . "INSTALL.md");
-        copy_with_rights(LIB_PATH . "CHANGELOG.md", $mainoutpath . "CHANGELOG.md");
+        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpnode",                 $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpnode");
+        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gplib",                  $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gplib");
+        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpdevice",               $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpdevice");
+        copy_with_rights(LIB_PATH . "bin" . DIRECTORY_SEPARATOR . "gpproc",                 $mainoutpath . "bin" . DIRECTORY_SEPARATOR . "gpproc");
+        copy_with_rights(LIB_PATH . "LICENSE.md",                                           $mainoutpath . "LICENSE.md");
+        copy_with_rights(LIB_PATH . "README.md",                                            $mainoutpath . "README.md");
+        copy_with_rights(LIB_PATH . "INSTALL.md",                                           $mainoutpath . "INSTALL.md");
+        copy_with_rights(LIB_PATH . "CHANGELOG.md",                                         $mainoutpath . "CHANGELOG.md");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "setenv.sh",            $mainoutpath . "setenv.sh");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "install.sh",           $mainoutpath . "install.sh");
         
-        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpnode_completion", $mainoutpath . "gpnode_completion");
-        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gplib_completion", $mainoutpath . "gplib_completion");
-        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpdevice_completion", $mainoutpath . "gpdevice_completion");
-        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpproc_completion", $mainoutpath . "gpproc_completion");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpnode_completion",    $mainoutpath . "gpnode_completion");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gplib_completion",     $mainoutpath . "gplib_completion");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpdevice_completion",  $mainoutpath . "gpdevice_completion");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpproc_completion",    $mainoutpath . "gpproc_completion");
     }
     $bin_source_path = "bin-" . $system . $archi . '-qt' . $qtver;
     cpy_dir(GUI_TOOLS_PATH . $bin_source_path, $mainoutpath . "bin");

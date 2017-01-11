@@ -41,18 +41,20 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]  
 ; doc files
 Source: "gpstudio_win64-qt5\doc\*.pdf"; DestDir: "{app}\doc"; Flags: ignoreversion
+   
+Source: "gpstudio_win64-qt5\license.txt"; DestDir: "{app}"; Flags: ignoreversion; DestName: "license.txt"
+Source: "gpstudio_win64-qt5\readme.txt"; DestDir: "{app}"; Flags: ignoreversion; DestName: "readme.txt"
+Source: "gpstudio_win64-qt5\install.txt"; DestDir: "{app}"; Flags: ignoreversion; DestName: "install.txt"
+Source: "gpstudio_win64-qt5\changelog.txt"; DestDir: "{app}"; Flags: ignoreversion; DestName: "changelog.txt"
 
 ; bin files
-Source: "gpstudio_win64-qt5\license.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "gpstudio_win64-qt5\bin\gpnode_gui.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
 Source: "gpstudio_win64-qt5\bin\gpviewer.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
 Source: "gpstudio_win64-qt5\bin\*.dll"; DestDir: "{app}\bin"; Flags: ignoreversion
-Source: "gpstudio_win64-qt5\bin\platforms\*.dll"; DestDir: "{app}\bin\platforms"; Flags: ignoreversion
 Source: "gpstudio_win64-qt5\bin\*.bat"; DestDir: "{app}\bin"; Flags: ignoreversion     
 Source: "gpstudio_win64-qt5\bin\iconengines\*"; DestDir: "{app}\bin\iconengines"; Flags: ignoreversion
 Source: "gpstudio_win64-qt5\bin\imageformats\*"; DestDir: "{app}\bin\imageformats"; Flags: ignoreversion
 Source: "gpstudio_win64-qt5\bin\platforms\*"; DestDir: "{app}\bin\platforms"; Flags: ignoreversion
-Source: "gpstudio_win64-qt5\bin\translations\*"; DestDir: "{app}\bin\translations"; Flags: ignoreversion
 
 ; doc files
 Source: "gpstudio_win64-qt5\doc\*.pdf"; DestDir: "{app}\doc"; Flags: ignoreversion
@@ -71,19 +73,13 @@ Name: "{group}\{#MyAppName}\gpnode"; Filename: "{app}\bin\gpnode_gui.exe"; Worki
 Name: "{group}\{#MyAppName}\gpviewer"; Filename: "{app}\bin\gpviewer.exe"; WorkingDir: "{app}\bin"; Comment: "GPStudio viewer and debugger"
 Name: "{group}\{#MyAppName}\Uninstall {#MyAppName}"; Filename: "{uninstallexe}"
 
-Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\bin\{#MyAppExeName}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\bin\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\bin\gpnode_gui.exe"
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\bin\gpnode_gui.exe"; Tasks: desktopicon
 
 [Registry]
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
     ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\bin"; \
     Check: NotOnPathAlready('{app}\bin')
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
-    ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\thirdparts"; \
-    Check: NotOnPathAlready('{app}\thirdparts')
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
-    ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}\thirdparts\php"; \
-    Check: NotOnPathAlready('{app}\thirdparts\php')
 
 [Code]
 function NotOnPathAlready(Param: string): Boolean;
@@ -116,6 +112,6 @@ end;
 
 [Run]                                                                                                                              
 Filename: {sys}\rundll32.exe; Parameters: "setupapi,InstallHinfSection DefaultInstall 128 {app}\thirdparts\dreamcam_usb\libusb_device.inf"; WorkingDir: {app}\thirdparts\dreamcam_usb; Flags: 32bit; StatusMsg: "{#DreamCamDrivermsg}"
-Filename: "{app}\thirdparts\vcredist_x86.exe"; StatusMsg: "{#VCmsg}"; Parameters: "/passive /verysilent /norestart /q:a /c:""VCREDI~3.EXE /q:a /c:""""msiexec /i vcredist.msi /qn"""" """
+; Filename: "{app}\thirdparts\vcredist_x86.exe"; StatusMsg: "{#VCmsg}"; Parameters: "/passive /verysilent /norestart /q:a /c:""VCREDI~3.EXE /q:a /c:""""msiexec /i vcredist.msi /qn"""" """
 
 Filename: "{app}\bin\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

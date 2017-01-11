@@ -1,2 +1,4 @@
 video_sampler
 matrix_extractor
+gp_fifo
+gp_dcfifo
