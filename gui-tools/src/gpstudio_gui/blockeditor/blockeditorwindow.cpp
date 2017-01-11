@@ -204,7 +204,7 @@ void BlockEditorWindow::setBlock(ModelBlock *block)
 
 void BlockEditorWindow::about()
 {
-    QMessageBox::about(this,"GPStudio: GPBlock 1.20","Copyright (C) 2016 Dream IP\n\
+    QMessageBox::about(this,"GPStudio: GPBlock 1.20", QString("Copyright (C) 2014-2017 Dream IP\n\
 \n\
 This sofware is part of GPStudio.\n\
 \n\
@@ -219,7 +219,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n\
 GNU General Public License for more details.\n\
 \n\
 You should have received a copy of the GNU General Public License\n\
-along with this program.  If not, see <http://www.gnu.org/licenses/>\n.");
+along with this program.  If not, see <http://www.gnu.org/licenses/>\n\
+Build date: ") + __DATE__ + QString(" time: ")+__TIME__);
 }
 
 void BlockEditorWindow::aboutQt()
