@@ -40,6 +40,7 @@ public:
     GPNodeProject *project() const;
     void setProject(GPNodeProject *project);
 
+    bool checkProgramm(const QString &programm);
     bool checkPhp();
 
     static QProcessEnvironment getEnv();

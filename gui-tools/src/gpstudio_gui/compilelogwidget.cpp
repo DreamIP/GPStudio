@@ -26,6 +26,7 @@
 #include <QCoreApplication>
 #include <QMessageBox>
 #include <QSettings>
+#include <QStandardPaths>
 
 CompileLogWidget::CompileLogWidget(QWidget *parent) : QWidget(parent)
 {
@@ -47,12 +48,10 @@ void CompileLogWidget::launch(const QString &cmd, const QStringList &args)
 {
     _process = new QProcess(this);
     connect(_process, SIGNAL(readyRead()), this, SLOT(readProcess()));
-    connect(_process, SIGNAL(readyRead()), this, SLOT(readProcess()));
     connect(_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(exitProcess()));
     connect(_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(errorProcess()));
 
     checkAction();
-    qDebug()<<checkPhp();
 
     // environement variables
     _process->setProcessEnvironment(getEnv());
@@ -316,34 +315,54 @@ void CompileLogWidget::setProject(GPNodeProject *project)
     checkAction();
 }
 
-bool CompileLogWidget::checkPhp()
+bool CompileLogWidget::checkProgramm(const QString &programm)
 {
+    QString programmPath = programm;
     QProcess *process = new QProcess(this);
-    process->setProcessEnvironment(getEnv());
+    QProcessEnvironment env = getEnv();
+    process->setProcessEnvironment(env);
+    QString path = QStandardPaths::findExecutable(programm, env.value("PATH").split(QDir::listSeparator()));
+    if(!path.isEmpty())
+        programmPath = path;
     QStringList args;
     args.append("-v");
-    process->start("php", args);
+    process->start(programmPath, args);
     process->waitForFinished(3000);
     QProcess::ExitStatus exitStatus = process->exitStatus();
     delete process;
     return (exitStatus==QProcess::NormalExit);
 }
 
+bool CompileLogWidget::checkPhp()
+{
+    return checkProgramm("php");
+}
+
 QProcessEnvironment CompileLogWidget::getEnv()
 {
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     QString path;
-    path += QCoreApplication::applicationDirPath();
-    path += ":"+env.value("PATH");
+    path += QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QDir::listSeparator();
 
     // php path from settings
     QSettings settings("GPStudio", "gpnode");
     settings.beginGroup("paths");
+
     QString phpPath = settings.value("php", "").toString();
     if(!phpPath.isEmpty())
-        path += phpPath;
+        path += phpPath + QDir::listSeparator();
+
+    QString makePath = settings.value("make", "").toString();
+    if(!makePath.isEmpty())
+        path += makePath + QDir::listSeparator();
+
+    QString quartusPath = settings.value("quartus", "").toString();
+    if(!quartusPath.isEmpty())
+        path += quartusPath + QDir::listSeparator();
+
     settings.endGroup();
 
+    path += env.value("PATH");
     env.insert("PATH", path);
     return env;
 }

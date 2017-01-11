@@ -90,7 +90,10 @@ SOURCES += \
     itemmodel/viewertreeview.cpp \
     viewer/viewerwidgets/feature.cpp \
     viewer/viewerwidgets/featureitem.cpp \
-    itemmodel/caminfotreeview.cpp
+    itemmodel/caminfotreeview.cpp \
+    nodeeditor/settings/pathssettingspage.cpp \
+    nodeeditor/settings/patheditwidget.cpp \
+    nodeeditor/settings/nodesettings.cpp
 
 HEADERS  += \
     gpstudio_gui_common.h \
@@ -146,7 +149,10 @@ HEADERS  += \
     itemmodel/viewertreeview.h \
     viewer/viewerwidgets/feature.h \
     viewer/viewerwidgets/featureitem.h \
-    itemmodel/caminfotreeview.h
+    itemmodel/caminfotreeview.h \
+    nodeeditor/settings/pathssettingspage.h \
+    nodeeditor/settings/patheditwidget.h \
+    nodeeditor/settings/nodesettings.h
 
 RESOURCES += \
     icons.qrc \

@@ -64,6 +64,8 @@ private slots:
     void showBlockDetails(QString blockName);
     void showCamExplorer();
 
+    void showSettings();
+
 private:
     GPNodeProject *_project;
 

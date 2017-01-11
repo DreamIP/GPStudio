@@ -39,6 +39,8 @@
 
 #include "undostack/blockcommands.h"
 
+#include "settings/nodesettings.h"
+
 NodeEditorWindows::NodeEditorWindows(QWidget *parent, GPNodeProject *nodeProject) :
     QMainWindow(parent)
 {
@@ -343,6 +345,13 @@ void NodeEditorWindows::createToolBarAndMenu()
     _mainToolBar->addAction(stopAction);
     projectMenu->addAction(stopAction);
 
+    projectMenu->addSeparator();
+    QAction *settingsAction = new QAction("&Settings", this);
+    settingsAction->setStatusTip("Paths settings");
+    connect(settingsAction, SIGNAL(triggered(bool)), this, SLOT(showSettings()));
+    _mainToolBar->addAction(settingsAction);
+    projectMenu->addAction(settingsAction);
+
     // ============= Help =============
     QMenu *helpMenu = menuBar()->addMenu("&Help");
 
@@ -421,6 +430,12 @@ void NodeEditorWindows::showCamExplorer()
 {
     _camExplorerDock->show();
     _camExplorerDock->raise();
+}
+
+void NodeEditorWindows::showSettings()
+{
+    NodeSettings settings;
+    settings.exec();
 }
 
 void NodeEditorWindows::writeSettings()
