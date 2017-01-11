@@ -48,8 +48,8 @@ void BlockEditorWindow::showImplementationsFiles(const QString &driver)
 void BlockEditorWindow::closeEvent(QCloseEvent *event)
 {
     //_project->closeProject();
-    if(!parent())
-        deleteLater();
+    /*if(!parent())
+        deleteLater();*/
     event->accept();
 }
 

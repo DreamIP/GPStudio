@@ -57,7 +57,7 @@ GPNodeProject::~GPNodeProject()
 QString GPNodeProject::name() const
 {
     if(_path.isEmpty())
-        return QString("new node");
+        return QString("unsaved_project");
     else
         return QFileInfo(_path).baseName();
 }
@@ -162,6 +162,7 @@ bool GPNodeProject::saveProjectAs(const QString &nodeFileName)
 
     if(!fileName.endsWith(".node"))
         fileName.append(".node");
+    _node->setName(QFileInfo(fileName).baseName());
     setPath(fileName);
 
     _node->saveToFile(_path);
