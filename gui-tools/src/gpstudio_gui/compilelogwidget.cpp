@@ -340,9 +340,15 @@ bool CompileLogWidget::checkPhp()
 
 QProcessEnvironment CompileLogWidget::getEnv()
 {
+#if defined(Q_OS_WIN)
+    char listSep = ';';
+#else
+    char listSep = ':';
+#endif
+
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     QString path;
-    path += QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + QDir::listSeparator();
+    path += QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + listSep;
 
     // php path from settings
     QSettings settings("GPStudio", "gpnode");
@@ -350,15 +356,15 @@ QProcessEnvironment CompileLogWidget::getEnv()
 
     QString phpPath = settings.value("php", "").toString();
     if(!phpPath.isEmpty())
-        path += phpPath + QDir::listSeparator();
+        path += phpPath + listSep;
 
     QString makePath = settings.value("make", "").toString();
     if(!makePath.isEmpty())
-        path += makePath + QDir::listSeparator();
+        path += makePath + listSep;
 
     QString quartusPath = settings.value("quartus", "").toString();
     if(!quartusPath.isEmpty())
-        path += quartusPath + QDir::listSeparator();
+        path += quartusPath + listSep;
 
     settings.endGroup();
 

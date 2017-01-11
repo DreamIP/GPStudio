@@ -79,11 +79,16 @@ void PathEditWidget::setEnv(QProcessEnvironment env)
 
 QString PathEditWidget::findExecutable(const QString &executableName, const QStringList &paths)
 {
+#if defined(Q_OS_WIN)
+    char listSep = ';';
+#else
+    char listSep = ':';
+#endif
     QStringList pathsToSearch;
     if(!paths.isEmpty())
         pathsToSearch = paths;
     else
-        pathsToSearch = _env.value("PATH").split(QDir::listSeparator());
+        pathsToSearch = _env.value("PATH").split(listSep);
 
     QStringList filtersName;
     filtersName<<executableName+".exe"<<executableName+".bat"<<executableName;
@@ -104,19 +109,21 @@ void PathEditWidget::buttonClicked()
         setPath(dir);
 }
 
-// C:/Users/seb/Seafile/GPStudio_dev/GPStudio_lib/distrib/thirdparts/win/php
-// C:/altera/13.1/quartus/bin
 void PathEditWidget::checkProgramm()
 {
+#if defined(Q_OS_WIN)
+    char listSep = ';';
+#else
+    char listSep = ':';
+#endif
     QString programm = _programm;
     QProcess *process = new QProcess();
     if(_programm.isEmpty())
         return;
     QProcessEnvironment env = _env;
     if(!_path.isEmpty())
-        env.insert("PATH", _path + QDir::listSeparator() + env.value("PATH") );
-    qDebug()<<env.value("PATH");
-    QString path = findExecutable(_programm, env.value("PATH").split(QDir::listSeparator()));
+        env.insert("PATH", _path + listSep + env.value("PATH") );
+    QString path = findExecutable(_programm, env.value("PATH").split(listSep));
     if(!path.isEmpty())
         programm = path;
     process->setProcessEnvironment(env);
