@@ -37,7 +37,8 @@ ViewerTreeView::ViewerTreeView()
 void ViewerTreeView::attachProject(GPNodeProject *project)
 {
     _project = project;
-    setGpviewer(_project->node()->gpViewer());
+    if(_project->node())
+        setGpviewer(_project->node()->gpViewer());
 
     connect(_project, SIGNAL(nodeChanged(ModelNode*)), this, SLOT(updateViewer()));
 
@@ -116,6 +117,7 @@ void ViewerTreeView::updateViewer()
 #ifndef QT_NO_CONTEXTMENU
 void ViewerTreeView::contextMenuEvent(QContextMenuEvent *event)
 {
+    Q_UNUSED(event)
     /*QModelIndex index = indexAt(event->pos());
     if(!index.isValid())
         return;
