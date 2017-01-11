@@ -8,20 +8,22 @@ use ieee.numeric_std.all;
 use ieee.std_logic_unsigned.all;
 use work.com_package.all;
 
-
 entity flow_to_com is
     generic (
-        ID_FIFO         : std_logic_vector(5 downto 0):="000001";
-        DATA_WIDTH      : integer :=8;
-        FIFO_DEPTH      : integer :=2048;
-        ONE_PACKET      : integer :=1450
+        ID_FIFO         : std_logic_vector(5 downto 0) := "000001";
+        FLOW_IN_SIZE    : integer := 8;
+        DATA_WIDTH      : integer := 8;
+        FIFO_DEPTH      : integer := 2048;
+        ONE_PACKET      : integer := 1450
     );
     port (
         clk_hal         : in std_logic;
         clk_proc        : in std_logic;
         reset_n         : in std_logic;
         enable          : in std_logic;
-        flow_in         : in flow_t;
+        flow_in_data    : in std_logic_vector(FLOW_IN_SIZE-1 downto 0);
+        flow_in_fv      : in std_logic;
+        flow_in_dv      : in std_logic;
         read_data       : in std_logic;
         ready           : out std_logic;
         data_size       : out std_logic_vector(15 downto 0);
@@ -31,29 +33,29 @@ end flow_to_com;
 
 architecture RTL of flow_to_com is
 
-type flow_to_com_fsm is (idle, gps_header, data_state);
-signal state                    : flow_to_com_fsm; --Flow to hal FSM
-signal count_fifo               : std_logic_vector(15 downto 0);
-signal one_packet_size          : std_logic_vector(15 downto 0);
-signal num_packet_s             : std_logic_vector(7 downto 0);
-signal ready_s                  : std_logic;
-signal wrreq,rdreq              : std_logic;
-signal reset                    : std_logic;
-signal flow_fv_dl               : std_logic;
-signal empty_fifo               : std_logic;
-signal rd_flags,wr_flags        : std_logic;
-signal empty_flags              : std_logic;
-signal data_flags               : std_logic_vector(17 downto 0);
-signal count_wr,count_wr_b      : std_logic_vector(15 downto 0);
-signal count_rd                 : std_logic_vector(15 downto 0);
-signal pkt_size                 : std_logic_vector(15 downto 0);
-signal sof,eof                  : std_logic;
-signal data,data_out_s          : std_logic_vector(7 downto 0);
-signal flags_out                : std_logic_vector(17 downto 0);
-signal count_fsm                : std_logic_vector(3 downto 0);
-signal data_size_s              : std_logic_vector(15 downto 0);
-signal read_data_dl             : std_logic;
-signal rdreq_s                  : std_logic;
+    type flow_to_com_fsm is (idle, gps_header, data_state);
+    signal state                    : flow_to_com_fsm; --Flow to hal FSM
+    signal count_fifo               : std_logic_vector(15 downto 0);
+    signal one_packet_size          : std_logic_vector(15 downto 0);
+    signal num_packet_s             : std_logic_vector(7 downto 0);
+    signal ready_s                  : std_logic;
+    signal wrreq,rdreq              : std_logic;
+    signal reset                    : std_logic;
+    signal flow_fv_dl               : std_logic;
+    signal empty_fifo               : std_logic;
+    signal rd_flags,wr_flags        : std_logic;
+    signal empty_flags              : std_logic;
+    signal data_flags               : std_logic_vector(17 downto 0);
+    signal count_wr,count_wr_b      : std_logic_vector(15 downto 0);
+    signal count_rd                 : std_logic_vector(15 downto 0);
+    signal pkt_size                 : std_logic_vector(15 downto 0);
+    signal sof,eof                  : std_logic;
+    signal data,data_out_s          : std_logic_vector(7 downto 0);
+    signal flags_out                : std_logic_vector(17 downto 0);
+    signal count_fsm                : std_logic_vector(3 downto 0);
+    signal data_size_s              : std_logic_vector(15 downto 0);
+    signal read_data_dl             : std_logic;
+    signal rdreq_s                  : std_logic;
 
 begin
 reset               <= not reset_n;
@@ -64,7 +66,7 @@ one_packet_size     <= std_logic_vector(to_unsigned(ONE_PACKET,16));
 data_size           <= data_size_s+x"2";
 
 --- Write fifo only when enable
-wrreq           <= flow_in.dv when enable='1' else '0';
+wrreq           <= flow_in_dv when enable='1' else '0';
 
 --- Fifo that contains data
 fifo_data_inst : entity work.gp_dcfifo
@@ -72,7 +74,7 @@ fifo_data_inst : entity work.gp_dcfifo
                  FIFO_DEPTH  => FIFO_DEPTH)
     port map(
         aclr        => reset,
-        data        => flow_in.data,
+        data        => flow_in_data,
         rdclk       => clk_hal,
         rdreq       => rdreq,
         wrclk       => clk_proc,
@@ -112,7 +114,7 @@ begin
         eof             <= '0';
 
     elsif clk_proc'event and clk_proc='1' then
-        flow_fv_dl          <= flow_in.fv;
+        flow_fv_dl          <= flow_in_fv;
         --- Counting data write
         if wrreq='1' then
             count_wr    <= count_wr+1;
@@ -121,7 +123,7 @@ begin
         end if;
 
         --- Control fifo flags write
-        if (flow_in.fv='0' and flow_fv_dl='1') or (to_integer(unsigned(count_wr)) rem ONE_PACKET=0 and count_wr>=one_packet_size) then
+        if (flow_in_fv='0' and flow_fv_dl='1') or (to_integer(unsigned(count_wr)) rem ONE_PACKET=0 and count_wr>=one_packet_size) then
             wr_flags        <= '1';
         else
             wr_flags        <= '0';
@@ -129,15 +131,15 @@ begin
 
         --- Set flags for each packet
             --- Set Start of Frame when a flow starts
-        if flow_in.fv='1' and flow_fv_dl='0' then
+        if flow_in_fv='1' and flow_fv_dl='0' then
             sof                 <= '1';
         elsif eof='1' or  count_wr>one_packet_size then
             sof                 <= '0';
         end if;
             --- Set End of Frame when a flow ends
-        if flow_in.fv='0' and flow_fv_dl='1' then
+        if flow_in_fv='0' and flow_fv_dl='1' then
             eof             <= '1';
-        elsif flow_in.fv='1' and flow_fv_dl='0' then
+        elsif flow_in_fv='1' and flow_fv_dl='0' then
             eof             <= '0';
         end if;
 

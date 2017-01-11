@@ -10,15 +10,18 @@ use work.com_package.all;
 entity com_to_flow is
     generic (
         ID_FIFO         : std_logic_vector(5 downto 0):="000001";
-        DATA_WIDTH      : integer :=8;
-        FIFO_DEPTH      : integer :=2048
+        FLOW_OUT_SIZE   : integer := 8;
+        DATA_WIDTH      : integer := 8;
+        FIFO_DEPTH      : integer := 2048
     );
     port (
         clk_hal         : in std_logic;
         clk_proc        : in std_logic;
         reset_n         : in std_logic;
         enable          : in std_logic;
-        flow_out        : out flow_t;
+        flow_out_data   : out std_logic_vector(FLOW_OUT_SIZE-1 downto 0);
+        flow_out_fv     : out std_logic;
+        flow_out_dv     : out std_logic;
         write_data      : in std_logic;
         data_in         : in std_logic_vector(7 downto 0)
     );
@@ -26,18 +29,19 @@ end com_to_flow;
 
 architecture RTL of com_to_flow is
 
-type fsm_com_to_flow is (idle, header, wr_data_st);
-signal state                : fsm_com_to_flow;
-signal reset                : std_logic;
-signal empty_fifo           : std_logic;
-signal empty_fifo_dl        : std_logic;
-signal wrreq                : std_logic;
-signal set_wrreq            : std_logic;
-signal rdreq,rdreq_dl       : std_logic;
-signal sof                  : std_logic;
-signal eof                  : std_logic;
-signal write_data_dl        : std_logic;
-signal id_detected          : std_logic_vector(5 downto 0);
+    type fsm_com_to_flow is (idle, header, wr_data_st);
+    signal state                : fsm_com_to_flow;
+    signal reset                : std_logic;
+    signal empty_fifo           : std_logic;
+    signal empty_fifo_dl        : std_logic;
+    signal wrreq                : std_logic;
+    signal set_wrreq            : std_logic;
+    signal rdreq,rdreq_dl       : std_logic;
+    signal sof                  : std_logic;
+    signal eof                  : std_logic;
+    signal write_data_dl        : std_logic;
+    signal id_detected          : std_logic_vector(5 downto 0);
+
 begin
 
 reset       <= not reset_n;
@@ -53,7 +57,7 @@ fifo_data_inst : entity work.gp_dcfifo
         rdreq       => rdreq,
         wrclk       => clk_hal,
         wrreq       => wrreq,
-        q           => flow_out.data,
+        q           => flow_out_data,
         rdempty     => empty_fifo
     );
 
@@ -111,7 +115,7 @@ process(clk_proc, reset_n)
 begin
     if reset_n='0' then
         rdreq           <= '0';
-        flow_out.fv     <= '0';
+        flow_out_fv     <= '0';
 
     elsif clk_proc'event and clk_proc='1' then
         rdreq           <= not empty_fifo;
@@ -119,15 +123,15 @@ begin
         empty_fifo_dl   <= empty_fifo;
         if rdreq='1' and rdreq_dl='0' then
             if sof='1' then
-                flow_out.fv     <= '1';
+                flow_out_fv     <= '1';
             end if;
         elsif empty_fifo='1' and empty_fifo_dl='0' then
             if eof='1' then
-                flow_out.fv     <= '0';
+                flow_out_fv     <= '0';
             end if;
         end if;
     end if;
 end process;
-flow_out.dv     <= rdreq_dl and not empty_fifo;
+flow_out_dv     <= rdreq_dl and not empty_fifo;
 
 end RTL;
