@@ -27,6 +27,7 @@
 #include <QMessageBox>
 #include <QSettings>
 //#include <QStandardPaths>
+#include <QMessageBox>
 
 CompileLogWidget::CompileLogWidget(QWidget *parent) : QWidget(parent)
 {
@@ -63,7 +64,7 @@ void CompileLogWidget::launch(const QString &cmd, const QStringList &args)
     _process->setWorkingDirectory(QFileInfo(_project->path()).path());
     _process->start(cmd, args);
 
-    appendLog(QString("<p><span style=\"color: blue;\">process '%1' start at %2...</span></p>")
+    appendLog(QString("<hr><span style=\"color: blue;\">process '%1' start at %2...</span></hr>")
               .arg(_program + " " + _arguments.join(" "))
               .arg(QDateTime::currentDateTime().toString()));
 }
@@ -233,14 +234,25 @@ void CompileLogWidget::clear()
 
 void CompileLogWidget::exitProcess()
 {
-    appendLog(QString("<p><span style=\"color: blue;\">process '%1' exit with code %2 at %3, elapsed time: %4s</span></p>")
+    int exitCode = _process->exitCode();
+
+    if(exitCode==0)
+        appendLog(QString("<p><span style=\"color: blue;\">process '%1' exit with code %2 at %3, elapsed time: %4s</span></p>")
               .arg(_program + " " + _arguments.join(" "))
               .arg(_process->exitCode())
               .arg(QDateTime::currentDateTime().toString())
               .arg((QDateTime::currentMSecsSinceEpoch() - _startProcessDate.toMSecsSinceEpoch())/1000));
+    else
+    {
+        appendLog(QString("<p><span style=\"color: red;\">%1</span></p>").arg(QString::fromLocal8Bit(_process->readAllStandardError())));
+        appendLog(QString("<p><span style=\"color: red;\">failed exit code:%1 %2</span></p>").arg(_process->exitCode()).arg(_process->errorString()));
+    }
 
     _process->deleteLater();
     _process = NULL;
+
+    if(exitCode != 0)
+        _allRequest = false;
 
     if(_allRequest)
     {
@@ -250,6 +262,7 @@ void CompileLogWidget::exitProcess()
         case CompileLogWidget::ActionClean:
         case CompileLogWidget::ActionView:
             _allRequest = false;
+            checkAction();
             break;
         case CompileLogWidget::ActionGenerate:
             launchCompile();
@@ -262,9 +275,40 @@ void CompileLogWidget::exitProcess()
             break;
         }
     }
-
-    if(!_allRequest)
+    else
+    {
         checkAction();
+        switch(_currentAction)
+        {
+        case CompileLogWidget::ActionNone:
+        case CompileLogWidget::ActionView:
+            break;
+        case CompileLogWidget::ActionClean:
+            if(exitCode==0)
+                QMessageBox::information(this, "Clean successfully", "Cleaning of built files terminated successfully.");
+            else
+                QMessageBox::critical(this, "Clean failed...", "Cleaning step failed.\nPlease check your make exe path or delete the Makefile file if it is corrupted and launch generate.");
+            break;
+        case CompileLogWidget::ActionGenerate:
+            if(exitCode==0)
+                QMessageBox::information(this, "Generate successfully", "Generation of project terminated successfully.");
+            else
+                QMessageBox::critical(this, "Generate failed...", "Generate step failed.");
+            break;
+        case CompileLogWidget::ActionCompile:
+            if(exitCode==0)
+                QMessageBox::information(this, "Synthesys successfully", "Synthesys of project terminated successfully.");
+            else
+                QMessageBox::critical(this, "Synthesys failed...", "Synthesys step failed.\nPlease check your quartus exe path or re-generate your project.");
+            break;
+        case CompileLogWidget::ActionSend:
+            if(exitCode==0)
+                QMessageBox::information(this, "Send successfully", "Node programmation terminated successfully.");
+            else
+                QMessageBox::critical(this, "Send failed...", "Send step failed.\nPlease check your quartus exe or your camera connection. If you use it for the first time on windows, launch the Altera graphical tool to programm yor node");
+            break;
+        }
+    }
 }
 
 void CompileLogWidget::errorProcess()
