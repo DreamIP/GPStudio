@@ -482,7 +482,7 @@ void NodeEditorWindows::updateOldProjects()
         QString path = _oldProjects[i];
         _oldProjectsActions[i]->setVisible(true);
         _oldProjectsActions[i]->setData(path);
-        _oldProjectsActions[i]->setText(path);
+        _oldProjectsActions[i]->setText(QString("&%1. %2").arg(i+1).arg(path));
     }
 }
 
@@ -504,7 +504,7 @@ void NodeEditorWindows::writeSettings()
     settings.setValue("maximized", isMaximized());
     settings.endGroup();
 
-    // old projects read
+    // old projects write
     settings.beginWriteArray("projects");
     for (int i = 0; i < _oldProjects.size() && i < MaxOldProject; ++i)
     {
