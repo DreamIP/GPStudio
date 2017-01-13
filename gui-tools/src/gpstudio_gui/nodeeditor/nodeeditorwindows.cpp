@@ -409,22 +409,23 @@ void NodeEditorWindows::reloadNodePath()
 
 void NodeEditorWindows::about()
 {
-    QMessageBox::about(this,"GPStudio: GPNode 1.20", QString("Copyright (C) 2014-2017 Dream IP\n\
-\n\
-This sofware is part of GPStudio.\n\
-\n\
-GPStudio is a free software: you can redistribute it and/or modify\n\
-it under the terms of the GNU General Public License as published by\n\
-the Free Software Foundation, either version 3 of the License, or\n\
-(at your option) any later version.\n\
-\n\
-This program is distributed in the hope that it will be useful,\n\
-but WITHOUT ANY WARRANTY; without even the implied warranty of\n\
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n\
-GNU General Public License for more details.\n\
-\n\
-You should have received a copy of the GNU General Public License\n\
-along with this program.  If not, see <http://www.gnu.org/licenses/>\n\
+    QMessageBox::about(this,"GPStudio: GPNode 1.20", QString("Copyright (C) 2014-2017 Dream IP (<a href=\"http://dream-lab.fr\">dream-lab.fr</a>)<br>\
+<br>\
+This sofware is part of GPStudio distribution. To check for new version, please visit <a href=\"http://gpstudio.univ-bpclermont.fr/download\">gpstudio.univ-bpclermont.fr/download</a><br>\
+<br>\
+GPStudio is a free software: you can redistribute it and/or modify\
+it under the terms of the GNU General Public License as published by\
+the Free Software Foundation, either version 3 of the License, or\
+(at your option) any later version.<br>\
+<br>\
+This program is distributed in the hope that it will be useful,\
+but WITHOUT ANY WARRANTY; without even the implied warranty of\
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\
+GNU General Public License for more details.<br>\
+<br>\
+You should have received a copy of the GNU General Public License\
+along with this program.  If not, see <a href=\"http://www.gnu.org/licenses/\">www.gnu.org/licenses</a><br>\
+<br>\
 Build date: ") + __DATE__ + QString(" time: ")+__TIME__);
 }
 
