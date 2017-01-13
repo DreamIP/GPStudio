@@ -95,7 +95,7 @@ private:
 
     BlockEditorWindow *_blockEditor;
 
-    const int MaxOldProject = 4;
+    static const int MaxOldProject;
     QList<QString> _oldProjects;
     QList<QAction*> _oldProjectsActions;
 };

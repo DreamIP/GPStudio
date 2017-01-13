@@ -43,6 +43,8 @@
 
 #include "settings/nodesettings.h"
 
+const int NodeEditorWindows::MaxOldProject = 4;
+
 NodeEditorWindows::NodeEditorWindows(QWidget *parent, GPNodeProject *nodeProject) :
     QMainWindow(parent)
 {
