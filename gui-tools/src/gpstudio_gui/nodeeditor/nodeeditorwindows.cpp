@@ -53,6 +53,7 @@ NodeEditorWindows::NodeEditorWindows(QWidget *parent, GPNodeProject *nodeProject
     else
         _project = new GPNodeProject();
 
+    readSettings();
     setupWidgets();
     createDocks();
     createToolBarAndMenu();
@@ -64,7 +65,6 @@ NodeEditorWindows::NodeEditorWindows(QWidget *parent, GPNodeProject *nodeProject
 
     _blockEditor = NULL;
     showCamExplorer();
-    readSettings();
 }
 
 NodeEditorWindows::~NodeEditorWindows()
@@ -260,6 +260,16 @@ void NodeEditorWindows::createToolBarAndMenu()
     connect(configNode, SIGNAL(triggered()), this, SLOT(configBoard()));
 
     nodeMenu->addSeparator();
+    for (int i=0; i<MaxOldProject; i++)
+    {
+        QAction *recentAction = new QAction(this);
+        nodeMenu->addAction(recentAction);
+        recentAction->setVisible(false);
+        connect(recentAction, SIGNAL(triggered()), this, SLOT(openRecentFile()));
+        _oldProjectsActions.append(recentAction);
+    }
+
+    nodeMenu->addSeparator();
     QAction *exit = new QAction("E&xit",this);
     exit->setStatusTip("Exits GPNode");
     exit->setIcon(QIcon(":/icons/img/exit.png"));
@@ -405,11 +415,15 @@ void NodeEditorWindows::reloadNode()
 void NodeEditorWindows::reloadNodePath()
 {
     setWindowTitle(QString("GPnode - %1").arg(_project->name()));
+
+    _oldProjects.removeOne(_project->path());
+    _oldProjects.prepend(_project->path());
+    updateOldProjects();
 }
 
 void NodeEditorWindows::about()
 {
-    QMessageBox::about(this,"GPStudio: GPNode 1.21", QString("Copyright (C) 2014-2017 Dream IP (<a href=\"http://dream-lab.fr\">dream-lab.fr</a>)<br>\
+    QMessageBox::about(this,"GPStudio: GPNode 1.20", QString("Copyright (C) 2014-2017 Dream IP (<a href=\"http://dream-lab.fr\">dream-lab.fr</a>)<br>\
 <br>\
 This sofware is part of GPStudio distribution. To check for new version, please visit <a href=\"http://gpstudio.univ-bpclermont.fr/download\">gpstudio.univ-bpclermont.fr/download</a><br>\
 <br>\
@@ -461,25 +475,66 @@ void NodeEditorWindows::showSettings()
     settings.exec();
 }
 
+void NodeEditorWindows::updateOldProjects()
+{
+    for (int i=0; i<_oldProjects.size(); i++)
+    {
+        QString path = _oldProjects[i];
+        _oldProjectsActions[i]->setVisible(true);
+        _oldProjectsActions[i]->setData(path);
+        _oldProjectsActions[i]->setText(path);
+    }
+}
+
+void NodeEditorWindows::openRecentFile()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (action)
+        _project->openProject(action->data().toString());
+}
+
 void NodeEditorWindows::writeSettings()
 {
     QSettings settings("GPStudio", "gpnode");
 
+    // MainWindow position/size/maximized
     settings.beginGroup("MainWindow");
     settings.setValue("size", normalGeometry().size());
     settings.setValue("pos", normalGeometry().topLeft());
     settings.setValue("maximized", isMaximized());
     settings.endGroup();
+
+    // old projects read
+    settings.beginWriteArray("projects");
+    for (int i = 0; i < _oldProjects.size() && i < MaxOldProject; ++i)
+    {
+        settings.setArrayIndex(i);
+        QString path = _oldProjects[i];
+        settings.setValue("path", path);
+    }
+    settings.endArray();
 }
 
 void NodeEditorWindows::readSettings()
 {
     QSettings settings("GPStudio", "gpnode");
 
+    // MainWindow position/size/maximized
     settings.beginGroup("MainWindow");
     resize(settings.value("size", QSize(600, 480)).toSize());
     move(settings.value("pos", QPoint(200, 200)).toPoint());
     if(settings.value("maximized", true).toBool())
         showMaximized();
     settings.endGroup();
+
+    // old projects read
+    int size = settings.beginReadArray("projects");
+    for (int i = 0; i < size && i < MaxOldProject; ++i)
+    {
+        settings.setArrayIndex(i);
+        QString path = settings.value("path", "").toString();
+        if(!_oldProjects.contains(path) && !path.isEmpty())
+            _oldProjects.append(path);
+    }
+    settings.endArray();
 }

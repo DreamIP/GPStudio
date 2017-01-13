@@ -66,6 +66,8 @@ private slots:
     void showCamExplorer();
 
     void showSettings();
+    void updateOldProjects();
+    void openRecentFile();
 
 private:
     GPNodeProject *_project;
@@ -92,6 +94,10 @@ private:
     QToolBar *_mainToolBar;
 
     BlockEditorWindow *_blockEditor;
+
+    const int MaxOldProject = 4;
+    QList<QString> _oldProjects;
+    QList<QAction*> _oldProjectsActions;
 };
 
 #endif // NODEEDITORWINDOW_H
