@@ -73,9 +73,7 @@ void BlockEditorWindow::openFile(const QModelIndex &indexFile)
 
         if(file->path().endsWith(".pdf"))
         {
-            PdfViewer *docWidget = new PdfViewer(this, _path + "/" + file->path());
-            _tabFiles->addTab(docWidget, file->name());
-            _tabFiles->setCurrentIndex(_tabFiles->count()-1);
+            PdfViewer::showDocument(_path + "/" + file->path());
         }
         else
         {

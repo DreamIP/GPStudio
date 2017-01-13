@@ -25,36 +25,11 @@
 
 #include <QGraphicsView>
 
-namespace Poppler {
-    class Document;
-}
-
-class GPSTUDIO_GUI_EXPORT PdfViewer : public QGraphicsView
+class GPSTUDIO_GUI_EXPORT PdfViewer
 {
-    Q_OBJECT
 public:
-    explicit PdfViewer(QWidget *parent = 0, QString file = QString());
-    virtual ~PdfViewer();
 
     static void showDocument(const QString &file);
-
-public slots:
-    void showPage(int page);
-    void nextPage();
-    void previousPage();
-    void zoomIn();
-    void zoomOut();
-    void zoomFit();
-
-protected:
-    void keyPressEvent(QKeyEvent *event);
-    void wheelEvent(QWheelEvent *event);
-    void setZoomLevel(int step);
-    void closeEvent(QCloseEvent *event);
-
-private:
-    int _currentPage;
-    Poppler::Document *_doc;
 };
 
 #endif // PDFVIEWER_H

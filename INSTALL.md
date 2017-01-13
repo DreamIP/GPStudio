@@ -49,7 +49,7 @@ To install Qt5 with apt (linux Debian/Ubuntu):
 
 You may also need:
 
-> sudo apt-get install qtscript5-dev libqt5svg5-dev qttools5-dev libpoppler-qt5-dev
+> sudo apt-get install qtscript5-dev libqt5svg5-dev qttools5-dev
 
 To install Qt4 with apt (old Debian/Ubuntu versions):
 
@@ -57,7 +57,7 @@ To install Qt4 with apt (old Debian/Ubuntu versions):
 
 You may also need:
 
-> sudo apt-get qt4-dev-tools libqtscript4-core libpoppler-qt4-dev
+> sudo apt-get qt4-dev-tools libqtscript4-core
 
 You also can download it from <https://www.qt.io/download-open-source/>
 

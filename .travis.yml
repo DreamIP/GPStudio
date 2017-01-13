@@ -1,7 +1,7 @@
 sudo: required
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y libusb-1.0-0-dev libqt4-dev qt4-dev-tools libqtscript4-core libpoppler-qt4-dev php5-cli
+  - sudo apt-get install -y libusb-1.0-0-dev libqt4-dev qt4-dev-tools libqtscript4-core php5-cli
 
 language: cpp
 

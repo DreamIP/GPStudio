@@ -172,15 +172,6 @@ INCLUDEPATH += $$PWD/../gpstudio_com
 DEPENDPATH += $$PWD/../gpstudio_com
 LIBS += -lgpstudio_com
 
-# poppler
-greaterThan(QT_MAJOR_VERSION, 4) {
-    LIBS += -lpoppler-qt5
-} else {
-    LIBS += -lpoppler-qt4
-}
-win32: LIBS += -L$$PWD/../../thirdparts/poppler/
-win32: INCLUDEPATH += $$PWD/../../thirdparts/
-
 use_open_cv {
     DEFINES += __USE_OPEN_CV__
     win32 {

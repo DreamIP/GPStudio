@@ -5,9 +5,9 @@ This part need to be compile on your machine
 
 Packages needed :
 ### with Qt5 :
-	sudo apt-get install g++ libusb-1.0-0-dev qtbase5-dev qtbase5-dev-tools qtscript5-dev libqt5svg5-dev qttools5-dev libpoppler-qt5-dev
+	sudo apt-get install g++ libusb-1.0-0-dev qtbase5-dev qtbase5-dev-tools qtscript5-dev libqt5svg5-dev qttools5-dev
 ### with Qt4 :
-	sudo apt-get install g++ libusb-1.0-0-dev libqt4-dev qt4-dev-tools libqtscript4-core libpoppler-qt4-dev
+	sudo apt-get install g++ libusb-1.0-0-dev libqt4-dev qt4-dev-tools libqtscript4-core
 
 in the root of repo :
 
