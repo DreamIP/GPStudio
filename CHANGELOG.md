@@ -1,6 +1,19 @@
 # Change Log
 
-## Release [v1.20](https://github.com/DreamIP/GPStudio/tree/v1.20) (2016-12-21)
+## Future Release [v1.21](https://github.com/DreamIP/GPStudio/tree/v1.21) (2017-02-01)
+[Full changelog](https://github.com/DreamIP/GPStudio/compare/v1.20...dev)
+
+### New Feature
+* Messages in gpnode to inform end of process
+* Tab in GPViewer to send picture to camera
+
+### Changes
+* Removed poppler to simplify dependencies
+
+### Bug fixes
+* Fixed toolchain windows for cross compile
+
+## Release [v1.20](https://github.com/DreamIP/GPStudio/tree/v1.20) (2017-01-10)
 [Full changelog](https://github.com/DreamIP/GPStudio/compare/v1.10...v1.20)
 
 ### New Feature

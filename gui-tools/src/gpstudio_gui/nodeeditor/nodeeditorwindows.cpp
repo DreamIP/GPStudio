@@ -409,7 +409,7 @@ void NodeEditorWindows::reloadNodePath()
 
 void NodeEditorWindows::about()
 {
-    QMessageBox::about(this,"GPStudio: GPNode 1.20", QString("Copyright (C) 2014-2017 Dream IP (<a href=\"http://dream-lab.fr\">dream-lab.fr</a>)<br>\
+    QMessageBox::about(this,"GPStudio: GPNode 1.21", QString("Copyright (C) 2014-2017 Dream IP (<a href=\"http://dream-lab.fr\">dream-lab.fr</a>)<br>\
 <br>\
 This sofware is part of GPStudio distribution. To check for new version, please visit <a href=\"http://gpstudio.univ-bpclermont.fr/download\">gpstudio.univ-bpclermont.fr/download</a><br>\
 <br>\

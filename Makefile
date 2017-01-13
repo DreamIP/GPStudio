@@ -43,5 +43,8 @@ install: gui-tools
 checklib:
 	bin/gplib checklib
 
+checkversion:
+	grep -r "1\.21" -I --exclude=*.log --exclude=*.io --exclude-dir=doc
+
 FORCE:
 
