@@ -58,7 +58,12 @@ void ConfigNodeDialog::setProject(GPNodeProject *project)
     }
 
     if(project->node()->board())
-        _boardComboBox->setCurrentIndex(_boardComboBox->findText(project->node()->board()->name()));
+    {
+        if(project->node()->board()->name().isEmpty())
+            _boardComboBox->setCurrentIndex(0);
+        else
+            _boardComboBox->setCurrentIndex(_boardComboBox->findText(project->node()->board()->name()));
+    }
 }
 
 QString ConfigNodeDialog::boardName()
