@@ -55,7 +55,6 @@ NodeEditorWindows::NodeEditorWindows(QWidget *parent, GPNodeProject *nodeProject
     else
         _project = new GPNodeProject();
 
-    readSettings();
     setupWidgets();
     createDocks();
     createToolBarAndMenu();
@@ -135,6 +134,11 @@ void NodeEditorWindows::closeEvent(QCloseEvent *event)
     }
     else
         event->ignore();
+}
+
+void NodeEditorWindows::showEvent(QShowEvent *)
+{
+    readSettings();
 }
 
 void NodeEditorWindows::setupWidgets()
@@ -523,7 +527,7 @@ void NodeEditorWindows::readSettings()
 
     // MainWindow position/size/maximized
     settings.beginGroup("MainWindow");
-    resize(settings.value("size", QSize(600, 480)).toSize());
+    resize(settings.value("size", QSize(800, 600)).toSize());
     move(settings.value("pos", QPoint(200, 200)).toPoint());
     if(settings.value("maximized", true).toBool())
         showMaximized();

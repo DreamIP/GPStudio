@@ -48,6 +48,7 @@ public:
 
 protected:
     void closeEvent(QCloseEvent *event);
+    void showEvent(QShowEvent *event);
 
     void writeSettings();
     void readSettings();
