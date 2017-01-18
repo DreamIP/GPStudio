@@ -54,6 +54,9 @@ BlockView::BlockView(QWidget *parent)
 
     setDragMode(QGraphicsView::RubberBandDrag);
 
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
     connect(_scene, SIGNAL(selectionChanged()), this, SLOT(updateSelection()));
 }
 
@@ -550,26 +553,28 @@ void BlockView::keyPressEvent(QKeyEvent *event)
 
 void BlockView::resizeEvent(QResizeEvent *event)
 {
-    /*qDebug()<<"resize"<<event->oldSize()<<event->size()<<mapToScene(viewport()->geometry()).boundingRect();
+    if(!event->oldSize().isValid())
+        return;
 
-    float wRatio = (float)event->size().width() / event->oldSize().width();
-    float hRatio = (float)event->size().height() / event->oldSize().height();
+    QRectF rect = mapToScene(QRect(QPoint(0,0) ,event->oldSize())).boundingRect();
+    QRectF unity = matrix().mapRect(QRectF(0, 0, 1, 1));
+    if (unity.isEmpty())
+        return;
+    scale(1 / unity.width(), 1 / unity.height());
 
-    float ratio = qMin(wRatio,hRatio);
+    QRectF viewRect = viewport()->rect();
+    if (viewRect.isEmpty())
+        return;
+    QRectF sceneRect = matrix().mapRect(rect);
+    if (sceneRect.isEmpty())
+        return;
+    qreal xratio = viewRect.width() / sceneRect.width();
+    qreal yratio = viewRect.height() / sceneRect.height();
 
-    float zoom = transform().m22();
-    if(wRatio<1 && hRatio<1)
-    {
-        qDebug()<<zoom<<qMin(wRatio,hRatio)<<qMax(wRatio,hRatio)<<zoom*ratio;
-        scale(zoom*ratio, zoom*ratio);
-    }
-    if(wRatio>1 && hRatio>1)
-    {
-        qDebug()<<zoom<<qMin(wRatio,hRatio)<<qMax(wRatio,hRatio)<<zoom/ratio;
-        scale(zoom/ratio, zoom/ratio);
-    }*/
+    xratio = yratio = qMin(xratio, yratio);
 
-    QGraphicsView::resizeEvent(event);
+    scale(xratio, yratio);
+    centerOn(rect.center());
 }
 
 #ifndef QT_NO_CONTEXTMENU
