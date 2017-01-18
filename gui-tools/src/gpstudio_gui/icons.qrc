@@ -16,6 +16,8 @@
         <file>../img/edit-paste.png</file>
         <file>../img/exit.png</file>
         <file>../img/run.png</file>
+        <file>../img/align-horizontal-center.png</file>
+        <file>../img/align-vertical-center.png</file>
         <file>../img/make-clean.png</file>
         <file>../img/make-compile.png</file>
         <file>../img/make-generate.png</file>

@@ -389,6 +389,47 @@ void NodeEditorWindows::createToolBarAndMenu()
     _mainToolBar->addAction(settingsAction);
     projectMenu->addAction(settingsAction);
 
+    // ========== Block view ==========
+    _mainToolBar->addSeparator();
+    QMenu *blockViewMenu = menuBar()->addMenu("&Blocks");
+
+    QAction *zoomOut = new QAction("Zoom &out",this);
+    zoomOut->setIcon(QIcon(":/icons/img/zoom-out.png"));
+    zoomOut->setShortcut(QKeySequence::ZoomOut);
+    blockViewMenu->addAction(zoomOut);
+    _mainToolBar->addAction(zoomOut);
+    connect(zoomOut, SIGNAL(triggered()), _blocksView, SLOT(zoomOut()));
+
+    QAction *zoomIn = new QAction("Zoom &in",this);
+    zoomIn->setIcon(QIcon(":/icons/img/zoom-in.png"));
+    zoomIn->setShortcut(QKeySequence::ZoomIn);
+    blockViewMenu->addAction(zoomIn);
+    _mainToolBar->addAction(zoomIn);
+    connect(zoomIn, SIGNAL(triggered()), _blocksView, SLOT(zoomIn()));
+
+    QAction *zoomFit = new QAction("Zoom &fit",this);
+    zoomFit->setIcon(QIcon(":/icons/img/zoom-fit.png"));
+    zoomFit->setShortcut(QKeySequence("*"));
+    blockViewMenu->addAction(zoomFit);
+    _mainToolBar->addAction(zoomFit);
+    connect(zoomFit, SIGNAL(triggered()), _blocksView, SLOT(zoomFit()));
+
+    QAction *alignVerticalCenter = new QAction("Align block &vertically",this);
+    alignVerticalCenter->setIcon(QIcon(":/icons/img/align-vertical-center.png"));
+    alignVerticalCenter->setEnabled(false);
+    blockViewMenu->addAction(alignVerticalCenter);
+    _mainToolBar->addAction(alignVerticalCenter);
+    connect(alignVerticalCenter, SIGNAL(triggered()), _blocksView, SLOT(alignVerticalCenter()));
+    connect(_blocksView, SIGNAL(centerAvailable(bool)), alignVerticalCenter, SLOT(setEnabled(bool)));
+
+    QAction *alignHorizontalCenter = new QAction("Align block &horizontally",this);
+    alignHorizontalCenter->setIcon(QIcon(":/icons/img/align-horizontal-center.png"));
+    alignHorizontalCenter->setEnabled(false);
+    blockViewMenu->addAction(alignHorizontalCenter);
+    _mainToolBar->addAction(alignHorizontalCenter);
+    connect(alignHorizontalCenter, SIGNAL(triggered()), _blocksView, SLOT(alignHorizontalCenter()));
+    connect(_blocksView, SIGNAL(centerAvailable(bool)), alignHorizontalCenter, SLOT(setEnabled(bool)));
+
     // ============= Help =============
     QMenu *helpMenu = menuBar()->addMenu("&Help");
 

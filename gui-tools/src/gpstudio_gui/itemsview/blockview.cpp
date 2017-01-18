@@ -297,14 +297,20 @@ void BlockView::updateSelection()
     }
 
     QString selectedBlocksName;
+    int blockSelectedCount = 0;
     foreach (QGraphicsItem *item, _scene->selectedItems())
     {
         BlockItem *blockItem = qgraphicsitem_cast<BlockItem *>(item);
         if(blockItem)
+        {
+            blockSelectedCount++;
             selectedBlocksName.append(blockItem->name()+";");
+        }
     }
     if(!selectedBlocksName.isEmpty())
         emit blockSelected(selectedBlocksName);
+
+    emit centerAvailable(blockSelectedCount >= 2);
 }
 
 void BlockView::selectBlock(QString blocksName)
@@ -397,6 +403,54 @@ void BlockView::zoomOut()
 void BlockView::zoomFit()
 {
     fitInView(_scene->itemsBoundingRect().adjusted(-20, -20, 20, 20), Qt::KeepAspectRatio);
+}
+
+void BlockView::alignCenter(int align)
+{
+    int xSum = 0;
+    int ySum = 0;
+
+    if(_scene->selectedItems().count() <= 1)
+        return;
+
+    QList<BlockItem*> movedBlocks;
+    foreach (QGraphicsItem *item, _scene->selectedItems())
+    {
+        BlockItem *blockItem = qgraphicsitem_cast<BlockItem *>(item);
+        if(blockItem)
+        {
+            movedBlocks.append(blockItem);
+            QPointF center = item->boundingRect().center();
+            xSum += center.x();
+            ySum += center.y();
+        }
+    }
+    xSum /= _scene->selectedItems().count();
+    ySum /= _scene->selectedItems().count();
+
+    if(movedBlocks.size()>1)
+        emit beginMacroAsked("multiple blocks moved");
+    foreach (BlockItem *blockItem, movedBlocks)
+    {
+        QPointF pos = blockItem->pos();
+        if(align==0)
+            pos.setX(xSum - blockItem->boundingRect().width()/2);
+        else
+            pos.setY(ySum - blockItem->boundingRect().height()/2);
+        emit blockMoved(blockItem->name(), blockItem->modelPart()->name(), blockItem->modelPart()->pos(), pos.toPoint());
+    }
+    if(movedBlocks.size()>1)
+        emit endMacroAsked();
+}
+
+void BlockView::alignVerticalCenter()
+{
+    alignCenter(1);
+}
+
+void BlockView::alignHorizontalCenter()
+{
+    alignCenter(0);
 }
 
 bool BlockView::editMode() const

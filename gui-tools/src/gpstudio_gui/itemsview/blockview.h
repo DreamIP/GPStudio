@@ -52,6 +52,8 @@ public:
     bool editMode() const;
     void setEditMode(bool editMode);
 
+    void alignCenter(int align);
+
 protected:
     void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
     void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
@@ -88,6 +90,9 @@ public slots:
     void zoomOut();
     void zoomFit();
 
+    void alignVerticalCenter();
+    void alignHorizontalCenter();
+
 signals:
     void blockDetailsRequest(QString blockName);
     void blockSelected(QString blockName);
@@ -101,6 +106,8 @@ signals:
 
     void beginMacroAsked(QString text);
     void endMacroAsked();
+
+    void centerAvailable(bool);
 
 private:
     GPNodeProject *_project;
