@@ -2,18 +2,17 @@
 <process name="conv" categ="filter" master_count="0" pi_size_addr_rel="4" desc="Dynamic image convolution block">
   <parts>
     <part name="main">
-      <svg width="100" height="115">
-        <rect width="100" height="115" x="0" y="0" fill="lightgray"/>
-        <rect width="30" height="30" x="35" y="50" fill="transparent" stroke="gray" stroke-width="2"/>
-        <text x="10" y="40">w00</text>
-        <text x="40" y="40">w01</text>
-        <text x="70" y="40">w02</text>
-        <text x="10" y="70">w10</text>
-        <text x="40" y="70">w11</text>
-        <text x="70" y="70">w12</text>
-        <text x="10" y="100">w20</text>
-        <text x="40" y="100">w21</text>
-        <text x="70" y="100">w22</text>
+      <svg width="127" height="127">
+        <rect width="127" height="127" x="0" y="0" fill="lightgray"/>
+        <text x="20" y="35" font-size="13">w00</text>
+        <text x="50" y="35" font-size="13">w01</text>
+        <text x="80" y="35" font-size="13">w02</text>
+        <text x="20" y="65" font-size="13">w10</text>
+        <text x="50" y="65" font-size="11" style="font-weight:bold">w11</text>
+        <text x="80" y="65" font-size="13">w12</text>
+        <text x="20" y="95" font-size="13">w20</text>
+        <text x="50" y="95" font-size="13">w21</text>
+        <text x="80" y="95" font-size="13">w22</text>
       </svg>
     </part>
   </parts>
