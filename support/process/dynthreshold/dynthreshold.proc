@@ -2,7 +2,7 @@
 <process name="dynthreshold" categ="segmentation" master_count="0" pi_size_addr_rel="2" desc="Dynamic threshold based on a desired ratio of white">
   <parts>
     <part name="main">
-      <svg style="background-color: rgb(255, 255, 255);" width="131px" height="130px">
+      <svg style="background-color: rgb(255, 255, 255);" width="127px" height="127px">
         <g transform="matrix(0.99218809,0,0,1.0000306,0.0038682,2.4980434)" id="g6">
           <rect x="1" y="0" width="127" height="127" pointer-events="none" id="rect8" style="fill:#ffffff;stroke:#fafafa"/>
           <path d="M 11,110 Q 11,76 29,43 47,10 72,40 97,70 128,76.2" stroke-miterlimit="10" pointer-events="none" id="path10" style="fill:none;stroke:#050505;stroke-width:2;stroke-miterlimit:10"/>
