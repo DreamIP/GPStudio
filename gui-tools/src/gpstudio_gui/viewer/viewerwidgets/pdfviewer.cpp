@@ -23,9 +23,16 @@
 #include <QDebug>
 #include <QUrl>
 #include <QDesktopServices>
+#include <QMessageBox>
+#include <QFile>
 
 void PdfViewer::showDocument(const QString &file)
 {
+    if(!QFile::exists(file))
+    {
+        QMessageBox::warning(NULL, "Documentation file does not exist.", "Documentation file does not exist.");
+        return;
+    }
     QUrl pdfUrl(file);
     QDesktopServices::openUrl(pdfUrl);
 }

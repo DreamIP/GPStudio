@@ -29,6 +29,7 @@
 #include "blockitem.h"
 #include "blockconnectoritem.h"
 #include "blockportitem.h"
+#include "viewer/viewerwidgets/pdfviewer.h"
 
 BlockView::BlockView(QWidget *parent)
     : QGraphicsView(parent)
@@ -432,7 +433,7 @@ void BlockView::keyPressEvent(QKeyEvent *event)
         zoomOut();
     if(event->key()==Qt::Key_Asterisk)
         zoomFit();
-    if(event->key()==Qt::Key_A && event->modifiers() & Qt::ControlModifier && event->modifiers() & Qt::ShiftModifier) // select all
+    if(event->key()==Qt::Key_A && event->modifiers() & Qt::ControlModifier && event->modifiers() & Qt::ShiftModifier) // unselect all
     {
         scene()->clearSelection();
         return;
@@ -529,8 +530,46 @@ void BlockView::keyPressEvent(QKeyEvent *event)
         if(movedBlocks.size()>1)
             emit endMacroAsked();
     }
+    if(event->key()==Qt::Key_F1)
+    {
+        if(_scene->selectedItems().count()==1)
+        {
+            QGraphicsItem *item = _scene->selectedItems().at(0);
+            BlockItem *blockItem = qgraphicsitem_cast<BlockItem *>(item);
+            if(blockItem)
+            {
+                QStringList docFile = blockItem->modelBlock()->getPdfDoc();
+                if(!docFile.isEmpty())
+                    PdfViewer::showDocument(docFile.first());
+            }
+        }
+    }
 
     QGraphicsView::keyPressEvent(event);
+}
+
+void BlockView::resizeEvent(QResizeEvent *event)
+{
+    /*qDebug()<<"resize"<<event->oldSize()<<event->size()<<mapToScene(viewport()->geometry()).boundingRect();
+
+    float wRatio = (float)event->size().width() / event->oldSize().width();
+    float hRatio = (float)event->size().height() / event->oldSize().height();
+
+    float ratio = qMin(wRatio,hRatio);
+
+    float zoom = transform().m22();
+    if(wRatio<1 && hRatio<1)
+    {
+        qDebug()<<zoom<<qMin(wRatio,hRatio)<<qMax(wRatio,hRatio)<<zoom*ratio;
+        scale(zoom*ratio, zoom*ratio);
+    }
+    if(wRatio>1 && hRatio>1)
+    {
+        qDebug()<<zoom<<qMin(wRatio,hRatio)<<qMax(wRatio,hRatio)<<zoom/ratio;
+        scale(zoom/ratio, zoom/ratio);
+    }*/
+
+    QGraphicsView::resizeEvent(event);
 }
 
 #ifndef QT_NO_CONTEXTMENU
@@ -567,8 +606,15 @@ void BlockView::contextMenuEvent(QContextMenuEvent *event)
             QFont boldFont = infosIPAction->font();
             boldFont.setBold(true);
             infosIPAction->setFont(boldFont);
+            QStringList docFile = blockItem->modelBlock()->getPdfDoc();
+            QAction *docIPAction = menu.addAction("View documentation");
+            docIPAction->setShortcut(QKeySequence::HelpContents);
+            if(docFile.isEmpty())
+                docIPAction->setEnabled(false);
             QAction *trigered = menu.exec(event->globalPos());
-            if(trigered == deleteAction)
+            if(trigered == docIPAction)
+                PdfViewer::showDocument(docFile.first());
+            else if(trigered == deleteAction)
                 emit blockDeleted(blockItem->modelBlock());
             else if(trigered == renameAction)
                 emit blockRenamed(blockItem->name(), "");

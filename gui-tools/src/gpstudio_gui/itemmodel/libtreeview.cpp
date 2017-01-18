@@ -115,7 +115,8 @@ void LibTreeView::contextMenuEvent(QContextMenuEvent *event)
     QMenu menu;
     QAction *addIpAction = menu.addAction("Add IP to project");
     QAction *infosIPAction = menu.addAction("View implementation files");
-    QAction *docIPAction = menu.addAction("View pdf documentation");
+    QAction *docIPAction = menu.addAction("View documentation");
+    docIPAction->setShortcut(QKeySequence::HelpContents);
     QFont boldFont = addIpAction->font();
     boldFont.setBold(true);
     addIpAction->setFont(boldFont);
