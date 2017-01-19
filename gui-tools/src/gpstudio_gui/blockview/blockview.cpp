@@ -548,6 +548,7 @@ void BlockView::keyPressEvent(QKeyEvent *event)
                 }
             }
         }
+        emit blockSelected("");
         if(block2delete.count()>1)
             emit beginMacroAsked("multiple blocks suppression");
         else if(link2delete.count()>1)
@@ -674,7 +675,10 @@ void BlockView::contextMenuEvent(QContextMenuEvent *event)
             if(trigered == docIPAction)
                 PdfViewer::showDocument(docFile.first());
             else if(trigered == deleteAction)
+            {
+                emit blockSelected("");
                 emit blockDeleted(blockItem->modelBlock());
+            }
             else if(trigered == renameAction)
                 emit blockRenamed(blockItem->name(), "");
             else if(trigered == infosIPAction)
