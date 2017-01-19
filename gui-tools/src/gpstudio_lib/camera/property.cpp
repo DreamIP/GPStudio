@@ -404,7 +404,7 @@ Property *Property::fromModelProperty(const ModelProperty *modelProperty)
         propertyParam->setType(Property::Enum);
         propertyParam->setValue(modelProperty->value());
     }
-    if(modelProperty->type()=="int" || modelProperty->type()=="sint")
+    else if(modelProperty->type()=="int" || modelProperty->type()=="sint")
     {
         if(modelProperty->type()=="int") propertyParam->setType(Int);
         if(modelProperty->type()=="sint") propertyParam->setType(SInt);
@@ -413,25 +413,26 @@ Property *Property::fromModelProperty(const ModelProperty *modelProperty)
         propertyParam->setMax(modelProperty->max());
         propertyParam->setStep(modelProperty->step().toInt());
     }
-    if(modelProperty->type()=="matrix")
+    else if(modelProperty->type()=="matrix")
     {
         propertyParam->setType(Matrix);
         propertyParam->setValue(QVariant(modelProperty->value()).toInt());
     }
-    if(modelProperty->type()=="bool")
+    else if(modelProperty->type()=="bool")
     {
         propertyParam->setType(Bool);
         propertyParam->setValue(QVariant(modelProperty->value()).toBool());
     }
-    if(modelProperty->type()=="group") propertyParam->setType(Group);
-    if(modelProperty->type()=="string")
-    {
-        propertyParam->setType(String);
-        propertyParam->setValue(modelProperty->value());
-    }
-    if(modelProperty->type()=="flowtype")
+    else if(modelProperty->type()=="group")
+        propertyParam->setType(Group);
+    else if(modelProperty->type()=="flowtype")
     {
         propertyParam->setType(FlowDataType);
+        propertyParam->setValue(modelProperty->value());
+    }
+    else
+    {
+        propertyParam->setType(String);
         propertyParam->setValue(modelProperty->value());
     }
 

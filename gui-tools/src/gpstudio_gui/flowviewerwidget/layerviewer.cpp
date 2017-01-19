@@ -52,25 +52,31 @@ void LayerViewer::showFlowConnection(int flowId)
     const FlowPackage flowPackage = _flowViewerInterface->flowConnections()[flowId]->lastData();
     Property *flowProp = _flowViewerInterface->flowConnections()[flowId]->flow()->assocProperty();
 
-    int width = flowProp->property("width").toInt();
-    int height = flowProp->property("height").toInt();
-
-    // check for masked mode
-    if(_flowViewerInterface->flowConnections()[flowId]->flow()->assocProperty()->property("colormode").toString()=="bin"
-            && _flowViewerInterface->flowConnections().count()>1)
+    QString datatype = flowProp->property("datatype").toString();
+    if(datatype == "image")
     {
-        QImage image = flowPackage.toImage(width, height, 8);
-        _widget->setMask(image);
-        return;
-    }
+        int width = flowProp->property("width").toInt();
+        int height = flowProp->property("height").toInt();
 
-    // image mode
-    if(width!=0 && height!=0)
+        // check for masked mode
+        if(_flowViewerInterface->flowConnections()[flowId]->flow()->assocProperty()->property("colormode").toString()=="bin"
+                && _flowViewerInterface->flowConnections().count()>1)
+        {
+            QImage image = flowPackage.toImage(width, height, 8);
+            _widget->setMask(image);
+            return;
+        }
+        if(width!=0 && height!=0)
+        {
+            QImage image = flowPackage.toImage(width, height, 8);
+            _widget->showImage(image);
+        }
+    }
+    if(datatype == "features")
     {
-        QImage image = flowPackage.toImage(width, height, 8);
-        _widget->showImage(image);
+        const QList<Feature> &features = Feature::fromData(flowPackage, flowProp);
+        _widget->setFeatures(flowId, features);
     }
-
 
     if(!_recordPath.isEmpty() && _recordButton->isChecked())
     {

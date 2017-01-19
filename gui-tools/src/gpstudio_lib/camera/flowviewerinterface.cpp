@@ -98,6 +98,8 @@ void FlowViewerInterface::changeDataType()
         _dataType = ImageFlowType;
     else if(dataTypeStr=="vector")
         _dataType = VectorFlowType;
+    else if(dataTypeStr=="features")
+        _dataType = FeaturesType;
     else
         _dataType = UnknowFlowType;
 

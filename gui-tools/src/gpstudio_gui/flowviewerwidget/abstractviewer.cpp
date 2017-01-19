@@ -71,6 +71,7 @@ QList<AbstractViewer::ViewerType> AbstractViewer::viewer2Type(FlowViewerInterfac
     switch (dataType)
     {
     case FlowViewerInterface::ImageFlowType:
+    case FlowViewerInterface::FeaturesType:
         list << LayerViewerType;
         list << HewViewerType;
         break;

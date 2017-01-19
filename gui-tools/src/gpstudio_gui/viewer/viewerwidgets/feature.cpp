@@ -20,8 +20,59 @@
 
 #include "feature.h"
 
+#include "camera/property.h"
+#include "flowpackage.h"
+
+#include <QDebug>
+
 Feature::Feature()
 {
+    _x = 0;
+    _y = 0;
+    _w = 0;
+    _h = 0;
+    _val = 0;
+    _type = Invalid;
+}
+
+Feature::Feature(int16_t x, int16_t y)
+{
+    _x = x;
+    _y = y;
+    _w = 0;
+    _h = 0;
+    _val = 0;
+    _type = Point;
+}
+
+Feature::Feature(int16_t x, int16_t y, int16_t value)
+{
+    _x = x;
+    _y = y;
+    _w = 0;
+    _h = 0;
+    _val = value;
+    _type = PointValue;
+}
+
+Feature::Feature(int16_t x, int16_t y, int16_t w, int16_t h)
+{
+    _x = x;
+    _y = y;
+    _w = w;
+    _h = h;
+    _val = 0;
+    _type = Rect;
+}
+
+Feature::Feature(int16_t x, int16_t y, int16_t w, int16_t h, int16_t value)
+{
+    _x = x;
+    _y = y;
+    _w = w;
+    _h = h;
+    _val = value;
+    _type = RectValue;
 }
 
 Feature::Feature(const Feature &other)
@@ -102,4 +153,64 @@ Feature::Type Feature::type() const
 void Feature::setType(const Feature::Type &type)
 {
     _type = type;
+}
+
+Feature::Type Feature::stringToType(const QString &string)
+{
+    if(string == "point")
+        return Point;
+    if(string == "pointvalue")
+        return PointValue;
+    if(string == "rect")
+        return Rect;
+    if(string == "rectvalue")
+        return RectValue;
+    return Invalid;
+}
+
+QList<Feature> Feature::fromData(const FlowPackage &package, Property *flow)
+{
+    QList<Feature> features;
+    Type type = stringToType(flow->property("featuretype").toString());
+
+    if(type == Feature::Invalid || package.empty())
+        return features;
+
+    int16_t *ptr = (int16_t*)package.data().data();
+    int16_t *end = ptr + package.data().size() / 2;
+
+    switch (type)
+    {
+    case Feature::Point:
+        while (ptr <= end - 2)
+        {
+            features.append(Feature(ptr[0], ptr[1]));
+            ptr += 2;
+        }
+        break;
+    case Feature::PointValue:
+        while (ptr <= end - 3)
+        {
+            features.append(Feature(ptr[0], ptr[1], ptr[2]));
+            ptr += 3;
+        }
+        break;
+    case Feature::Rect:
+        while (ptr <= end - 4)
+        {
+            features.append(Feature(ptr[0], ptr[1], ptr[2], ptr[3]));
+            ptr += 4;
+        }
+        break;
+    case Feature::RectValue:
+        while (ptr <= end - 5)
+        {
+            features.append(Feature(ptr[0], ptr[1], ptr[2], ptr[3], ptr[4]));
+            ptr += 5;
+        }
+        break;
+    default:
+        break;
+    }
+    return features;
 }

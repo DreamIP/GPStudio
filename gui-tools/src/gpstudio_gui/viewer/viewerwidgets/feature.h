@@ -34,6 +34,7 @@ class GPSTUDIO_GUI_EXPORT Feature
 {
 public:
     enum Type {
+        Invalid,
         Point,
         PointValue,
         Rect,
@@ -41,6 +42,10 @@ public:
     };
 
     Feature();
+    Feature(int16_t x, int16_t y);
+    Feature(int16_t x, int16_t y, int16_t value);
+    Feature(int16_t x, int16_t y, int16_t w, int16_t h);
+    Feature(int16_t x, int16_t y, int16_t w, int16_t h, int16_t value);
     Feature(const Feature &other);
 
     int x() const;
@@ -74,7 +79,8 @@ protected:
     Type _type;
 
 public:
-    static QList<Feature*> fromData(const FlowPackage package, Property flow);
+    static Type stringToType(const QString &string);
+    static QList<Feature> fromData(const FlowPackage &package, Property *flow);
 };
 
 #endif // FEATURE_H

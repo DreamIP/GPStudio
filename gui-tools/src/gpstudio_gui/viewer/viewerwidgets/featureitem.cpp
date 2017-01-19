@@ -52,11 +52,13 @@ void FeatureItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
         // TODO add value
         break;
     case Feature::Rect:
-        painter->drawRect(QRectF(_feature.x(), _feature.y(), _feature.w(), _feature.w()));
+        painter->drawRect(QRectF(_feature.x(), _feature.y(), _feature.w(), _feature.h()));
         break;
     case Feature::RectValue:
-        painter->drawRect(QRectF(_feature.x(), _feature.y(), _feature.w(), _feature.w()));
+        painter->drawRect(QRectF(_feature.x(), _feature.y(), _feature.w(), _feature.h()));
         // TODO add value
+        break;
+    default:
         break;
     }
 }
@@ -79,7 +81,9 @@ void FeatureItem::setFeature(const Feature &feature)
         break;
     case Feature::Rect:
     case Feature::RectValue:
-        _boudingRect = QRectF(feature.x()-2, feature.y()-2, feature.w()+4, feature.w()+4);
+        _boudingRect = QRectF(feature.x()-2, feature.y()-2, feature.w()+4, feature.h()+4);
+        break;
+    default:
         break;
     }
 }

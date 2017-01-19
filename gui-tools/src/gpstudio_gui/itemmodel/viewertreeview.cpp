@@ -66,6 +66,7 @@ ModelGPViewer *ViewerTreeView::gpviewer() const
 void ViewerTreeView::setGpviewer(ModelGPViewer *gpviewer)
 {
     _model->setViewer(gpviewer);
+    expandAll();
 }
 
 void ViewerTreeView::dragEnterEvent(QDragEnterEvent *event)
