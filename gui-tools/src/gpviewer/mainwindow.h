@@ -33,7 +33,7 @@
 #include "lib_parser/lib.h"
 
 #include "../../thirdparts/hexedit/qhexedit.h"
-#include "itemsview/blockview.h"
+#include "blockview/blockview.h"
 
 #include "blockeditor/blockeditorwindow.h"
 

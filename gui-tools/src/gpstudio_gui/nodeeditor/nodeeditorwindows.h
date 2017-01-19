@@ -27,7 +27,7 @@
 
 #include "gpnodeproject.h"
 
-#include "itemsview/blockview.h"
+#include "blockview/blockview.h"
 #include "itemmodel/libtreeview.h"
 #include "compilelogwidget.h"
 #include "viewer/camexplorerwidget.h"

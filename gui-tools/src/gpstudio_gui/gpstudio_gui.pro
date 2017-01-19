@@ -62,11 +62,11 @@ SOURCES += \
     flowviewerwidget/layerviewer.cpp \
     flowviewerwidget/hexviewer.cpp \
     flowviewerwidget/plotviewer.cpp \
-    itemsview/blockitem.cpp \
-    itemsview/blockscene.cpp \
-    itemsview/blockconnectoritem.cpp \
-    itemsview/blockportitem.cpp \
-    itemsview/blockview.cpp \
+    blockview/blockitem.cpp \
+    blockview/blockscene.cpp \
+    blockview/blockconnectoritem.cpp \
+    blockview/blockportitem.cpp \
+    blockview/blockview.cpp \
     blockeditor/blockeditorwindow.cpp \
     blockeditor/codeeditor.cpp \
     blockeditor/syntaxhighlight/abstractsyntax.cpp \
@@ -121,11 +121,11 @@ HEADERS  += \
     flowviewerwidget/layerviewer.h \
     flowviewerwidget/hexviewer.h \
     flowviewerwidget/plotviewer.h \
-    itemsview/blockitem.h \
-    itemsview/blockscene.h \
-    itemsview/blockconnectoritem.h \
-    itemsview/blockportitem.h \
-    itemsview/blockview.h \
+    blockview/blockitem.h \
+    blockview/blockscene.h \
+    blockview/blockconnectoritem.h \
+    blockview/blockportitem.h \
+    blockview/blockview.h \
     blockeditor/blockeditorwindow.h \
     blockeditor/codeeditor.h \
     blockeditor/syntaxhighlight/abstractsyntax.h \
