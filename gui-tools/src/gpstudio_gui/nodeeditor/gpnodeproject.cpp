@@ -177,7 +177,8 @@ bool GPNodeProject::closeProject()
         QMessageBox::StandardButton res;
         res = QMessageBox::question(_nodeEditorWindow, "Project modified", "Would you like to save the project before close it ?", QMessageBox::Save | QMessageBox::Cancel | QMessageBox::Discard);
         if(res==QMessageBox::Save)
-            saveProject();
+            if(!saveProject())
+                return false;
         if(res==QMessageBox::Cancel)
             return false;
     }
