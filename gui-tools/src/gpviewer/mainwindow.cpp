@@ -149,6 +149,7 @@ void MainWindow::createToolBarAndMenu()
     // ============= Windows =============
     _winMenu = ui->menuBar->addMenu("&Windows");
     _closeAct = new QAction(tr("Cl&ose"), this);
+    _closeAct->setShortcuts(QKeySequence::Close);
     _closeAct->setStatusTip(tr("Close the active window"));
     connect(_closeAct, SIGNAL(triggered()), ui->mdiArea, SLOT(closeActiveSubWindow()));
 
@@ -218,6 +219,16 @@ void MainWindow::createDocks()
     _viewerExplorerDock->setWidget(viewerExplorerContent);
     tabifyDockWidget(_camExplorerDock, _viewerExplorerDock);
 
+    // flowToCam dock
+    _flowToCamDock = new QDockWidget("flowToCam", this);
+    QWidget *flowToCamContent = new QWidget(_flowToCamDock);
+    QLayout *flowToCamLayout = new QVBoxLayout();
+    _flowToCamWidget = new FlowToCamWidget();
+    flowToCamLayout->addWidget(_flowToCamWidget);
+    flowToCamContent->setLayout(flowToCamLayout);
+    _flowToCamDock->setWidget(flowToCamContent);
+    tabifyDockWidget(_camExplorerDock, _flowToCamDock);
+
     // script dock
     _scriptDock = new QDockWidget("Scripts", this);
     QWidget *scriptContent = new QWidget(_scriptDock);
@@ -241,7 +252,8 @@ void MainWindow::createDocks()
 
 void MainWindow::openNodeGeneratedFile(const QString fileName)
 {
-    if(_cam) delete _cam;
+    if(_cam)
+        delete _cam;
 
     _cam = new Camera(fileName);
 
@@ -253,6 +265,7 @@ void MainWindow::openNodeGeneratedFile(const QString fileName)
 
     _camExplorerWidget->setCamera(_cam);
     _viewerExplorerWidget->setCamera(_cam);
+    _flowToCamWidget->setCamera(_cam);
 
     if(_cam->com())
         connect(_cam->com(), SIGNAL(disconnected()), this, SLOT(disconnectCam()));

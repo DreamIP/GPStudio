@@ -93,7 +93,8 @@ SOURCES += \
     itemmodel/caminfotreeview.cpp \
     nodeeditor/settings/pathssettingspage.cpp \
     nodeeditor/settings/patheditwidget.cpp \
-    nodeeditor/settings/nodesettings.cpp
+    nodeeditor/settings/nodesettings.cpp \
+    viewer/flowtocamwidget.cpp
 
 HEADERS  += \
     gpstudio_gui_common.h \
@@ -152,7 +153,8 @@ HEADERS  += \
     itemmodel/caminfotreeview.h \
     nodeeditor/settings/pathssettingspage.h \
     nodeeditor/settings/patheditwidget.h \
-    nodeeditor/settings/nodesettings.h
+    nodeeditor/settings/nodesettings.h \
+    viewer/flowtocamwidget.h
 
 RESOURCES += \
     icons.qrc \

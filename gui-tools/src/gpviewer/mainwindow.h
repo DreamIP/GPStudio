@@ -24,12 +24,15 @@
 #include <QDockWidget>
 #include <QMainWindow>
 #include <QMdiSubWindow>
-#include <scriptwidget.h>
 
 #include "camera/camera.h"
 #include "flowviewerwidget/flowviewerwidget.h"
+
 #include "viewer/camexplorerwidget.h"
 #include "viewer/viewerexplorerwidget.h"
+#include "viewer/flowtocamwidget.h"
+#include "scriptwidget.h"
+
 #include "lib_parser/lib.h"
 
 #include "../../thirdparts/hexedit/qhexedit.h"
@@ -92,6 +95,9 @@ private:
 
     QDockWidget *_viewerExplorerDock;
     ViewerExplorerWidget *_viewerExplorerWidget;
+
+    QDockWidget *_flowToCamDock;
+    FlowToCamWidget *_flowToCamWidget;
 
     QDockWidget *_scriptDock;
     ScriptWidget *_scriptWidget;
