@@ -24,7 +24,8 @@
 #include "gpstudio_gui_common.h"
 
 #include <QGraphicsView>
-#include <vector>
+#include <QList>
+#include <QMap>
 
 #include "featureitem.h"
 
@@ -52,13 +53,12 @@ public:
     void showImage(const QPixmap &image, const QString &title=QString());
 
     void setMask(const QImage &mask);
-    void setFeatures(uint layer, QList<Feature> features);
+
+    void setFeatures(uint layer, const QList<Feature> &features);
+    void clearAllLayers();
 
     unsigned int propertyView() const;
     void setPropertyView(unsigned int propertyView);
-
-    int flowNumber() const;
-    void setFlowNumber(int flowNumber);
 
 public slots:
     void setView(const QRect &viewRect);
@@ -91,7 +91,7 @@ private:
     QGraphicsPixmapItem *_maskItem;
     QGraphicsSimpleTextItem *_titleItem;
 
-    int _flowNumber;
+    QMap<uint, QList<FeatureItem *> > _featureItems;
 };
 
 #endif // IMAGEVIEW_H

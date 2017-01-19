@@ -22,7 +22,16 @@
 
 Feature::Feature()
 {
+}
 
+Feature::Feature(const Feature &other)
+{
+    _x = other._x;
+    _y = other._y;
+    _w = other._w;
+    _h = other._h;
+    _val = other._val;
+    _type = other._type;
 }
 
 int Feature::x() const

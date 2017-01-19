@@ -128,6 +128,40 @@ void LayerWidget::setMask(const QImage &mask)
     _maskItem->setPixmap(masked);
 }
 
+void LayerWidget::setFeatures(uint layer, const QList<Feature> &features)
+{
+    QMap<uint, QList<FeatureItem *> >::iterator layerFeature = _featureItems.find(layer);
+    if(layerFeature != _featureItems.end())
+    {
+        // layer exists ==> remove all items
+        foreach (FeatureItem *item, *layerFeature)
+            _scene->removeItem(item);
+        (*layerFeature).clear();
+    }
+    else // create layer
+        layerFeature = _featureItems.insert(layer, QList<FeatureItem *>());
+
+    // add all features
+    foreach (const Feature &feature, features)
+    {
+        FeatureItem *item = new FeatureItem(feature);
+        (*layerFeature).append(item);
+        _scene->addItem(item);
+    }
+}
+
+void LayerWidget::clearAllLayers()
+{
+    QMap<uint, QList<FeatureItem *> >::iterator layerFeature = _featureItems.begin();
+    while (layerFeature != _featureItems.end())
+    {
+        foreach (FeatureItem *item, *layerFeature)
+            _scene->removeItem(item);
+        (*layerFeature).clear();
+    }
+    _featureItems.clear();
+}
+
 void LayerWidget::wheelEvent(QWheelEvent *event)
 {
     int numDegrees = event->delta() / 8;
@@ -196,16 +230,6 @@ void LayerWidget::setZoomLevel(int step)
 
     QRect viewRect(mapToScene(0, 0).toPoint(), mapToScene(frameRect().bottomRight()).toPoint());
     emit viewMoved(viewRect);
-}
-
-int LayerWidget::flowNumber() const
-{
-    return _flowNumber;
-}
-
-void LayerWidget::setFlowNumber(int flowNumber)
-{
-    _flowNumber = flowNumber;
 }
 
 unsigned int LayerWidget::propertyView() const

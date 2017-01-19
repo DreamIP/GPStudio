@@ -41,6 +41,7 @@ public:
     };
 
     Feature();
+    Feature(const Feature &other);
 
     int x() const;
     void setX(int x);

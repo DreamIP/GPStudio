@@ -30,16 +30,18 @@
 class GPSTUDIO_GUI_EXPORT FeatureItem : public QGraphicsItem
 {
 public:
-    FeatureItem(Feature *feature=NULL);
+    FeatureItem(const Feature &feature=Feature());
 
     // QGraphicsItem interface
 public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+    Feature feature() const;
+
 protected:
-    Feature *_feature;
-    void setFeature(Feature *feature);
+    Feature _feature;
+    void setFeature(const Feature &feature);
     QRectF _boudingRect;
 };
 
