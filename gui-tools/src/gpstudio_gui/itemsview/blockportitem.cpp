@@ -24,6 +24,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QCursor>
+#include <QStyleOptionGraphicsItem>
 
 #include "lib_parser/blocklib.h"
 
@@ -92,6 +93,8 @@ void BlockPortItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 {
     Q_UNUSED(option); Q_UNUSED(widget);
 
+    const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
+
     QPainterPath path;
 
     int pwidth = 9;
@@ -125,7 +128,7 @@ void BlockPortItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->drawPath(path);
 
         painter->setPen(QPen());
-        if(_name != "in")
+        if(_name != "in" && lod > 0.3)
             painter->drawText(QRectF(10,-10,80,20), Qt::AlignLeft | Qt::AlignVCenter, _name);
     }
     else
@@ -137,7 +140,7 @@ void BlockPortItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
         painter->drawPath(path);
 
         painter->setPen(QPen());
-        if(_name != "out")
+        if(_name != "out" && lod > 0.3)
             painter->drawText(QRectF(-90,-10,80,20), Qt::AlignRight | Qt::AlignVCenter, _name);
     }
 
