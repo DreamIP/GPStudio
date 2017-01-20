@@ -18,35 +18,42 @@
 **
 ****************************************************************************/
 
-#ifndef MODEL_IOCOM_H
-#define MODEL_IOCOM_H
+#ifndef MODEL_COMDRIVER_H
+#define MODEL_COMDRIVER_H
 
 #include "gpstudio_lib_common.h"
 
-#include "model_io.h"
+#include "model_comconnect.h"
+#include "model_comparam.h"
 
-#include "model_comdriver.h"
-
-class GPSTUDIO_LIB_EXPORT ModelIOCom : public ModelIO
+class GPSTUDIO_LIB_EXPORT ModelComDriver
 {
 public:
-    ModelIOCom();
-    ModelIOCom(const ModelIOCom &modelIOCom);
-    virtual ~ModelIOCom();
+    ModelComDriver();
+    ModelComDriver(const ModelComDriver &modelComDriver);
+    ~ModelComDriver();
 
-    Type type() const;
+    const QString &driverIO() const;
+    void setDriverIO(const QString &driverIO);
 
-    QString driverIO() const;
-    ModelComDriver *comDriver() const;
+    void addComConnect(ModelComConnect *comConnect);
+    void addComConnects(const QList<ModelComConnect *> &comConnects);
+    QList<ModelComConnect *> &comConnects();
+    const QList<ModelComConnect *> &comConnects() const;
+
+    void addComParam(ModelComParam *comParam);
+    void addComParams(const QList<ModelComParam *> &comParams);
+    QList<ModelComParam *> &comParams();
+    const QList<ModelComParam *> &comParams() const;
 
 public:
-    static ModelIO *fromNodeGenerated(const QDomElement &domElement, ModelIOCom *ioCom=NULL);
-    static ModelIO *fromNodeDef(const QDomElement &domElement, ModelIO *io=NULL);
+    static ModelComDriver *fromNodeGenerated(const QDomElement &domElement);
 
 protected:
-    ModelComDriver *_comDriver;
+    QString _driverIO;
 
     QList<ModelComConnect *> _comConnects;
+    QList<ModelComParam *> _comParams;
 };
 
-#endif // MODEL_IOCOM_H
+#endif // MODEL_COMDRIVER_H

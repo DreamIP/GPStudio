@@ -26,15 +26,13 @@
 
 ModelIOCom::ModelIOCom()
 {
+    _comDriver = NULL;
 }
 
 ModelIOCom::ModelIOCom(const ModelIOCom &modelIOCom)
     : ModelIO(modelIOCom)
 {
-    _driverIO = modelIOCom._driverIO;
-
-    for(int i=0; i<modelIOCom._comConnects.size(); i++)
-        addComConnect(modelIOCom._comConnects[i]);
+    _comDriver = new ModelComDriver(*modelIOCom._comDriver);
 }
 
 ModelIOCom::~ModelIOCom()
@@ -48,45 +46,22 @@ ModelBlock::Type ModelIOCom::type() const
     return IOCom;
 }
 
-const QString &ModelIOCom::driverIO() const
+QString ModelIOCom::driverIO() const
 {
-    return _driverIO;
+    if(_comDriver)
+        return _comDriver->driverIO();
+    return QString();
 }
 
-void ModelIOCom::setDriverIO(const QString &driverIO)
+ModelComDriver *ModelIOCom::comDriver() const
 {
-    _driverIO = driverIO;
-}
-
-void ModelIOCom::addComConnect(ModelComConnect *comConnect)
-{
-    _comConnects.append(comConnect);
-}
-
-void ModelIOCom::addComConnects(const QList<ModelComConnect *> &comConnects)
-{
-    foreach (ModelComConnect *comConnect, comConnects)
-    {
-        addComConnect(comConnect);
-    }
-}
-
-QList<ModelComConnect *> &ModelIOCom::comConnects()
-{
-    return _comConnects;
-}
-
-const QList<ModelComConnect *> &ModelIOCom::comConnects() const
-{
-    return _comConnects;
+    return _comDriver;
 }
 
 ModelIO *ModelIOCom::fromNodeGenerated(const QDomElement &domElement, ModelIOCom *ioCom)
 {
     if(ioCom==NULL)
         ioCom = new ModelIOCom();
-
-    ioCom->setDriverIO(domElement.attribute("driverio",""));
 
     ModelIO::fromNodeGenerated(domElement, ioCom);
 
@@ -96,8 +71,8 @@ ModelIO *ModelIOCom::fromNodeGenerated(const QDomElement &domElement, ModelIOCom
         QDomElement e = n.toElement();
         if(!e.isNull())
         {
-            if(e.tagName()=="com_connects")
-                ioCom->addComConnects(ModelComConnect::listFromNodeGenerated(e));
+            if(e.tagName()=="com_driver")
+                ioCom->_comDriver = ModelComDriver::fromNodeGenerated(e);
         }
         n = n.nextSibling();
     }
@@ -120,4 +95,3 @@ ModelIO *ModelIOCom::fromNodeDef(const QDomElement &domElement, ModelIO *io)
 
     return io;
 }
-

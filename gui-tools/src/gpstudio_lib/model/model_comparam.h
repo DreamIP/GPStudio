@@ -18,35 +18,35 @@
 **
 ****************************************************************************/
 
-#ifndef MODEL_IOCOM_H
-#define MODEL_IOCOM_H
+#ifndef MODEL_COMPARAM_H
+#define MODEL_COMPARAM_H
 
 #include "gpstudio_lib_common.h"
 
-#include "model_io.h"
+#include <QString>
+#include <QVariant>
+#include <QList>
+#include <QDomElement>
 
-#include "model_comdriver.h"
-
-class GPSTUDIO_LIB_EXPORT ModelIOCom : public ModelIO
+class GPSTUDIO_LIB_EXPORT ModelComParam
 {
 public:
-    ModelIOCom();
-    ModelIOCom(const ModelIOCom &modelIOCom);
-    virtual ~ModelIOCom();
+    ModelComParam();
+    ~ModelComParam();
 
-    Type type() const;
+    QString name() const;
+    void setName(const QString &name);
 
-    QString driverIO() const;
-    ModelComDriver *comDriver() const;
+    QVariant value() const;
+    void setValue(const QVariant &value);
 
 public:
-    static ModelIO *fromNodeGenerated(const QDomElement &domElement, ModelIOCom *ioCom=NULL);
-    static ModelIO *fromNodeDef(const QDomElement &domElement, ModelIO *io=NULL);
+    static ModelComParam *fromNodeGenerated(const QDomElement &domElement);
+    static QList<ModelComParam *> listFromNodeGenerated(const QDomElement &domElement);
 
 protected:
-    ModelComDriver *_comDriver;
-
-    QList<ModelComConnect *> _comConnects;
+    QString _name;
+    QVariant _value;
 };
 
-#endif // MODEL_IOCOM_H
+#endif // MODEL_COMPARAM_H

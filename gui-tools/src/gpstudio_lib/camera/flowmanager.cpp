@@ -60,9 +60,9 @@ void FlowManager::setCamera(Camera *camera)
 
     if(iOCom)
     {
-        for(int i=0; i<iOCom->comConnects().size(); i++)
+        for(int i=0; i<iOCom->comDriver()->comConnects().size(); i++)
         {
-            ModelComConnect *comConnect=iOCom->comConnects().at(i);
+            ModelComConnect *comConnect=iOCom->comDriver()->comConnects().at(i);
             if(comConnect->type()=="flow")
             {
                 FlowConnection *flowConnection = new FlowConnection();

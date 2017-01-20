@@ -54,7 +54,9 @@ HEADERS += gpstudio_lib_common.h \
     model/model_board.h \
     model/model_ciblock.h \
     model/model_clock.h \
+    model/model_comdriver.h \
     model/model_comconnect.h \
+    model/model_comparam.h \
     model/model_fiblock.h \
     model/model_file.h \
     model/model_flow.h \
@@ -107,7 +109,9 @@ SOURCES += \
     model/model_board.cpp \
     model/model_ciblock.cpp \
     model/model_clock.cpp \
+    model/model_comdriver.cpp \
     model/model_comconnect.cpp \
+    model/model_comparam.cpp \
     model/model_fiblock.cpp \
     model/model_file.cpp \
     model/model_flow.cpp \
