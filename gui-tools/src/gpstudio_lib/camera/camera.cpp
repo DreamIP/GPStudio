@@ -127,7 +127,7 @@ void Camera::sendPackage(const QString &flowName, const FlowPackage &package)
 
 void Camera::sendPackage(FlowConnection *flowConnection, const FlowPackage &package)
 {
-    _com->outputFlow()[flowConnection->flowId()]->appendData(package);
+    _com->outputFlow()[flowConnection->flowId()]->send(package);
 }
 
 Block *Camera::fiBlock() const
