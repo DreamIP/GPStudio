@@ -382,12 +382,16 @@ BlockScene *BlockView::blockScene() const
 
 bool BlockView::loadFromNode(const ModelNode *node)
 {
-    return _scene->loadFromNode(node);
+    bool loaded = _scene->loadFromNode(node);
+    zoomFit();
+    return loaded;
 }
 
 bool BlockView::loadFromCam(const Camera *camera)
 {
-    return _scene->loadFromCamera(camera);
+    bool loaded = _scene->loadFromCamera(camera);
+    zoomFit();
+    return loaded;
 }
 
 void BlockView::zoomIn()
@@ -402,6 +406,11 @@ void BlockView::zoomOut()
 
 void BlockView::zoomFit()
 {
+    if(_scene->items().isEmpty())
+    {
+        fitInView(QRectF(-100, -100, 700, 700), Qt::KeepAspectRatio);
+        return;
+    }
     fitInView(_scene->itemsBoundingRect().adjusted(-20, -20, 20, 20), Qt::KeepAspectRatio);
 }
 
@@ -520,6 +529,10 @@ void BlockView::keyPressEvent(QKeyEvent *event)
     {
         QList<ModelBlock*> block2delete;
         QList<ModelFlowConnect> link2delete;
+
+        if(_editMode)
+            return;
+
         foreach (QGraphicsItem *item, _scene->selectedItems())
         {
             BlockItem *blockItem = qgraphicsitem_cast<BlockItem *>(item);

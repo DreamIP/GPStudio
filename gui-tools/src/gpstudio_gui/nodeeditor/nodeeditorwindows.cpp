@@ -139,6 +139,7 @@ void NodeEditorWindows::closeEvent(QCloseEvent *event)
 void NodeEditorWindows::showEvent(QShowEvent *)
 {
     readSettings();
+    _blocksView->zoomFit();
 }
 
 void NodeEditorWindows::setupWidgets()
@@ -584,4 +585,6 @@ void NodeEditorWindows::readSettings()
             _oldProjects.append(path);
     }
     settings.endArray();
+
+    updateOldProjects();
 }
