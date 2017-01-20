@@ -159,6 +159,11 @@ QString FlowViewerInterface::statusText() const
                 .arg(QString::number(_flowConnections[0]->fps(), 'f', 1));
 
         break;
+    case FlowViewerInterface::FeaturesType:
+        statusText = QString("features at %1 fps")
+                .arg(QString::number(_flowConnections[0]->fps(), 'f', 1));
+
+        break;
     case FlowViewerInterface::UnknowFlowType:
     default:
         break;
