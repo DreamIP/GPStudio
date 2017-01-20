@@ -38,6 +38,8 @@
 class CameraCom;
 class CameraInfo;
 class FlowManager;
+class FlowConnection;
+class FlowPackage;
 
 /**
  * @brief The Camera class is part of the run time model and represent the main camera.
@@ -80,6 +82,10 @@ public:
     Block *fiBlock() const;
 
     RegisterManager &registermanager();
+
+    void sendPackage(int flowId, const FlowPackage &package);
+    void sendPackage(const QString &flowName, const FlowPackage &package);
+    void sendPackage(FlowConnection *flowConnection, const FlowPackage &package);
 
 signals:
     void registerDataChanged();

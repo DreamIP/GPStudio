@@ -27,6 +27,7 @@
 #include <QStringList>
 #include <QPushButton>
 #include <QDebug>
+#include <flowpackage.h>
 
 FlowToCamWidget::FlowToCamWidget(QWidget *parent) : QWidget(parent)
 {
@@ -43,16 +44,23 @@ void FlowToCamWidget::setCamera(Camera *camera)
 
     QLayout *layout = new QVBoxLayout();
     layout->setContentsMargins(8,8,8,8);
+
+    _signalMapper = new QSignalMapper(this);
     if(_camera)
     {
         const QList<ModelFlow *> &flowsOutCom = _camera->comBlock()->modelBlock()->flowsOut();
         foreach (ModelFlow *flow, flowsOutCom)
         {
-            QPushButton *button = new QPushButton(flow->name());
+            QPushButton *button = new QPushButton("Send to "+flow->name());
+            button->setEnabled(false);
+            connect(button, SIGNAL(clicked()), _signalMapper, SLOT(map()));
             connect(this, SIGNAL(sendAvailable(bool)), button, SLOT(setEnabled(bool)));
+            _signalMapper->setMapping(button, flow->name());
             layout->addWidget(button);
         }
     }
+    connect(_signalMapper, SIGNAL(mapped(QString)), this, SLOT(sendFlow(QString)));
+
     widget->setMinimumWidth(200);
     widget->setLayout(layout);
 
@@ -61,14 +69,18 @@ void FlowToCamWidget::setCamera(Camera *camera)
 
 void FlowToCamWidget::setPath(const QString &path)
 {
-    QDir dir(path);
+    QString mpath = path;
+    if(mpath.isEmpty())
+        mpath = _pathLineEdit->text();
+    QDir dir(mpath);
     _imagesListWidget->setRootIndex(_imagesSystemModelSorted->mapFromSource(_imagesSystemModel->index(dir.canonicalPath())));
-    _pathLineEnit->setText(dir.canonicalPath());
+    _pathLineEdit->setText(dir.canonicalPath()+"/");
+    emit sendAvailable(false);
 }
 
 void FlowToCamWidget::selectPath()
 {
-    QString path = QFileDialog::getExistingDirectory(this, "Select a directory of pictures", _pathLineEnit->text());
+    QString path = QFileDialog::getExistingDirectory(this, "Select a directory of pictures", _pathLineEdit->text());
     if(!path.isEmpty())
         setPath(path);
 }
@@ -77,6 +89,17 @@ void FlowToCamWidget::selectFile(QItemSelection selected, QItemSelection deselec
 {
     Q_UNUSED(deselected)
     emit sendAvailable(!selected.indexes().isEmpty());
+}
+
+void FlowToCamWidget::sendFlow(const QString &flowName)
+{
+    QString img;
+    if(!_imagesListWidget->currentIndex().isValid())
+        return;
+    img = _imagesSystemModel->filePath(_imagesSystemModelSorted->mapToSource(_imagesListWidget->currentIndex()));
+
+    QImage imageToSend(img);
+    _camera->sendPackage(flowName, FlowPackage(imageToSend));
 }
 
 void FlowToCamWidget::setupWidgets()
@@ -89,8 +112,9 @@ void FlowToCamWidget::setupWidgets()
     layoutPath->setContentsMargins(0,0,0,0);
     layoutPath->addWidget(new QLabel("path:"));
     layoutPath->setSpacing(5);
-    _pathLineEnit = new QLineEdit();
-    layoutPath->addWidget(_pathLineEnit);
+    _pathLineEdit = new QLineEdit();
+    layoutPath->addWidget(_pathLineEdit);
+    connect(_pathLineEdit, SIGNAL(editingFinished()), this, SLOT(setPath()));
     _pathToolButton = new QToolButton();
     _pathToolButton->setText("...");
     connect(_pathToolButton, SIGNAL(clicked(bool)), this, SLOT(selectPath()));

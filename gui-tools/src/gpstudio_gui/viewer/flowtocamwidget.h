@@ -30,6 +30,7 @@
 #include <QSortFilterProxyModel>
 #include <QTreeView>
 #include <QScrollArea>
+#include <QSignalMapper>
 
 #include "camera/camera.h"
 
@@ -45,18 +46,20 @@ signals:
     void sendAvailable(bool);
 
 public slots:
-    void setPath(const QString &path);
+    void setPath(const QString &path=QString());
     void selectPath();
     void selectFile(QItemSelection selected, QItemSelection deselected);
+    void sendFlow(const QString &flowName);
 
 private:
     void setupWidgets();
-    QLineEdit *_pathLineEnit;
+    QLineEdit *_pathLineEdit;
     QToolButton *_pathToolButton;
     QFileSystemModel *_imagesSystemModel;
     QSortFilterProxyModel *_imagesSystemModelSorted;
     QTreeView *_imagesListWidget;
     QScrollArea *_sendButtonArea;
+    QSignalMapper *_signalMapper;
 
     Camera *_camera;
 };

@@ -28,6 +28,7 @@
 
 #include "flowmanager.h"
 #include "cameracom.h"
+#include "flowconnection.h"
 
 #include "lib_parser/lib.h"
 
@@ -112,6 +113,21 @@ void Camera::setNode(ModelNode *node)
 RegisterManager &Camera::registermanager()
 {
     return _registermanager;
+}
+
+void Camera::sendPackage(int flowId, const FlowPackage &package)
+{
+    sendPackage(_flowManager->flowConnection(flowId), package);
+}
+
+void Camera::sendPackage(const QString &flowName, const FlowPackage &package)
+{
+    sendPackage(_flowManager->flowConnection(flowName), package);
+}
+
+void Camera::sendPackage(FlowConnection *flowConnection, const FlowPackage &package)
+{
+    _com->outputFlow()[flowConnection->flowId()]->appendData(package);
 }
 
 Block *Camera::fiBlock() const
