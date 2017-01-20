@@ -21,13 +21,15 @@
 #include "flowtocamwidget.h"
 
 #include <QLayout>
+#include <QFormLayout>
 #include <QLabel>
 #include <QCoreApplication>
 #include <QFileDialog>
 #include <QStringList>
 #include <QPushButton>
 #include <QDebug>
-#include <flowpackage.h>
+
+#include "flowpackage.h"
 
 FlowToCamWidget::FlowToCamWidget(QWidget *parent) : QWidget(parent)
 {
@@ -87,8 +89,27 @@ void FlowToCamWidget::selectPath()
 
 void FlowToCamWidget::selectFile(QItemSelection selected, QItemSelection deselected)
 {
+    Q_UNUSED(selected)
     Q_UNUSED(deselected)
-    emit sendAvailable(!selected.indexes().isEmpty());
+    QString img;
+    if(!_imagesListWidget->currentIndex().isValid())
+        return;
+    img = _imagesSystemModel->filePath(_imagesSystemModelSorted->mapToSource(_imagesListWidget->currentIndex()));
+
+    QImage imageToSend(img);
+    if(imageToSend.isNull())
+    {
+        emit sendAvailable(false);
+        return;
+    }
+
+    if(!_sizeImgGroupBox->isChecked())
+    {
+        _widthSpinBox->setValue(imageToSend.width());
+        _heightSpinBox->setValue(imageToSend.height());
+    }
+
+    emit sendAvailable(true);
 }
 
 void FlowToCamWidget::sendFlow(const QString &flowName)
@@ -99,6 +120,16 @@ void FlowToCamWidget::sendFlow(const QString &flowName)
     img = _imagesSystemModel->filePath(_imagesSystemModelSorted->mapToSource(_imagesListWidget->currentIndex()));
 
     QImage imageToSend(img);
+    if(_sizeImgGroupBox->isChecked())
+        imageToSend = imageToSend.scaled(_widthSpinBox->value(), _heightSpinBox->value());
+
+    Property *width = _camera->rootProperty().path(_camera->comBlock()->name() + "." + flowName + ".width");
+    if(width)
+        width->setValue(imageToSend.width());
+    Property *height = _camera->rootProperty().path(_camera->comBlock()->name() + "." + flowName + ".height");
+    if(height)
+        height->setValue(imageToSend.height());
+
     _camera->sendPackage(flowName, FlowPackage(imageToSend));
 }
 
@@ -124,7 +155,7 @@ void FlowToCamWidget::setupWidgets()
     // image lists
     layout->addWidget(new QLabel("images:"));
     _imagesSystemModel = new QFileSystemModel();
-    _imagesSystemModel->setRootPath(QCoreApplication::applicationDirPath());
+    _imagesSystemModel->setRootPath("/");
     _imagesSystemModel->setFilter(QDir::Files | QDir::NoDotAndDotDot);
     QStringList filters;
     filters<<"*.png"<<"*.jpg"<<"*.jpeg"<<"*.tif"<<"*.ico"<<"*.bmp";
@@ -138,6 +169,21 @@ void FlowToCamWidget::setupWidgets()
     _imagesListWidget->sortByColumn(0, Qt::AscendingOrder);
     layout->addWidget(_imagesListWidget);
     connect(_imagesListWidget->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(selectFile(QItemSelection,QItemSelection)));
+
+    // groupbox size image
+    _sizeImgGroupBox = new QGroupBox();
+    _sizeImgGroupBox->setTitle("Resize image");
+    _sizeImgGroupBox->setCheckable(true);
+    QFormLayout *layoutSize = new QFormLayout();
+    layoutSize->setContentsMargins(0,0,0,0);
+    _widthSpinBox = new QSpinBox();
+    layoutSize->addRow("width", _widthSpinBox);
+    _widthSpinBox->setRange(1, 4096);
+    _heightSpinBox = new QSpinBox();
+    _heightSpinBox->setRange(1, 4096);
+    layoutSize->addRow("height", _heightSpinBox);
+    _sizeImgGroupBox->setLayout(layoutSize);
+    layout->addWidget(_sizeImgGroupBox);
 
     // area for send button
     _sendButtonArea = new QScrollArea();

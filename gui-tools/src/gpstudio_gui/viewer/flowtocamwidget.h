@@ -31,6 +31,8 @@
 #include <QTreeView>
 #include <QScrollArea>
 #include <QSignalMapper>
+#include <QSpinBox>
+#include <QGroupBox>
 
 #include "camera/camera.h"
 
@@ -60,6 +62,10 @@ private:
     QTreeView *_imagesListWidget;
     QScrollArea *_sendButtonArea;
     QSignalMapper *_signalMapper;
+
+    QGroupBox *_sizeImgGroupBox;
+    QSpinBox *_widthSpinBox;
+    QSpinBox *_heightSpinBox;
 
     Camera *_camera;
 };

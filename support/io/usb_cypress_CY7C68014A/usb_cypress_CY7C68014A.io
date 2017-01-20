@@ -67,8 +67,20 @@
     <flow name="in1" size="8" type="in" desc="flow 1 return for supervise results of process"/>
     <flow name="in2" size="8" type="in" desc="flow 2 return for supervise results of process"/>
     <flow name="in3" size="8" type="in" desc="flow 3 return for supervise results of process"/>
-    <flow name="out0" size="8" type="out" desc="flow 0 return for supervise results of process"/>
-    <flow name="out1" size="8" type="out" desc="flow 1 return for supervise results of process"/>
+    <flow name="out0" size="8" type="out" desc="flow 0 return for supervise results of process">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int" value="320"/>
+        <property name="height" type="int" value="240"/>
+      </properties>
+    </flow>
+    <flow name="out1" size="8" type="out" desc="flow 1 return for supervise results of process">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int" value="320"/>
+        <property name="height" type="int" value="240"/>
+      </properties>
+    </flow>
   </flows>
   <params>
     <param name="IN0_NBWORDS" type="int" hard="1" value="32768"/>
