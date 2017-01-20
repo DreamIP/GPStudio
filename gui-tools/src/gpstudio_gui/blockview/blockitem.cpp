@@ -66,6 +66,11 @@ int BlockItem::type() const
     return Type;
 }
 
+QSize BlockItem::size() const
+{
+    return _boundingRect.size().toSize();
+}
+
 QRectF BlockItem::boundingRect() const
 {
     return _boundingRect.adjusted(-2,-2,2,20);

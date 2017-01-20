@@ -416,8 +416,8 @@ void BlockView::zoomFit()
 
 void BlockView::alignCenter(int align)
 {
-    int xSum = 0;
-    int ySum = 0;
+    float xSum = 0;
+    float ySum = 0;
 
     if(_scene->selectedItems().count() <= 1)
         return;
@@ -429,13 +429,12 @@ void BlockView::alignCenter(int align)
         if(blockItem)
         {
             movedBlocks.append(blockItem);
-            QPointF center = item->boundingRect().center();
-            xSum += center.x();
-            ySum += center.y();
+            xSum += blockItem->size().width()/2.0 + item->pos().x() - blockItem->boundingRect().x();
+            ySum += blockItem->size().height()/2.0 + item->pos().y() - blockItem->boundingRect().y();
         }
     }
-    xSum /= _scene->selectedItems().count();
-    ySum /= _scene->selectedItems().count();
+    xSum /= movedBlocks.count();
+    ySum /= movedBlocks.count();
 
     if(movedBlocks.size()>1)
         emit beginMacroAsked("multiple blocks moved");
