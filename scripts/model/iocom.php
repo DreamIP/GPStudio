@@ -19,7 +19,7 @@
  */
 
 require_once("io.php");
-require_once("comconnect.php");
+require_once("comdriver.php");
 
 /**
  * It allows the use of communication links and protocol declaration.
@@ -30,17 +30,10 @@ require_once("comconnect.php");
 class IOCom extends IO
 {
     /**
-     * @brief Name of the driver to use for etablish a communication with the board
-     * @var string $driverio
+     * @brief comdriver contains all information about the driver to this iocom
+     * @var ComDriver $driverio
      */
-    public $driverio;
-
-    /**
-     * @brief Array of ComConnect to give the equivalence table between hardware flow and software id flow
-     * @var array|ComConnect $comConnects
-     * @see ComConnect
-     */
-    public $comConnects;
+    public $comdriver;
 
     /**
      * @brief constructor of IO
@@ -56,8 +49,6 @@ class IOCom extends IO
      */
     function __construct($io_device_element, $io_node_element = null)
     {
-        $this->comConnects = array();
-
         parent::__construct($io_device_element, $io_node_element);
     }
 
@@ -70,18 +61,9 @@ class IOCom extends IO
     {
         parent::parse_xml($io_device_element, $io_node_element);
 
-        if (isset($this->xml->com_connects))
+        if (isset($this->xml->com_driver))
         {
-            $this->driverio = (string) $this->xml->com_connects['driverio'];
-
-            // com_connects
-            if (isset($this->xml->com_connects))
-            {
-                foreach ($this->xml->com_connects->com_connect as $com_connectXml)
-                {
-                    $this->addComConnect(new ComConnect($com_connectXml));
-                }
-            }
+            $this->comdriver = new ComDriver($this->xml->com_driver);
         }
     }
 
@@ -109,46 +91,9 @@ class IOCom extends IO
 
         if ($format == "complete" or $format == "blockdef")
         {
-            // com_connects
-            $xml_com_connects = $xml->createElement("com_connects");
-
-            //driverio
-            $att = $xml->createAttribute('driverio');
-            $att->value = $this->driverio;
-            $xml_com_connects->appendChild($att);
-
-            foreach ($this->comConnects as $comConnect)
-            {
-                $xml_com_connects->appendChild($comConnect->getXmlElement($xml, $format));
-            }
-            $xml_element->appendChild($xml_com_connects);
+            $xml_element->appendChild($this->comdriver->getXmlElement($xml, $format));
         }
 
         return $xml_element;
-    }
-
-    /**
-     * @brief Add a comConnect to the comParam 
-     * @param ComConnect $comConnect comConnect to add to the comParam
-     */
-    function addComConnect($comConnect)
-    {
-        array_push($this->comConnects, $comConnect);
-    }
-
-    /**
-     * @brief return a reference to the comConnect with the link $link, if not found,
-     * return null
-     * @param string $link link of the comConnect to search
-     * @return ComConnect found comConnect
-     */
-    function getComConnect($link)
-    {
-        foreach ($this->comConnects as $comConnect)
-        {
-            if ($comConnect->link == $link)
-                return $comConnect;
-        }
-        return null;
     }
 }

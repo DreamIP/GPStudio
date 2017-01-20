@@ -128,13 +128,21 @@
     <port name="addr" type="out" size="2"/>
   </ports>
   <pins/>
-  <com_connects driverio="usb">
-    <com_connect link="out0" id="0" type="flow"/>
-    <com_connect link="out1" id="1" type="flow"/>
-    <com_connect link="in0" id="128" type="flow"/>
-    <com_connect link="in1" id="129" type="flow"/>
-    <com_connect link="in2" id="130" type="flow"/>
-    <com_connect link="in3" id="131" type="flow"/>
-    <com_connect link="" id="15" type="paramout"/>
-  </com_connects>
+  <com_driver driverio="usb">
+    <com_connects>
+      <com_connect link="out0" id="0" type="flow"/>
+      <com_connect link="out1" id="1" type="flow"/>
+      <com_connect link="in0" id="128" type="flow"/>
+      <com_connect link="in1" id="129" type="flow"/>
+      <com_connect link="in2" id="130" type="flow"/>
+      <com_connect link="in3" id="131" type="flow"/>
+      <com_connect link="" id="15" type="paramout"/>
+    </com_connects>
+    <com_params>
+      <com_param name="vendorId" value="0x04B4"/>
+      <com_param name="productId" value="0x1003"/>
+      <com_param name="EPIN" value="0x02"/>
+      <com_param name="EPOUT" value="0x86"/>
+    </com_params>
+  </com_driver>
 </io>
