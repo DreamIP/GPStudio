@@ -529,7 +529,7 @@ void BlockView::keyPressEvent(QKeyEvent *event)
         QList<ModelBlock*> block2delete;
         QList<ModelFlowConnect> link2delete;
 
-        if(_editMode)
+        if(!_editMode)
             return;
 
         foreach (QGraphicsItem *item, _scene->selectedItems())
@@ -560,7 +560,8 @@ void BlockView::keyPressEvent(QKeyEvent *event)
                 }
             }
         }
-        emit blockSelected("");
+        if(block2delete.count()>0)
+            emit blockSelected("");
         if(block2delete.count()>1)
             emit beginMacroAsked("multiple blocks suppression");
         else if(link2delete.count()>1)
