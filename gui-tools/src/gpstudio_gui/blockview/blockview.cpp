@@ -429,8 +429,8 @@ void BlockView::alignCenter(int align)
         if(blockItem)
         {
             movedBlocks.append(blockItem);
-            xSum += blockItem->size().width()/2.0 + item->pos().x() - blockItem->boundingRect().x();
-            ySum += blockItem->size().height()/2.0 + item->pos().y() - blockItem->boundingRect().y();
+            xSum += blockItem->boundingRect().center().x() + item->pos().x();
+            ySum += blockItem->boundingRect().center().y() + item->pos().y();
         }
     }
     xSum /= movedBlocks.count();
@@ -442,9 +442,9 @@ void BlockView::alignCenter(int align)
     {
         QPointF pos = blockItem->pos();
         if(align==0)
-            pos.setX(xSum - blockItem->boundingRect().width()/2);
+            pos.setX(xSum - blockItem->boundingRect().center().x());
         else
-            pos.setY(ySum - blockItem->boundingRect().height()/2);
+            pos.setY(ySum - blockItem->boundingRect().center().y());
         emit blockMoved(blockItem->name(), blockItem->modelPart()->name(), blockItem->modelPart()->pos(), pos.toPoint());
     }
     if(movedBlocks.size()>1)
