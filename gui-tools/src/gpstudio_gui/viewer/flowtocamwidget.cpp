@@ -28,6 +28,7 @@
 #include <QStringList>
 #include <QPushButton>
 #include <QDebug>
+#include <QSettings>
 
 #include "flowpackage.h"
 
@@ -35,6 +36,12 @@ FlowToCamWidget::FlowToCamWidget(QWidget *parent) : QWidget(parent)
 {
     _camera = NULL;
     setupWidgets();
+    readSettings();
+}
+
+FlowToCamWidget::~FlowToCamWidget()
+{
+    writeSettings();
 }
 
 void FlowToCamWidget::setCamera(Camera *camera)
@@ -75,9 +82,12 @@ void FlowToCamWidget::setPath(const QString &path)
     if(mpath.isEmpty())
         mpath = _pathLineEdit->text();
     QDir dir(mpath);
+    _imagesSystemModel->setRootPath(dir.canonicalPath());
     _imagesListWidget->setRootIndex(_imagesSystemModelSorted->mapFromSource(_imagesSystemModel->index(dir.canonicalPath())));
     _pathLineEdit->setText(dir.canonicalPath()+"/");
     emit sendAvailable(false);
+
+    _path = dir.canonicalPath()+"/";
 }
 
 void FlowToCamWidget::selectPath()
@@ -133,6 +143,26 @@ void FlowToCamWidget::sendFlow(const QString &flowName)
     _camera->sendPackage(flowName, FlowPackage(imageToSend));
 }
 
+void FlowToCamWidget::writeSettings()
+{
+    QSettings settings("GPStudio", "gpviewer");
+
+    // MainWindow position/size/maximized
+    settings.beginGroup("flowtocam");
+    settings.setValue("path", _path);
+    settings.endGroup();
+}
+
+void FlowToCamWidget::readSettings()
+{
+    QSettings settings("GPStudio", "gpviewer");
+
+    // MainWindow position/size/maximized
+    settings.beginGroup("flowtocam");
+    setPath(settings.value("path", QCoreApplication::applicationDirPath()).toString());
+    settings.endGroup();
+}
+
 void FlowToCamWidget::setupWidgets()
 {
     QLayout *layout = new QVBoxLayout();
@@ -155,7 +185,6 @@ void FlowToCamWidget::setupWidgets()
     // image lists
     layout->addWidget(new QLabel("images:"));
     _imagesSystemModel = new QFileSystemModel();
-    _imagesSystemModel->setRootPath("/");
     _imagesSystemModel->setFilter(QDir::Files | QDir::NoDotAndDotDot);
     QStringList filters;
     filters<<"*.png"<<"*.jpg"<<"*.jpeg"<<"*.tif"<<"*.ico"<<"*.bmp";
@@ -174,6 +203,7 @@ void FlowToCamWidget::setupWidgets()
     _sizeImgGroupBox = new QGroupBox();
     _sizeImgGroupBox->setTitle("Resize image");
     _sizeImgGroupBox->setCheckable(true);
+    _sizeImgGroupBox->setChecked(false);
     QFormLayout *layoutSize = new QFormLayout();
     layoutSize->setContentsMargins(0,0,0,0);
     _widthSpinBox = new QSpinBox();
