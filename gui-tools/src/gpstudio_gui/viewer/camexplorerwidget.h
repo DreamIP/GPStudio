@@ -65,6 +65,7 @@ protected slots:
 public slots:
     void selectBlock(QString blocksName);
     void update();
+    void switchModeView();
 
 signals:
     void blockSelected(QString blockName);

@@ -79,8 +79,21 @@ GPNodeProject *CamExplorerWidget::project() const
 void CamExplorerWidget::setupWidgets()
 {
     if(layout())
-        layout()->deleteLater();
+    {
+        QLayoutItem *child;
+        while ((child = layout()->takeAt(0)) != 0)
+        {
+            if(child->widget())
+            {
+                child->widget()->hide();
+                child->widget()->deleteLater();
+            }
 
+            // don't delete _statusLayout
+            delete child;
+        }
+        delete layout();
+    }
     QLayout *layout = new QVBoxLayout();
     layout->setContentsMargins(0,0,0,0);
 
@@ -121,6 +134,8 @@ void CamExplorerWidget::setupWidgets()
         break;
     }
 
+    if(_camera)
+        setCamera(_camera);
     setLayout(layout);
 }
 
@@ -282,4 +297,12 @@ void CamExplorerWidget::update()
     }
     if(_camera)
         setCamera(_camera);
+}
+
+void CamExplorerWidget::switchModeView()
+{
+    if(_modeView == TreeViewMode)
+       setModeView(WidgetsMode);
+    else
+       setModeView(TreeViewMode);
 }
