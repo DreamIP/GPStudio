@@ -41,6 +41,7 @@ class GPSTUDIO_GUI_EXPORT FlowToCamWidget : public QWidget
     Q_OBJECT
 public:
     explicit FlowToCamWidget(QWidget *parent = 0);
+    virtual ~FlowToCamWidget();
 
     void setCamera(Camera *camera);
 
@@ -52,6 +53,10 @@ public slots:
     void selectPath();
     void selectFile(QItemSelection selected, QItemSelection deselected);
     void sendFlow(const QString &flowName);
+
+protected:
+    void writeSettings();
+    void readSettings();
 
 private:
     void setupWidgets();
@@ -66,6 +71,8 @@ private:
     QGroupBox *_sizeImgGroupBox;
     QSpinBox *_widthSpinBox;
     QSpinBox *_heightSpinBox;
+
+    QString _path;
 
     Camera *_camera;
 };
