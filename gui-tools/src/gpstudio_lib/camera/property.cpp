@@ -454,6 +454,8 @@ Property *Property::fromModelFlow(const ModelFlow *modelFlow)
     propertyFlow->_fixed = true;
     propertyFlow->_const = true;
 
+    propertyFlow->_propertyMap = modelFlow->type();
+
     // sub properties
     foreach (ModelProperty *subBlockProperty, modelFlow->properties())
     {

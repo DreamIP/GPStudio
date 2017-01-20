@@ -24,6 +24,14 @@
         <file>../img/make-send.png</file>
         <file>../img/make-all.png</file>
         <file>../img/stop.png</file>
+        <file>../img/int-type.png</file>
+        <file>../img/string-type.png</file>
+        <file>../img/group-type.png</file>
+        <file>../img/bool-type.png</file>
+        <file>../img/enum-type.png</file>
+        <file>../img/clock-type.png</file>
+        <file>../img/type-type.png</file>
+        <file>../img/process-type.png</file>
     </qresource>
     <qresource prefix="/img">
         <file>../img/gpstudio_node.ico</file>

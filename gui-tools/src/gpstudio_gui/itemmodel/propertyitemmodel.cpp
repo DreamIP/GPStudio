@@ -177,25 +177,34 @@ QVariant PropertyItemModelNoSorted::data(const QModelIndex &index, int role) con
             return QVariant();
         }
     case Qt::DecorationRole:
+        if(index.column() != Name)
+            return QVariant();
         switch (property->type())
         {
         case Property::Group:
+        case Property::Matrix:
+            return QIcon(":/icons/img/group-type.png");
         case Property::FlowType:
+            if(property->propertymap()=="in")
+                return QIcon(":/icons/img/flow-in.png");
+            else
+                return QIcon(":/icons/img/flow-out.png");
         case Property::FlowDataType:
+            return QIcon(":/icons/img/type-type.png");
         case Property::BlockType:
-            return QIcon(":/icons/img/usb.png");
+            return QIcon(":/icons/img/process-type.png");
         case Property::Int:
         case Property::SInt:
+            return QIcon(":/icons/img/int-type.png");
         case Property::Bool:
+            return QIcon(":/icons/img/bool-type.png");
         case Property::String:
         case Property::StringType:
+            return QIcon(":/icons/img/string-type.png");
         case Property::Clock:
-            return property->value();
+            return QIcon(":/icons/img/clock-type.png");
         case Property::Enum:
-            foreach (PropertyEnum *penum, property->enums()) enumsList << penum->name();
-            return QVariant(enumsList);
-        case Property::Matrix:
-            return QVariant();
+            return QIcon(":/icons/img/enum-type.png");
         }
     }
     return QVariant();

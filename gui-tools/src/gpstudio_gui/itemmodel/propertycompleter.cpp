@@ -4,7 +4,7 @@
 #include <QStringList>
 
 PropertyCompleter::PropertyCompleter(QObject *parent, const Property *rootProperty)
-    : QCompleter(new PropertyItemModelNoSorted(rootProperty), parent)
+    : QCompleter(new PropertyItemModel(rootProperty), parent)
 {
 }
 

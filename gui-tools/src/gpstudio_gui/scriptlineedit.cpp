@@ -65,6 +65,8 @@ void ScriptLineEdit::keyPressEvent(QKeyEvent *event)
        }
     }
 
+    if(event->key() == Qt::Key_Space && event->modifiers() | Qt::ControlModifier)
+        completer()->complete();
     if(event->key() == Qt::Key_Up)
         emit up();
     if(event->key() == Qt::Key_Down)
