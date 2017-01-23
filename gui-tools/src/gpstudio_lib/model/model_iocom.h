@@ -45,8 +45,6 @@ public:
 
 protected:
     ModelComDriver *_comDriver;
-
-    QList<ModelComConnect *> _comConnects;
 };
 
 #endif // MODEL_IOCOM_H

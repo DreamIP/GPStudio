@@ -37,8 +37,8 @@ ModelIOCom::ModelIOCom(const ModelIOCom &modelIOCom)
 
 ModelIOCom::~ModelIOCom()
 {
-    for(int i=0; i<_comConnects.size(); i++)
-        delete _comConnects[i];
+    /*for(int i=0; i<_comConnects.size(); i++)
+        delete _comConnects[i];*/
 }
 
 ModelBlock::Type ModelIOCom::type() const
