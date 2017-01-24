@@ -13,7 +13,8 @@ You may need a distribution of quartus 13.1 for dreamcam.
 back-end generation
 * Qt (with qmake bin in your path) Qt 4.7 or more recent version (Qt5 
 supported) for GUI tools
-* quartus (with bin in your path) if you want to use atlera branded FPGA
+* quartus (with bin in your path) if you want to use Atlera branded FPGA
+[Quartus download](https://www.altera.com/downloads/download-center.html)
 * libusb for USB camera comunication
 
 For PHP7, you need to install : php7.0-mbstring php7.0-zip php7.0-xml
@@ -29,6 +30,11 @@ Optionnal :
 If you use php7, add the folowing package :
 
 > sudo apt-get install php7.0-gd
+
+## Devices rights
+To avoid to lauch viewer and programmer with root privilege, you need to
+copy rules from share/ directory to /etc/udev/rules.d/. This is done by
+install.sh.
 
 ## GUI tools compilation
 

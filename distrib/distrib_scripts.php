@@ -125,12 +125,16 @@ function distrib_bin($mainoutpath, $system, $archi, $qtver)
         copy_with_rights(LIB_PATH . "INSTALL.md",                                           $mainoutpath . "INSTALL.md");
         copy_with_rights(LIB_PATH . "CHANGELOG.md",                                         $mainoutpath . "CHANGELOG.md");
         copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "setenv.sh",            $mainoutpath . "setenv.sh");
-        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "install.sh",           $mainoutpath . "install.sh");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "install.sh",           $mainoutpath . "share" . DIRECTORY_SEPARATOR . "install.sh");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "dreamcam.rules",       $mainoutpath . "share" . DIRECTORY_SEPARATOR . "dreamcam.rules");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "dreamcam_usb3.rules",  $mainoutpath . "share" . DIRECTORY_SEPARATOR . "dreamcam_usb3.rules");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "usb_blaster.rules",    $mainoutpath . "share" . DIRECTORY_SEPARATOR . "usb_blaster.rules");
         
         copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpnode_completion",    $mainoutpath . "gpnode_completion");
         copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gplib_completion",     $mainoutpath . "gplib_completion");
         copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpdevice_completion",  $mainoutpath . "gpdevice_completion");
         copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpproc_completion",    $mainoutpath . "gpproc_completion");
+        copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpcomp_completion",    $mainoutpath . "gpcomp_completion");
     }
     $bin_source_path = "bin-" . $system . $archi . '-qt' . $qtver;
     cpy_dir(GUI_TOOLS_PATH . $bin_source_path, $mainoutpath . "bin");
