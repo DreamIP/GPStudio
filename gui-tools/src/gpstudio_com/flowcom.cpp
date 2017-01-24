@@ -119,6 +119,12 @@ void FlowCom::appendData(const QByteArray &data)
     _current.appendData(data.mid(4));
 }
 
+void FlowCom::appendData(const FlowPackage &data)
+{
+    _current = data;
+    validate();
+}
+
 FlowPackage FlowCom::getData()
 {
     QMutexLocker locker(&_mutexDataRead);

@@ -52,6 +52,7 @@ public:
 
     // Flow IN
     void appendData(const QByteArray &data);
+    void appendData(const FlowPackage &data); // tests only !!
 
     FlowPackage getData();
     void validate();

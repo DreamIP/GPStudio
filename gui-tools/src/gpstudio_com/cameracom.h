@@ -41,22 +41,22 @@ public:
 
     const CameraInfo info() const;
 
-    //Camera(const CameraInfo &info);
-
-    // void sendFlow(const Flow &flow);
-    // bool getFlow(Flow &flow);
-
     static QVector<CameraInfo> avaibleCams();
 
-    const QList<FlowCom*> &inputFlow() const;
-    QList<FlowCom*> &inputFlow();
-    const QList<FlowCom*> &outputFlow() const;
-    QList<FlowCom*> &outputFlow();
+    FlowCom *inputFlow(unsigned char idFlow) const;
+    const QList<FlowCom*> &inputFlows() const;
+    QList<FlowCom*> &inputFlows();
+
+    FlowCom *outputFlow(unsigned char idFlow) const;
+    const QList<FlowCom*> &outputFlows() const;
+    QList<FlowCom*> &outputFlows();
 
     CameraIO *cameraIO() const;
 
     void writeParam(const unsigned int addr, const unsigned int value);
     void writeParam(const unsigned int addr, const unsigned int * data, const unsigned size);
+
+    void fakeDataReceived(int idFlow, const FlowPackage &package);
 
 signals:
     void flowReadyToRead(int flow);
@@ -69,8 +69,8 @@ private:
     CameraIO *_cameraIO;
     bool _start;
 
-    QList<FlowCom*> _inputFlow;
-    QList<FlowCom*> _outputFlow;
+    QList<FlowCom*> _inputFlows;
+    QList<FlowCom*> _outputFlows;
 
     FlowCom *_paramFlow;
 

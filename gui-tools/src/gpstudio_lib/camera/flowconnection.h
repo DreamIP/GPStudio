@@ -35,8 +35,8 @@ class GPSTUDIO_LIB_EXPORT FlowConnection : public QObject
 public:
     FlowConnection();
 
-    int flowId() const;
-    void setFlowId(int flowId);
+    int idFlow() const;
+    void setIdFlow(int idFlow);
 
     Flow *flow() const;
     void setFlow(Flow *flow);

@@ -25,12 +25,12 @@ FlowConnection::FlowConnection()
     _fps=0;
 }
 
-int FlowConnection::flowId() const
+int FlowConnection::idFlow() const
 {
     return _flowId;
 }
 
-void FlowConnection::setFlowId(int flowId)
+void FlowConnection::setIdFlow(int flowId)
 {
     _flowId = flowId;
 }

@@ -115,19 +115,20 @@ RegisterManager &Camera::registermanager()
     return _registermanager;
 }
 
-void Camera::sendPackage(int flowId, const FlowPackage &package)
+void Camera::sendPackage(int idFlow, const FlowPackage &package)
 {
-    sendPackage(_flowManager->flowConnection(flowId), package);
+    FlowCom *flowCom = _com->outputFlow(idFlow);
+    if(flowCom)
+        flowCom->send(package);
 }
 
 void Camera::sendPackage(const QString &flowName, const FlowPackage &package)
 {
-    sendPackage(_flowManager->flowConnection(flowName), package);
-}
-
-void Camera::sendPackage(FlowConnection *flowConnection, const FlowPackage &package)
-{
-    _com->outputFlow()[flowConnection->flowId()]->send(package);
+    FlowConnection *flowConnection = _flowManager->flowConnection(flowName);
+    if(!flowConnection)
+        return;
+    int idFlow = flowConnection->idFlow();
+    sendPackage(idFlow, package);
 }
 
 Block *Camera::fiBlock() const

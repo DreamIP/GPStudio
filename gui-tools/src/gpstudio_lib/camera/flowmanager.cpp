@@ -66,7 +66,7 @@ void FlowManager::setCamera(Camera *camera)
             if(comConnect->type()=="flow")
             {
                 FlowConnection *flowConnection = new FlowConnection();
-                flowConnection->setFlowId(comConnect->id().toInt());
+                flowConnection->setIdFlow(comConnect->id().toInt());
 
                 ModelFlow *flow = iOCom->getFlow(comConnect->link());
                 flowConnection->setFlow(_blockCom->flow(flow->name()));
@@ -80,7 +80,7 @@ void FlowManager::setCamera(Camera *camera)
 void FlowManager::addFlowConnection(FlowConnection *flowConnection)
 {
     _flowConnectionsMapName.insert(flowConnection->flow()->name(), flowConnection);
-    _flowConnectionsMapId.insert(flowConnection->flowId(), flowConnection);
+    _flowConnectionsMapId.insert(flowConnection->idFlow(), flowConnection);
     _flowConnections.append(flowConnection);
 }
 
@@ -112,11 +112,11 @@ FlowConnection *FlowManager::flowConnection(const QString &name) const
 
 void FlowManager::processFlow(int idFlow)
 {
-    if(idFlow>=_camera->com()->inputFlow().count())
+    if(idFlow>=_camera->com()->inputFlows().count())
         return;
 
-    int id = _camera->com()->inputFlow()[idFlow]->idFlow();
-    FlowPackage data = _camera->com()->inputFlow()[idFlow]->getData();
+    int id = _camera->com()->inputFlows()[idFlow]->idFlow();
+    FlowPackage data = _camera->com()->inputFlows()[idFlow]->getData();
     FlowConnection *flowConnection = _flowConnectionsMapId[id];
     flowConnection->recImg(data);
 }

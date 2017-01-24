@@ -38,16 +38,16 @@ CameraCom::CameraCom(const CameraInfo &cameraInfo)
         _cameraIO->connect(cameraInfo);
 
     // TODO pass this part dynamic
-    _outputFlow.append(new FlowCom(15));   // set param
-    _paramFlow = _outputFlow[0];
+    _outputFlows.append(new FlowCom(15));   // set param
+    _paramFlow = _outputFlows[0];
 
-    _outputFlow.append(new FlowCom(1));
-    _outputFlow.append(new FlowCom(2));
+    _outputFlows.append(new FlowCom(1));
+    _outputFlows.append(new FlowCom(2));
 
-    _inputFlow.append(new FlowCom(0x80));
-    _inputFlow.append(new FlowCom(0x81));
-    _inputFlow.append(new FlowCom(0x82));
-    _inputFlow.append(new FlowCom(0x83));
+    _inputFlows.append(new FlowCom(0x80));
+    _inputFlows.append(new FlowCom(0x81));
+    _inputFlows.append(new FlowCom(0x82));
+    _inputFlows.append(new FlowCom(0x83));
 
     _start=true;
     start(QThread::NormalPriority);
@@ -82,16 +82,56 @@ QVector<CameraInfo> CameraCom::avaibleCams()
     return avaibleCams;
 }
 
+FlowCom *CameraCom::inputFlow(unsigned char idFlow) const
+{
+    for(int i=0; i<_inputFlows.size(); i++)
+    {
+        if(_inputFlows[i]->idFlow() == idFlow)
+            return _inputFlows[i];
+    }
+    return NULL;
+}
+
+const QList<FlowCom*> &CameraCom::inputFlows() const
+{
+    return _inputFlows;
+}
+
+QList<FlowCom*> &CameraCom::inputFlows()
+{
+    return _inputFlows;
+}
+
+FlowCom *CameraCom::outputFlow(unsigned char idFlow) const
+{
+    for(int i=0; i<_outputFlows.size(); i++)
+    {
+        if(_outputFlows[i]->idFlow() == idFlow)
+            return _outputFlows[i];
+    }
+    return NULL;
+}
+
+const QList<FlowCom*> &CameraCom::outputFlows() const
+{
+    return _outputFlows;
+}
+
+QList<FlowCom*> &CameraCom::outputFlows()
+{
+    return _outputFlows;
+}
+
 void CameraCom::run()
 {
     QMap<int,int> prev_numpacket;
 
-    for (int i=0;i<_inputFlow.size();i++)
-        prev_numpacket[_inputFlow[i]->idFlow()] = -1;
+    for (int i=0;i<_inputFlows.size();i++)
+        prev_numpacket[_inputFlows[i]->idFlow()] = -1;
 
     bool succes;
 
-    while(_start)
+    while(_start && _cameraIO != NULL)
     {
         const QByteArray &received = _cameraIO->read(512*128, 1, &succes);
 //           const QByteArray &received = _cameraIO->read(512, 1, &succes);
@@ -119,9 +159,9 @@ void CameraCom::run()
             unsigned short numpacket = ((unsigned short)((unsigned char)packet[2])*256)+(unsigned char)packet[3];
 
             //qDebug()<<"receive:start"; qint64 time = QDateTime::currentDateTime().toMSecsSinceEpoch();
-            for(int i=0; i<_inputFlow.size(); i++)
+            for(int i=0; i<_inputFlows.size(); i++)
             {
-                if(_inputFlow[i]->idFlow()==idFlow)
+                if(_inputFlows[i]->idFlow()==idFlow)
                 {
                     if(prev_numpacket[idFlow]!=-1)
                     {
@@ -130,16 +170,16 @@ void CameraCom::run()
                             int miss_packet = numpacket-prev_numpacket[idFlow]-1;
                             qDebug()<<"miss"<<miss_packet<<numpacket;
                             for(int j=0; j<miss_packet; j++)
-                                _inputFlow[i]->appendData(QByteArray(512,0));
+                                _inputFlows[i]->appendData(QByteArray(512,0));
                         }
                     }
-                    _inputFlow[i]->appendData(packet);
+                    _inputFlows[i]->appendData(packet);
                     prev_numpacket[idFlow] = numpacket;
 
                     if(flagFlow==0xBA)      // end of flow
                     {
                         prev_numpacket[idFlow]=-1;
-                        _inputFlow[i]->validate();
+                        _inputFlows[i]->validate();
                         emit flowReadyToRead(i);
                     }
                 }
@@ -152,11 +192,11 @@ void CameraCom::run()
 
             start+=512;
         }
-        for(int i=0; i<_outputFlow.size(); i++)
+        for(int i=0; i<_outputFlows.size(); i++)
         {
-            if(_outputFlow[i]->readyToSend())
+            if(_outputFlows[i]->readyToSend())
             {
-                const QByteArray data = _outputFlow[i]->dataToSend(_cameraIO->sizePacket());
+                const QByteArray data = _outputFlows[i]->dataToSend(_cameraIO->sizePacket());
                 _cameraIO->write(data, 1);
             }
         }
@@ -219,22 +259,11 @@ void CameraCom::writeParam(const unsigned int addr, const unsigned int *data, co
     _paramFlow->send(paramFlow);
 }
 
-const QList<FlowCom*> &CameraCom::outputFlow() const
+void CameraCom::fakeDataReceived(int idFlow, const FlowPackage &package)
 {
-    return _outputFlow;
-}
+    if(idFlow >= _inputFlows.size())
+        return;
 
-QList<FlowCom*> &CameraCom::outputFlow()
-{
-    return _outputFlow;
-}
-
-const QList<FlowCom*> &CameraCom::inputFlow() const
-{
-    return _inputFlow;
-}
-
-QList<FlowCom*> &CameraCom::inputFlow()
-{
-    return _inputFlow;
+    _inputFlows[idFlow]->appendData(package);
+    emit flowReadyToRead(idFlow);
 }
