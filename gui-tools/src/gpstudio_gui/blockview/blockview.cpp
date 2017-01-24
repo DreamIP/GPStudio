@@ -261,12 +261,19 @@ void BlockView::mouseReleaseEvent(QMouseEvent *event)
     {
         BlockPortItem *processItem = qgraphicsitem_cast<BlockPortItem*>(itemAt(event->pos()));
         if(processItem && processItem!=_startConnectItem
-                && _startConnectItem->modelFlow()->type() != processItem->modelFlow()->type()
-                && _startConnectItem->modelFlow()->parent() != processItem->modelFlow()->parent())
+                && _startConnectItem->modelFlow()->type() != processItem->modelFlow()->type())
         {
+            bool ok = true;
             ModelFlowConnect connect(_startConnectItem->blockName(), _startConnectItem->name(),
                                      processItem->blockName(),       processItem->name());
-            if(_scene->getConnector(connect)==NULL)
+            if(_startConnectItem->modelFlow()->parent() == processItem->modelFlow()->parent())
+            {
+                if(_startConnectItem->modelFlow()->parent()->type() != ModelBlock::IOCom)
+                    ok = false;
+            }
+            if(_scene->getConnector(connect) != NULL) // if connector does not exist
+                ok = false;
+            if(ok)
                 emit blockPortConnected(connect);
         }
 
