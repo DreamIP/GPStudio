@@ -26,7 +26,7 @@
 
 ModelIOCom::ModelIOCom()
 {
-    _comDriver = NULL;
+    _comDriver = new ModelComDriver();
 }
 
 ModelIOCom::ModelIOCom(const ModelIOCom &modelIOCom)
@@ -46,11 +46,9 @@ ModelBlock::Type ModelIOCom::type() const
     return IOCom;
 }
 
-QString ModelIOCom::driverIO() const
+const QString &ModelIOCom::driverIO() const
 {
-    if(_comDriver)
-        return _comDriver->driverIO();
-    return QString();
+    return _comDriver->driverIO();
 }
 
 ModelComDriver *ModelIOCom::comDriver() const
@@ -72,7 +70,7 @@ ModelIO *ModelIOCom::fromNodeGenerated(const QDomElement &domElement, ModelIOCom
         if(!e.isNull())
         {
             if(e.tagName()=="com_driver")
-                ioCom->_comDriver = ModelComDriver::fromNodeGenerated(e);
+                ioCom->setComDriver(ModelComDriver::fromNodeGenerated(e));
         }
         n = n.nextSibling();
     }
@@ -94,4 +92,11 @@ ModelIO *ModelIOCom::fromNodeDef(const QDomElement &domElement, ModelIO *io)
     ModelBlock::fromNodeDef(domElement, io);
 
     return io;
+}
+
+void ModelIOCom::setComDriver(ModelComDriver *comDriver)
+{
+    if(_comDriver)
+        delete _comDriver;
+    _comDriver = comDriver;
 }

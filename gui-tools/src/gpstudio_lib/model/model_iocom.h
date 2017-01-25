@@ -36,7 +36,7 @@ public:
 
     Type type() const;
 
-    QString driverIO() const;
+    const QString &driverIO() const;
     ModelComDriver *comDriver() const;
 
 public:
@@ -45,6 +45,7 @@ public:
 
 protected:
     ModelComDriver *_comDriver;
+    void setComDriver(ModelComDriver *comDriver);
 };
 
 #endif // MODEL_IOCOM_H
