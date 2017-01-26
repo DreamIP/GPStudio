@@ -209,6 +209,48 @@ class Lib
     /**
      * @brief Try to open all the process
      */
+    function checkBlock($block)
+    {
+        // check ip info
+        if (count($block->infos) < 1)
+            warning("Missing IP informations", 1);
+
+        // check flow out properties
+        foreach ($block->flows as $flow)
+        {
+            if (empty($flow->properties) and $flow->type == "out")
+                warning("Missing properties on output flow '" . $flow->name . "'", 2);
+        }
+
+        // check file existance
+        foreach ($block->files as $file)
+        {
+            if (strpos($file->path, "hwlib:") === 0)
+                $path = str_replace("hwlib:", SUPPORT_PATH . "component" . DIRECTORY_SEPARATOR, $file->path);
+            else
+                $path = $block->path . "/" . $file->path;
+            if (!file_exists($path))
+                warning("File '" . $block->path . "/" . $file->path . "' does not exist", 3);
+        }
+
+        // check categ not empty
+        if ($block->categ == "")
+            warning("Missing IP category", 4);
+        
+        // check doc
+        $doc = false;
+        foreach ($block->files as $file)
+        {
+            if($file->group == "doc")
+                $doc = true;
+        }
+        if(!$doc)
+            warning("No documentation for this block", 5);
+    }
+
+    /**
+     * @brief Try to open all the process
+     */
     function checklib()
     {
         echo "========== Processes ===========\n";
@@ -216,31 +258,7 @@ class Lib
         {
             echo "Trying to open " . $process->name . "...\n";
             $proc = new Process($process->filePath);
-            // check ip info
-            if (count($proc->infos) < 1)
-                warning("Missing IP informations", 1);
-
-            // check flow out properties
-            foreach ($proc->flows as $flow)
-            {
-                if (empty($flow->properties) and $flow->type == "out")
-                    warning("Missing properties on output flow '" . $flow->name . "'", 2);
-            }
-
-            // check file existance
-            foreach ($proc->files as $file)
-            {
-                if (strpos($file->path, "hwlib:") === 0)
-                    $path = str_replace("hwlib:", SUPPORT_PATH . "component" . DIRECTORY_SEPARATOR, $file->path);
-                else
-                    $path = $proc->path . "/" . $file->path;
-                if (!file_exists($path))
-                    warning("File '" . $file->name . "' does not exist", 3);
-            }
-
-            // check categ not empty
-            if ($proc->categ == "")
-                warning("Missing IP category", 4);
+            $this->checkBlock($proc);
             echo $proc->name . " OK \n";
         }
         echo "=========== Devices ============\n";
@@ -248,6 +266,7 @@ class Lib
         {
             echo "Trying to open " . $io->name . "...\n";
             $proc = new IO($io->filePath);
+            $this->checkBlock($proc);
             echo $io->name . " OK \n";
         }
     }
