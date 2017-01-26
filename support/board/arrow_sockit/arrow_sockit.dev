@@ -122,129 +122,134 @@
                 </pin>
 			</pins>
 		</io>
-		<io name="usb3" type="comunication" driver="usb" optional="true" description="USB3.0">
+		<io name="usb3" type="comunication" driver="usb3" optional="true" description="USB3.0">
             <pins>
-                <pin name="clk" mapto="PIN_N9">
+                <pin name="clk" mapto="PIN_J14">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="be[1]" mapto="PIN_K11">
+                <pin name="be[1]" mapto="PIN_J9">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="be[0]" mapto="PIN_L12">
+                <pin name="be[0]" mapto="PIN_J10">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[15]" mapto="PIN_H17">
+                <pin name="data[15]" mapto="PIN_F10">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[14]" mapto="PIN_H18">
+                <pin name="data[14]" mapto="PIN_G10">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[13]" mapto="PIN_L11">
+                <pin name="data[13]" mapto="PIN_J12">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[12]" mapto="PIN_M11">
+                <pin name="data[12]" mapto="PIN_K12">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[11]" mapto="PIN_M12">
+                <pin name="data[11]" mapto="PIN_G11">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[10]" mapto="PIN_N12">
+                <pin name="data[10]" mapto="PIN_G12">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[9]" mapto="PIN_H13">
+                <pin name="data[9]" mapto="PIN_H12">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[8]" mapto="PIN_H14">
+                <pin name="data[8]" mapto="PIN_H13">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[7]" mapto="PIN_C10">
+                <pin name="data[7]" mapto="PIN_F6">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[6]" mapto="PIN_D10">
+                <pin name="data[6]" mapto="PIN_G7">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[5]" mapto="PIN_B9">
+                <pin name="data[5]" mapto="PIN_D7">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[4]" mapto="PIN_C9">
+                <pin name="data[4]" mapto="PIN_E8">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[3]" mapto="PIN_E11">
+                <pin name="data[3]" mapto="PIN_A8">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[2]" mapto="PIN_E10">
+                <pin name="data[2]" mapto="PIN_A9">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[1]" mapto="PIN_D12">
+                <pin name="data[1]" mapto="PIN_C9">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[0]" mapto="PIN_D11">
+                <pin name="data[0]" mapto="PIN_C10">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="rxf_n" mapto="PIN_J16">
+                <pin name="rxf_n" mapto="PIN_K8">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="txe_n" mapto="PIN_H15">
+                <pin name="txe_n" mapto="PIN_K7">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="wr_n" mapto="PIN_J11">
+                <pin name="wr_n" mapto="PIN_H7">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="rd_n" mapto="PIN_G16">
+                <pin name="rd_n" mapto="PIN_H8">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="oe_n" mapto="PIN_G17">
+                <pin name="oe_n" mapto="PIN_G8">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="siwu_n" mapto="PIN_J12">
+                <pin name="siwu_n" mapto="PIN_J7">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="reset_n" mapto="PIN_E4">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
