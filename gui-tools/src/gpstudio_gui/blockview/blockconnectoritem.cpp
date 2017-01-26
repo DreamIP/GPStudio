@@ -69,7 +69,7 @@ void BlockConnectorItem::setStyle(const BlockConnectorItem::DrawStyle &style)
 
 QRectF BlockConnectorItem::boundingRect() const
 {
-    return QRectF(_inPos, _outPos).normalized().adjusted(-5, -15, 5, 15);
+    return QRectF(_inPos, _outPos).normalized().adjusted(-5, -25, 5, 15);
 }
 
 QPainterPath BlockConnectorItem::shape() const
@@ -86,10 +86,10 @@ QPainterPath BlockConnectorItem::shape() const
     if(_highlight || isSelected())
     {
         QPainterPath in;
-        in.addRect(QRectF(_inSizePoint + QPointF(-10,-5), QSize(20,-10)));
+        in.addRect(QRectF(_inSizePoint + QPointF(-10,-18), QSize(20,-10)));
         p.addPath(in);
         QPainterPath out;
-        out.addRect(QRectF(_outSizePoint + QPointF(-20,-5), QSize(40,-10)));
+        out.addRect(QRectF(_outSizePoint + QPointF(-20,-18), QSize(40,-10)));
         p.addPath(out);
     }
     return p;
@@ -108,19 +108,16 @@ void BlockConnectorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
     // front draw
     if(_highlight || isSelected())
     {
-        QFont font = painter->font();
-        font.setBold(true);
-        painter->setFont(font);
-
         painter->setPen(QPen(QColor(255,165,0), 4));
         painter->drawPath(_shape);
 
         // flow size draw
-        if(lod>0.65)
+        if(lod>0.8)
         {
+            painter->setFont(QFont("",8));
             painter->setPen(QPen(QColor(255,145,0), 2));
 
-            painter->drawText(QRectF(_inSizePoint + QPointF(-10,-20), QSize(20,15)), Qt::AlignHCenter | Qt::AlignTop,
+            painter->drawText(QRectF(_inSizePoint + QPointF(-10,-18), QSize(20,15)), Qt::AlignHCenter | Qt::AlignTop,
                               QString("%1").arg(_portItem1->modelFlow()->size()));
             painter->drawLine(_inSizePoint + QPointF(-2,-5), _inSizePoint + QPointF(2,5));
 
@@ -136,7 +133,7 @@ void BlockConnectorItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
                 else
                     outSizeText = QString("[%1..0]").arg(_portItem1->modelFlow()->size()-1);
             }
-            painter->drawText(QRectF(_outSizePoint + QPointF(-20,-20), QSize(40,15)), Qt::AlignHCenter | Qt::AlignTop, outSizeText);
+            painter->drawText(QRectF(_outSizePoint + QPointF(-20,-18), QSize(40,15)), Qt::AlignHCenter | Qt::AlignTop, outSizeText);
             painter->drawLine(_outSizePoint + QPointF(-2,-5), _outSizePoint + QPointF(2,5));
         }
     }

@@ -146,6 +146,7 @@ void BlockPortItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
     painter->setPen(QPen(Qt::white));
     QFont font = painter->font();
+    font.setPixelSize(10);
     if(_hover)
         font.setBold(true);
     painter->setFont(font);

@@ -110,6 +110,11 @@ void BlockItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     // block name
     painter->setPen(QPen(Qt::black, 1));
     QRectF textRect = QRectF(0, _boundingRect.height(), _boundingRect.width(), painter->fontMetrics().height() + 3);
+    QFont font = painter->font();
+    font.setPixelSize(12);
+    if(isSelected())
+        font.setBold(true);
+    painter->setFont(font);
     painter->drawText(textRect, Qt::AlignRight | Qt::AlignBottom, _name);
 }
 
