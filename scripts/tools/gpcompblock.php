@@ -456,7 +456,7 @@ switch ($action)
         if (!preg_match("/^[A-Za-z][0-9A-Za-z_]*$/", $name))
             echo error("This name '$name' does not respect the naming convention ([A-Za-z][0-9A-Za-z_]*).", 1);
         if ($component->getInstance($name, false) != NULL)
-            error("This instance name already exists (insensitive case).", 1);
+            error("This instance name already exists (insensitive case)." . " '" . $name . "'", 1);
         if ($direction != "in" and $direction != "out")
             error("You should specify a direction for the flow with -d [in-out]", 1);
 
@@ -553,7 +553,7 @@ switch ($action)
         if (!preg_match("/^[A-Za-z][0-9A-Za-z_]*$/", $name))
             echo error("This name '$name' does not respect the naming convention ([A-Za-z][0-9A-Za-z_]*).", 1);
         if ($component->getInstance($name) != NULL)
-            error("This instance name already exists.", 1);
+            error("This instance name already exists." . " '" . $name . "'", 1);
 
         if (array_key_exists('t', $options))
             $type = $options['t'];
@@ -899,7 +899,7 @@ switch ($action)
         if (!preg_match("/^[A-Za-z][0-9A-Za-z_]*$/", $name))
             echo error("This name '$name' does not respect the naming convention ([A-Za-z][0-9A-Za-z_]*).", 1);
         if ($component->getInstance($name) != NULL)
-            error("This instance name already exists.", 1);
+            error("This instance name already exists." . " '" . $name . "'", 1);
         if ($direction != "in" and $direction != "out")
             error("You should specify a direction for the reset with -d [in-out]", 1);
 
@@ -1004,7 +1004,7 @@ switch ($action)
         if (!preg_match("/^[A-Za-z][0-9A-Za-z_]*$/", $name))
             echo error("This name '$name' does not respect the naming convention ([A-Za-z][0-9A-Za-z_]*).", 1);
         if ($component->getInstance($name) != NULL)
-            error("This instance name already exists.", 1);
+            error("This instance name already exists." . " '" . $name . "'", 1);
         if ($direction != "in" and $direction != "out")
             error("You should specify a direction for the clock with -d [in-out]", 1);
 
@@ -1137,7 +1137,7 @@ switch ($action)
         if (!preg_match("/^[A-Za-z][0-9A-Za-z_]*$/", $name))
             echo error("This name '$name' does not respect the naming convention ([A-Za-z][0-9A-Za-z_]*).", 1);
         if ($component->getInstance($name) != NULL)
-            error("This instance name already exists.", 1);
+            error("This instance name already exists." . " '" . $name . "'", 1);
         if ($type != "in" and $type != "out" and $type != "inout")
             error("You should specify a type for the external port with -t [in-out-inout]", 1);
 
@@ -1439,7 +1439,7 @@ switch ($action)
             error("This property name '$propertyPath' does not exist.", 1);
 
         if ($property->getPropertyEnum($name, false) != NULL)
-            error("This instance name already exists.", 1);
+            error("This instance name already exists." . " '" . $name . "'", 1);
 
         if (!preg_match("/^[A-Za-z][0-9A-Za-z_]*$/", $name))
             echo error("This name '$name' does not respect the naming convention ([A-Za-z][0-9A-Za-z_]*).", 1);
