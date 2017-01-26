@@ -29,6 +29,8 @@
     <file name="dynroi.vhd" type="vhdl" group="hdl" path="hdl/dynroi.vhd"/>
     <file name="dynroi_process.vhd" type="vhdl" group="hdl" path="hdl/dynroi_process.vhd"/>
     <file name="dynroi_slave.vhd" type="vhdl" group="hdl" path="hdl/dynroi_slave.vhd"/>
+    <file name="dynroi.tex" type="tex" group="doc" path="doc/dynroi.tex"/>
+    <file name="dynroi.pdf" type="pdf" group="doc" path="doc/dynroi.pdf"/>
   </files>
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>

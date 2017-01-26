@@ -47,3 +47,5 @@ gpproc setdraw -f dynroi.svg
 gpproc addfile -p hdl/dynroi.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/dynroi_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/dynroi_slave.vhd -t vhdl -g hdl
+gpproc addfile -p doc/dynroi.tex -t tex -g doc
+gpproc addfile -p doc/dynroi.pdf -t pdf -g doc

@@ -24,6 +24,8 @@
     <file name="dynthreshold.vhd" type="vhdl" group="hdl" path="hdl/dynthreshold.vhd"/>
     <file name="dynthreshold_process.vhd" type="vhdl" group="hdl" path="hdl/dynthreshold_process.vhd"/>
     <file name="dynthreshold_slave.vhd" type="vhdl" group="hdl" path="hdl/dynthreshold_slave.vhd"/>
+    <file name="dynthreshold.tex" type="tex" group="doc" path="doc/dynthreshold.tex"/>
+    <file name="dynthreshold.pdf" type="pdf" group="doc" path="doc/dynthreshold.pdf"/>
   </files>
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>

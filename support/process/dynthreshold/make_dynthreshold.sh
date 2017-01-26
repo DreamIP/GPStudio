@@ -56,3 +56,5 @@ gpproc generate -o hdl
 gpproc addfile -p hdl/dynthreshold.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/dynthreshold_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/dynthreshold_slave.vhd -t vhdl -g hdl
+gpproc addfile -p doc/dynthreshold.tex -t tex -g doc
+gpproc addfile -p doc/dynthreshold.pdf -t pdf -g doc
