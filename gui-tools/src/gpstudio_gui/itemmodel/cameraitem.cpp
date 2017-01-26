@@ -606,7 +606,7 @@ Qt::ItemFlags CameraItem::flags(const QModelIndex &index) const
         case CameraItem::ModelViewerType:
         case CameraItem::ModelFlowType:
         case CameraItem::FlowType:
-            return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable | defaultFlags;
+            return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags;
 
         case CameraItem::ModelNodeType:
         case CameraItem::CameraType:
