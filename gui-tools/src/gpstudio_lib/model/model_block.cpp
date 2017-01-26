@@ -33,6 +33,8 @@
 #include "model_fiblock.h"
 #include "model_ciblock.h"
 
+#include "lib_parser/lib.h"
+
 ModelBlock::ModelBlock()
 {
     _node = NULL;
@@ -764,10 +766,19 @@ QList<ModelBlock *> ModelBlock::listFromNodeDef(const QDomElement &domElement)
             ModelBlock *block=NULL;
             if(e.tagName()=="process")
                 block = ModelProcess::fromNodeDef(e);
-            if(e.tagName()=="io")
-                block = ModelIO::fromNodeDef(e);
-            if(e.tagName()=="iocom")
-                block = ModelIOCom::fromNodeDef(e);
+            if(e.tagName()=="io" || e.tagName()=="iocom")
+            {
+                QString driver = e.attribute("driver","");
+
+                BlockLib *ioLib = Lib::getLib().io(driver);
+                if(ioLib)
+                {
+                    if(ioLib->type() == BlockLib::IOCom)
+                        block = ModelIOCom::fromNodeDef(e);
+                    else
+                        block = ModelIO::fromNodeDef(e);
+                }
+            }
             if(block==NULL)
                 block = ModelBlock::fromNodeGenerated(e);
 
