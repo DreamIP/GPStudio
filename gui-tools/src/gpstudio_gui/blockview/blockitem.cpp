@@ -103,19 +103,36 @@ void BlockItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     }
     else
     {
-        painter->setBrush(Qt::lightGray);
+        QLinearGradient grad(_boundingRect.topLeft(), _boundingRect.bottomRight());
+        grad.setColorAt(0, Qt::lightGray);
+        grad.setColorAt(1, QColor(Qt::lightGray).darker(150));
+        painter->setBrush(grad);
         painter->drawRect(_boundingRect);
     }
 
     // block name
     painter->setPen(QPen(Qt::black, 1));
-    QRectF textRect = QRectF(0, _boundingRect.height(), _boundingRect.width(), painter->fontMetrics().height() + 3);
-    QFont font = painter->font();
-    font.setPixelSize(12);
-    if(isSelected())
-        font.setBold(true);
-    painter->setFont(font);
-    painter->drawText(textRect, Qt::AlignRight | Qt::AlignBottom, _name);
+    if(lod>0.3)
+    {
+        QFont font = painter->font();
+        font.setPixelSize(12);
+        if(isSelected())
+            font.setBold(true);
+        painter->setFont(font);
+        QRectF textRect = QRectF(0, _boundingRect.height(), _boundingRect.width(), painter->fontMetrics().height() + 3);
+        painter->drawText(textRect, Qt::AlignRight | Qt::AlignBottom, _name);
+    }
+    else
+    {
+        QFont font = painter->font();
+        font.setPixelSize(12);
+        float ratio = (float)(_boundingRect.width()*0.8) / painter->fontMetrics().boundingRect(_name).width();
+        font.setPixelSize(ratio*font.pixelSize());
+        if(isSelected())
+            font.setBold(true);
+        painter->setFont(font);
+        painter->drawText(_boundingRect, Qt::AlignCenter, _name);
+    }
 }
 
 QString BlockItem::name() const
