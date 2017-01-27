@@ -61,12 +61,12 @@ MainWindow::MainWindow(QStringList args) :
 
     if(args.size()>1)
     {
-        if(QFile::exists(args[1])) openNodeGeneratedFile(args[1]);
+        if(QFile::exists(args[1]))
+            openNodeGeneratedFile(args[1]);
     }
 
     // show tabs
-    _camExplorerDock->show();
-    _camExplorerDock->raise();
+    showCamExplorer();
     _scriptDock->show();
     _scriptDock->raise();
 
@@ -75,9 +75,11 @@ MainWindow::MainWindow(QStringList args) :
 
 MainWindow::~MainWindow()
 {
-    if(_blockEditor) delete _blockEditor;
+    if(_blockEditor)
+        delete _blockEditor;
     delete ui;
-    if(_cam) delete _cam;
+    if(_cam)
+        delete _cam;
 }
 
 bool MainWindow::event(QEvent *event)
@@ -109,7 +111,8 @@ void MainWindow::openNode()
 {
     QString file = QFileDialog::getOpenFileName(this, "Open node", "", "*.xml");
 
-    if(!file.isEmpty()) openNodeGeneratedFile(file);
+    if(!file.isEmpty())
+        openNodeGeneratedFile(file);
 }
 
 void MainWindow::createToolBarAndMenu()
@@ -145,6 +148,11 @@ void MainWindow::createToolBarAndMenu()
     viewMenu->addAction(_camExplorerDock->toggleViewAction());
     viewMenu->addSeparator();
     viewMenu->addAction(_piSpaceDock->toggleViewAction());
+    viewMenu->addSeparator();
+
+    QAction *camSwitchMode = new QAction("CameraExplorer &switch mode",this);
+    viewMenu->addAction(camSwitchMode);
+    connect(camSwitchMode, SIGNAL(triggered()), _camExplorerWidget, SLOT(switchModeView()));
 
     // ============= Windows =============
     _winMenu = ui->menuBar->addMenu("&Windows");
@@ -200,7 +208,7 @@ void MainWindow::createDocks()
     setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::North);
 
     // cam explorer dock
-    _camExplorerDock = new QDockWidget("CamExplorer", this);
+    _camExplorerDock = new QDockWidget("Cam Explorer", this);
     QWidget *camExplorerContent = new QWidget(_camExplorerDock);
     QLayout *camExplorerLayout = new QVBoxLayout();
     _camExplorerWidget = new CamExplorerWidget();
@@ -220,7 +228,7 @@ void MainWindow::createDocks()
     tabifyDockWidget(_camExplorerDock, _viewerExplorerDock);
 
     // flowToCam dock
-    _flowToCamDock = new QDockWidget("flowToCam", this);
+    _flowToCamDock = new QDockWidget("Flow Sender", this);
     QWidget *flowToCamContent = new QWidget(_flowToCamDock);
     QLayout *flowToCamLayout = new QVBoxLayout();
     _flowToCamWidget = new FlowToCamWidget();
@@ -322,8 +330,10 @@ void MainWindow::updateWindowsMenu()
         QMdiSubWindow *child = windows.at(i);
 
         QString text;
-        if (i < 9) text = tr("&%1 %2").arg(i + 1).arg(child->windowTitle());
-        else text = tr("%1 %2").arg(i + 1).arg(child->windowTitle());
+        if (i < 9)
+            text = tr("&%1 %2").arg(i + 1).arg(child->windowTitle());
+        else
+            text = tr("%1 %2").arg(i + 1).arg(child->windowTitle());
         QAction *action  = _winMenu->addAction(text);
         action->setCheckable(true);
         action->setChecked(child == ui->mdiArea->activeSubWindow());
@@ -338,6 +348,12 @@ void MainWindow::showBlockDetails(QString blockName)
         delete _blockEditor;
     _blockEditor = new BlockEditorWindow (this, _cam->block(blockName)->modelBlock());
     _blockEditor->show();
+}
+
+void MainWindow::showCamExplorer()
+{
+    _camExplorerDock->show();
+    _camExplorerDock->raise();
 }
 
 void MainWindow::setupViewers()
@@ -392,7 +408,7 @@ void MainWindow::setupViewers()
         _blocksView->loadFromCam(_cam);
     QMdiSubWindow * windows = ui->mdiArea->addSubWindow(_blocksView);
     connect(_blocksView, SIGNAL(blockSelected(QString)), _camExplorerWidget, SLOT(selectBlock(QString)));
-    connect(_blocksView, SIGNAL(blockSelected(QString)), _camExplorerWidget, SLOT(raise()));
+    connect(_blocksView, SIGNAL(blockSelected(QString)), this, SLOT(showCamExplorer()));
     connect(_camExplorerWidget, SIGNAL(blockSelected(QString)), _blocksView, SLOT(selectBlock(QString)));
     connect(_blocksView, SIGNAL(blockDetailsRequest(QString)), this, SLOT(showBlockDetails(QString)));
     windows->setWindowTitle("Blocks view");

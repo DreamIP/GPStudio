@@ -71,6 +71,7 @@ private slots:
 
     void updateWindowsMenu();
     void showBlockDetails(QString blockName);
+    void showCamExplorer();
 
 private:
     Ui::MainWindow *ui;
