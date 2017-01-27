@@ -23,11 +23,10 @@
 
 #include <QDialog>
 #include <QTimer>
-#include "camerainfo.h"
+#include <QDialogButtonBox>
+#include "itemmodel/caminfotreeview.h"
 
-namespace Ui {
-class ConnectNodeDialog;
-}
+#include "camerainfo.h"
 
 class ConnectNodeDialog : public QDialog
 {
@@ -40,15 +39,16 @@ public:
     CameraInfo cameraInfo() const;
 
 private slots:
-    void on_refreshButton_clicked();
+    void refreshButton_clicked();
     void selectCam(CameraInfo cameraInfo);
 
-    void on_buttonBox_accepted();
+    void buttonBox_accepted();
 
-private:
-    Ui::ConnectNodeDialog *ui;
+protected:
+    void setupWidgets();
 
     CameraInfo _cameraInfo;
+    CamInfoTreeView *_camInfoTreeView;
     QTimer _refreshTimer;
 };
 

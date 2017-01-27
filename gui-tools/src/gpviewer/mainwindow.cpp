@@ -19,8 +19,10 @@
 ****************************************************************************/
 
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
+#include <QToolBar>
+#include <QMenuBar>
+#include <QStatusBar>
 #include <QDebug>
 #include <QImage>
 #include <QFileDialog>
@@ -48,13 +50,12 @@
 #include "model/model_viewerflow.h"
 
 MainWindow::MainWindow(QStringList args) :
-    QMainWindow(0),
-    ui(new Ui::MainWindow)
+    QMainWindow(0)
 {
     _cam = NULL;
 
     setWindowIcon(QIcon(":/img/img/gpstudio_viewer.ico"));
-    ui->setupUi(this);
+    setupWidgets();
 
     createDocks();
     createToolBarAndMenu();
@@ -77,7 +78,7 @@ MainWindow::~MainWindow()
 {
     if(_blockEditor)
         delete _blockEditor;
-    delete ui;
+    delete _viewersMdiArea;
     if(_cam)
         delete _cam;
 }
@@ -117,19 +118,22 @@ void MainWindow::openNode()
 
 void MainWindow::createToolBarAndMenu()
 {
+    _mainToolBar = new QToolBar(this);
+    addToolBar(_mainToolBar);
+
     // ============= File =============
-    QMenu *nodeMenu = ui->menuBar->addMenu("&Node");
+    QMenu *nodeMenu = menuBar()->addMenu("&Node");
 
     QAction *openDocAction = new QAction("&Open node",this);
     openDocAction->setIcon(QIcon(":/icons/img/open.png"));
     openDocAction->setShortcut(QKeySequence::Open);
-    ui->mainToolBar->addAction(openDocAction);
+    _mainToolBar->addAction(openDocAction);
     nodeMenu->addAction(openDocAction);
     connect(openDocAction, SIGNAL(triggered()), this, SLOT(openNode()));
 
     QAction *connectAction = new QAction("&Connect node",this);
     connectAction->setIcon(QIcon(":/icons/img/connect.png"));
-    ui->mainToolBar->addAction(connectAction);
+    _mainToolBar->addAction(connectAction);
     nodeMenu->addAction(connectAction);
     connect(connectAction, SIGNAL(triggered()), this, SLOT(connectCam()));
 
@@ -141,7 +145,7 @@ void MainWindow::createToolBarAndMenu()
     connect(exit, SIGNAL(triggered()), this, SLOT(close()));
 
     // ============= View =============
-    QMenu *viewMenu = ui->menuBar->addMenu("&View");
+    QMenu *viewMenu = menuBar()->addMenu("&View");
 
     viewMenu->addSeparator();
     viewMenu->addAction(_scriptDock->toggleViewAction());
@@ -155,36 +159,36 @@ void MainWindow::createToolBarAndMenu()
     connect(camSwitchMode, SIGNAL(triggered()), _camExplorerWidget, SLOT(switchModeView()));
 
     // ============= Windows =============
-    _winMenu = ui->menuBar->addMenu("&Windows");
+    _winMenu = menuBar()->addMenu("&Windows");
     _closeAct = new QAction(tr("Cl&ose"), this);
     _closeAct->setShortcuts(QKeySequence::Close);
     _closeAct->setStatusTip(tr("Close the active window"));
-    connect(_closeAct, SIGNAL(triggered()), ui->mdiArea, SLOT(closeActiveSubWindow()));
+    connect(_closeAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(closeActiveSubWindow()));
 
     _closeAllAct = new QAction(tr("Close &All"), this);
     _closeAllAct->setStatusTip(tr("Close all the windows"));
-    connect(_closeAllAct, SIGNAL(triggered()), ui->mdiArea, SLOT(closeAllSubWindows()));
+    connect(_closeAllAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(closeAllSubWindows()));
 
     _tileAct = new QAction(tr("&Tile"), this);
     _tileAct->setStatusTip(tr("Tile the windows"));
-    connect(_tileAct, SIGNAL(triggered()), ui->mdiArea, SLOT(tileSubWindows()));
+    connect(_tileAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(tileSubWindows()));
 
     _cascadeAct = new QAction(tr("&Cascade"), this);
     _cascadeAct->setStatusTip(tr("Cascade the windows"));
-    connect(_cascadeAct, SIGNAL(triggered()), ui->mdiArea, SLOT(cascadeSubWindows()));
+    connect(_cascadeAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(cascadeSubWindows()));
 
     _nextAct = new QAction(tr("Ne&xt"), this);
     _nextAct->setShortcuts(QKeySequence::NextChild);
     _nextAct->setStatusTip(tr("Move the focus to the next window"));
-    connect(_nextAct, SIGNAL(triggered()), ui->mdiArea, SLOT(activateNextSubWindow()));
+    connect(_nextAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(activateNextSubWindow()));
 
     _previousAct = new QAction(tr("Pre&vious"), this);
     _previousAct->setShortcuts(QKeySequence::PreviousChild);
     _previousAct->setStatusTip(tr("Move the focus to the previous window"));
-    connect(_previousAct, SIGNAL(triggered()), ui->mdiArea, SLOT(activatePreviousSubWindow()));
+    connect(_previousAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(activatePreviousSubWindow()));
 
     updateWindowsMenu();
-    connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(updateWindowsMenu()));
+    connect(_viewersMdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(updateWindowsMenu()));
 
     // ============= Help =============
     QMenu *helpMenu = menuBar()->addMenu("&Help");
@@ -197,7 +201,7 @@ void MainWindow::createToolBarAndMenu()
     connect(aboutQtAction, SIGNAL(triggered(bool)), this, SLOT(aboutQt()));
     helpMenu->addAction(aboutQtAction);
 
-    ui->mainToolBar->addSeparator();
+    _mainToolBar->addSeparator();
 }
 
 void MainWindow::createDocks()
@@ -291,7 +295,7 @@ void MainWindow::connectCam()
             if(cameraInfo.isValid())
             {
                 _cam->connectCam(cameraInfo);
-                ui->statusBar->showMessage("camera connected");
+                statusBar()->showMessage("camera connected");
             }
         }
         _cam->registermanager().evalAll();
@@ -301,7 +305,7 @@ void MainWindow::connectCam()
 
 void MainWindow::disconnectCam()
 {
-    ui->statusBar->showMessage("camera disconnected");
+    statusBar()->showMessage("camera disconnected");
 }
 
 void MainWindow::setBiSpace()
@@ -323,7 +327,7 @@ void MainWindow::updateWindowsMenu()
     _winMenu->addAction(_nextAct);
     _winMenu->addAction(_previousAct);
 
-    QList<QMdiSubWindow *> windows = ui->mdiArea->subWindowList();
+    QList<QMdiSubWindow *> windows = _viewersMdiArea->subWindowList();
 
     for (int i = 0; i < windows.size(); ++i)
     {
@@ -336,7 +340,7 @@ void MainWindow::updateWindowsMenu()
             text = tr("%1 %2").arg(i + 1).arg(child->windowTitle());
         QAction *action  = _winMenu->addAction(text);
         action->setCheckable(true);
-        action->setChecked(child == ui->mdiArea->activeSubWindow());
+        action->setChecked(child == _viewersMdiArea->activeSubWindow());
     }
 }
 
@@ -356,9 +360,27 @@ void MainWindow::showCamExplorer()
     _camExplorerDock->raise();
 }
 
+void MainWindow::setupWidgets()
+{
+    QWidget *centralwidget = new QWidget(this);
+    QLayout *layout = new QVBoxLayout(centralwidget);
+
+    _viewersMdiArea = new QMdiArea();
+    layout->addWidget(_viewersMdiArea);
+
+    centralwidget->setLayout(layout);
+    setCentralWidget(centralwidget);
+
+    QMenuBar *menubar = new QMenuBar(this);
+    setMenuBar(menubar);
+
+    QStatusBar *statusBar = new QStatusBar(this);
+    setStatusBar(statusBar);
+}
+
 void MainWindow::setupViewers()
 {
-    ui->mdiArea->closeAllSubWindows();
+    _viewersMdiArea->closeAllSubWindows();
     _viewers.clear();
 
     int i=0;
@@ -398,7 +420,7 @@ void MainWindow::setupViewers()
     // adding flow view (reverse order to have alphabetic order)
     for(i=_viewers.count()-1; i>=0; i--)
     {
-        QMdiSubWindow * windows = ui->mdiArea->addSubWindow(_viewers[i]);
+        QMdiSubWindow * windows = _viewersMdiArea->addSubWindow(_viewers[i]);
         windows->show();
     }
 
@@ -406,7 +428,7 @@ void MainWindow::setupViewers()
     _blocksView = new BlockView(this);
     if(_cam)
         _blocksView->loadFromCam(_cam);
-    QMdiSubWindow * windows = ui->mdiArea->addSubWindow(_blocksView);
+    QMdiSubWindow * windows = _viewersMdiArea->addSubWindow(_blocksView);
     connect(_blocksView, SIGNAL(blockSelected(QString)), _camExplorerWidget, SLOT(selectBlock(QString)));
     connect(_blocksView, SIGNAL(blockSelected(QString)), this, SLOT(showCamExplorer()));
     connect(_camExplorerWidget, SIGNAL(blockSelected(QString)), _blocksView, SLOT(selectBlock(QString)));
@@ -414,7 +436,7 @@ void MainWindow::setupViewers()
     windows->setWindowTitle("Blocks view");
     windows->show();
 
-    ui->mdiArea->tileSubWindows();
+    _viewersMdiArea->tileSubWindows();
 }
 
 void MainWindow::about()

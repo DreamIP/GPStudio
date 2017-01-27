@@ -19,27 +19,29 @@
 ****************************************************************************/
 
 #include "connectnodedialog.h"
-#include "ui_connectnodedialog.h"
+
+#include <QLayout>
+#include <QPushButton>
 
 ConnectNodeDialog::ConnectNodeDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ConnectNodeDialog)
+    _cameraInfo()
 {
-    ui->setupUi(this);
-    _cameraInfo = CameraInfo();
-    connect(ui->camTreeView, SIGNAL(cameraSelected(CameraInfo)), this, SLOT(selectCam(CameraInfo)));
-    connect(&_refreshTimer, SIGNAL(timeout()), ui->camTreeView, SLOT(refreshCams()));
+    setupWidgets();
+    resize(500, 200);
+
+    connect(_camInfoTreeView, SIGNAL(cameraSelected(CameraInfo)), this, SLOT(selectCam(CameraInfo)));
+    connect(&_refreshTimer, SIGNAL(timeout()), _camInfoTreeView, SLOT(refreshCams()));
     _refreshTimer.start(500);
 }
 
 ConnectNodeDialog::~ConnectNodeDialog()
 {
-    delete ui;
 }
 
-void ConnectNodeDialog::on_refreshButton_clicked()
+void ConnectNodeDialog::refreshButton_clicked()
 {
-    ui->camTreeView->refreshCams();
+    _camInfoTreeView->refreshCams();
 }
 
 void ConnectNodeDialog::selectCam(CameraInfo cameraInfo)
@@ -53,7 +55,28 @@ CameraInfo ConnectNodeDialog::cameraInfo() const
     return _cameraInfo;
 }
 
-void ConnectNodeDialog::on_buttonBox_accepted()
+void ConnectNodeDialog::buttonBox_accepted()
 {
-    _cameraInfo = ui->camTreeView->camInfoSelected();
+    _cameraInfo = _camInfoTreeView->camInfoSelected();
+    accept();
+}
+
+void ConnectNodeDialog::setupWidgets()
+{
+    QLayout *layout = new QVBoxLayout();
+
+    QPushButton *refreshButton = new QPushButton("Refresh");
+    connect(refreshButton, SIGNAL(clicked(bool)), this, SLOT(refreshButton_clicked()));
+    layout->addWidget(refreshButton);
+
+    _camInfoTreeView = new CamInfoTreeView();
+    connect(_camInfoTreeView, SIGNAL(cameraSelected(CameraInfo)), this, SLOT(selectCam(CameraInfo)));
+    layout->addWidget(_camInfoTreeView);
+
+    QDialogButtonBox *dialogButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    layout->addWidget(dialogButtonBox);
+    connect(dialogButtonBox, SIGNAL(accepted()), this, SLOT(buttonBox_accepted()));
+    connect(dialogButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
+    setLayout(layout);
 }

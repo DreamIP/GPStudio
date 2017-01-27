@@ -44,10 +44,6 @@ HEADERS  += \
     mainwindow.h \
     connectnodedialog.h
 
-FORMS    += \
-    mainwindow.ui \
-    connectnodedialog.ui
-
 # relative path for shared library in the same directory
 LIBS += -Wl,-R.
 

@@ -23,6 +23,7 @@
 
 #include <QDockWidget>
 #include <QMainWindow>
+#include <QMdiArea>
 #include <QMdiSubWindow>
 
 #include "camera/camera.h"
@@ -39,10 +40,6 @@
 #include "blockview/blockview.h"
 
 #include "blockeditor/blockeditorwindow.h"
-
-namespace Ui {
-class MainWindow;
-}
 
 class MainWindow : public QMainWindow
 {
@@ -74,9 +71,11 @@ private slots:
     void showCamExplorer();
 
 private:
-    Ui::MainWindow *ui;
-
     Camera *_cam;
+
+    // widgets
+    void setupWidgets();
+    QMdiArea *_viewersMdiArea;
 
     // viewer
     void setupViewers();
@@ -105,6 +104,7 @@ private:
 
     // menu and toolbar
     void createToolBarAndMenu();
+    QToolBar *_mainToolBar;
     QMenu *_winMenu;
     QAction *_closeAct;
     QAction *_closeAllAct;
