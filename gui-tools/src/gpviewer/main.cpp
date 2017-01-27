@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "mainwindow.h"
+#include "gpviewer/viewerwindow.h"
 #include <QApplication>
 
 #include <QDebug>
