@@ -66,5 +66,11 @@ use_open_cv {
     }
 }
 
+# libusb
 win32: LIBS += -L$$PWD/../../thirdparts/libusb-1.0/
-LIBS += -lusb-1.0
+android {
+    LIBS += -L$$PWD/../../../libusb/android/libs/armeabi-v7a/
+    CONFIG += android_install unversioned_soname android_deployment_settings
+    LIBS += -lusb1.0
+}
+!android: LIBS += -lusb-1.0
