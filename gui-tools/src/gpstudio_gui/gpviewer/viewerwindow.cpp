@@ -60,6 +60,12 @@ ViewerWindow::ViewerWindow(QStringList args) :
     createDocks();
     createToolBarAndMenu();
 
+    connect(_viewersMdiArea->blocksView(), SIGNAL(blockSelected(QString)), _camExplorerWidget, SLOT(selectBlock(QString)));
+    connect(_viewersMdiArea->blocksView(), SIGNAL(blockSelected(QString)), this, SLOT(showCamExplorer()));
+    connect(_camExplorerWidget, SIGNAL(blockSelected(QString)), _viewersMdiArea->blocksView(), SLOT(selectBlock(QString)));
+    connect(_viewersMdiArea->blocksView(), SIGNAL(blockDetailsRequest(QString)), this, SLOT(showBlockDetails(QString)));
+
+
     if(args.size()>1)
     {
         if(QFile::exists(args[1]))
@@ -159,36 +165,7 @@ void ViewerWindow::createToolBarAndMenu()
     connect(camSwitchMode, SIGNAL(triggered()), _camExplorerWidget, SLOT(switchModeView()));
 
     // ============= Windows =============
-    _winMenu = menuBar()->addMenu("&Windows");
-    _closeAct = new QAction(tr("Cl&ose"), this);
-    _closeAct->setShortcuts(QKeySequence::Close);
-    _closeAct->setStatusTip(tr("Close the active window"));
-    connect(_closeAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(closeActiveSubWindow()));
-
-    _closeAllAct = new QAction(tr("Close &All"), this);
-    _closeAllAct->setStatusTip(tr("Close all the windows"));
-    connect(_closeAllAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(closeAllSubWindows()));
-
-    _tileAct = new QAction(tr("&Tile"), this);
-    _tileAct->setStatusTip(tr("Tile the windows"));
-    connect(_tileAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(tileSubWindows()));
-
-    _cascadeAct = new QAction(tr("&Cascade"), this);
-    _cascadeAct->setStatusTip(tr("Cascade the windows"));
-    connect(_cascadeAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(cascadeSubWindows()));
-
-    _nextAct = new QAction(tr("Ne&xt"), this);
-    _nextAct->setShortcuts(QKeySequence::NextChild);
-    _nextAct->setStatusTip(tr("Move the focus to the next window"));
-    connect(_nextAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(activateNextSubWindow()));
-
-    _previousAct = new QAction(tr("Pre&vious"), this);
-    _previousAct->setShortcuts(QKeySequence::PreviousChild);
-    _previousAct->setStatusTip(tr("Move the focus to the previous window"));
-    connect(_previousAct, SIGNAL(triggered()), _viewersMdiArea, SLOT(activatePreviousSubWindow()));
-
-    updateWindowsMenu();
-    connect(_viewersMdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(updateWindowsMenu()));
+    _viewersMdiArea->setMenu(menuBar()->addMenu("&Viewers"));
 
     // ============= Help =============
     QMenu *helpMenu = menuBar()->addMenu("&Help");
@@ -268,8 +245,7 @@ void ViewerWindow::openNodeGeneratedFile(const QString fileName)
         delete _cam;
 
     _cam = new Camera(fileName);
-
-    setupViewers();
+    _viewersMdiArea->setCamera(_cam);
 
     connect(_cam, SIGNAL(registerDataChanged()), this, SLOT(setBiSpace()));
 
@@ -315,35 +291,6 @@ void ViewerWindow::setBiSpace()
     _piSpaceHex->setData(_cam->registerData());
 }
 
-void ViewerWindow::updateWindowsMenu()
-{
-    _winMenu->clear();
-    _winMenu->addAction(_closeAct);
-    _winMenu->addAction(_closeAllAct);
-    _winMenu->addSeparator();
-    _winMenu->addAction(_tileAct);
-    _winMenu->addAction(_cascadeAct);
-    _winMenu->addSeparator();
-    _winMenu->addAction(_nextAct);
-    _winMenu->addAction(_previousAct);
-
-    QList<QMdiSubWindow *> windows = _viewersMdiArea->subWindowList();
-
-    for (int i = 0; i < windows.size(); ++i)
-    {
-        QMdiSubWindow *child = windows.at(i);
-
-        QString text;
-        if (i < 9)
-            text = tr("&%1 %2").arg(i + 1).arg(child->windowTitle());
-        else
-            text = tr("%1 %2").arg(i + 1).arg(child->windowTitle());
-        QAction *action  = _winMenu->addAction(text);
-        action->setCheckable(true);
-        action->setChecked(child == _viewersMdiArea->activeSubWindow());
-    }
-}
-
 void ViewerWindow::showBlockDetails(QString blockName)
 {
     if(blockName.isEmpty())
@@ -362,81 +309,14 @@ void ViewerWindow::showCamExplorer()
 
 void ViewerWindow::setupWidgets()
 {
-    QWidget *centralwidget = new QWidget(this);
-    QLayout *layout = new QVBoxLayout(centralwidget);
-
-    _viewersMdiArea = new QMdiArea();
-    layout->addWidget(_viewersMdiArea);
-
-    centralwidget->setLayout(layout);
-    setCentralWidget(centralwidget);
+    _viewersMdiArea = new ViewersMdiArea();
+    setCentralWidget(_viewersMdiArea);
 
     QMenuBar *menubar = new QMenuBar(this);
     setMenuBar(menubar);
 
     QStatusBar *statusBar = new QStatusBar(this);
     setStatusBar(statusBar);
-}
-
-void ViewerWindow::setupViewers()
-{
-    _viewersMdiArea->closeAllSubWindows();
-    _viewers.clear();
-
-    int i=0;
-    if(_cam->node()->gpViewer()->viewers().isEmpty())
-    {
-        foreach (FlowConnection *connection, _cam->flowManager()->flowConnections())
-        {
-            if(connection->flow()->type()==Flow::Input)
-            {
-                FlowViewerWidget *viewer = new FlowViewerWidget(new FlowViewerInterface(connection));
-                //ScriptEngine::getEngine().engine()->globalObject().setProperty(connection->flow()->name(), ScriptEngine::getEngine().engine()->newQObject(viewer));
-                viewer->setWindowTitle(QString("Flow %1").arg(connection->flow()->name()));
-                _viewers.insert(i, viewer);
-                i++;
-            }
-        }
-    }
-    else
-    {
-        foreach(ModelViewer *viewer, _cam->node()->gpViewer()->viewers())
-        {
-            QList<FlowConnection *> flowConnections;
-            foreach(ModelViewerFlow *viewerflow, viewer->viewerFlows())
-            {
-                FlowConnection *connection = _cam->flowManager()->flowConnection(viewerflow->flowName());
-                if(connection)
-                    flowConnections.append(connection);
-            }
-            FlowViewerInterface *viewerInterface = new FlowViewerInterface(flowConnections);
-            FlowViewerWidget *viewerWidget = new FlowViewerWidget(viewerInterface);
-            //ScriptEngine::getEngine().engine()->globalObject().setProperty(connection->flow()->name(), ScriptEngine::getEngine().engine()->newQObject(viewerWidget));
-            viewerWidget->setWindowTitle(viewer->name());
-            _viewers.insert(i++, viewerWidget);
-        }
-    }
-
-    // adding flow view (reverse order to have alphabetic order)
-    for(i=_viewers.count()-1; i>=0; i--)
-    {
-        QMdiSubWindow * windows = _viewersMdiArea->addSubWindow(_viewers[i]);
-        windows->show();
-    }
-
-    // adding block view
-    _blocksView = new BlockView(this);
-    if(_cam)
-        _blocksView->loadFromCam(_cam);
-    QMdiSubWindow * windows = _viewersMdiArea->addSubWindow(_blocksView);
-    connect(_blocksView, SIGNAL(blockSelected(QString)), _camExplorerWidget, SLOT(selectBlock(QString)));
-    connect(_blocksView, SIGNAL(blockSelected(QString)), this, SLOT(showCamExplorer()));
-    connect(_camExplorerWidget, SIGNAL(blockSelected(QString)), _blocksView, SLOT(selectBlock(QString)));
-    connect(_blocksView, SIGNAL(blockDetailsRequest(QString)), this, SLOT(showBlockDetails(QString)));
-    windows->setWindowTitle("Blocks view");
-    windows->show();
-
-    _viewersMdiArea->tileSubWindows();
 }
 
 void ViewerWindow::about()

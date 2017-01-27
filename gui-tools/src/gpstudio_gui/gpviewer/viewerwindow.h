@@ -25,8 +25,6 @@
 
 #include <QDockWidget>
 #include <QMainWindow>
-#include <QMdiArea>
-#include <QMdiSubWindow>
 
 #include "camera/camera.h"
 #include "flowviewerwidget/flowviewerwidget.h"
@@ -35,6 +33,7 @@
 #include "viewer/viewerexplorerwidget.h"
 #include "viewer/flowtocamwidget.h"
 #include "scriptwidget.h"
+#include "viewersmdiarea.h"
 
 #include "lib_parser/lib.h"
 
@@ -68,7 +67,6 @@ private slots:
 
     void setBiSpace();
 
-    void updateWindowsMenu();
     void showBlockDetails(QString blockName);
     void showCamExplorer();
 
@@ -77,20 +75,13 @@ private:
 
     // widgets
     void setupWidgets();
-    QMdiArea *_viewersMdiArea;
-
-    // viewer
-    void setupViewers();
-    QMap<int, FlowViewerWidget *> _viewers;
+    ViewersMdiArea *_viewersMdiArea;
 
     // docks
     void createDocks();
 
     QDockWidget *_piSpaceDock;
     QHexEdit *_piSpaceHex;
-
-    QDockWidget *_blocksViewDock;
-    BlockView *_blocksView;
 
     QDockWidget *_camExplorerDock;
     CamExplorerWidget *_camExplorerWidget;
@@ -107,13 +98,6 @@ private:
     // menu and toolbar
     void createToolBarAndMenu();
     QToolBar *_mainToolBar;
-    QMenu *_winMenu;
-    QAction *_closeAct;
-    QAction *_closeAllAct;
-    QAction *_tileAct;
-    QAction *_cascadeAct;
-    QAction *_nextAct;
-    QAction *_previousAct;
 
     BlockEditorWindow *_blockEditor;
 };

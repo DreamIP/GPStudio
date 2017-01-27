@@ -32,6 +32,10 @@
         <file>../img/clock-type.png</file>
         <file>../img/type-type.png</file>
         <file>../img/process-type.png</file>
+        <file>../img/windows-cascade.png</file>
+        <file>../img/windows-tile.png</file>
+        <file>../img/window-new.png</file>
+        <file>../img/window-suppressed.png</file>
     </qresource>
     <qresource prefix="/img">
         <file>../img/gpstudio_node.ico</file>

@@ -96,7 +96,8 @@ SOURCES += \
     nodeeditor/settings/nodesettings.cpp \
     viewer/flowtocamwidget.cpp \
     gpviewer/connectnodedialog.cpp \
-    gpviewer/viewerwindow.cpp
+    gpviewer/viewerwindow.cpp \
+    gpviewer/viewersmdiarea.cpp
 
 HEADERS  += \
     gpstudio_gui_common.h \
@@ -158,7 +159,8 @@ HEADERS  += \
     nodeeditor/settings/nodesettings.h \
     viewer/flowtocamwidget.h \
     gpviewer/connectnodedialog.h \
-    gpviewer/viewerwindow.h
+    gpviewer/viewerwindow.h \
+    gpviewer/viewersmdiarea.h
 
 RESOURCES += \
     icons.qrc \
