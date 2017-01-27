@@ -25,6 +25,7 @@
 
 #include "camera/camera.h"
 #include "model/model_viewerflow.h"
+#include "model/model_gpviewer.h"
 
 ViewerTreeView::ViewerTreeView()
 {
@@ -32,6 +33,8 @@ ViewerTreeView::ViewerTreeView()
     _modelSorted = new QSortFilterProxyModel(this);
     _modelSorted->setSourceModel(_model);
     setModel(_modelSorted);
+
+    connect(this->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(updateSelection()));
 }
 
 void ViewerTreeView::attachProject(GPNodeProject *project)
@@ -113,6 +116,21 @@ void ViewerTreeView::updateViewer()
         setGpviewer(_project->node()->gpViewer());
     else
         setGpviewer(NULL);
+}
+
+void ViewerTreeView::updateSelection()
+{
+    const ModelViewer *viewer = _model->viewer(_modelSorted->mapToSource(currentIndex()));
+    if(viewer)
+    {
+        emit viewerSelected(viewer->name());
+        return;
+    }
+    const ModelViewerFlow *viewerFlow = _model->viewerFlow(_modelSorted->mapToSource(currentIndex()));
+    if(viewerFlow)
+    {
+        emit viewerSelected(viewerFlow->viewer()->name());
+    }
 }
 
 #ifndef QT_NO_CONTEXTMENU

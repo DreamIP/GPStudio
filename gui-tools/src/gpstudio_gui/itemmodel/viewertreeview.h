@@ -44,6 +44,7 @@ public:
     void setGpviewer(ModelGPViewer *gpviewer);
 
 signals:
+    void viewerSelected(QString viewerName);
     void viewerDeleted(QString viewerName);
     void viewerFlowDeleted(QString viewerName, QString viewerFlowName);
 
@@ -55,6 +56,7 @@ protected:
 
 private slots:
     void updateViewer();
+    void updateSelection();
 
 #ifndef QT_NO_CONTEXTMENU
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;

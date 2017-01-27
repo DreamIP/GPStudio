@@ -44,10 +44,12 @@ public:
     Camera *camera() const;
 
 signals:
+    void viewerSelected(QString viewerName);
     void viewerDeleted(ModelViewer*);
     void viewerFlowDeleted(ModelViewerFlow*);
 
 private slots:
+    void selectViewer(QString viewerName);
     void removeViewer(QString viewerName);
     void removeViewerFlow(QString viewerName, QString viewerFlowName);
 

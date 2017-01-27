@@ -61,6 +61,8 @@ void ViewerExplorerWidget::setCamera(Camera *camera)
 {
     _camera = camera;
 
+    connect(_viewerTreeView, SIGNAL(viewerSelected(QString)), this, SLOT(selectViewer(QString)));
+
     if(_camera->comBlock())
         _flowItemModel->setBlock(_camera->comBlock(), CameraItem::FFlowIn);
     else
@@ -74,6 +76,11 @@ void ViewerExplorerWidget::setCamera(Camera *camera)
 Camera *ViewerExplorerWidget::camera() const
 {
     return _camera;
+}
+
+void ViewerExplorerWidget::selectViewer(QString viewerName)
+{
+    emit viewerSelected(viewerName);
 }
 
 void ViewerExplorerWidget::removeViewer(QString viewerName)

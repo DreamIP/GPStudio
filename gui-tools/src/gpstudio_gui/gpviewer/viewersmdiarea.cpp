@@ -59,6 +59,18 @@ void ViewersMdiArea::toggleBlockView()
     _blocksView->show();
 }
 
+void ViewersMdiArea::selectViewer(QString name)
+{
+    QList<QMdiSubWindow *> windows = subWindowList();
+
+    for (int i = 0; i < windows.size(); ++i)
+    {
+        QMdiSubWindow *child = windows.at(i);
+        if(child->windowTitle() == name)
+            setActiveSubWindow(child);
+    }
+}
+
 void ViewersMdiArea::setMenu(QMenu *menu)
 {
     _menu = menu;

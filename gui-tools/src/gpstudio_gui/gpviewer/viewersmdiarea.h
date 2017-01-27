@@ -48,6 +48,7 @@ public:
 
 public slots:
     void toggleBlockView();
+    void selectViewer(QString name);
 
 protected slots:
     void updateWindowsMenu();
