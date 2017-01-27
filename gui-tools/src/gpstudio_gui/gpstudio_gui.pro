@@ -94,7 +94,9 @@ SOURCES += \
     nodeeditor/settings/pathssettingspage.cpp \
     nodeeditor/settings/patheditwidget.cpp \
     nodeeditor/settings/nodesettings.cpp \
-    viewer/flowtocamwidget.cpp
+    viewer/flowtocamwidget.cpp \
+    gpviewer/connectnodedialog.cpp \
+    gpviewer/viewerwindow.cpp
 
 HEADERS  += \
     gpstudio_gui_common.h \
@@ -154,7 +156,9 @@ HEADERS  += \
     nodeeditor/settings/pathssettingspage.h \
     nodeeditor/settings/patheditwidget.h \
     nodeeditor/settings/nodesettings.h \
-    viewer/flowtocamwidget.h
+    viewer/flowtocamwidget.h \
+    gpviewer/connectnodedialog.h \
+    gpviewer/viewerwindow.h
 
 RESOURCES += \
     icons.qrc \

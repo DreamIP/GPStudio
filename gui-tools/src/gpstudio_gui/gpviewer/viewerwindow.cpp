@@ -18,7 +18,7 @@
 **
 ****************************************************************************/
 
-#include "mainwindow.h"
+#include "viewerwindow.h"
 
 #include <QToolBar>
 #include <QMenuBar>
@@ -49,7 +49,7 @@
 #include "model/model_viewer.h"
 #include "model/model_viewerflow.h"
 
-MainWindow::MainWindow(QStringList args) :
+ViewerWindow::ViewerWindow(QStringList args) :
     QMainWindow(0)
 {
     _cam = NULL;
@@ -74,7 +74,7 @@ MainWindow::MainWindow(QStringList args) :
     _blockEditor = NULL;
 }
 
-MainWindow::~MainWindow()
+ViewerWindow::~ViewerWindow()
 {
     if(_blockEditor)
         delete _blockEditor;
@@ -83,7 +83,7 @@ MainWindow::~MainWindow()
         delete _cam;
 }
 
-bool MainWindow::event(QEvent *event)
+bool ViewerWindow::event(QEvent *event)
 {
     if(event->type()==QEvent::Close)
     {
@@ -108,7 +108,7 @@ bool MainWindow::event(QEvent *event)
     return QMainWindow::event(event);
 }
 
-void MainWindow::openNode()
+void ViewerWindow::openNode()
 {
     QString file = QFileDialog::getOpenFileName(this, "Open node", "", "*.xml");
 
@@ -116,7 +116,7 @@ void MainWindow::openNode()
         openNodeGeneratedFile(file);
 }
 
-void MainWindow::createToolBarAndMenu()
+void ViewerWindow::createToolBarAndMenu()
 {
     _mainToolBar = new QToolBar(this);
     addToolBar(_mainToolBar);
@@ -204,7 +204,7 @@ void MainWindow::createToolBarAndMenu()
     _mainToolBar->addSeparator();
 }
 
-void MainWindow::createDocks()
+void ViewerWindow::createDocks()
 {
     // settings of mdi area
     setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
@@ -262,7 +262,7 @@ void MainWindow::createDocks()
     tabifyDockWidget(_scriptDock, _piSpaceDock);
 }
 
-void MainWindow::openNodeGeneratedFile(const QString fileName)
+void ViewerWindow::openNodeGeneratedFile(const QString fileName)
 {
     if(_cam)
         delete _cam;
@@ -283,7 +283,7 @@ void MainWindow::openNodeGeneratedFile(const QString fileName)
         connect(_cam->com(), SIGNAL(disconnected()), this, SLOT(disconnectCam()));
 }
 
-void MainWindow::connectCam()
+void ViewerWindow::connectCam()
 {
     if(_cam)
     {
@@ -303,19 +303,19 @@ void MainWindow::connectCam()
     }
 }
 
-void MainWindow::disconnectCam()
+void ViewerWindow::disconnectCam()
 {
     statusBar()->showMessage("camera disconnected");
 }
 
-void MainWindow::setBiSpace()
+void ViewerWindow::setBiSpace()
 {
     if(!_cam)
         return;
     _piSpaceHex->setData(_cam->registerData());
 }
 
-void MainWindow::updateWindowsMenu()
+void ViewerWindow::updateWindowsMenu()
 {
     _winMenu->clear();
     _winMenu->addAction(_closeAct);
@@ -344,7 +344,7 @@ void MainWindow::updateWindowsMenu()
     }
 }
 
-void MainWindow::showBlockDetails(QString blockName)
+void ViewerWindow::showBlockDetails(QString blockName)
 {
     if(blockName.isEmpty())
         return;
@@ -354,13 +354,13 @@ void MainWindow::showBlockDetails(QString blockName)
     _blockEditor->show();
 }
 
-void MainWindow::showCamExplorer()
+void ViewerWindow::showCamExplorer()
 {
     _camExplorerDock->show();
     _camExplorerDock->raise();
 }
 
-void MainWindow::setupWidgets()
+void ViewerWindow::setupWidgets()
 {
     QWidget *centralwidget = new QWidget(this);
     QLayout *layout = new QVBoxLayout(centralwidget);
@@ -378,7 +378,7 @@ void MainWindow::setupWidgets()
     setStatusBar(statusBar);
 }
 
-void MainWindow::setupViewers()
+void ViewerWindow::setupViewers()
 {
     _viewersMdiArea->closeAllSubWindows();
     _viewers.clear();
@@ -439,7 +439,7 @@ void MainWindow::setupViewers()
     _viewersMdiArea->tileSubWindows();
 }
 
-void MainWindow::about()
+void ViewerWindow::about()
 {
     QMessageBox::about(this,"GPStudio: GPViewer 1.21", QString("Copyright (C) 2014-2017 Dream IP (<a href=\"http://dream-lab.fr\">dream-lab.fr</a>)<br>\
 <br>\
@@ -461,7 +461,7 @@ along with this program.  If not, see <a href=\"http://www.gnu.org/licenses/\">w
 Build date: ") + __DATE__ + QString(" time: ")+__TIME__);
 }
 
-void MainWindow::aboutQt()
+void ViewerWindow::aboutQt()
 {
     QMessageBox::aboutQt(this);
 }

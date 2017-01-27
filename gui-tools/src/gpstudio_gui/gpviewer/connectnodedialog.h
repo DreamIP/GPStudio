@@ -21,6 +21,8 @@
 #ifndef CONNECTNODEDIALOG_H
 #define CONNECTNODEDIALOG_H
 
+#include "gpstudio_gui_common.h"
+
 #include <QDialog>
 #include <QTimer>
 #include <QDialogButtonBox>
@@ -28,7 +30,7 @@
 
 #include "camerainfo.h"
 
-class ConnectNodeDialog : public QDialog
+class GPSTUDIO_GUI_EXPORT ConnectNodeDialog : public QDialog
 {
     Q_OBJECT
 

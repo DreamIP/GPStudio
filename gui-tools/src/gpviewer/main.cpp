@@ -30,7 +30,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w(a.arguments());
+    ViewerWindow w(a.arguments());
 
     /*QSplashScreen splashScreen(&w, QPixmap("../gui-tools/src/img/GPS_SS.png"));
     QLabel *label = new QLabel("loading...loading...loading...loading...",&splashScreen);

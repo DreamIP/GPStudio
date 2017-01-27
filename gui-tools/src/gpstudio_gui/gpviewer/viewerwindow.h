@@ -18,8 +18,10 @@
 **
 ****************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef VIEWERWINDOW_H
+#define VIEWERWINDOW_H
+
+#include "gpstudio_gui_common.h"
 
 #include <QDockWidget>
 #include <QMainWindow>
@@ -41,13 +43,13 @@
 
 #include "blockeditor/blockeditorwindow.h"
 
-class MainWindow : public QMainWindow
+class GPSTUDIO_GUI_EXPORT ViewerWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QStringList args);
-    ~MainWindow();
+    explicit ViewerWindow(QStringList args);
+    ~ViewerWindow();
 
     void openNodeGeneratedFile(const QString fileName);
 
@@ -116,4 +118,4 @@ private:
     BlockEditorWindow *_blockEditor;
 };
 
-#endif // MAINWINDOW_H
+#endif // VIEWERWINDOW_H

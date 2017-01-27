@@ -36,13 +36,7 @@ equals(DISTRIB, 1) {
 
 QMAKE_CFLAGS_RELEASE = -O2
 
-SOURCES += main.cpp \
-    mainwindow.cpp \
-    connectnodedialog.cpp
-
-HEADERS  += \
-    mainwindow.h \
-    connectnodedialog.h
+SOURCES += main.cpp
 
 # relative path for shared library in the same directory
 LIBS += -Wl,-R.
