@@ -52,6 +52,8 @@ public:
     void showImage(const QImage &image, const QString &title=QString());
     void showImage(const QPixmap &image, const QString &title=QString());
 
+    void setRectSize(QSize size);
+
     void setMask(const QImage &mask);
 
     void setFeatures(uint layer, const QList<Feature> &features);
@@ -90,6 +92,7 @@ private:
     QGraphicsPixmapItem *_pixmapItem;
     QGraphicsPixmapItem *_maskItem;
     QGraphicsSimpleTextItem *_titleItem;
+    QGraphicsRectItem *_rectItem;
 
     QMap<uint, QList<FeatureItem *> > _featureItems;
 };

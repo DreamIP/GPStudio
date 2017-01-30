@@ -35,6 +35,20 @@ LayerViewer::LayerViewer(FlowViewerInterface *flowViewerInterface)
     setupWidgets();
     //showFlowConnection(0);
     connect((QObject*)_flowViewerInterface, SIGNAL(dataReceived(int)), this, SLOT(showFlowConnection(int)));
+
+    foreach (FlowConnection *flowConnection, flowViewerInterface->flowConnections())
+    {
+        Property *flowProp = flowConnection->flow()->assocProperty();
+        if(flowProp)
+        {
+            QSize size(flowProp->property("width").toInt(), flowProp->property("height").toInt());
+            if(size.isValid())
+            {
+                _widget->setRectSize(size);
+                break;
+            }
+        }
+    }
 }
 
 LayerViewer::~LayerViewer()
@@ -70,6 +84,7 @@ void LayerViewer::showFlowConnection(int flowId)
         {
             QImage image = flowPackage.toImage(width, height, 8);
             _widget->showImage(image);
+            _widget->setRectSize(image.size());
         }
     }
     if(datatype == "features")

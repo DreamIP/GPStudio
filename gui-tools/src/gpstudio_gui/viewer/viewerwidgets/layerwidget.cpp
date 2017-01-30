@@ -41,6 +41,7 @@ LayerWidget::LayerWidget(QWidget *parent) :
     setRenderHint(QPainter::TextAntialiasing, true);
 
     _currentZoomLevel = 1;
+    _rectItem = NULL;
 
     _propertyView = All;
     _pixmapItem = _scene->addPixmap(QPixmap());
@@ -119,6 +120,23 @@ void LayerWidget::showImage(const QPixmap &image, const QString &title)
     // add title to image
     _titleItem->setText(title);
     _titleItem->setPos((_pixmapItem->pixmap().width()-_titleItem->boundingRect().width())/2, -_titleItem->boundingRect().height()-10);
+}
+
+void LayerWidget::setRectSize(QSize size)
+{
+    if(!size.isValid())
+    {
+        _scene->removeItem(_rectItem);
+        _rectItem = NULL;
+        return;
+    }
+    if(!_rectItem)
+    {
+        _rectItem = _scene->addRect(0, 0, size.width(), size.height(), QPen(Qt::red, 0)); // pen with 0 penWidth to ignore penWidth transorm
+        _rectItem->setZValue(-1);
+    }
+    else
+        _rectItem->setRect(0, 0, size.width(), size.height());
 }
 
 void LayerWidget::setMask(const QImage &mask)
