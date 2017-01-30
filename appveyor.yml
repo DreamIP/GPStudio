@@ -1,4 +1,4 @@
-version: 1.21
+version: 1.21.{build}
 
 clone_folder: c:\dev\gpstudio
 clone_depth: 5
