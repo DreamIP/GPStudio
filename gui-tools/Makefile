@@ -1,4 +1,6 @@
 
+MAKE?=make
+
 WIN_CROSS_QT:=/opt/Qt5.7_win64/
 
 NPROC:=$(shell nproc || echo 2)
@@ -34,17 +36,17 @@ build-win64-qt5/:
 build-win64-qt5/Makefile: build-win64-qt5/ src/gpstudio.pro
 	cd build-win64-qt5/ && $(WIN_CROSS_QT)bin/qmake -r ../src "DISTRIB=1"
 gpstudio_com-win64-qt5: build-win64-qt5/Makefile
-	cd build-win64-qt5/ && make -j$(NPROC) -f Makefile sub-gpstudio_com-release
+	cd build-win64-qt5/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpstudio_com-release
 gpstudio_lib-win64-qt5: build-win64-qt5/Makefile gpstudio_com-win64-qt5
-	cd build-win64-qt5/ && make -j$(NPROC) -f Makefile sub-gpstudio_lib-release
+	cd build-win64-qt5/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpstudio_lib-release
 gpstudio_gui-win64-qt5: build-win64-qt5/Makefile gpstudio_com-win64-qt5 gpstudio_lib-win64-qt5
-	cd build-win64-qt5/ && make -j$(NPROC) -f Makefile sub-gpstudio_gui-release
+	cd build-win64-qt5/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpstudio_gui-release
 gpnode-win64-qt5: build-win64-qt5/Makefile gpstudio_com-win64-qt5 gpstudio_lib-win64-qt5 gpstudio_gui-win64-qt5
-	cd build-win64-qt5/ && make -j$(NPROC) -f Makefile sub-gpnode-release
+	cd build-win64-qt5/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpnode-release
 gpblock-win64-qt5: build-win64-qt5/Makefile gpstudio_com-win64-qt5 gpstudio_lib-win64-qt5 gpstudio_gui-win64-qt5
-	cd build-win64-qt5/ && make -j$(NPROC) -f Makefile sub-gpblock-release
+	cd build-win64-qt5/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpblock-release
 gpviewer-win64-qt5: build-win64-qt5/Makefile gpstudio_com-win64-qt5 gpstudio_lib-win64-qt5 gpstudio_gui-win64-qt5
-	cd build-win64-qt5/ && make -j$(NPROC) -f Makefile sub-gpviewer-release
+	cd build-win64-qt5/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpviewer-release
 
 
 gui-tools-linux32-qt4: gpnode-linux32-qt4 gpblock-linux32-qt4 gpviewer-linux32-qt4
@@ -130,17 +132,17 @@ build/Makefile: build/ src/gpstudio.pro
 	#cd build/ && qmake ../src -spec `qmake -query QMAKE_SPEC`
 	cd build/ && qmake ../src
 gpstudio_com: build/Makefile
-	cd build/ && make -j$(NPROC) -f Makefile sub-gpstudio_com
+	cd build/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpstudio_com
 gpstudio_lib: build/Makefile gpstudio_com
-	cd build/ && make -j$(NPROC) -f Makefile sub-gpstudio_lib
+	cd build/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpstudio_lib
 gpstudio_gui: build/Makefile gpstudio_com gpstudio_lib
-	cd build/ && make -j$(NPROC) -f Makefile sub-gpstudio_gui
+	cd build/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpstudio_gui
 gpnode: build/Makefile gpstudio_com gpstudio_lib gpstudio_gui
-	cd build/ && make -j$(NPROC) -f Makefile sub-gpnode
+	cd build/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpnode
 gpblock: build/Makefile gpstudio_com gpstudio_lib gpstudio_gui
-	cd build/ && make -j$(NPROC) -f Makefile sub-gpblock
+	cd build/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpblock
 gpviewer: build/Makefile gpstudio_com gpstudio_lib gpstudio_gui
-	cd build/ && make -j$(NPROC) -f Makefile sub-gpviewer
+	cd build/ && $(MAKE) -j$(NPROC) -f Makefile sub-gpviewer
 
 
 clean:

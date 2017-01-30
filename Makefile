@@ -1,20 +1,22 @@
 include gpstudio.mk
 
+MAKE?=make
+
 all: doc gui-tools
 
 doc: docgps docip docbackend
 
 docgps: FORCE
-	@cd docsrc/ && make -f Makefile
+	@cd docsrc/ && $(MAKE) -f Makefile
 
 docbackend: FORCE
-	@cd scripts/ && make -f Makefile
+	@cd scripts/ && $(MAKE) -f Makefile
 
 docip: FORCE
-	@cd support/ && make -f Makefile
+	@cd support/ && $(MAKE) -f Makefile
 
 distrib: doc FORCE
-	cd distrib/ && make -f Makefile
+	cd distrib/ && $(MAKE) -f Makefile
 
 distrib-web: distrib
 	cp doc/*.pdf /var/www/gpstudio/doc
@@ -26,9 +28,9 @@ distrib-web: distrib
 	cp distrib/setup-gpstudio_win64-qt5-`cat version.txt`.exe /var/www/gpstudio/download/distrib/
 
 clean:
-	cd docsrc/ && make -f Makefile clean
-	cd distrib/ && make -f Makefile clean
-	cd gui-tools/ && make -f Makefile clean
+	cd docsrc/ && $(MAKE) -f Makefile clean
+	cd distrib/ && $(MAKE) -f Makefile clean
+	cd gui-tools/ && $(MAKE) -f Makefile clean
 
 lines: FORCE
 	@wc -l $(shell find scripts/ support/toolchain/ distrib/ -name '*.php') \
@@ -36,7 +38,7 @@ lines: FORCE
 	$(shell find share/ -name '*_completion' ) | sort -n -k1
 
 gui-tools: FORCE
-	cd gui-tools/ && make -f Makefile
+	cd gui-tools/ && $(MAKE) -f Makefile
 
 install: gui-tools
 
