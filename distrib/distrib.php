@@ -12,7 +12,7 @@ function distrib($system, $archi, $qtver, $outdir)
 {
     mkdirExists($outdir);
     $outdir = realpath($outdir) . DIRECTORY_SEPARATOR;
-    echo $outdir;
+    echo $outdir . "\n\n";
 
     distrib_scripts($outdir, $system, $archi, $qtver);
     distrib_support($outdir, $system, $archi, $qtver);
@@ -24,15 +24,15 @@ $options = getopt("s:a:q:o:");
 if (array_key_exists('s', $options))
     $system = $options['s'];
 else
-    exit("You should specify a system with -s [win-linux]\n");
+    $system = "";
 if (array_key_exists('a', $options))
     $archi = $options['a'];
 else
-    exit("You should specify an architechture with -a [32-64]\n");
+    $archi = "";
 if (array_key_exists('q', $options))
     $qtver = $options['q'];
 else
-    exit("You should specify a qt version with -q [4-5]\n");
+    $qtver = "";
 if (array_key_exists('o', $options))
     $outdir = $options['o'];
 else

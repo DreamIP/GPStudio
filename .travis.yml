@@ -11,10 +11,17 @@ compiler:
 
 install: true
 
-env:
-  - TEST=gui-tools
-  - TEST=checklib
-
 # Build steps
 script:
-  - make $TEST
+  - make gui-tools
+  - make checklib
+  - cd distrib/ && make -f Makefile distrib-linux32-qt4
+
+deploy:
+  provider: releases
+  api_key:
+    secure: Ku4BA5XeEgMu9cXa1sLexDx0C3+5aOBKXlIfOJ8VL4GeWtBMwdaW8oOAc3bZjCACdWadpI4zk8HBhw/HsLdcewHEu69Te0+Eu2daj7xkGK7onUrLx4fUPloPFkwJh6GY6rFSbMQyUHUW/5EWHkslR7yGZUJdxJmSJt+EZWU1524/khyCDKSyBnUSL4JyRZMd
+  file: gpstudio_distrib.tar.gz
+  on:
+    repo: DreamIP/GPStudio
+    branch: dev

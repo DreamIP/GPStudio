@@ -101,6 +101,7 @@ function distrib_bin($mainoutpath, $system, $archi, $qtver)
 
     // create directory
     mkdirExists($mainoutpath . "bin");
+    mkdirExists($mainoutpath . "share");
 
     if ($system == "win")
     {
@@ -136,8 +137,16 @@ function distrib_bin($mainoutpath, $system, $archi, $qtver)
         copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpproc_completion",    $mainoutpath . "gpproc_completion");
         copy_with_rights(LIB_PATH . "share" . DIRECTORY_SEPARATOR . "gpcomp_completion",    $mainoutpath . "gpcomp_completion");
     }
-    $bin_source_path = "bin-" . $system . $archi . '-qt' . $qtver;
-    cpy_dir(GUI_TOOLS_PATH . $bin_source_path, $mainoutpath . "bin");
+    
+    if($system == "" and $qtver == "")
+    {
+        cpy_dir(LIB_PATH . "bin", $mainoutpath . "bin");
+    }
+    else
+    {
+        $bin_source_path = "bin-" . $system . $archi . '-qt' . $qtver;
+        cpy_dir(GUI_TOOLS_PATH . $bin_source_path, $mainoutpath . "bin");
+    }
 
     // copy lib_bin
     $lib_bin_dir = LIB_PATH . "distrib" . DIRECTORY_SEPARATOR . "lib_bin" . DIRECTORY_SEPARATOR . $system;

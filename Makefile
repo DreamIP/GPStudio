@@ -46,5 +46,10 @@ checklib:
 checkversion:
 	grep -r "1\.21" -I --exclude=*.log --exclude=*.io --exclude-dir=doc
 
+package: gui-tools
+	rm -rf distrib/gpstudio_distrib
+	php distrib/distrib.php -o distrib/gpstudio_distrib
+	tar zcf gpstudio_distrib.tar.gz distrib/gpstudio_distrib/
+
 FORCE:
 
