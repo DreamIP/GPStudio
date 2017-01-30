@@ -4,9 +4,10 @@ clone_folder: c:\dev\gpstudio
 clone_depth: 5
 
 init:
-  - set PATH=C:\msys64;C:\Qt\5.7\mingw53_32\bin;%PATH%
+  - set PATH=C:\msys64;C:\Qt\5.7\mingw53_32\bin;C:\MinGW\bin;%PATH%
 
 build_script:
-  - make gui-tools
+  - cd C:\dev\gpstudio
+  - mingw32-make gui-tools MAKE=mingw32-make
 
 test: off
