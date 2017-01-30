@@ -76,6 +76,13 @@ QRectF BlockItem::boundingRect() const
     return _boundingRect.adjusted(-2,-2,2,20);
 }
 
+QPainterPath BlockItem::shape() const
+{
+    QPainterPath shape;
+    shape.addRect(_boundingRect);
+    return shape;
+}
+
 void BlockItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget);
