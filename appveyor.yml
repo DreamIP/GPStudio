@@ -1,0 +1,12 @@
+version: 1.21
+
+clone_folder: c:\dev\gpstudio
+clone_depth: 5
+
+init:
+  - set PATH=C:\msys64;C:\Qt\5.7\mingw53_32\bin;%PATH%
+
+build_script:
+  - make gui-tools
+
+test: off

@@ -15,7 +15,10 @@ install: true
 script:
   - make gui-tools
   - make checklib
-  - cd distrib/ && make -f Makefile distrib-linux32-qt4
+  - make package
+
+before_deploy:
+  - make package
 
 deploy:
   provider: releases
