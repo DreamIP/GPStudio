@@ -41,6 +41,9 @@ private:
 public:
     ~Lib();
 
+    QString projectPath() const;
+    void setProjectPath(const QString &projectPath);
+
     void reloadProcess();
     void addCustomProcess(const QString filePath);
     void addProcess(BlockLib *process);
@@ -82,6 +85,7 @@ protected:
     QMap<QString, BoardLib*> _boardsMap;
 
     QString _path;
+    QString _projectPath;
 
     static Lib *_instance;
 };

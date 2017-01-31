@@ -113,6 +113,9 @@ bool GPNodeProject::openProject(const QString &nodeFileName)
         return false;
     }
 
+    QString projectPath = QFileInfo(fileName).absolutePath();
+    Lib::getLib().setProjectPath(projectPath);
+
     node = ModelNode::readFromFile(fileName);
     if(!node)
     {
@@ -121,13 +124,13 @@ bool GPNodeProject::openProject(const QString &nodeFileName)
     }
 
     // load library with project IPs
-    foreach (ModelBlock *block, node->blocks())
+    /*foreach (ModelBlock *block, node->blocks())
     {
         if(block->driver().endsWith(".proc") || block->driver().endsWith(".io"))
         {
             Lib::getLib().addIp(block->path() + "/" + block->driver());
         }
-    }
+    }*/
 
     setPath(fileName);
     setModified(false);

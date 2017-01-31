@@ -38,6 +38,16 @@ Lib::~Lib()
 {
 }
 
+QString Lib::projectPath() const
+{
+    return _projectPath;
+}
+
+void Lib::setProjectPath(const QString &projectPath)
+{
+    _projectPath = projectPath;
+}
+
 void Lib::reloadProcess()
 {
     closeProcess();
@@ -58,8 +68,15 @@ void Lib::reloadProcess()
 
 void Lib::addCustomProcess(const QString filePath)
 {
-    _customProcess.append(filePath);
-    BlockLib *process = BlockLib::readFromFile(filePath);
+    QString processFilePath = filePath;
+    if(!QFile::exists(filePath))
+    {
+        processFilePath = _projectPath + "/" + filePath;
+        if(!QFile::exists(processFilePath))
+            return;
+    }
+    _customProcess.append(processFilePath);
+    BlockLib *process = BlockLib::readFromFile(processFilePath);
     if(process)
         addProcess(process);
 }
