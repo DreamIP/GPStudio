@@ -153,25 +153,25 @@ QToolBar *LayerViewer::getToolBar()
     toolbar->setIconSize(QSize(18,18));
 
     // viewer actions (pause, grab image, video...)
-    _pauseButton = new QAction("Pause");
+    _pauseButton = new QAction("Pause", this);
     _pauseButton->setCheckable(true);
     _pauseButton->setIcon(QIcon(":/icons/img/pause.png"));
     toolbar->addAction(_pauseButton);
 
-    _saveButton = new QAction("Save image");
+    _saveButton = new QAction("Save image", this);
     _saveButton->setToolTip("Save image");
     _saveButton->setIcon(QIcon(":/icons/img/save.png"));
     connect(_saveButton, SIGNAL(triggered(bool)), this, SLOT(saveImage()));
     toolbar->addAction(_saveButton);
 
-    _recordButton = new QAction("Records images");
+    _recordButton = new QAction("Records images", this);
     _recordButton->setToolTip("Records images");
     _recordButton->setCheckable(true);
     _recordButton->setIcon(QIcon(":/icons/img/record.png"));
     connect(_recordButton, SIGNAL(triggered(bool)), this, SLOT(recordImages()));
     toolbar->addAction(_recordButton);
 
-    _settingsButton = new QAction("Settings");
+    _settingsButton = new QAction("Settings", this);
     _settingsButton->setToolTip("Open viewer settings");
     _settingsButton->setIcon(QIcon(":/icons/img/settings.png"));
     toolbar->addAction(_settingsButton);
@@ -179,19 +179,19 @@ QToolBar *LayerViewer::getToolBar()
     toolbar->addSeparator();
 
     // viewer zoom option
-    _zoomFitButton = new QAction("Zoom fit");
+    _zoomFitButton = new QAction("Zoom fit", this);
     _zoomFitButton->setToolTip("Zoom fit best");
     _zoomFitButton->setIcon(QIcon(":/icons/img/zoom-fit.png"));
     connect(_zoomFitButton, SIGNAL(triggered(bool)), _widget, SLOT(zoomFit()));
     toolbar->addAction(_zoomFitButton);
 
-    _zoomOutButton = new QAction("Zoom -");
+    _zoomOutButton = new QAction("Zoom -", this);
     _zoomOutButton->setToolTip("Zoom out");
     _zoomOutButton->setIcon(QIcon(":/icons/img/zoom-out.png"));
     connect(_zoomOutButton, SIGNAL(triggered(bool)), _widget, SLOT(zoomOut()));
     toolbar->addAction(_zoomOutButton);
 
-    _zoomInButton = new QAction("Zoom +");
+    _zoomInButton = new QAction("Zoom +", this);
     _zoomInButton->setToolTip("Zoom in");
     _zoomInButton->setIcon(QIcon(":/icons/img/zoom-in.png"));
     connect(_zoomInButton, SIGNAL(triggered(bool)), _widget, SLOT(zoomIn()));

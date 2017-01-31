@@ -120,19 +120,19 @@ QToolBar *PlotViewer::getToolBar()
     toolbar->setOrientation(Qt::Vertical);
     toolbar->setIconSize(QSize(18,18));
 
-    _pauseButton = new QAction("Pause");
+    _pauseButton = new QAction("Pause", this);
     _pauseButton->setToolTip("Pause viewer");
     _pauseButton->setCheckable(true);
     _pauseButton->setIcon(QIcon(":/icons/img/pause.png"));
     toolbar->addAction(_pauseButton);
 
-    _saveButton = new QAction("Save image");
+    _saveButton = new QAction("Save image", this);
     _saveButton->setToolTip("Save image");
     _saveButton->setIcon(QIcon(":/icons/img/save.png"));
     connect(_saveButton, SIGNAL(clicked(bool)), this, SLOT(saveImage()));
     toolbar->addAction(_saveButton);
 
-    _settingsButton = new QAction("Records images");
+    _settingsButton = new QAction("Records images", this);
     _settingsButton->setToolTip("Records images");
     _settingsButton->setIcon(QIcon(":/icons/img/settings.png"));
     toolbar->addAction(_settingsButton);
