@@ -54,4 +54,3 @@ package: gui-tools
 	tar zcf gpstudio_distrib.tar.gz distrib/gpstudio_distrib/
 
 FORCE:
-

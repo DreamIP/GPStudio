@@ -2,6 +2,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 [![Build Status](https://travis-ci.org/DreamIP/GPStudio.svg?branch=dev)](https://travis-ci.org/DreamIP/GPStudio)
+[![Build status](https://ci.appveyor.com/api/projects/status/a5m3qo5vi8o2jy7j/branch/dev?svg=true)](https://ci.appveyor.com/project/sebcaux/gpstudio/branch/dev)
 
 A toolchain for FPGA-based smart camera that helps devellopers to
 create high performance image processing.

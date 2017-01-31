@@ -5,13 +5,17 @@
 
 ### New Feature
 * Messages in gpnode to inform end of process
+* Added list of recent opened projects in gpnode_gui
+* Improved toolbar in gpnode_gui
 * Tab in GPViewer to send picture to camera
+* Added point/point + value/rect/rect + value in layer viewer
 
 ### Changes
 * Removed poppler to simplify dependencies
 
 ### Bug fixes
 * Fixed toolchain windows for cross compile
+* camera explorer fixed interractions delete/select
 
 ## Release [v1.20](https://github.com/DreamIP/GPStudio/tree/v1.20) (2017-01-10)
 [Full changelog](https://github.com/DreamIP/GPStudio/compare/v1.10...v1.20)
