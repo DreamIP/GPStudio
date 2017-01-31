@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="detectroi" categ="segmentation" master_count="0" pi_size_addr_rel="2" desc="Detection of the smallest non-black part of image">
+  <parts>
+    <part name="main">
+      <svg style="background-color: rgb(255, 255, 255);" width="128px" height="128px">
+        <g transform="matrix(1.0403121,0,0,1.0403121,-3.10013,-1.0299089)" id="g6">
+          <rect x="2.98" y="0.99000001" width="123.04" height="123.04" pointer-events="none" id="rect8" style="fill:#050505;stroke:none"/>
+          <rect x="34.73" y="32.740002" width="9.9200001" height="9.9200001" pointer-events="none" id="rect10" style="fill:#ffffff;stroke:none"/>
+          <rect x="49.610001" y="82.360001" width="9.9200001" height="9.9200001" pointer-events="none" id="rect12" style="fill:#ffffff;stroke:none"/>
+          <rect x="84.339996" y="45.59" width="9.9200001" height="9.9200001" pointer-events="none" id="rect14" style="fill:#ffffff;stroke:none"/>
+          <path d="m 34.73,32.74 53.21,0" stroke-miterlimit="10" pointer-events="none" id="path16" style="fill:none;stroke:#ff0000;stroke-miterlimit:10"/>
+          <path d="m 93.15,32.74 -6.94,3.48 1.73,-3.48 -1.73,-3.47 z" stroke-miterlimit="10" pointer-events="none" id="path18" style="fill:#ff0000;stroke:#ff0000;stroke-miterlimit:10"/>
+          <path d="m 34.73,32.74 0,53.22" stroke-miterlimit="10" pointer-events="none" id="path20" style="fill:none;stroke:#ff0000;stroke-miterlimit:10"/>
+          <path d="m 34.73,91.17 -3.47,-6.95 3.47,1.74 3.47,-1.74 z" stroke-miterlimit="10" pointer-events="none" id="path22" style="fill:#ff0000;stroke:#ff0000;stroke-miterlimit:10"/>
+          <g transform="matrix(0.99224806,0,0,0.99224806,10.5,5.5)" id="g24">
+            <switch id="switch26">
+              <text x="14" y="23" font-size="22px" id="text30" style="font-size:22px;text-anchor:middle;fill:#ff0000;font-family:Helvetica">x,y</text>
+            </switch>
+          </g>
+          <g transform="matrix(0.99224806,0,0,0.99224806,95.5,10.5)" id="g32">
+            <switch id="switch34">
+              <text x="8" y="23" font-size="22px" id="text38" style="font-size:22px;text-anchor:middle;fill:#ff0000;font-family:Helvetica">w</text>
+            </switch>
+          </g>
+          <g transform="matrix(0.99224806,0,0,0.99224806,13.5,79.5)" id="g40">
+            <switch id="switch42">
+              <text x="6" y="23" font-size="22px" id="text46" style="font-size:22px;text-anchor:middle;fill:#ff0000;font-family:Helvetica">h</text>
+            </switch>
+          </g>
+        </g>
+      </svg>
+    </part>
+  </parts>
+  <infos>
+    <info name="author" value="Raphael Bouterige"/>
+    <info name="company" value="Institut Pascal"/>
+    <info name="revision" value="1.0"/>
+    <info name="releasedate" value="2016-12-12"/>
+  </infos>
+  <files>
+    <file name="detectroi.proc" type="proc" group="blockdef" path="detectroi.proc"/>
+    <file name="detectroi.vhd" type="vhdl" group="hdl" path="hdl/detectroi.vhd"/>
+    <file name="detectroi_process.vhd" type="vhdl" group="hdl" path="hdl/detectroi_process.vhd"/>
+    <file name="detectroi_slave.vhd" type="vhdl" group="hdl" path="hdl/detectroi_slave.vhd"/>
+  </files>
+  <resets>
+    <reset name="reset_n" group="reset_n" direction="in"/>
+  </resets>
+  <flows>
+    <flow name="in" size="8" type="in"/>
+    <flow name="coord" size="8" type="out">
+      <properties>
+        <property name="datatype" type="flowtype" value="features"/>
+        <property name="featuretype" type="featuretype" value="rect"/>
+      </properties>
+    </flow>
+  </flows>
+  <params>
+    <param name="status_reg" regaddr="0">
+      <bitfields>
+        <bitfield name="enable_bit" bitfield="0" propertymap="enable.value"/>
+      </bitfields>
+    </param>
+    <param name="in_size_reg" regaddr="1">
+      <bitfields>
+        <bitfield name="in_w_reg" bitfield="11-0" propertymap="in.width.value"/>
+        <bitfield name="in_h_reg" bitfield="27-16" propertymap="in.height.value"/>
+      </bitfields>
+    </param>
+  </params>
+  <properties>
+    <property name="enable" type="bool" value="1"/>
+  </properties>
+</process>
