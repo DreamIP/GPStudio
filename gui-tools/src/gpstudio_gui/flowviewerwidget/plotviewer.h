@@ -21,13 +21,14 @@
 #ifndef PLOTVIEWER_H
 #define PLOTVIEWER_H
 
-#include <QToolBar>
-
 #include "gpstudio_gui_common.h"
 
 #include "abstractviewer.h"
 
 #include "../../thirdparts/qcustomplot/qcustomplot.h"
+
+#include <QAction>
+#include <QToolBar>
 
 class GPSTUDIO_GUI_EXPORT PlotViewer : public AbstractViewer
 {

@@ -27,6 +27,7 @@
 
 #include "viewer/viewerwidgets/layerwidget.h"
 
+#include <QAction>
 #include <QToolBar>
 
 class GPSTUDIO_GUI_EXPORT LayerViewer : public AbstractViewer
