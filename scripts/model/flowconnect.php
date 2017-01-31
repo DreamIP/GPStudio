@@ -19,8 +19,11 @@
  */
 
 /**
- * FlowConnect are used in FI::flow_connects as a list.
- * @brief Define flow connection between flow interface of blocks
+ * FlowConnect are used in FI::flow_connects as a list. The set of flowconnect
+ * is used to define the flow interconnect architechture.
+ * 
+ * @brief Define flow connection between two flow interface of blocks, an output
+ * flow to an input flow interface.
  * @see Block FI Flow
  * @ingroup base
  */

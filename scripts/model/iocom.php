@@ -23,6 +23,7 @@ require_once("comdriver.php");
 
 /**
  * It allows the use of communication links and protocol declaration.
+ * 
  * @brief IOCom is the specialised implementation of IO.
  * @see IO ComConnect
  * @ingroup base

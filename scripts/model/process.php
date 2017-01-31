@@ -22,7 +22,9 @@ require_once("block.php");
 
 /**
  * Compared to Block, this class does not contain additionnal members. It just
- * contains library parser and helper for process.
+ * contains library parser and helper for process. A process contain at least
+ * one input flow and one output flow.
+ * 
  * @brief Process is the specialised implementation of Block for processes.
  * @see Block
  * @ingroup base

@@ -21,7 +21,9 @@
 require_once("viewer.php");
 
 /**
- * Structure that store all gpviewer dedicated parameters.
+ * Structure that store all gpviewer dedicated parameters. At the momement,
+ * this structure only contain the viewer list.
+ * 
  * @brief List of all the configurated viewer for gpviewer.
  * @see Viewer Node
  * @ingroup base

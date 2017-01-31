@@ -22,7 +22,9 @@ require_once("componentpartflow.php");
 require_once("componentpartproperty.php");
 
 /**
- * Multiple parts could be used to define a component
+ * Multiple parts could be used to define a component with different graphical part.
+ * The default part is named `main`.
+ * 
  * @brief ComponentPart is the the graphical definition of hardware components.
  * @see Block
  * @ingroup base

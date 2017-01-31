@@ -19,6 +19,9 @@
  */
 
 /**
+ * The relation between port and physical pin mapping is ensurred by pin in board
+ * definition.
+ * 
  * @brief Port is external port definition for IO block.
  * @see IO Board Pin
  * @ingroup base

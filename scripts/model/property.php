@@ -21,7 +21,11 @@
 require_once("propertyenum.php");
 
 /**
- * Property is contained into the Block::$properties and Flow::$properties
+ * Property is contained into the Block::$properties and Flow::$properties.
+ * It maps mathematical relation between harware registers
+ * and software logical properties. When a property change, all dependent
+ * propreties are re-evaluated.
+ * 
  * @brief The Property class is used to define high level properties
  * @see Block Param ParamBitfield Flow
  * @ingroup base

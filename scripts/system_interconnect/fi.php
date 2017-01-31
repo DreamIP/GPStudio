@@ -25,6 +25,16 @@ require_once("toolchain/hdl/vhdl_generator.php");
 
 require_once("treeconnect.php");
 
+/**
+ * All the flow interface pass through this block. It manage all the flow connections
+ * and generate flow multiplexer in case of multiple flow out are connected to an input.
+ * The generated multiplexer, allows to dynamically change the source of the input flow.
+ * Register are created in this block to manage multiplexer.
+ * 
+ * @brief FlowInterconnect is the generated block to manage all the flows in the node project.
+ * @see Block Clock Parameter
+ * @ingroup base
+ */
 class FlowInterconnect extends Block
 {
     /**

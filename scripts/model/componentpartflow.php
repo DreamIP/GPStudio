@@ -19,8 +19,10 @@
  */
 
 /**
- * Multiple part flow could be used to define a part of a component
- * @brief ComponentPart is the the graphical definition of flow (position, part)
+ * Multiple part flow could be used to define a part of a component with different
+ * flow.
+ * 
+ * @brief ComponentPart is the the graphical definition of flow (position, name)
  * @see Block
  * @ingroup base
  */

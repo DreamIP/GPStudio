@@ -25,6 +25,17 @@ require_once("toolchain/hdl/vhdl_generator.php");
 
 require_once("pll.php");
 
+/**
+ * All the clocks pass through this block. It gets all the base
+ * clock from board and IOs and provide all needed clock by using PLLs.
+ * Generated PLLs are located inside this block. If a clock is too slow,
+ * it generates a diviser based on a counter. The choice of clock association
+ * inside PLL are processed with an algorithm that minimise the number of PLLs.
+ * 
+ * @brief ClockInterconnect is the generated block to manage all the clock in the node project.
+ * @see Block Clock
+ * @ingroup base
+ */
 class ClockInterconnect extends Block
 {
     public $clock_providers;

@@ -19,7 +19,10 @@
  */
 
 /**
- * Multiple part flow could be used to define a part of a component
+ * Multiple part flow could be used to define a part of a component with graphical
+ * draw of property. In gpviewer, the corresponding property will be draw on the
+ * specified part with the given position and size.
+ * 
  * @brief ComponentPartProperty is the the graphical definition of a property
  * (position, part)
  * @see ComponentPart

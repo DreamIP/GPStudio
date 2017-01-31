@@ -21,6 +21,7 @@
 /**
  * @brief The ComParam class gives all specifics parameters to software driver
  * to etablish the connection and alk to the camera
+ * 
  * @see IODriver
  * @ingroup base
  */

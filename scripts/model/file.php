@@ -19,9 +19,11 @@
  */
 
 /**
- * File are stored in Block::files as a list.
- * @brief Model class to have informations about file implementation in a Block.
- * @see Block
+ * They are sorted by group to give the utility of the file. File are stored
+ * in Component::$files as a list.
+ * 
+ * @brief Model class to have informations about file implementation in a Component.
+ * @see Component
  * @ingroup base
  */
 class File

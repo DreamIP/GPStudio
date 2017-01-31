@@ -19,9 +19,11 @@
  */
 
 /**
- * Flow are stored in Block::flows as a list.
- * @brief Define flow interface in a Block.
- * @see Block FI
+ * Flow are stored in Component::flows as a list. A flow interface have information
+ * about the direction (in or out), the size of the data bus in bit and the name.
+ * 
+ * @brief Model class to define flow hardware interface in a Component or Block.
+ * @see Component FI
  * @ingroup base
  */
 class Flow

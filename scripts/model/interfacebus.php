@@ -22,6 +22,7 @@
  * InterfaceBus are used in Block::interfaces as a list. An interface as slave,
  * (pi_slave) or master (pi_master), slave connection (pi_slave_conn) or master
  * connection (pi_master_conn)
+ * 
  * @brief Define a bus interface for PI
  * @see Block PI
  * @ingroup base

@@ -20,6 +20,15 @@
 
 require_once("treeitem.php");
 
+/**
+ * Reset is used into the Component::$resets to list all the reset of the block.
+ * Compared to FlowConnect, this interface is processed to obtain all the connection
+ * with the generated MUX.
+ * 
+ * @brief The TreeConnect class define a connection between two flows.
+ * @see PI Flow
+ * @ingroup base
+ */
 class TreeConnect
 {
     /**

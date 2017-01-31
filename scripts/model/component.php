@@ -35,6 +35,21 @@ require_once("componentpart.php");
  * Component is the the definition of hardware components. It could be
  * used in a block to indicate the inclusion of the block or in the
  * component library to define them.
+ * 
+ * It needs to be specialised, it only contains the list of :
+ *  - implementation files (vhdl, verilog, C, C++, ...), documentation files
+ * Block::$files
+ *  - hardware parameters (generic for VHDL, param for verilog constant for
+ * C/C++) or register for hardware implementation Block::$params
+ *  - properties for high level software Block::$properties
+ *  - flows interface input and output Block::$flows
+ *  - clocks inputs (all blocks) and clocks generator (IO blocks only) Block::$clocks
+ *  - reset inputs (all blocks) and reset generators (IO blocks only) Block::$resets
+ *  - attributes for special attributes compilation toolchain Block::$attributes
+ * 
+ * A component could be included in a block or as an extension but could not be
+ * instantiated in a node.
+ * 
  * @brief Component is the the definition of hardware components.
  * @see Block
  * @ingroup base

@@ -22,20 +22,13 @@ require_once("component.php");
 require_once("property.php");
 
 /**
- * It needs to be specialised, it only contains the list of :
- *  - implementation files (vhdl, verilog, C, C++, ...), documentation files
- * Block::$files
- *  - hardware parameters (generic for VHDL, param for verilog constant for
- * C/C++) or register for hardware implementation Block::$params
- *  - properties for high level software Block::$properties
- *  - flows interface input and output Block::$flows
- *  - clocks inputs (all blocks) and clocks generator (IO blocks only) Block::$clocks
- *  - reset inputs (all blocks) and reset generators (IO blocks only) Block::$resets
- *  - bus interfaces for PI slave and master Block::$interfaces
- *  - attributes for special attributes compilation toolchain Block::$attributes
+ * Block is a specialisation of component. 
  * 
- * @brief Block is the base block definition for all blocks.
- * @see IO Process
+ * In addition of attribute of component, it contains bus interfaces for PI
+ * slave and master Block::$interfaces, addr and master count.
+ * 
+ * @brief Block is the base block definition for all blocks (IO, IOCom and process).
+ * @see Component IO Process
  * @ingroup base
  */
 class Block extends Component

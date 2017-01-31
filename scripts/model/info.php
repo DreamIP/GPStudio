@@ -21,6 +21,7 @@
 /**
  * Info is contained into Component class to give information for IPs like
  * author, email, version, company, licence...
+ * 
  * @brief The Info class is used to indicate information for IPs.
  * @see Component
  * @ingroup base

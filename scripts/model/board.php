@@ -19,7 +19,9 @@
  */
 
 /**
- * Board is the class to load .dev support platform file and manage IO support for the board. It also load the toolchain with attribute.
+ * Board is the class to load .dev support platform file and manage IO support
+ * for the board. It also load the toolchain with attribute.
+ * 
  * @brief Board is the class to load .dev support platform file.
  * @see IO Pin Toolchain
  * @ingroup base

@@ -21,7 +21,14 @@
 require_once("block.php");
 
 require_once("toolchain/hdl/vhdl_generator.php");
-
+/**
+ * It internally contain bus interconnect to all block that have a PI interface.
+ * The generation of the block choose adress for each block.
+ * 
+ * @brief ParamInterconnect is the generated block to manage all the parameter interfaces.
+ * @see Block Parameter
+ * @ingroup base
+ */
 class ParamInterconnect extends Block
 {
     public $addr_bus_width;

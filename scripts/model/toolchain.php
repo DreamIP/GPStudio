@@ -21,8 +21,7 @@
 require_once("attribute.php");
 
 /**
- * @brief The Reset class define a toolchain for building a project.
- * @see Property
+ * @brief Toolchain class define a toolchain for building a project.
  * @ingroup base
  */
 class Toolchain

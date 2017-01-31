@@ -22,7 +22,9 @@ require_once("comconnect.php");
 require_once("comparam.php");
 
 /**
- * Contains all parameters about the driver and communication links and protocol declaration.
+ * Contains all parameters about the software driver to use and communication
+ * links and protocol declaration.
+ * 
  * @brief ComDriver is the specialised implementation of IO.
  * @see IOCom ComConnect ComParam
  * @ingroup base

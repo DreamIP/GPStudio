@@ -19,7 +19,10 @@
  */
 
 /**
- * ClockDomain permits to save typical frequency of a clock domain.
+ * ClockDomain permits to save typical frequency of a clock domain. Use it
+ * in addition to clock with shift or ratio. Clock defined with the same
+ * clockdomain ensure to be syncronized.
+ * 
  * @brief ClockDomain permits to save typical frequency of a clock domain.
  * @see Clock ClockInterconnect
  * @ingroup base

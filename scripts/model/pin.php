@@ -19,7 +19,7 @@
  */
 
 /**
- * @brief Pin is the phisycal mapping between external port of an IO block and 
+ * @brief Pin is the physical mapping between external port of an IO block and 
  * chip pins.
  * @see IO Board Port
  * @ingroup base

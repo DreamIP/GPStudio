@@ -20,6 +20,11 @@
 
 require_once("ci.php");
 
+/**
+ * @brief PLL is a conveniant system to help CI PLL assignation and computation.
+ * @see IO Board Port
+ * @ingroup base
+ */
 class PLL
 {
     public $inFreqs;

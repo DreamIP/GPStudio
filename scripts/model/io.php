@@ -21,7 +21,8 @@
 require_once("block.php");
 
 /**
- * It allows the use of pins and external port to declare phisycal interface.
+ * In addition to simple Block, it allows the use of pins and external port to
+ * declare physical interface.
  * 
  * It only contains the list of :
  *  - pins and ports as external io IO::$pins, IO::$ext_ports

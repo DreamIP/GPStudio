@@ -21,6 +21,7 @@
 /**
  * It links the id of the software protocol to the name of the harware
  * communication flow or PI interface
+ * 
  * @brief The ComConnect to define mapping between hardware interfaces and high
  * level software tool
  * @see IOCom

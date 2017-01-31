@@ -19,10 +19,12 @@
  */
 
 /**
- * Reset is used into the Block::$resets to list all the reset of the block.
+ * Reset is used into the Component::$resets to list all the reset of the block.
+ * A reset have information about the direction (in or out / provider or receiver),
+ * the group of reset and the name.
  * 
- * @brief The Reset class define a reset input or reset provider.
- * @see Property
+ * @brief The Reset class define a reset input or reset provider  in a Component or Block.
+ * @see Component
  * @ingroup base
  */
 class Reset

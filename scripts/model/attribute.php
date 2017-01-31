@@ -22,6 +22,7 @@
  * Attribute is contained into the Board class to define the specific attributes
  * of the board and in Pin class to define each features of pin dedicated to the
  * toolchain.
+ * 
  * @brief The Attribute class is used to define special attributes for a toolchain.
  * @see Toolchain Pin Board
  * @ingroup base
