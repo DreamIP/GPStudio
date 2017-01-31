@@ -27,7 +27,7 @@
 
 #include "viewer/viewerwidgets/layerwidget.h"
 
-#include <QToolButton>
+#include <QToolBar>
 
 class GPSTUDIO_GUI_EXPORT LayerViewer : public AbstractViewer
 {
@@ -45,15 +45,15 @@ protected:
     virtual void setupWidgets();
 
     // toolbar members
-    QLayout *getToolBar();
-    QToolButton *_pauseButton;
-    QToolButton *_saveButton;
-    QToolButton *_recordButton;
-    QToolButton *_settingsButton;
+    QToolBar *getToolBar();
+    QAction *_pauseButton;
+    QAction *_saveButton;
+    QAction *_recordButton;
+    QAction *_settingsButton;
 
-    QToolButton *_zoomFitButton;
-    QToolButton *_zoomOutButton;
-    QToolButton *_zoomInButton;
+    QAction *_zoomFitButton;
+    QAction *_zoomOutButton;
+    QAction *_zoomInButton;
 
     QString _recordPath;
 

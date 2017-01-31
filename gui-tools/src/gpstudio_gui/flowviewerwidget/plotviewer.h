@@ -21,6 +21,8 @@
 #ifndef PLOTVIEWER_H
 #define PLOTVIEWER_H
 
+#include <QToolBar>
+
 #include "gpstudio_gui_common.h"
 
 #include "abstractviewer.h"
@@ -40,11 +42,11 @@ protected slots:
 
 protected:
     virtual void setupWidgets();
-    QLayout *getToolBar();
+    QToolBar *getToolBar();
 
-    QToolButton *_pauseButton;
-    QToolButton *_saveButton;
-    QToolButton *_settingsButton;
+    QAction *_pauseButton;
+    QAction *_saveButton;
+    QAction *_settingsButton;
 
     QCustomPlot *_widget;
     qint64 _startDate;

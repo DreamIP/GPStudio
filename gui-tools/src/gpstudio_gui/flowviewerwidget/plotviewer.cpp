@@ -108,38 +108,34 @@ void PlotViewer::setupWidgets()
     _widget->xAxis->setTickLabelType(QCPAxis::ltDateTime);
     _widget->xAxis->setDateTimeFormat("HH:mm:ss");
 
-    layout->addItem(getToolBar());
+    layout->addWidget(getToolBar());
     layout->addWidget(_widget);
 
     setLayout(layout);
 }
 
-QLayout *PlotViewer::getToolBar()
+QToolBar *PlotViewer::getToolBar()
 {
-    QVBoxLayout *layoutTools = new QVBoxLayout();
-    layoutTools->setContentsMargins(0,5,2,0);
-    layoutTools->setSpacing(2);
+    QToolBar *toolbar = new QToolBar(this);
+    toolbar->setOrientation(Qt::Vertical);
+    toolbar->setIconSize(QSize(18,18));
 
-    _pauseButton = new QToolButton();
+    _pauseButton = new QAction("Pause");
     _pauseButton->setToolTip("Pause viewer");
-    _pauseButton->setAutoRaise(true);
     _pauseButton->setCheckable(true);
     _pauseButton->setIcon(QIcon(":/icons/img/pause.png"));
-    layoutTools->addWidget(_pauseButton);
+    toolbar->addAction(_pauseButton);
 
-    _saveButton = new QToolButton();
+    _saveButton = new QAction("Save image");
     _saveButton->setToolTip("Save image");
-    _saveButton->setAutoRaise(true);
     _saveButton->setIcon(QIcon(":/icons/img/save.png"));
     connect(_saveButton, SIGNAL(clicked(bool)), this, SLOT(saveImage()));
-    layoutTools->addWidget(_saveButton);
+    toolbar->addAction(_saveButton);
 
-    _settingsButton = new QToolButton();
+    _settingsButton = new QAction("Records images");
     _settingsButton->setToolTip("Records images");
-    _settingsButton->setAutoRaise(true);
     _settingsButton->setIcon(QIcon(":/icons/img/settings.png"));
-    layoutTools->addWidget(_settingsButton);
+    toolbar->addAction(_settingsButton);
 
-    layoutTools->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    return layoutTools;
+    return toolbar;
 }

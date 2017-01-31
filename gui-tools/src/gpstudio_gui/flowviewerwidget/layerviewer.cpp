@@ -124,7 +124,13 @@ void LayerViewer::saveImage()
 void LayerViewer::recordImages()
 {
     if(_recordButton->isChecked())
-        _recordPath = QFileDialog::getExistingDirectory(this, "Directory to save images...", "");
+    {
+        QString newPath = QFileDialog::getExistingDirectory(this, "Directory to save images...", "");
+        if(!newPath.isEmpty())
+            _recordPath = newPath;
+        else
+            _recordButton->setChecked(false);
+    }
 }
 
 void LayerViewer::setupWidgets()
@@ -134,76 +140,62 @@ void LayerViewer::setupWidgets()
     layout->setSpacing(0);
 
     _widget = new LayerWidget();
-
-    layout->addItem(getToolBar());
-
+    layout->addWidget(getToolBar());
     layout->addWidget(_widget);
 
     setLayout(layout);
 }
 
-QLayout *LayerViewer::getToolBar()
+QToolBar *LayerViewer::getToolBar()
 {
-    QVBoxLayout *layoutTools = new QVBoxLayout();
-    layoutTools->setContentsMargins(0,5,2,0);
-    layoutTools->setSpacing(2);
+    QToolBar *toolbar = new QToolBar(this);
+    toolbar->setOrientation(Qt::Vertical);
+    toolbar->setIconSize(QSize(18,18));
 
     // viewer actions (pause, grab image, video...)
-    _pauseButton = new QToolButton();
-    _pauseButton->setToolTip("Pause viewer");
-    _pauseButton->setAutoRaise(true);
+    _pauseButton = new QAction("Pause");
     _pauseButton->setCheckable(true);
     _pauseButton->setIcon(QIcon(":/icons/img/pause.png"));
-    layoutTools->addWidget(_pauseButton);
+    toolbar->addAction(_pauseButton);
 
-    _saveButton = new QToolButton();
+    _saveButton = new QAction("Save image");
     _saveButton->setToolTip("Save image");
-    _saveButton->setAutoRaise(true);
     _saveButton->setIcon(QIcon(":/icons/img/save.png"));
-    connect(_saveButton, SIGNAL(clicked(bool)), this, SLOT(saveImage()));
-    layoutTools->addWidget(_saveButton);
+    connect(_saveButton, SIGNAL(triggered(bool)), this, SLOT(saveImage()));
+    toolbar->addAction(_saveButton);
 
-    _recordButton = new QToolButton();
+    _recordButton = new QAction("Records images");
     _recordButton->setToolTip("Records images");
-    _recordButton->setAutoRaise(true);
     _recordButton->setCheckable(true);
     _recordButton->setIcon(QIcon(":/icons/img/record.png"));
-    connect(_recordButton, SIGNAL(clicked(bool)), this, SLOT(recordImages()));
-    layoutTools->addWidget(_recordButton);
+    connect(_recordButton, SIGNAL(triggered(bool)), this, SLOT(recordImages()));
+    toolbar->addAction(_recordButton);
 
-    _settingsButton = new QToolButton();
-    _settingsButton->setToolTip("Records images");
-    _settingsButton->setAutoRaise(true);
+    _settingsButton = new QAction("Settings");
+    _settingsButton->setToolTip("Open viewer settings");
     _settingsButton->setIcon(QIcon(":/icons/img/settings.png"));
-    layoutTools->addWidget(_settingsButton);
+    toolbar->addAction(_settingsButton);
 
-    QFrame* line = new QFrame();
-    line->setFrameShape(QFrame::HLine);
-    line->setFrameShadow(QFrame::Sunken);
-    layoutTools->addWidget(line);
+    toolbar->addSeparator();
 
     // viewer zoom option
-    _zoomFitButton = new QToolButton();
+    _zoomFitButton = new QAction("Zoom fit");
     _zoomFitButton->setToolTip("Zoom fit best");
-    _zoomFitButton->setAutoRaise(true);
     _zoomFitButton->setIcon(QIcon(":/icons/img/zoom-fit.png"));
-    connect(_zoomFitButton, SIGNAL(clicked(bool)), _widget, SLOT(zoomFit()));
-    layoutTools->addWidget(_zoomFitButton);
+    connect(_zoomFitButton, SIGNAL(triggered(bool)), _widget, SLOT(zoomFit()));
+    toolbar->addAction(_zoomFitButton);
 
-    _zoomOutButton = new QToolButton();
+    _zoomOutButton = new QAction("Zoom -");
     _zoomOutButton->setToolTip("Zoom out");
-    _zoomOutButton->setAutoRaise(true);
     _zoomOutButton->setIcon(QIcon(":/icons/img/zoom-out.png"));
-    connect(_zoomOutButton, SIGNAL(clicked(bool)), _widget, SLOT(zoomOut()));
-    layoutTools->addWidget(_zoomOutButton);
+    connect(_zoomOutButton, SIGNAL(triggered(bool)), _widget, SLOT(zoomOut()));
+    toolbar->addAction(_zoomOutButton);
 
-    _zoomInButton = new QToolButton();
+    _zoomInButton = new QAction("Zoom +");
     _zoomInButton->setToolTip("Zoom in");
-    _zoomInButton->setAutoRaise(true);
     _zoomInButton->setIcon(QIcon(":/icons/img/zoom-in.png"));
-    connect(_zoomInButton, SIGNAL(clicked(bool)), _widget, SLOT(zoomIn()));
-    layoutTools->addWidget(_zoomInButton);
+    connect(_zoomInButton, SIGNAL(triggered(bool)), _widget, SLOT(zoomIn()));
+    toolbar->addAction(_zoomInButton);
 
-    layoutTools->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    return layoutTools;
+    return toolbar;
 }
