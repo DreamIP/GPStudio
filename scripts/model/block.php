@@ -655,6 +655,17 @@ class Block extends Component
                 }
                 $xml_element->appendChild($xml_attributes);
             }
+            
+            // ports
+            if (!empty($this->ext_ports))
+            {
+                $xml_ports = $xml->createElement("ports");
+                foreach ($this->ext_ports as $port)
+                {
+                    $xml_ports->appendChild($port->getXmlElement($xml, $format));
+                }
+                $xml_element->appendChild($xml_ports);
+            }
         }
 
 

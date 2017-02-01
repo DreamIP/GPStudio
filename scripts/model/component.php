@@ -997,7 +997,6 @@ class Component
             $xml_element->appendChild($xml_components);
         }
         
-        
         // ports
         if (!empty($this->ext_ports))
         {
