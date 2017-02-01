@@ -269,9 +269,9 @@ class ParamInterconnect extends Block
         }
 
         if ($master_count == 0)
-            warning("No master on PI, you can't change parameters.", 65, "PI");
+            warning("No master on PI, you can not change parameters.", 65, "PI");
         if ($master_count > 1)
-            error("Multi master not supported yet", 65, "PI");
+            error("Multi master not supported yet, but you can implement me.", 65, "PI");
 
         $code = '';
 

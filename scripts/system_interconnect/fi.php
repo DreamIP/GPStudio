@@ -142,28 +142,28 @@ class FlowInterconnect extends Block
             // check connexion
             if (!$fromblock = $node->getBlock($connect->fromblock))
             {
-                warning("Block '$connect->fromblock' doesn't exists. Please check your flow_interconnect->connects section.\n"
+                warning("Block '$connect->fromblock' does not exist. Please check your flow_interconnect->connects section.\n"
                         . FlowInterconnect::showConnect($connect)
                         . FlowInterconnect::showBlocks($node), 15, "FI");
                 continue;
             }
             if (!$fromflow = $fromblock->getFlow($connect->fromflow))
             {
-                warning("Flow '$connect->fromflow' doesn't exists in block '$connect->fromblock'. Please check your flow_interconnect->connects section." . "\n"
+                warning("Flow '$connect->fromflow' does not exist in block '$connect->fromblock'. Please check your flow_interconnect->connects section." . "\n"
                         . FlowInterconnect::showConnect($connect)
                         . FlowInterconnect::showFlows($fromblock, "out"), 15, "FI");
                 continue;
             }
             if (!$toblock = $node->getBlock($connect->toblock))
             {
-                warning("Block '$connect->toblock' doesn't exists. Please check your flow_interconnect->connects section.\n"
+                warning("Block '$connect->toblock' does not exist. Please check your flow_interconnect->connects section.\n"
                         . FlowInterconnect::showConnect($connect)
                         . FlowInterconnect::showBlocks($node), 15, "FI");
                 continue;
             }
             if (!$toflow = $toblock->getFlow($connect->toflow))
             {
-                warning("Flow '$connect->toflow' doesn't exists in block '$connect->toblock'. Please check your flow_interconnect->connects section.\n"
+                warning("Flow '$connect->toflow' does not exist in block '$connect->toblock'. Please check your flow_interconnect->connects section.\n"
                         . FlowInterconnect::showConnect($connect)
                         . FlowInterconnect::showFlows($toblock, "in"), 15, "FI");
                 continue;
