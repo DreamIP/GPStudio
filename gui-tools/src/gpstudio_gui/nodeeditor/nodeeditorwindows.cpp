@@ -144,16 +144,9 @@ void NodeEditorWindows::showEvent(QShowEvent *)
 
 void NodeEditorWindows::setupWidgets()
 {
-    QWidget *centralwidget = new QWidget(this);
-
-    QLayout *layout = new QVBoxLayout(centralwidget);
-
-    _blocksView = new BlockView(centralwidget);
+    _blocksView = new BlockView(this);
     _blocksView->setEditMode(true);
-    layout->addWidget(_blocksView);
-
-    centralwidget->setLayout(layout);
-    setCentralWidget(centralwidget);
+    setCentralWidget(_blocksView);
 
     QMenuBar *menubar = new QMenuBar(this);
     setMenuBar(menubar);
@@ -260,7 +253,7 @@ void NodeEditorWindows::createToolBarAndMenu()
 
     QAction *configNode = new QAction("&Platform configuration",this);
     configNode->setStatusTip("Permits to choose the targeted platform and to choose associated periphericals");
-    configNode->setIcon(QIcon(":/icons/img/settings.png"));
+    configNode->setIcon(QIcon(":/icons/img/platform.png"));
     configNode->setShortcut(QKeySequence::Preferences);
     nodeMenu->addAction(configNode);
     _mainToolBar->addAction(configNode);
@@ -384,8 +377,9 @@ void NodeEditorWindows::createToolBarAndMenu()
     projectMenu->addAction(stopAction);
 
     projectMenu->addSeparator();
-    QAction *settingsAction = new QAction("&Settings", this);
+    QAction *settingsAction = new QAction("&Project Settings", this);
     settingsAction->setStatusTip("Paths settings");
+    settingsAction->setIcon(QIcon(":/icons/img/settings.png"));
     connect(settingsAction, SIGNAL(triggered(bool)), this, SLOT(showSettings()));
     _mainToolBar->addAction(settingsAction);
     projectMenu->addAction(settingsAction);
