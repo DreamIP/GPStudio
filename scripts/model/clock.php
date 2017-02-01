@@ -166,7 +166,7 @@ class Clock
      */
     public function __toString()
     {
-        return $this->name . " " . Clock::formatFreq($this->typical) . " " . $this->direction;
+        return $this->name . " " . Clock::formatFreq($this->typical) . " " . $this->direction . " (domain " . $this->domain . ") in net: " . $this->net;
     }
 
     /**

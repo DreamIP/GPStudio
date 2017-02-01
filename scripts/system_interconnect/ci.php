@@ -117,17 +117,17 @@ class ClockInterconnect extends Block
             $clock->domain = $clock_provider->domain;
             $clock->typical = $clock_provider->typical;
             $clock->shift = $clock_provider->shift;
-
-            if ($clock->shift == 0)
+            
+            $clock->net = 'clk_' . Clock::hdlFreq($clock->typical);
+            if ($clock->domain != '')
             {
-                $clock->net = 'clk_' . Clock::hdlFreq($clock->typical);
-                $clock_provider->net = $clock->net;
+                $clock->net .= '_' . $clock->domain;
             }
-            else
+            if ($clock->shift != 0)
             {
-                $clock->net = 'clk_' . Clock::hdlFreq($clock->typical) . '_' . $clock->shift;
-                $clock_provider->net = $clock->net;
+                $clock->net .= '_' . $clock->shift;
             }
+            $clock_provider->net = $clock->net;
 
             $clock->direction = "in";
             $this->addClock($clock);
@@ -236,13 +236,14 @@ class ClockInterconnect extends Block
             $clockProvider = new Clock();
             $clockProvider->typical = $clkFreq;
             $clockProvider->shift = $clkShift;
-            if ($clockProvider->shift == 0)
+            $clockProvider->net = 'clk_' . Clock::hdlFreq($clockProvider->typical);
+            if ($clockProvider->domain != '')
             {
-                $clockProvider->net = 'clk_' . Clock::hdlFreq($clkFreq);
+                $clockProvider->net .= '_' . $clockProvider->domain;
             }
-            else
+            if ($clockProvider->shift != 0)
             {
-                $clockProvider->net = 'clk_' . Clock::hdlFreq($clkFreq) . '_' . $clkShift;
+                $clockProvider->net .= '_' . $clockProvider->shift;
             }
             $clockProvider->name = $clockProvider->net;
 
