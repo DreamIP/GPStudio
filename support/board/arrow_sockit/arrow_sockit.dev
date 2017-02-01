@@ -51,17 +51,17 @@
 					<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 				</attributes>
 			</pin>
-            <pin name="reset_i" mapto="PIN_AD27">
+            <pin name="PIN_AD27" mapto="reset_i">
                 <attributes>
                     <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                 </attributes>
             </pin>
 		</pins>
 		<clocks>
-			<clock name="clk_b3b_i" typical="50M" desc=""/>
-			<clock name="clk_b4a_i" typical="50M" desc=""/>
-			<clock name="clk_b5b_i" typical="50M" desc=""/>
-			<clock name="clk_b8a_i" typical="50M" desc=""/>
+			<clock name="clk_b3b_i" typical="50M" domain="b3b" desc=""/>
+			<clock name="clk_b4a_i" typical="50M" domain="b4a" desc=""/>
+			<clock name="clk_b5b_i" typical="50M" domain="b5b" desc=""/>
+			<clock name="clk_b8a_i" typical="50M" domain="b8a" desc=""/>
 		</clocks>
 		<resets>
 			<reset name="reset_i" group="reset_n" direction="out"/>
@@ -100,156 +100,156 @@
 				<param name="KEYCOUNT" value="4"/>
 			</params>
             <pins>
-                <pin name="key[0]" mapto="PIN_AE9">
+                <pin name="PIN_AE9" mapto="key[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="key[1]" mapto="PIN_AE12">
+                <pin name="PIN_AE12" mapto="key[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="key[2]" mapto="PIN_AD9">
+                <pin name="PIN_AD9" mapto="key[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="key[3]" mapto="PIN_AD11">
+                <pin name="PIN_AD11" mapto="key[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
 			</pins>
 		</io>
-		<io name="usb3" type="comunication" driver="usb3" optional="true" description="USB3.0">
+		<io name="usb3" type="comunication" driver="usb3_ft600x" optional="true" description="USB3.0">
             <pins>
-                <pin name="clk" mapto="PIN_J14">
+                <pin name="PIN_J14" mapto="clk">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="be[1]" mapto="PIN_J9">
+                <pin name="PIN_J9" mapto="be[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="be[0]" mapto="PIN_J10">
+                <pin name="PIN_J10" mapto="be[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[15]" mapto="PIN_F10">
+                <pin name="PIN_F10" mapto="data[15]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[14]" mapto="PIN_G10">
+                <pin name="PIN_G10" mapto="data[14]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[13]" mapto="PIN_J12">
+                <pin name="PIN_J12" mapto="data[13]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[12]" mapto="PIN_K12">
+                <pin name="PIN_K12" mapto="data[12]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[11]" mapto="PIN_G11">
+                <pin name="PIN_G11" mapto="data[11]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[10]" mapto="PIN_G12">
+                <pin name="PIN_G12" mapto="data[10]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[9]" mapto="PIN_H12">
+                <pin name="PIN_H12" mapto="data[9]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[8]" mapto="PIN_H13">
+                <pin name="PIN_H13" mapto="data[8]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[7]" mapto="PIN_F6">
+                <pin name="PIN_F6" mapto="data[7]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[6]" mapto="PIN_G7">
+                <pin name="PIN_G7" mapto="data[6]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[5]" mapto="PIN_D7">
+                <pin name="PIN_D7" mapto="data[5]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[4]" mapto="PIN_E8">
+                <pin name="PIN_E8" mapto="data[4]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[3]" mapto="PIN_A8">
+                <pin name="PIN_A8" mapto="data[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[2]" mapto="PIN_A9">
+                <pin name="PIN_A9" mapto="data[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[1]" mapto="PIN_C9">
+                <pin name="PIN_C9" mapto="data[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="data[0]" mapto="PIN_C10">
+                <pin name="PIN_C10" mapto="data[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="rxf_n" mapto="PIN_K8">
+                <pin name="PIN_K8" mapto="rxf_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="txe_n" mapto="PIN_K7">
+                <pin name="PIN_K7" mapto="txe_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="wr_n" mapto="PIN_H7">
+                <pin name="PIN_H7" mapto="wr_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="rd_n" mapto="PIN_H8">
+                <pin name="PIN_H8" mapto="rd_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="oe_n" mapto="PIN_G8">
+                <pin name="PIN_G8" mapto="oe_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="siwu_n" mapto="PIN_J7">
+                <pin name="PIN_J7" mapto="siwu_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="reset_n" mapto="PIN_E4">
+                <pin name="PIN_E4" mapto="reset_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
@@ -261,22 +261,22 @@
 				<param name="KEYCOUNT" value="4"/>
 			</params>
             <pins>
-                <pin name="sw[0]" mapto="PIN_W25">
+                <pin name="PIN_W25" mapto="sw[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="sw[1]" mapto="PIN_V25">
+                <pin name="PIN_V25" mapto="sw[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="sw[2]" mapto="PIN_AC28">
+                <pin name="PIN_AC28" mapto="sw[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="sw[3]" mapto="PIN_AC29">
+                <pin name="PIN_AC29" mapto="sw[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
@@ -286,147 +286,147 @@
 		</io>
         <io name="vga" type="image_output" driver="vga_out" optional="true" description="VGA output">
 			<pins>
-				                <pin name="vga_hs" mapto="PIN_AD12">
+                <pin name="PIN_AD12" mapto="vga_hs">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_vs" mapto="PIN_AC12">
+                <pin name="PIN_AC12" mapto="vga_vs">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_sync_n" mapto="PIN_AG2">
+                <pin name="PIN_AG2" mapto="vga_sync_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_clk" mapto="PIN_W20">
+                <pin name="PIN_W20" mapto="vga_clk">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_blank_n" mapto="PIN_AH3">
+                <pin name="PIN_AH3" mapto="vga_blank_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_r[0]" mapto="PIN_AG5">
+                <pin name="PIN_AG5" mapto="vga_r[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_r[1]" mapto="PIN_AA12">
+                <pin name="PIN_AA12" mapto="vga_r[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_r[2]" mapto="PIN_AB12">
+                <pin name="PIN_AB12" mapto="vga_r[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_r[3]" mapto="PIN_AF6">
+                <pin name="PIN_AF6" mapto="vga_r[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_r[4]" mapto="PIN_AG6">
+                <pin name="PIN_AG6" mapto="vga_r[4]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_r[5]" mapto="PIN_AJ2">
+                <pin name="PIN_AJ2" mapto="vga_r[5]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_r[6]" mapto="PIN_AH5">
+                <pin name="PIN_AH5" mapto="vga_r[6]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_r[7]" mapto="PIN_AJ1">
+                <pin name="PIN_AJ1" mapto="vga_r[7]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_g[0]" mapto="PIN_Y21">
+                <pin name="PIN_Y21" mapto="vga_g[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_g[1]" mapto="PIN_AA25">
+                <pin name="PIN_AA25" mapto="vga_g[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_g[2]" mapto="PIN_AB26">
+                <pin name="PIN_AB26" mapto="vga_g[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_g[3]" mapto="PIN_AB22">
+                <pin name="PIN_AB22" mapto="vga_g[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_g[4]" mapto="PIN_AB23">
+                <pin name="PIN_AB23" mapto="vga_g[4]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_g[5]" mapto="PIN_AA24">
+                <pin name="PIN_AA24" mapto="vga_g[5]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_g[6]" mapto="PIN_AB25">
+                <pin name="PIN_AB25" mapto="vga_g[6]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_g[7]" mapto="PIN_AE27">
+                <pin name="PIN_AE27" mapto="vga_g[7]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_b[0]" mapto="PIN_AE28">
+                <pin name="PIN_AE28" mapto="vga_b[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_b[1]" mapto="PIN_Y23">
+                <pin name="PIN_Y23" mapto="vga_b[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_b[2]" mapto="PIN_Y24">
+                <pin name="PIN_Y24" mapto="vga_b[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_b[3]" mapto="PIN_AG28">
+                <pin name="PIN_AG28" mapto="vga_b[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_b[4]" mapto="PIN_AF28">
+                <pin name="PIN_AF28" mapto="vga_b[4]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_b[5]" mapto="PIN_V23">
+                <pin name="PIN_V23" mapto="vga_b[5]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_b[6]" mapto="PIN_W24">
+                <pin name="PIN_W24" mapto="vga_b[6]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="vga_b[7]" mapto="PIN_AF29">
+                <pin name="PIN_AF29" mapto="vga_b[7]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
@@ -464,47 +464,47 @@
 		</io>
 		<io name="audio" type="audio" driver="audio_i2c" optional="true" description="audio in/out">
 			<pins>
-                <pin name="aud_adclrck" mapto="PIN_AG30">
+                <pin name="PIN_AG30" mapto="aud_adclrck">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="aud_adcdat" mapto="PIN_AC27">
+                <pin name="PIN_AC27" mapto="aud_adcdat">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="aud_daclrck" mapto="PIN_AH4">
+                <pin name="PIN_AH4" mapto="aud_daclrck">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="aud_dacdat" mapto="PIN_AG3">
+                <pin name="PIN_AG3" mapto="aud_dacdat">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="aud_xck" mapto="PIN_AC9">
+                <pin name="PIN_AC9" mapto="aud_xck">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="aud_bclk" mapto="PIN_AE7">
+                <pin name="PIN_AE7" mapto="aud_bclk">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="aud_mute" mapto="PIN_AD26">
+                <pin name="PIN_AD26" mapto="aud_mute">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="aud_i2c_sclk" mapto="PIN_AH30">
+                <pin name="PIN_AH30" mapto="aud_i2c_sclk">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="aud_i2c_sdat" mapto="PIN_AF30">
+                <pin name="PIN_AF30" mapto="aud_i2c_sdat">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
@@ -513,7 +513,7 @@
 		</io>
         <io name="irda" type="him_input" driver="irda_in" optional="true" description="IRDA input">
 			<pins>
-                <pin name="irda_rxd" mapto="PIN_AH2">
+                <pin name="PIN_AH2" mapto="irda_rxd">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
@@ -522,362 +522,362 @@
 		</io>
         <io name="ddr3" type="memory" driver="ddr3" optional="true" description="DDR3 memory">
 			<pins>
-                <pin name="ddr3_ck_p" mapto="PIN_AA14">
+                <pin name="PIN_AA14" mapto="ddr3_ck_p">
                     <attributes>
                         <attribute name="IO_STANDARD" value="Differential 1.5-V SSTL Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_ck_n" mapto="PIN_AA15">
+                <pin name="PIN_AA15" mapto="ddr3_ck_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="Differential 1.5-V SSTL Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dqs_p[0]" mapto="PIN_V16">
+                <pin name="PIN_V16" mapto="ddr3_dqs_p[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="Differential 1.5-V SSTL Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dqs_n[0]" mapto="PIN_W16">
+                <pin name="PIN_W16" mapto="ddr3_dqs_n[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="Differential 1.5-V SSTL Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dqs_p[1]" mapto="PIN_V17">
+                <pin name="PIN_V17" mapto="ddr3_dqs_p[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="Differential 1.5-V SSTL Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dqs_n[1]" mapto="PIN_W17">
+                <pin name="PIN_W17" mapto="ddr3_dqs_n[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="Differential 1.5-V SSTL Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dqs_p[2]" mapto="PIN_Y17">
+                <pin name="PIN_Y17" mapto="ddr3_dqs_p[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="Differential 1.5-V SSTL Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dqs_n[2]" mapto="PIN_AA18">
+                <pin name="PIN_AA18" mapto="ddr3_dqs_n[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="Differential 1.5-V SSTL Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dqs_p[3]" mapto="PIN_AC20">
+                <pin name="PIN_AC20" mapto="ddr3_dqs_p[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="Differential 1.5-V SSTL Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dqs_n[3]" mapto="PIN_AD19">
+                <pin name="PIN_AD19" mapto="ddr3_dqs_n[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="Differential 1.5-V SSTL Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_cke" mapto="PIN_AJ21">
+                <pin name="PIN_AJ21" mapto="ddr3_cke">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_cs_n" mapto="PIN_AB15">
+                <pin name="PIN_AB15" mapto="ddr3_cs_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_reset_n" mapto="PIN_AK21">
+                <pin name="PIN_AK21" mapto="ddr3_reset_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_we_n" mapto="PIN_AJ6">
+                <pin name="PIN_AJ6" mapto="ddr3_we_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_ras_n" mapto="PIN_AH8">
+                <pin name="PIN_AH8" mapto="ddr3_ras_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_cas_n" mapto="PIN_AH7">
+                <pin name="PIN_AH7" mapto="ddr3_cas_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_ba[0]" mapto="PIN_AH10">
+                <pin name="PIN_AH10" mapto="ddr3_ba[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_ba[1]" mapto="PIN_AJ11">
+                <pin name="PIN_AJ11" mapto="ddr3_ba[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_ba[2]" mapto="PIN_AK11">
+                <pin name="PIN_AK11" mapto="ddr3_ba[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dm[0]" mapto="PIN_AH17">
+                <pin name="PIN_AH17" mapto="ddr3_dm[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dm[1]" mapto="PIN_AG23">
+                <pin name="PIN_AG23" mapto="ddr3_dm[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dm[2]" mapto="PIN_AK23">
+                <pin name="PIN_AK23" mapto="ddr3_dm[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dm[3]" mapto="PIN_AJ27">
+                <pin name="PIN_AJ27" mapto="ddr3_dm[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_odt" mapto="PIN_AE16">
+                <pin name="PIN_AE16" mapto="ddr3_odt">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_rzq" mapto="PIN_AG17">
+                <pin name="PIN_AG17" mapto="ddr3_rzq">
                     <attributes>
                         <attribute name="IO_STANDARD" value="1.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[0]" mapto="PIN_AF18">
+                <pin name="PIN_AF18" mapto="ddr3_dq[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[1]" mapto="PIN_AE17">
+                <pin name="PIN_AE17" mapto="ddr3_dq[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[2]" mapto="PIN_AG16">
+                <pin name="PIN_AG16" mapto="ddr3_dq[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[3]" mapto="PIN_AF16">
+                <pin name="PIN_AF16" mapto="ddr3_dq[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[4]" mapto="PIN_AH20">
+                <pin name="PIN_AH20" mapto="ddr3_dq[4]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[5]" mapto="PIN_AG21">
+                <pin name="PIN_AG21" mapto="ddr3_dq[5]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[6]" mapto="PIN_AJ16">
+                <pin name="PIN_AJ16" mapto="ddr3_dq[6]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[7]" mapto="PIN_AH18">
+                <pin name="PIN_AH18" mapto="ddr3_dq[7]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[8]" mapto="PIN_AK18">
+                <pin name="PIN_AK18" mapto="ddr3_dq[8]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[9]" mapto="PIN_AJ17">
+                <pin name="PIN_AJ17" mapto="ddr3_dq[9]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[10]" mapto="PIN_AG18">
+                <pin name="PIN_AG18" mapto="ddr3_dq[10]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[11]" mapto="PIN_AK19">
+                <pin name="PIN_AK19" mapto="ddr3_dq[11]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[12]" mapto="PIN_AG20">
+                <pin name="PIN_AG20" mapto="ddr3_dq[12]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[13]" mapto="PIN_AF19">
+                <pin name="PIN_AF19" mapto="ddr3_dq[13]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[14]" mapto="PIN_AJ20">
+                <pin name="PIN_AJ20" mapto="ddr3_dq[14]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[15]" mapto="PIN_AH24">
+                <pin name="PIN_AH24" mapto="ddr3_dq[15]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[16]" mapto="PIN_AE19">
+                <pin name="PIN_AE19" mapto="ddr3_dq[16]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[17]" mapto="PIN_AE18">
+                <pin name="PIN_AE18" mapto="ddr3_dq[17]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[18]" mapto="PIN_AG22">
+                <pin name="PIN_AG22" mapto="ddr3_dq[18]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[19]" mapto="PIN_AK22">
+                <pin name="PIN_AK22" mapto="ddr3_dq[19]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[20]" mapto="PIN_AF21">
+                <pin name="PIN_AF21" mapto="ddr3_dq[20]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[21]" mapto="PIN_AF20">
+                <pin name="PIN_AF20" mapto="ddr3_dq[21]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[22]" mapto="PIN_AH23">
+                <pin name="PIN_AH23" mapto="ddr3_dq[22]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[23]" mapto="PIN_AK24">
+                <pin name="PIN_AK24" mapto="ddr3_dq[23]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[24]" mapto="PIN_AF24">
+                <pin name="PIN_AF24" mapto="ddr3_dq[24]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[25]" mapto="PIN_AF23">
+                <pin name="PIN_AF23" mapto="ddr3_dq[25]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[26]" mapto="PIN_AJ24">
+                <pin name="PIN_AJ24" mapto="ddr3_dq[26]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[27]" mapto="PIN_AK26">
+                <pin name="PIN_AK26" mapto="ddr3_dq[27]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[28]" mapto="PIN_AE23">
+                <pin name="PIN_AE23" mapto="ddr3_dq[28]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[29]" mapto="PIN_AE22">
+                <pin name="PIN_AE22" mapto="ddr3_dq[29]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[30]" mapto="PIN_AG25">
+                <pin name="PIN_AG25" mapto="ddr3_dq[30]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_dq[31]" mapto="PIN_AK27">
+                <pin name="PIN_AK27" mapto="ddr3_dq[31]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[0]" mapto="PIN_AJ14">
+                <pin name="PIN_AJ14" mapto="ddr3_a[0]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[1]" mapto="PIN_AK14">
+                <pin name="PIN_AK14" mapto="ddr3_a[1]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[2]" mapto="PIN_AH12">
+                <pin name="PIN_AH12" mapto="ddr3_a[2]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[3]" mapto="PIN_AJ12">
+                <pin name="PIN_AJ12" mapto="ddr3_a[3]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[4]" mapto="PIN_AG15">
+                <pin name="PIN_AG15" mapto="ddr3_a[4]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[5]" mapto="PIN_AH15">
+                <pin name="PIN_AH15" mapto="ddr3_a[5]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[6]" mapto="PIN_AK12">
+                <pin name="PIN_AK12" mapto="ddr3_a[6]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[7]" mapto="PIN_AK13">
+                <pin name="PIN_AK13" mapto="ddr3_a[7]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[8]" mapto="PIN_AH13">
+                <pin name="PIN_AH13" mapto="ddr3_a[8]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[9]" mapto="PIN_AH14">
+                <pin name="PIN_AH14" mapto="ddr3_a[9]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[10]" mapto="PIN_AJ9">
+                <pin name="PIN_AJ9" mapto="ddr3_a[10]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[11]" mapto="PIN_AK9">
+                <pin name="PIN_AK9" mapto="ddr3_a[11]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[12]" mapto="PIN_AK7">
+                <pin name="PIN_AK7" mapto="ddr3_a[12]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[13]" mapto="PIN_AK8">
+                <pin name="PIN_AK8" mapto="ddr3_a[13]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="ddr3_a[14]" mapto="PIN_AG12">
+                <pin name="PIN_AG12" mapto="ddr3_a[14]">
                     <attributes>
                         <attribute name="IO_STANDARD" value="SSTL-15 Class I" type="instance"/>
                     </attributes>
