@@ -210,7 +210,7 @@ class Board
         $used_ios = array();
 
         // add all used ios
-        if (isset($board_element->ios->io))
+        if (isset($board_element->ios))
         {
             foreach ($board_element->ios->io as $ioXml)
             {
