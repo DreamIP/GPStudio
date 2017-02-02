@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
     // send image
     QImage image("/home/seb/Seafile/GPStudio_dev/hwloop/cat.jpg");
-    cam.com()->outputFlow()[1]->send(image);
+    cam.com()->outputFlows()[1]->send(image);
 
     QSignalSpy spy(cam.com(), SIGNAL(flowReadyToRead(int)));
     qDebug()<<spy.wait(5000);
