@@ -50,7 +50,7 @@ signal w		: unsigned(X_COUNTER_SIZE-1 downto 0);
 signal h		: unsigned(Y_COUNTER_SIZE-1 downto 0);
 
 signal frame_buffer 		        : std_logic_vector(63 downto 0);
-signal frame_buffer_position        : integer range 64 to 0;
+signal frame_buffer_position        : unsigned(6 downto 0);
 signal frame_buffer_has_been_filled : std_logic;
 
 signal enabled : std_logic ;
@@ -59,13 +59,14 @@ begin
 	data_process : process (clk_proc, reset_n)
 	begin
 		if(reset_n='0') then
-			--enabled <= '1';				 
+			enabled <= '0';				 
 			x_pos 	 	   <= to_unsigned(0, X_COUNTER_SIZE);
             y_pos    	   <= to_unsigned(0, Y_COUNTER_SIZE);
             --Cleaning frame_buffer
             frame_buffer 			   <= (others=>'0');
-            frame_buffer_position      <=  0 ;
+            frame_buffer_position      <= (others=>'0') ;
 			--Cleaning signals used to fill buffer
+			frame_buffer_has_been_filled <= '0';
 			x_max 		<= (others=>'0');
 			y_max 		<= (others=>'0');
 			x_min 		<= unsigned(in_size_reg_in_w_reg);
@@ -74,7 +75,7 @@ begin
 			coord_data 	<= (others=>'0');
 			coord_fv 	<= '0';
 			coord_dv 	<= '0';
-		elsif(rising_edge(clk_proc)) then		
+		elsif(rising_edge(clk_proc)) then
 			coord_fv 	<= '0';
 			coord_data 	<= (others=>'0');
 			coord_dv 	<= '0';
@@ -86,7 +87,7 @@ begin
 				-- Filling buffer
 				if frame_buffer_has_been_filled = '0' then
 					--We send frame coordinates only if there is something to send
-					if x_max>=0 and enabled = '1' then
+					if x_max>0 and enabled = '1' then
 						frame_buffer(X_COUNTER_SIZE-1 downto 0)   <= std_logic_vector(x_min);
 						frame_buffer(15 downto X_COUNTER_SIZE)    <= (others=>'0');
 											
@@ -101,7 +102,7 @@ begin
 						
 						-- Get buffer ready to send
 						frame_buffer_has_been_filled <= '1';
-						frame_buffer_position		 <=  0 ;
+						frame_buffer_position		 <= (others=>'0') ;
 					end if;
 					
 					--Clearing signals used to fill buffer
@@ -112,13 +113,17 @@ begin
 							
 				-- Sending buffer (only one time)	
 				else
-					coord_fv <= '1';
-					coord_dv <= '1';
-					coord_data <= frame_buffer(frame_buffer_position+7 downto frame_buffer_position);
-					if frame_buffer_position = 56 then
+					if enabled = '1' then
+						coord_fv <= '1';
+						coord_dv <= '1';
+					end if;
+					
+					coord_data <= frame_buffer(to_integer(frame_buffer_position)+7 downto to_integer(frame_buffer_position));
+					
+					if frame_buffer_position >= 56 then
 						frame_buffer_has_been_filled <= '0';
 					else
-						frame_buffer_position <= frame_buffer_position + 8;
+						frame_buffer_position <= frame_buffer_position + to_unsigned(8, 7);
 					end if;
 
 				end if;				
