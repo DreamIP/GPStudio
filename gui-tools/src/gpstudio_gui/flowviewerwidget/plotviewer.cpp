@@ -129,7 +129,7 @@ QToolBar *PlotViewer::getToolBar()
     _saveButton = new QAction("Save image", this);
     _saveButton->setToolTip("Save image");
     _saveButton->setIcon(QIcon(":/icons/img/save.png"));
-    connect(_saveButton, SIGNAL(clicked(bool)), this, SLOT(saveImage()));
+    connect(_saveButton, SIGNAL(triggered(bool)), this, SLOT(saveImage()));
     toolbar->addAction(_saveButton);
 
     _settingsButton = new QAction("Records images", this);
