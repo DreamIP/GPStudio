@@ -51,8 +51,55 @@ end usb3_ft600x;
 
 architecture rtl of usb3_ft600x is
 
+    type read_sm is (w_wait, w_start_read, w_start_read2, w_start_read3, w_read);
+    signal read_sm_state : read_sm := w_wait;
+
 begin
-	
-    ftreset_n <= '0';
+    ftreset_n <= reset_n;
+
+	process (ftclk, reset_n)
+    begin
+        if(reset_n = '0') then
+            wr_n <= '1';
+            rd_n <= '1';
+            oe_n <= '1';
+            data <= "ZZZZZZZZZZZZZZZZ";
+            be <= "ZZ";
+            read_sm_state <= w_wait;
+
+        elsif(rising_edge(ftclk)) then
+            case read_sm_state is
+			when w_wait =>
+                wr_n <= '1';
+                rd_n <= '1';
+                oe_n <= '1';
+                if(rxf_n = '0') then
+                    read_sm_state <= w_start_read;
+                end if;
+                
+			when w_start_read =>
+                read_sm_state <= w_start_read2;
+                data <= "ZZZZZZZZZZZZZZZZ";
+                be <= "ZZ";
+                
+			when w_start_read2 =>
+                read_sm_state <= w_start_read3;
+                oe_n <= '0';
+                
+			when w_start_read3 =>
+                read_sm_state <= w_read;
+                rd_n <= '0';
+                
+			when w_read =>
+                out0_data <= data(7 downto 0);
+                
+                if(rxf_n = '1') then
+                    read_sm_state <= w_wait;
+                end if;
+			
+			when others =>
+			end case;
+        end if;
+    end process;
 
 end rtl;

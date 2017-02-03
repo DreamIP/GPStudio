@@ -122,9 +122,9 @@
                 </pin>
 			</pins>
 		</io>
-		<io name="usb3" type="comunication" driver="usb3_ft600x" optional="true" description="USB3.0">
+		<io name="usb3" type="communication" driver="usb3_ft600x" optional="true" description="USB3.0">
             <pins>
-                <pin name="PIN_J14" mapto="clk">
+                <pin name="PIN_J14" mapto="ftclk">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
@@ -249,7 +249,7 @@
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
                 </pin>
-                <pin name="PIN_E4" mapto="reset_n">
+                <pin name="PIN_E4" mapto="ftreset_n">
                     <attributes>
                         <attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
                     </attributes>
