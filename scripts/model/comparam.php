@@ -75,7 +75,7 @@ class ComParam
      */
     public function getXmlElement($xml, $format)
     {
-        $xml_element = $xml->createElement("com_connect");
+        $xml_element = $xml->createElement("com_param");
 
         // link
         $att = $xml->createAttribute('name');
