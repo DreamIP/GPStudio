@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     }
 
     // check for available camera, if present, connect to the first one
-    QVector<CameraInfo> avaibleCams = CameraCom::avaibleCams();
+    QVector<CameraInfo> avaibleCams = CameraCom::avaibleCams(cam.cameraInfo());
     if(avaibleCams.empty())
     {
         qDebug()<<"No camera available";

@@ -261,3 +261,15 @@ void Camera::connectCam(const CameraInfo &cameraInfo)
 
     connect(_com, SIGNAL(flowReadyToRead(int)), _flowManager, SLOT(processFlow(int)));
 }
+
+CameraInfo Camera::cameraInfo() const
+{
+    CameraInfo info;
+    info.setDriverType(_modelNode->getIOCom()->comDriver()->driverIO());
+
+    foreach (ModelComParam *param, _modelNode->getIOCom()->comDriver()->comParams())
+    {
+        info.setParam(param->name(), param->value());
+    }
+    return info;
+}

@@ -35,7 +35,7 @@ class GPSTUDIO_GUI_EXPORT ConnectNodeDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ConnectNodeDialog(QWidget *parent = 0);
+    explicit ConnectNodeDialog(const CameraInfo &camInfo, QWidget *parent = 0);
     ~ConnectNodeDialog();
 
     CameraInfo cameraInfo() const;

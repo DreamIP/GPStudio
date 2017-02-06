@@ -20,10 +20,10 @@
 
 #include "caminfotreeview.h"
 
-CamInfoTreeView::CamInfoTreeView(QWidget *parent) :
+CamInfoTreeView::CamInfoTreeView(const CameraInfo &info, QWidget *parent) :
     QTreeView(parent)
 {
-    _model = new CamInfoItemModel();
+    _model = new CamInfoItemModel(info);
     setModel(_model);
 
     connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(cameraSelect(QModelIndex)));
@@ -41,13 +41,15 @@ void CamInfoTreeView::refreshCams()
 
 CameraInfo CamInfoTreeView::camInfoSelected() const
 {
-    if(!currentIndex().isValid()) return CameraInfo();
+    if(!currentIndex().isValid())
+        return CameraInfo();
     return _model->usbList()[currentIndex().row()];
 }
 
 void CamInfoTreeView::cameraSelect(QModelIndex index)
 {
-    if(!index.isValid()) return;
+    if(!index.isValid())
+        return;
 
     emit cameraSelected(_model->usbList()[index.row()]);
 }

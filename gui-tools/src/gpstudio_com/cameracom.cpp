@@ -73,11 +73,11 @@ void CameraCom::stop()
     this->wait();
 }
 
-QVector<CameraInfo> CameraCom::avaibleCams()
+QVector<CameraInfo> CameraCom::avaibleCams(const CameraInfo &info)
 {
     QVector<CameraInfo> avaibleCams;
 
-    avaibleCams += CameraUSB::avaibleCams();
+    avaibleCams += CameraUSB::avaibleCams(info);
 
     return avaibleCams;
 }
@@ -197,6 +197,7 @@ void CameraCom::run()
             if(_outputFlows[i]->readyToSend())
             {
                 const QByteArray data = _outputFlows[i]->dataToSend(_cameraIO->sizePacket());
+                //qDebug()<<"send data"<<data.size();
                 _cameraIO->write(data, 1);
             }
         }

@@ -26,10 +26,11 @@ CameraUSB::CameraUSB()
 {
     _ctx = NULL;
     _devHandle = NULL;
+    _device = NULL;
+
     int ret = libusb_init(&_ctx); //initialize the library for the session
     if(ret < 0)
-        qDebug()<<"Init Error "<<ret<<endl;
-    //libusb_set_debug(_ctx, 3);
+        qDebug()<<"Init Error "<<libusb_strerror(libusb_error(ret));
 }
 
 CameraUSB::~CameraUSB()
@@ -40,10 +41,25 @@ CameraUSB::~CameraUSB()
 
 bool CameraUSB::connect(const CameraInfo &info)
 {
+    int ret;
+
+    // com settings
+    _vendorId = info.getParam("vendorId").toString().toInt(0, 16);
+    _productId = info.getParam("productId").toString().toInt(0, 16);
+    _epIn = info.getParam("EPIN").toString().toInt(0, 16);
+    _epOut = info.getParam("EPOUT").toString().toInt(0, 16);
+    _interfaceNumber = info.getParam("interface").toString().toInt(0, 16);
+    if(_vendorId == 0 || _productId == 0)
+    {
+        qDebug()<<"USB bad vendorId/productId settings";
+        return false;
+    }
+
+    // connect
     if(info.addr().isEmpty())
     {
         qDebug()<<"addr empty";
-        _devHandle = libusb_open_device_with_vid_pid(_ctx, 1204, 4099);
+        _devHandle = libusb_open_device_with_vid_pid(_ctx, _vendorId, _productId);
     }
     else
     {
@@ -55,12 +71,13 @@ bool CameraUSB::connect(const CameraInfo &info)
             libusb_device_descriptor desc;
             if(libusb_get_device_descriptor(devs[i], &desc)==LIBUSB_SUCCESS)
             {
-                if(desc.idVendor==vendorId && desc.idProduct==productId)
+                if(desc.idVendor==_vendorId && desc.idProduct==_productId)
                 {
                     QString addr = QString("%1.%2").arg((int)libusb_get_bus_number(devs[i]))
                                                    .arg((int)libusb_get_device_address(devs[i]));
                     if(addr==info.addr())
                     {
+                        _device = devs[i];
                         libusb_open(devs[i], &_devHandle);
                     }
                 }
@@ -75,22 +92,31 @@ bool CameraUSB::connect(const CameraInfo &info)
         return false;
     }
 
-    int ret = libusb_claim_interface(_devHandle, InterfaceNumber);
+    // reset device
+    if((ret = libusb_reset_device(_devHandle)) != 0)
+        qDebug()<<"Cannot reset device"<<libusb_strerror(libusb_error(ret));
+
+    if(libusb_kernel_driver_active(_devHandle, _interfaceNumber) == 1)   //find out if kernel driver is attached
+    {
+        printf("Kernel Driver Active\n");
+        if(libusb_detach_kernel_driver(_devHandle, _interfaceNumber) == 0) //detach it
+            printf("Kernel Driver Detached!\n");
+    }
+
+    ret = libusb_claim_interface(_devHandle, _interfaceNumber);
     if(ret != 0)
     {
-        qDebug()<<"Cannot claim device"<<endl;
+        qDebug()<<"Cannot claim device"<<libusb_strerror(libusb_error(ret));
         return false;
     }
-    if(libusb_reset_device(_devHandle)!= 0)
-        qDebug()<<"Cannot reset device"<<endl;
-    if(libusb_clear_halt(_devHandle, EP2)!= 0)
-        qDebug()<<"Cannot clear EP2"<<endl;
-    if(libusb_clear_halt(_devHandle, EP6)!= 0)
-        qDebug()<<"Cannot clear EP6"<<endl;
+    if((ret = libusb_clear_halt(_devHandle, _epOut)) != 0)
+        qDebug()<<"Cannot clear EPOUT"<<libusb_strerror(libusb_error(ret));
+    if((ret = libusb_clear_halt(_devHandle, _epIn)) != 0)
+        qDebug()<<"Cannot clear EPIN"<<libusb_strerror(libusb_error(ret));
 
-    flush();
+    //libusb_set_debug(_ctx, LIBUSB_LOG_LEVEL_DEBUG);
 
-    //qDebug()<<libusb_get_max_packet_size(libusb_get_device(_devHandle), EP2);
+    //flush();
 
     return true;
 }
@@ -99,7 +125,7 @@ bool CameraUSB::disconnect()
 {
     if(_devHandle)
     {
-        libusb_release_interface(_devHandle, InterfaceNumber);
+        libusb_release_interface(_devHandle, _interfaceNumber);
         libusb_close(_devHandle);
         _devHandle = NULL;
     }
@@ -135,7 +161,7 @@ QByteArray CameraUSB::read(const unsigned sizePacket, const int timeOut, bool *s
     unsigned char buffer[sizePacket];
     int transferredByte = 0;
 
-    int ret = libusb_bulk_transfer(_devHandle, EP6, buffer, sizePacket, &transferredByte, timeOut);
+    int ret = libusb_bulk_transfer(_devHandle, _epIn, buffer, sizePacket, &transferredByte, timeOut);
     if(ret != 0)
     {
         if(ret==LIBUSB_ERROR_TIMEOUT)
@@ -152,14 +178,14 @@ QByteArray CameraUSB::read(const unsigned sizePacket, const int timeOut, bool *s
         }
         else
         {
-            qDebug()<<"Cannot read packet"/*<<QString(libusb_strerror((enum libusb_error)ret))<<transferredByte*/;
+            qDebug()<<"Cannot read packet: "<<QString(libusb_strerror((libusb_error)ret))<<transferredByte;
 
             if(libusb_reset_device(_devHandle)!= 0)
                 qDebug()<<"Cannot reset device"<<endl;
-            if(libusb_clear_halt(_devHandle, EP2)!= 0)
-                qDebug()<<"Cannot clear EP2"<<endl;
-            if(libusb_clear_halt(_devHandle, EP6)!= 0)
-                qDebug()<<"Cannot clear EP6"<<endl;
+            if(libusb_clear_halt(_devHandle, _epOut)!= 0)
+                qDebug()<<"Cannot clear EPOUT"<<endl;
+            if(libusb_clear_halt(_devHandle, _epIn)!= 0)
+                qDebug()<<"Cannot clear EPIN"<<endl;
 
             if(state)
                 *state = false;
@@ -173,14 +199,14 @@ QByteArray CameraUSB::read(const unsigned sizePacket, const int timeOut, bool *s
 
 bool CameraUSB::write(const QByteArray &array, const int timeOut)
 {
-    if(!_devHandle) return false;
+    if(!_devHandle)
+        return false;
 
-//    const int timeOut = 1000;
-    int transferredByte;
-    int ret = libusb_bulk_transfer(_devHandle, EP2, (unsigned char *)array.data(), array.size(), &transferredByte, timeOut);
+    int transferredByte = 0;
+    int ret = libusb_bulk_transfer(_devHandle, _epOut, (unsigned char *)array.data(), array.size(), &transferredByte, timeOut);
     if(ret != LIBUSB_SUCCESS)
     {
-        qDebug()<<"Cannot write packet"<<endl;
+        qDebug()<<"Cannot write packet: "<<libusb_strerror(libusb_error(ret));
         return false;
     }
     return true;
@@ -191,10 +217,10 @@ void CameraUSB::flush()
     const int timeOut = 100;
     unsigned char buffer[1024];
     int transferredByte;
-    while (libusb_bulk_transfer(_devHandle, EP6, buffer, 1024, &transferredByte, timeOut)==0 && transferredByte!=0);
+    while (libusb_bulk_transfer(_devHandle, _epIn, buffer, 1024, &transferredByte, timeOut)==0 && transferredByte!=0);
 }
 
-QVector<CameraInfo> CameraUSB::avaibleCams()
+QVector<CameraInfo> CameraUSB::avaibleCams(const CameraInfo &info)
 {
     QVector<CameraInfo> avaibleCams;
 
@@ -202,8 +228,12 @@ QVector<CameraInfo> CameraUSB::avaibleCams()
     libusb_device **devs;
     ssize_t cnt;
 
+    int vendorId = info.getParam("vendorId").toString().toInt(0, 16);
+    int productId = info.getParam("productId").toString().toInt(0, 16);
+
     // create context
-    if(libusb_init(&ctx) != LIBUSB_SUCCESS) return avaibleCams;
+    if(libusb_init(&ctx) != LIBUSB_SUCCESS)
+        return avaibleCams;
 
     // get list usb device
     cnt = libusb_get_device_list(ctx, &devs);
@@ -232,7 +262,7 @@ int CameraUSB::status() const
     unsigned char status[2];
     status[0]=0;
     status[1]=0;
-    int ret = libusb_control_transfer(_devHandle, 0x82, 0, 0, EP2, status, 2, 1000);
+    int ret = libusb_control_transfer(_devHandle, _epIn, 0, 0, _epOut, status, 2, 1000);
     if(ret<0)
         return -1;
     return (*(unsigned short*)status);

@@ -71,10 +71,11 @@
       <com_connect link="" id="15" type="paramout"/>
     </com_connects>
     <com_params>
-      <com_param name="vendorId" value="0x04B4"/>
-      <com_param name="productId" value="0x1003"/>
+      <com_param name="vendorId" value="0x0403"/>
+      <com_param name="productId" value="0x601E"/>
       <com_param name="EPIN" value="0x02"/>
-      <com_param name="EPOUT" value="0x86"/>
+      <com_param name="EPOUT" value="0x82"/>
+      <com_param name="interface" value="1"/>
     </com_params>
   </com_driver>
 </io>

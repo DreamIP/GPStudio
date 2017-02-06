@@ -29,12 +29,6 @@
 class GPSTUDIO_COM_EXPORT CameraUSB : public CameraIO
 {
 public:
-    const static uint16_t vendorId = 0x04B4;
-    const static uint16_t productId = 0x1003;
-    const static int EP2 = 0x02;
-    const static int EP6 = 0x86;
-    const static int InterfaceNumber = 0x00;
-
     CameraUSB();
     virtual ~CameraUSB();
 
@@ -46,7 +40,7 @@ public:
     QByteArray read(const unsigned sizePacket=512, const int timeOut=1000, bool *state=NULL);
     bool write(const QByteArray &array, const int timeOut=1000);
 
-    static QVector<CameraInfo> avaibleCams();
+    static QVector<CameraInfo> avaibleCams(const CameraInfo &info);
 
     int sizePacket() const {return 512;}
 
@@ -58,7 +52,19 @@ private:
 private:
     libusb_context *_ctx;
     libusb_device_handle *_devHandle;
+    libusb_device *_device;
 
+    uint16_t _vendorId;
+    uint16_t _productId;
+    int _epOut;
+    int _epIn;
+    int _interfaceNumber;
+
+    /*const static uint16_t vendorId = 0x0403;
+    const static uint16_t productId = 0x601E;
+    const static int EPOUT = 0x02;
+    const static int EPIN = 0x82;
+    const static int InterfaceNumber = 1;*/
 };
 
 #endif // CAMERAUSB_H

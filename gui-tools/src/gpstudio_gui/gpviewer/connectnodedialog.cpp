@@ -23,9 +23,9 @@
 #include <QLayout>
 #include <QPushButton>
 
-ConnectNodeDialog::ConnectNodeDialog(QWidget *parent) :
+ConnectNodeDialog::ConnectNodeDialog(const CameraInfo &camInfo, QWidget *parent) :
     QDialog(parent),
-    _cameraInfo()
+    _cameraInfo(camInfo)
 {
     setupWidgets();
     resize(500, 200);
@@ -46,7 +46,8 @@ void ConnectNodeDialog::refreshButton_clicked()
 
 void ConnectNodeDialog::selectCam(CameraInfo cameraInfo)
 {
-    _cameraInfo = cameraInfo;
+    _cameraInfo.setName(cameraInfo.name());
+    _cameraInfo.setAddr(cameraInfo.addr());
     done(QDialog::Accepted);
 }
 
@@ -57,7 +58,8 @@ CameraInfo ConnectNodeDialog::cameraInfo() const
 
 void ConnectNodeDialog::buttonBox_accepted()
 {
-    _cameraInfo = _camInfoTreeView->camInfoSelected();
+    _cameraInfo.setName(_camInfoTreeView->camInfoSelected().name());
+    _cameraInfo.setAddr(_camInfoTreeView->camInfoSelected().addr());
     accept();
 }
 
@@ -69,7 +71,7 @@ void ConnectNodeDialog::setupWidgets()
     connect(refreshButton, SIGNAL(clicked(bool)), this, SLOT(refreshButton_clicked()));
     layout->addWidget(refreshButton);
 
-    _camInfoTreeView = new CamInfoTreeView();
+    _camInfoTreeView = new CamInfoTreeView(_cameraInfo);
     connect(_camInfoTreeView, SIGNAL(cameraSelected(CameraInfo)), this, SLOT(selectCam(CameraInfo)));
     layout->addWidget(_camInfoTreeView);
 

@@ -153,8 +153,9 @@
     <com_params>
       <com_param name="vendorId" value="0x04B4"/>
       <com_param name="productId" value="0x1003"/>
-      <com_param name="EPIN" value="0x02"/>
-      <com_param name="EPOUT" value="0x86"/>
+      <com_param name="EPIN" value="0x86"/>
+      <com_param name="EPOUT" value="0x02"/>
+      <com_param name="interface" value="0"/>
     </com_params>
   </com_driver>
 </io>

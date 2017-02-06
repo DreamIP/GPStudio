@@ -36,10 +36,11 @@
 #include "registermanager.h"
 
 class CameraCom;
-class CameraInfo;
 class FlowManager;
 class FlowConnection;
 class FlowPackage;
+
+#include "camerainfo.h"
 
 /**
  * @brief The Camera class is part of the run time model and represent the main camera.
@@ -60,7 +61,8 @@ public:
     const Property &rootProperty() const;
     Property &rootProperty();
 
-    void connectCam(const CameraInfo &cameraInfo);
+    void connectCam(const CameraInfo &cameraInfo=CameraInfo());
+    CameraInfo cameraInfo() const;
     bool isConnected() const;
 
     CameraCom *com() const;

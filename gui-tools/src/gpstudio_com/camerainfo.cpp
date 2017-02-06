@@ -27,6 +27,14 @@ CameraInfo::CameraInfo(const QString &name, const QString &driverType, const QSt
     setAddr(addr);
 }
 
+CameraInfo::CameraInfo(const CameraInfo &other)
+{
+    _name = other._name;
+    _driverType = other._driverType;
+    _addr = other._addr;
+    _paramsCom = other._paramsCom;
+}
+
 QString CameraInfo::name() const
 {
     return _name;
@@ -63,6 +71,25 @@ bool CameraInfo::isValid() const
         return false;
     else
         return true;
+}
+
+QMap<QString, QVariant> CameraInfo::paramsCom() const
+{
+    return _paramsCom;
+}
+
+void CameraInfo::setParam(const QString &name, const QVariant &value)
+{
+    QMap<QString, QVariant>::const_iterator localFind = _paramsCom.find(name);
+    if(localFind != _paramsCom.end())
+        _paramsCom[name] = value;
+    else
+        _paramsCom.insert(name, value);
+}
+
+QVariant CameraInfo::getParam(const QString &name) const
+{
+    return _paramsCom[name];
 }
 
 QDebug operator<<(QDebug d, const CameraInfo &cameraInfo)

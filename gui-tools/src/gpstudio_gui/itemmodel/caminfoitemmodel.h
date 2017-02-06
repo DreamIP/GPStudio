@@ -28,11 +28,13 @@
 
 #include "camerainfo.h"
 
+class CameraInfo;
+
 class GPSTUDIO_GUI_EXPORT CamInfoItemModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    explicit CamInfoItemModel(QObject *parent = 0);
+    explicit CamInfoItemModel(const CameraInfo &info);
 
     enum Column {
         Name,
@@ -58,6 +60,7 @@ public slots:
 
 private:
     QList<CameraInfo> _usbList;
+    CameraInfo _info;
 };
 
 #endif // CAMINFOITEMMODEL_H

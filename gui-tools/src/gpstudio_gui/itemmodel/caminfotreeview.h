@@ -26,11 +26,13 @@
 #include <QTreeView>
 #include "caminfoitemmodel.h"
 
+class CameraInfo;
+
 class GPSTUDIO_GUI_EXPORT CamInfoTreeView : public QTreeView
 {
     Q_OBJECT
 public:
-    explicit CamInfoTreeView(QWidget *parent = 0);
+    explicit CamInfoTreeView(const CameraInfo &info, QWidget *parent = 0);
 
     CameraInfo camInfoSelected() const;
 

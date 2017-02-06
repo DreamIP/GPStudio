@@ -41,7 +41,7 @@ public:
 
     const CameraInfo info() const;
 
-    static QVector<CameraInfo> avaibleCams();
+    static QVector<CameraInfo> avaibleCams(const CameraInfo &info);
 
     FlowCom *inputFlow(unsigned char idFlow) const;
     const QList<FlowCom*> &inputFlows() const;
