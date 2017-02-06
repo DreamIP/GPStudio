@@ -519,7 +519,7 @@ void NodeEditorWindows::showSettings()
 
 void NodeEditorWindows::updateOldProjects()
 {
-    for (int i=0; i<_oldProjects.size(); i++)
+    for (int i=0; i<_oldProjects.size() && i < MaxOldProject; i++)
     {
         QString path = _oldProjects[i];
         _oldProjectsActions[i]->setVisible(true);
