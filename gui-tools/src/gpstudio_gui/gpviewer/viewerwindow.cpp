@@ -263,7 +263,7 @@ void ViewerWindow::connectCam()
 {
     if(_cam)
     {
-        ConnectNodeDialog connectNodeDialog(this);
+        ConnectNodeDialog connectNodeDialog(_cam->cameraInfo(), this);
         if(connectNodeDialog.exec()==QDialog::Accepted)
         {
             const CameraInfo &cameraInfo = connectNodeDialog.cameraInfo();
