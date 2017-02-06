@@ -22,6 +22,10 @@
 
 #include <QDebug>
 
+#ifndef LIBUSBX_API_VERSION
+  #define libusb_strerror(a) a
+#endif
+
 CameraUSB::CameraUSB()
 {
     _ctx = NULL;
