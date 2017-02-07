@@ -22,6 +22,7 @@
 #define CAMERAIO_H
 
 #include <QByteArray>
+#include <QString>
 #include <QVector>
 
 #include "gpstudio_com_common.h"
@@ -44,6 +45,8 @@ public:
     virtual int sizePacket() const =0;
 
     virtual int status() const =0;
+
+    static CameraIO *getCamIO(const QString &driver);
 };
 
 #endif // CAMERAIO_H

@@ -20,10 +20,22 @@
 
 #include "cameraio.h"
 
+#include "camerausb.h"
+#include "cameraudp.h"
+
 CameraIO::CameraIO()
 {
 }
 
 CameraIO::~CameraIO()
 {
+}
+
+CameraIO *CameraIO::getCamIO(const QString &driver)
+{
+    if(driver.contains("USB", Qt::CaseInsensitive))
+        return new CameraUSB();
+    if(driver.contains("UDP", Qt::CaseInsensitive))
+        return new CameraUDP();
+    return NULL;
 }

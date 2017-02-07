@@ -31,8 +31,7 @@ CameraCom::CameraCom(const CameraInfo &cameraInfo)
     _cameraIO = NULL;
     _info = cameraInfo;
 
-    if(cameraInfo.driverType().contains("USB", Qt::CaseInsensitive))
-        _cameraIO = new CameraUSB();
+    _cameraIO = CameraIO::getCamIO(cameraInfo.driverType());
 
     if(_cameraIO)
         _cameraIO->connect(cameraInfo);
