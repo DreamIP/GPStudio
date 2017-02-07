@@ -134,14 +134,12 @@ void CameraCom::run()
     while(_start && _cameraIO != NULL)
     {
         const QByteArray &received = _cameraIO->read(512*128, 1, &succes);
-//           const QByteArray &received = _cameraIO->read(512, 1, &succes);
-//        qDebug() <<"rec: "<<received.mid(0,10).toHex();
         if(!succes)
         {
-            qDebug()<<"fail";
+            qDebug()<<"Com failed to read";
             _cameraIO->disconnect();
             emit disconnected();
-            terminate();
+            return;
         }
 
         int start=0;
@@ -158,7 +156,6 @@ void CameraCom::run()
             unsigned char flagFlow = packet[1];
             unsigned short numpacket = ((unsigned short)((unsigned char)packet[2])*256)+(unsigned char)packet[3];
 
-            //qDebug()<<"receive:start"; qint64 time = QDateTime::currentDateTime().toMSecsSinceEpoch();
             for(int i=0; i<_inputFlows.size(); i++)
             {
                 if(_inputFlows[i]->idFlow()==idFlow)
@@ -188,7 +185,6 @@ void CameraCom::run()
             {
                 //emit flowReadyToRead(received);
             }
-            //qDebug()<<"receive:stop"<<QDateTime::currentDateTime().toMSecsSinceEpoch()-time;
 
             start+=512;
         }
@@ -197,12 +193,16 @@ void CameraCom::run()
             if(_outputFlows[i]->readyToSend())
             {
                 const QByteArray data = _outputFlows[i]->dataToSend(_cameraIO->sizePacket());
-                //qDebug()<<"send data"<<data.size();
-                _cameraIO->write(data, 1);
+                succes = _cameraIO->write(data, 1);
+                if(!succes)
+                {
+                    qDebug()<<"Com failed to write";
+                    _cameraIO->disconnect();
+                    emit disconnected();
+                    return;
+                }
             }
         }
-
-        //QThread::sleep(100);
     }
 }
 
