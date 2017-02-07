@@ -54,7 +54,16 @@ HEADERS  += \
     flowpackage.h
 
 # libusb
-win32: LIBS += -L$$PWD/../../thirdparts/libusb-1.0/
+win32 {
+    LIBS += -L$$PWD/../../thirdparts/libusb-1.0/
+
+    # copy dll to bin dir
+    copylibusb.commands = $(COPY_DIR) $$PWD/../../thirdparts/libusb-1.0/libusb-1.0.dll $$DESTDIR
+    first.depends = $(first) copylibusb
+    export(first.depends)
+    export(copylibusb.commands)
+    QMAKE_EXTRA_TARGETS += first copylibusb
+}
 android {
     LIBS += -L$$PWD/../../../libusb/android/libs/armeabi-v7a/
     CONFIG += android_install unversioned_soname android_deployment_settings
