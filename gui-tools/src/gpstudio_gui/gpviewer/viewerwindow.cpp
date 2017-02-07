@@ -244,6 +244,8 @@ void ViewerWindow::openNodeGeneratedFile(const QString fileName)
     if(_cam)
         delete _cam;
 
+    Lib::getLib().setProjectPath(QFileInfo(fileName).absolutePath());
+    ScriptEngine::getEngine().setPath(QFileInfo(fileName).absolutePath());
     _cam = new Camera(fileName);
     _viewersMdiArea->setCamera(_cam);
 

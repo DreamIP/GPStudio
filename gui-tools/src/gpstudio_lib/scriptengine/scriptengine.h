@@ -53,6 +53,10 @@ public:
     static inline ScriptEngine &getEngine() {if(!_instance) _instance = new ScriptEngine(); return *_instance;}
 
     static QScriptValue echo(QScriptContext *context, QScriptEngine *);
+    static QScriptValue call(QScriptContext *context, QScriptEngine *);
+
+    QString getPath() const;
+    void setPath(const QString &path);
 
 private:
     static void computePropertyMap(Property *property, Property *paramsProps);
@@ -60,6 +64,7 @@ private:
 private:
     QScriptEngine _engine;
     static ScriptEngine *_instance;
+    QString _path;
 
     Property *_rootProperty;
 };

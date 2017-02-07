@@ -54,15 +54,16 @@ void PlotViewer::showFlowConnection(int flowId)
 
     QByteArray data = flowPackage.data();
 
-    QScriptValue function = ScriptEngine::getEngine().engine()->evaluate("(function(x){ return x / 16384.0;})");
+    //QScriptValue function = ScriptEngine::getEngine().engine()->evaluate("(function(x){ return x / 16384.0;})");
 
     for(int i=0; i<data.size(); i+=2)
     {
         if(i>6) break;
         short dataItem = ((short)((char)data[i])<<8) + data[i+1];
-        if ((short)((char)data[i+1])<0) dataItem +=256;
-        QScriptValueList args;
-        args << dataItem;
+        if ((short)((char)data[i+1])<0)
+            dataItem +=256;
+        /*QScriptValueList args;
+        args << dataItem;*/
 
         if(_widget->graphCount()<i/2+1)
         {
@@ -72,7 +73,7 @@ void PlotViewer::showFlowConnection(int flowId)
             _widget->graph(i/2)->setAdaptiveSampling(true);
         }
 
-        float value = function.call(QScriptValue(), args).toNumber();
+        float value = dataItem / 16384/*function.call(QScriptValue(), args).toNumber()*/;
         _widget->graph(i/2)->addData(QCPData(QDateTime::currentMSecsSinceEpoch(), value));
     }
 

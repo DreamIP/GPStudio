@@ -21,6 +21,11 @@
 #include "scriptengine.h"
 
 #include <QDebug>
+#include <QFile>
+#include <QTextStream>
+#include <QMainWindow>
+#include <QApplication>
+#include <QDir>
 
 #include "camera/property.h"
 #include "camera/camera.h"
@@ -29,13 +34,26 @@ ScriptEngine *ScriptEngine::_instance = NULL;
 
 QScriptValue ScriptEngine::echo(QScriptContext *context, QScriptEngine *)
 {
-    if(context->argumentCount()==0)
-        qDebug() << "script echo:";
     for(int i=0; i<context->argumentCount(); i++)
-    {
         qDebug() << "script echo:" << context->argument(i).toString();
-    }
     return QScriptValue();
+}
+
+QScriptValue ScriptEngine::call(QScriptContext *context, QScriptEngine *)
+{
+    if(context->argumentCount() == 0)
+        return QScriptValue();
+
+    QString fileName = context->argument(0).toString();
+    QFile scriptFile(getEngine()._path+"/"+fileName);
+    if (!scriptFile.open(QIODevice::ReadOnly))
+    {
+        return QScriptValue("bad file"); // error
+    }
+    QTextStream stream(&scriptFile);
+    QString programm = stream.readAll();
+    scriptFile.close();
+    return getEngine().engine()->evaluate(programm, fileName);
 }
 
 ScriptEngine::ScriptEngine(QObject *parent) : QObject(parent)
@@ -46,8 +64,10 @@ ScriptEngine::ScriptEngine(QObject *parent) : QObject(parent)
     _engine.evaluate("Math.__proto__.log2=function(x){ return this.log(x) / this.log(2); }");
 
     // echo funtion
-    QScriptValue echoFunction = _engine.newFunction(echo);
-    _engine.globalObject().setProperty("echo", echoFunction);
+    _engine.globalObject().setProperty("echo", _engine.newFunction(echo), QScriptValue::ReadOnly | QScriptValue::Undeletable);
+
+    // call funtion
+    _engine.globalObject().setProperty("call", _engine.newFunction(call), QScriptValue::ReadOnly | QScriptValue::Undeletable);
 }
 
 ScriptEngine::~ScriptEngine()
@@ -132,4 +152,14 @@ void ScriptEngine::computePropertyMap(Property *property, Property *paramsProps)
 
         computePropertyMap(subProperty, paramsProps);
     }
+}
+
+QString ScriptEngine::getPath() const
+{
+    return _path;
+}
+
+void ScriptEngine::setPath(const QString &path)
+{
+    _path = path;
 }

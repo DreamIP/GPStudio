@@ -73,7 +73,8 @@ void ScriptWidget::exec()
     }
     else
     {
-        _textEdit->appendPlainText(value.toString());
+        if(!value.isUndefined())
+            _textEdit->appendPlainText(value.toString());
     }
 
     _histo.append(_lineEdit->text());
