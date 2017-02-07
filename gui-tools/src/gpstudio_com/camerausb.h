@@ -56,8 +56,8 @@ private:
     libusb_device_handle *_devHandle;
     libusb_device *_device;
 
-    uint16_t _vendorId;
-    uint16_t _productId;
+    int _vendorId;
+    int _productId;
     int _epOut;
     int _epIn;
     int _interfaceNumber;
