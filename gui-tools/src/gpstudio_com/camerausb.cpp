@@ -22,8 +22,14 @@
 
 #include <QDebug>
 
+#ifdef Q_OS_WIN
+  #include <../../thirdparts/libusb-1.0/libusb.h>
+#else
+  #include <libusb-1.0/libusb.h>
+#endif
 #ifndef LIBUSBX_API_VERSION
   #define libusb_strerror(a) a
+  #define libusb_error int
 #endif
 
 CameraUSB::CameraUSB()

@@ -24,7 +24,9 @@
 #include "gpstudio_com_common.h"
 #include "cameraio.h"
 
-#include <../../thirdparts/libusb-1.0/libusb.h>
+struct libusb_context;
+struct libusb_device_handle;
+struct libusb_device;
 
 class GPSTUDIO_COM_EXPORT CameraUSB : public CameraIO
 {
@@ -59,12 +61,6 @@ private:
     int _epOut;
     int _epIn;
     int _interfaceNumber;
-
-    /*const static uint16_t vendorId = 0x0403;
-    const static uint16_t productId = 0x601E;
-    const static int EPOUT = 0x02;
-    const static int EPIN = 0x82;
-    const static int InterfaceNumber = 1;*/
 };
 
 #endif // CAMERAUSB_H
