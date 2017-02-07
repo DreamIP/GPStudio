@@ -20,6 +20,8 @@
 
 #include "camerainfo.h"
 
+#include <QDebug>
+
 CameraInfo::CameraInfo(const QString &name, const QString &driverType, const QString &addr)
 {
     setName(name);;
@@ -33,6 +35,7 @@ CameraInfo::CameraInfo(const CameraInfo &other)
     _driverType = other._driverType;
     _addr = other._addr;
     _paramsCom = other._paramsCom;
+    _channels = other._channels;
 }
 
 QString CameraInfo::name() const
@@ -71,6 +74,16 @@ bool CameraInfo::isValid() const
         return false;
     else
         return true;
+}
+
+const QList<CameraInfoChannel> &CameraInfo::channels() const
+{
+    return _channels;
+}
+
+void CameraInfo::addChannel(const QString &channelTypeName, int id)
+{
+    _channels.append(CameraInfoChannel(channelTypeName, id));
 }
 
 QMap<QString, QVariant> CameraInfo::paramsCom() const

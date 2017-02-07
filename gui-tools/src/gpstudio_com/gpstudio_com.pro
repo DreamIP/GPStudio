@@ -41,7 +41,8 @@ SOURCES += cameraio.cpp \
     cameraudp.cpp \
     cameracom.cpp \
     flowcom.cpp \
-    flowpackage.cpp
+    flowpackage.cpp \
+    camerainfochannel.cpp
 
 HEADERS  += \
     cameraio.h \
@@ -51,7 +52,8 @@ HEADERS  += \
     gpstudio_com_common.h \
     cameracom.h \
     flowcom.h \
-    flowpackage.h
+    flowpackage.h \
+    camerainfochannel.h
 
 # libusb
 win32 {

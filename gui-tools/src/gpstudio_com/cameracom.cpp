@@ -36,17 +36,29 @@ CameraCom::CameraCom(const CameraInfo &cameraInfo)
     if(_cameraIO)
         _cameraIO->connect(cameraInfo);
 
-    // TODO pass this part dynamic
-    _outputFlows.append(new FlowCom(15));   // set param
-    _paramFlow = _outputFlows[0];
-
-    _outputFlows.append(new FlowCom(1));
-    _outputFlows.append(new FlowCom(2));
-
-    _inputFlows.append(new FlowCom(0x80));
-    _inputFlows.append(new FlowCom(0x81));
-    _inputFlows.append(new FlowCom(0x82));
-    _inputFlows.append(new FlowCom(0x83));
+    FlowCom *flowCom;
+    foreach (CameraInfoChannel channel, cameraInfo.channels())
+    {
+        switch (channel.channelType())
+        {
+        case CameraInfoChannel::FlowIn:
+            _inputFlows.append(new FlowCom(channel.id()));
+            break;
+        case CameraInfoChannel::FlowOut:
+            _outputFlows.append(new FlowCom(channel.id()));
+            break;
+        case CameraInfoChannel::ParamIn:
+            // TODO implement me
+            break;
+        case CameraInfoChannel::ParamOut:
+            flowCom = new FlowCom(channel.id());
+            _outputFlows.append(flowCom);   // set param
+            _paramFlow = flowCom;
+            break;
+        case CameraInfoChannel::UndefChannel:
+            break;
+        }
+    }
 
     _start=true;
     start(QThread::NormalPriority);

@@ -271,5 +271,10 @@ CameraInfo Camera::cameraInfo() const
     {
         info.setParam(param->name(), param->value());
     }
+    foreach (ModelComConnect *connect, _modelNode->getIOCom()->comDriver()->comConnects())
+    {
+        info.addChannel(connect->type(), connect->id().toInt());
+    }
+
     return info;
 }

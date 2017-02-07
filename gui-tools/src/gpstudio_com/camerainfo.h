@@ -21,12 +21,13 @@
 #ifndef CAMERAINFO_H
 #define CAMERAINFO_H
 
+#include "gpstudio_com_common.h"
+
 #include <QString>
 #include <QMap>
 #include <QVariant>
-#include <QDebug>
 
-#include "gpstudio_com_common.h"
+#include "camerainfochannel.h"
 
 class GPSTUDIO_COM_EXPORT CameraInfo
 {
@@ -51,12 +52,16 @@ public:
 
     friend QDebug operator<< (QDebug d, const CameraInfo &cameraInfo);
 
+    const QList<CameraInfoChannel> &channels() const;
+    void addChannel(const QString &channelTypeName, int id);
+
 private:
     QString _name;
     QString _driverType;
     QString _addr;
 
     QMap<QString, QVariant> _paramsCom;
+    QList<CameraInfoChannel> _channels;
 };
 
 #endif // CAMERAINFO_H

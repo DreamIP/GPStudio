@@ -142,12 +142,12 @@
   <pins/>
   <com_driver driverio="usb">
     <com_connects>
-      <com_connect link="out0" id="1" type="flow"/>
-      <com_connect link="out1" id="2" type="flow"/>
-      <com_connect link="in0" id="128" type="flow"/>
-      <com_connect link="in1" id="129" type="flow"/>
-      <com_connect link="in2" id="130" type="flow"/>
-      <com_connect link="in3" id="131" type="flow"/>
+      <com_connect link="out0" id="1" type="flowout"/>
+      <com_connect link="out1" id="2" type="flowout"/>
+      <com_connect link="in0" id="128" type="flowin"/>
+      <com_connect link="in1" id="129" type="flowin"/>
+      <com_connect link="in2" id="130" type="flowin"/>
+      <com_connect link="in3" id="131" type="flowin"/>
       <com_connect link="" id="15" type="paramout"/>
     </com_connects>
     <com_params>

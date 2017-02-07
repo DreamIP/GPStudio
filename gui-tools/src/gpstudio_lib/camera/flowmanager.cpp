@@ -63,7 +63,7 @@ void FlowManager::setCamera(Camera *camera)
         for(int i=0; i<iOCom->comDriver()->comConnects().size(); i++)
         {
             ModelComConnect *comConnect=iOCom->comDriver()->comConnects().at(i);
-            if(comConnect->type()=="flow")
+            if(comConnect->type()=="flowin" || comConnect->type()=="flowout")
             {
                 FlowConnection *flowConnection = new FlowConnection();
                 flowConnection->setIdFlow(comConnect->id().toInt());
@@ -118,5 +118,6 @@ void FlowManager::processFlow(int idFlow)
     int id = _camera->com()->inputFlows()[idFlow]->idFlow();
     FlowPackage data = _camera->com()->inputFlows()[idFlow]->getData();
     FlowConnection *flowConnection = _flowConnectionsMapId[id];
-    flowConnection->recImg(data);
+    if(flowConnection)
+        flowConnection->recImg(data);
 }
