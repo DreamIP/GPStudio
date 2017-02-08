@@ -60,7 +60,7 @@ bool CameraUDP::write(const QByteArray &array, const int timeOut)
     return true;
 }
 
-QVector<CameraInfo> CameraUDP::avaibleCams()
+QVector<CameraInfo> CameraUDP::avaibleCams(const CameraInfo &info)
 {
     QVector<CameraInfo> avaibleCams;
     return avaibleCams;

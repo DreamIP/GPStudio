@@ -39,3 +39,12 @@ CameraIO *CameraIO::getCamIO(const QString &driver)
         return new CameraUDP();
     return NULL;
 }
+
+QVector<CameraInfo> CameraIO::avaibleCams(const CameraInfo &info)
+{
+    if(info.driverType().contains("USB", Qt::CaseInsensitive))
+        return CameraUSB::avaibleCams(info);
+    if(info.driverType().contains("UDP", Qt::CaseInsensitive))
+        return CameraUDP::avaibleCams(info);
+    return QVector<CameraInfo>();
+}

@@ -47,6 +47,7 @@ public:
     virtual int status() const =0;
 
     static CameraIO *getCamIO(const QString &driver);
+    static QVector<CameraInfo> avaibleCams(const CameraInfo &info);
 };
 
 #endif // CAMERAIO_H

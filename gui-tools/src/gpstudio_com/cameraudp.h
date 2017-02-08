@@ -37,7 +37,7 @@ public:
     QByteArray read(const unsigned maxSize=512, const int timeOut=1000, bool *state=NULL);
     bool write(const QByteArray &array, const int timeOut=1000);
 
-    static QVector<CameraInfo> avaibleCams();
+    static QVector<CameraInfo> avaibleCams(const CameraInfo &info);
 
     int sizePacket() const {return 1024;}
 

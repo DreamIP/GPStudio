@@ -20,9 +20,6 @@
 
 #include "cameracom.h"
 
-// camera io driver
-#include "camerausb.h"
-
 #include <QDebug>
 #include <QDateTime>
 
@@ -86,11 +83,7 @@ void CameraCom::stop()
 
 QVector<CameraInfo> CameraCom::avaibleCams(const CameraInfo &info)
 {
-    QVector<CameraInfo> avaibleCams;
-
-    avaibleCams += CameraUSB::avaibleCams(info);
-
-    return avaibleCams;
+    return CameraIO::avaibleCams(info);
 }
 
 FlowCom *CameraCom::inputFlow(unsigned char idFlow) const
