@@ -37,6 +37,7 @@ QMAKE_CFLAGS_RELEASE = -O2
 
 SOURCES += cameraio.cpp \
     camerausb.cpp \
+    camerausb_ftd3xx.cpp \
     camerainfo.cpp \
     cameraudp.cpp \
     cameracom.cpp \
@@ -47,6 +48,7 @@ SOURCES += cameraio.cpp \
 HEADERS  += \
     cameraio.h \
     camerausb.h \
+    camerausb_ftd3xx.h \
     camerainfo.h \
     cameraudp.h \
     gpstudio_com_common.h \
@@ -54,6 +56,10 @@ HEADERS  += \
     flowcom.h \
     flowpackage.h \
     camerainfochannel.h
+
+linux-g++:QMAKE_TARGET.arch = $$QMAKE_HOST.arch
+linux-g++-32:QMAKE_TARGET.arch = x86
+linux-g++-64:QMAKE_TARGET.arch = x86_64
 
 # libusb
 win32 {
@@ -74,4 +80,24 @@ android {
 }
 !android: LIBS += -lusb-1.0
 
-LIBS += -lusb-1.0
+# lib ft3xx
+win32 {
+    LIBS += -L$$PWD/../../thirdparts/ftd3xx/win32/
+    FTD3LIB = $$PWD/../../thirdparts/ftd3xx/win32/FTD3XX.dll
+}
+linux-g++ {
+    contains(QMAKE_TARGET.arch, x86_64) {
+        LIBS += -L$$PWD/../../thirdparts/ftd3xx/linux64/
+        FTD3LIB = $$PWD/../../thirdparts/ftd3xx/linux64/libftd3xx.so
+    } else {
+        LIBS += -L$$PWD/../../thirdparts/ftd3xx/linux32/
+        FTD3LIB = $$PWD/../../thirdparts/ftd3xx/linux32/libftd3xx.so
+    }
+}
+LIBS += -lftd3xx
+# copy dll to bin dir
+copylibftd3.commands = $(COPY_DIR) $$FTD3LIB $$DESTDIR
+first.depends = $(first) copylibftd3
+export(first.depends)
+export(copylibftd3.commands)
+QMAKE_EXTRA_TARGETS += first copylibftd3
