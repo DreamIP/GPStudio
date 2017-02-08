@@ -53,6 +53,9 @@ public slots:
 protected slots:
     void updateWindowsMenu();
 
+signals:
+    void viewerSelected(QString name);
+
 protected:
     BlockView *_blocksView;
     QMdiSubWindow *_blocksWindow;

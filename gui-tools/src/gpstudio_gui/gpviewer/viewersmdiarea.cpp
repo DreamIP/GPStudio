@@ -73,8 +73,10 @@ void ViewersMdiArea::selectViewer(QString name)
 
 void ViewersMdiArea::setMenu(QMenu *menu)
 {
+    blockSignals(true);
     _menu = menu;
     updateWindowsMenu();
+    blockSignals(false);
 }
 
 void ViewersMdiArea::updateWindowsMenu()
@@ -104,7 +106,12 @@ void ViewersMdiArea::updateWindowsMenu()
             text = tr("%1 %2").arg(i + 1).arg(child->windowTitle());
         QAction *action  = _menu->addAction(text);
         action->setCheckable(true);
-        action->setChecked(child == activeSubWindow());
+        if(child == activeSubWindow())
+        {
+            action->setChecked(true);
+            if(child->windowTitle() != "Blocks view")
+                emit viewerSelected(child->windowTitle());
+        }
     }
 }
 
@@ -154,6 +161,7 @@ void ViewersMdiArea::createMenu()
 
 void ViewersMdiArea::setupViewers()
 {
+    blockSignals(true);
     closeAllSubWindows();
     _viewers.clear();
 
@@ -209,4 +217,5 @@ void ViewersMdiArea::setupViewers()
     _blocksWindow->show();
 
     tileSubWindows();
+    blockSignals(false);
 }

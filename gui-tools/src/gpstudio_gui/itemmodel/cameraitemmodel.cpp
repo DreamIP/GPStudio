@@ -188,18 +188,24 @@ void CameraItemModel::clearAll()
 
 const ModelGPViewer *CameraItemModel::gpViewer(const QModelIndex &index) const
 {
+    if(!index.isValid())
+        return NULL;
     CameraItem *item = static_cast<CameraItem*>(index.internalPointer());
     return item->modelGPViewer();
 }
 
 const ModelViewer *CameraItemModel::viewer(const QModelIndex &index) const
 {
+    if(!index.isValid())
+        return NULL;
     CameraItem *item = static_cast<CameraItem*>(index.internalPointer());
     return item->modelViewer();
 }
 
 const ModelViewerFlow *CameraItemModel::viewerFlow(const QModelIndex &index) const
 {
+    if(!index.isValid())
+        return NULL;
     CameraItem *item = static_cast<CameraItem*>(index.internalPointer());
     return item->modelViewerFlow();
 }

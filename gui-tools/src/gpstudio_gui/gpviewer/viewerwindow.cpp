@@ -65,6 +65,7 @@ ViewerWindow::ViewerWindow(QStringList args) :
     connect(_camExplorerWidget, SIGNAL(blockSelected(QString)), _viewersMdiArea->blocksView(), SLOT(selectBlock(QString)));
     connect(_viewersMdiArea->blocksView(), SIGNAL(blockDetailsRequest(QString)), this, SLOT(showBlockDetails(QString)));
     connect(_viewerExplorerWidget, SIGNAL(viewerSelected(QString)), _viewersMdiArea, SLOT(selectViewer(QString)));
+    connect(_viewersMdiArea, SIGNAL(viewerSelected(QString)), _viewerExplorerWidget, SLOT(selectViewer(QString)));
 
     if(args.size()>1)
     {

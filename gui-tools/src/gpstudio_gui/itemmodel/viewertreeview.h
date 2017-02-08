@@ -54,6 +54,9 @@ protected:
 
     void keyPressEvent(QKeyEvent *event);
 
+public slots:
+    void selectViewer(QString viewerName);
+
 private slots:
     void updateViewer();
     void updateSelection();

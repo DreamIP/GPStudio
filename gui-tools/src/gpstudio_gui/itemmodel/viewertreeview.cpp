@@ -110,6 +110,21 @@ void ViewerTreeView::keyPressEvent(QKeyEvent *event)
     QTreeView::keyPressEvent(event);
 }
 
+void ViewerTreeView::selectViewer(QString viewerName)
+{
+    blockSignals(true);
+    selectionModel()->clearSelection();
+    if(!viewerName.isEmpty())
+    {
+        QModelIndexList items = model()->match(model()->index(0, 0), Qt::DisplayRole, QVariant(viewerName), -1, Qt::MatchRecursive);
+        if(items.count()>0)
+        {
+            selectionModel()->select(items.at(0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
+    }
+    blockSignals(false);
+}
+
 void ViewerTreeView::updateViewer()
 {
     if(_project->node())
