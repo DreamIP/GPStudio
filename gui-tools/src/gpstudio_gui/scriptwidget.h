@@ -45,6 +45,8 @@ signals:
 
 public slots:
     void exec();
+    void clearHisto();
+    void appendEcho(QString text);
 
 private slots:
     void up();

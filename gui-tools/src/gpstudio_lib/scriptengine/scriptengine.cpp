@@ -35,7 +35,7 @@ ScriptEngine *ScriptEngine::_instance = NULL;
 QScriptValue ScriptEngine::echo(QScriptContext *context, QScriptEngine *)
 {
     for(int i=0; i<context->argumentCount(); i++)
-        qDebug() << "script echo:" << context->argument(i).toString();
+        ScriptEngine::getEngine().echo(context->argument(i).toString());
     return QScriptValue();
 }
 
@@ -137,6 +137,11 @@ QStringList ScriptEngine::dependsProperties(const QString &expression)
     }
     props.removeDuplicates();
     return props;
+}
+
+void ScriptEngine::echo(const QString &text)
+{
+    emit echoAppended(text);
 }
 
 void ScriptEngine::computePropertyMap(Property *property, Property *paramsProps)

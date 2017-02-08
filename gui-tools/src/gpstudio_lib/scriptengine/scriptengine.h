@@ -52,11 +52,15 @@ public:
     static QStringList dependsProperties(const QString &expression);
     static inline ScriptEngine &getEngine() {if(!_instance) _instance = new ScriptEngine(); return *_instance;}
 
+    void echo(const QString &text);
     static QScriptValue echo(QScriptContext *context, QScriptEngine *);
     static QScriptValue call(QScriptContext *context, QScriptEngine *);
 
     QString getPath() const;
     void setPath(const QString &path);
+
+signals:
+    void echoAppended(QString text);
 
 private:
     static void computePropertyMap(Property *property, Property *paramsProps);

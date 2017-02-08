@@ -51,6 +51,8 @@ ScriptWidget::ScriptWidget(QWidget *parent) :
     layout->addItem(layout2);
     setLayout(layout);
 
+    connect(&ScriptEngine::getEngine(), SIGNAL(echoAppended(QString)), this, SLOT(appendEcho(QString)));
+
     _histoIndex = -1;
 }
 
@@ -80,6 +82,16 @@ void ScriptWidget::exec()
     _histo.append(_lineEdit->text());
     _histoIndex = _histo.count();
     _lineEdit->clear();
+}
+
+void ScriptWidget::clearHisto()
+{
+    _textEdit->clear();
+}
+
+void ScriptWidget::appendEcho(QString text)
+{
+    _textEdit->appendPlainText(text);
 }
 
 void ScriptWidget::up()
