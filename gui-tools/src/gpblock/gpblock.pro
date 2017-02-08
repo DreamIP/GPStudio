@@ -50,6 +50,7 @@ LIBS += -lgpstudio_lib
 INCLUDEPATH += $$PWD/../gpstudio_com
 DEPENDPATH += $$PWD/../gpstudio_com
 LIBS += -lgpstudio_com
+include($$PWD/../gpstudio_com/gpstudio_com.pri)
 
 # gpstudio_gui lib
 INCLUDEPATH += $$PWD/../gpstudio_gui
@@ -65,14 +66,5 @@ use_open_cv {
         LIBS += -lopencv_core -lopencv_highgui -lopencv_imgproc
     }
 }
-
-# libusb
-win32: LIBS += -L$$PWD/../../thirdparts/libusb-1.0/
-android {
-    LIBS += -L$$PWD/../../../libusb/android/libs/armeabi-v7a/
-    CONFIG += android_install unversioned_soname android_deployment_settings
-    LIBS += -lusb1.0
-}
-!android: LIBS += -lusb-1.0
 
 win32 : RC_FILE = gpblock.rc

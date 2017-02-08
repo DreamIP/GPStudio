@@ -179,6 +179,7 @@ LIBS += -lgpstudio_lib
 INCLUDEPATH += $$PWD/../gpstudio_com
 DEPENDPATH += $$PWD/../gpstudio_com
 LIBS += -lgpstudio_com
+include($$PWD/../gpstudio_com/gpstudio_com.pri)
 
 use_open_cv {
     DEFINES += __USE_OPEN_CV__

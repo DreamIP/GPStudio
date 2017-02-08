@@ -22,7 +22,12 @@
 
 #include <QDebug>
 
-#include "../../thirdparts/ftd3xx/ftd3xx.h"
+#ifdef Q_OS_WIN
+  #define FTD3XX_STATIC
+  #include "../../thirdparts/ftd3xx/win32/FTD3XX.h"
+#else
+  #include "../../thirdparts/ftd3xx/ftd3xx.h"
+#endif
 
 CameraUSB_FTD3XX::CameraUSB_FTD3XX()
 {
@@ -56,12 +61,13 @@ bool CameraUSB_FTD3XX::connect(const CameraInfo &info)
     FT_DEVICE_LIST_INFO_NODE nodes[16];
 
     FT_CreateDeviceInfoList(&count);
-    printf("Total %u device(s)\r\n", count);
     if (!count)
-            return false;
+        return false;
 
     if (FT_OK != FT_GetDeviceInfoList(nodes, &count))
-            return false;
+        return false;
+
+
     return true;
 }
 

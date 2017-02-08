@@ -50,6 +50,7 @@ LIBS += -lgpstudio_lib
 INCLUDEPATH += $$PWD/../gpstudio_com
 DEPENDPATH += $$PWD/../gpstudio_com
 LIBS += -lgpstudio_com
+include($$PWD/../gpstudio_com/gpstudio_com.pri)
 
 # gpstudio_gui lib
 INCLUDEPATH += $$PWD/../gpstudio_gui
@@ -66,34 +67,4 @@ use_open_cv {
     }
 }
 
-
-# libusb
-win32: LIBS += -L$$PWD/../../thirdparts/libusb-1.0/
-android {
-    LIBS += -L$$PWD/../../../libusb/android/libs/armeabi-v7a/
-    CONFIG += android_install unversioned_soname android_deployment_settings
-    LIBS += -lusb1.0
-}
-!android: LIBS += -lusb-1.0
-
-# lib ft3xx
-win32 {
-    LIBS += -L$$PWD/../../thirdparts/ftd3xx/win32/
-    FTD3LIB = $$PWD/../../thirdparts/ftd3xx/win32/FTD3XX.dll
-}
-linux-g++ {
-    contains(QMAKE_TARGET.arch, x86_64) {
-        LIBS += -L$$PWD/../../thirdparts/ftd3xx/linux64/
-        FTD3LIB = $$PWD/../../thirdparts/ftd3xx/linux64/libftd3xx.so
-    } else {
-        LIBS += -L$$PWD/../../thirdparts/ftd3xx/linux32/
-        FTD3LIB = $$PWD/../../thirdparts/ftd3xx/linux32/libftd3xx.so
-    }
-}
-LIBS += -lftd3xx
-
 win32: RC_FILE = gpnode.rc
-
-contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
-    ANDROID_EXTRA_LIBS =
-}

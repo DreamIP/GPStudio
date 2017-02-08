@@ -1,4 +1,4 @@
-QT       += core xml script svg
+QT       += core xml script scripttools svg
 
 TARGET = gpstudio_lib
 TEMPLATE = lib
