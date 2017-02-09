@@ -544,7 +544,7 @@ void NodeEditorWindows::openRecentFile()
 
 void NodeEditorWindows::showMessage(const QString &message)
 {
-    statusBar()->showMessage(message, 2000);
+    statusBar()->showMessage(message, 5000);
 }
 
 void NodeEditorWindows::writeSettings()

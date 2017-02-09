@@ -29,6 +29,9 @@
 #include <QStringList>
 #include <QDateTime>
 
+#include <QAction>
+#include <QToolBar>
+
 #include "nodeeditor/gpnodeproject.h"
 
 class GPSTUDIO_GUI_EXPORT CompileLogWidget : public QWidget
@@ -71,6 +74,7 @@ public slots:
 
     void stopAll();
     void clear();
+    void saveLog();
 
 protected slots:
     void exitProcess();
@@ -79,6 +83,7 @@ protected slots:
 
 private:
     void setupWidgets();
+    QToolBar *getToolBar();
 
     bool _allRequest;
     enum Action {

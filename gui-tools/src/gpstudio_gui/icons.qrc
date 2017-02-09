@@ -37,6 +37,7 @@
         <file>../img/windows-tile.png</file>
         <file>../img/window-new.png</file>
         <file>../img/window-suppressed.png</file>
+        <file>../img/log-clear.png</file>
     </qresource>
     <qresource prefix="/img">
         <file>../img/gpstudio_node.ico</file>

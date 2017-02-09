@@ -27,8 +27,10 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QCheckBox>
-//#include <QStandardPaths>
 #include <QMessageBox>
+#include <QFile>
+#include <QFileDialog>
+#include <QTextStream>
 
 #if QT_VERSION < 0x050000
   #include <Qt>
@@ -129,7 +131,7 @@ void CompileLogWidget::readProcess()
         #if QT_VERSION >= 0x050000
           stringRead = stringRead.toHtmlEscaped();
         #else
-          stringRead = Qt::Qt::escape(stringRead);
+          stringRead = Qt::escape(stringRead);
         #endif
 
         pos = colorReg.indexIn(stringRead);
@@ -238,6 +240,27 @@ void CompileLogWidget::stopAll()
 void CompileLogWidget::clear()
 {
     _textWidget->clear();
+}
+
+void CompileLogWidget::saveLog()
+{
+    QString fileName;
+    QFileDialog fileDialog(this);
+    fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+    fileDialog.setDefaultSuffix(".log");
+    fileDialog.setNameFilter(tr("Log file (*.log)"));
+    fileDialog.setWindowTitle(tr("Save log"));
+    fileDialog.selectFile(QDir().absolutePath() + "/compile.log");
+    if (fileDialog.exec())
+        fileName = fileDialog.selectedFiles().first();
+    if(fileName.isEmpty())
+        return;
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+    QTextStream out(&file);
+        out << _textWidget->toPlainText();
 }
 
 void CompileLogWidget::exitProcess()
@@ -394,11 +417,11 @@ void CompileLogWidget::updatePath(QString path)
 
 void CompileLogWidget::setupWidgets()
 {
-    if(layout())
-        layout()->deleteLater();
-
-    QLayout *layout = new QVBoxLayout();
+    QLayout *layout = new QHBoxLayout();
     layout->setContentsMargins(0,0,0,0);
+    layout->setSpacing(0);
+
+    layout->addWidget(getToolBar());
 
     _textWidget = new QTextEdit();
     _textWidget->setReadOnly(true);
@@ -406,6 +429,35 @@ void CompileLogWidget::setupWidgets()
     layout->addWidget(_textWidget);
 
     setLayout(layout);
+}
+
+QToolBar *CompileLogWidget::getToolBar()
+{
+    QToolBar *toolbar = new QToolBar(this);
+    toolbar->setOrientation(Qt::Vertical);
+    toolbar->setIconSize(QSize(18,18));
+
+    QAction *clearAction = new QAction(tr("Clear log"), this);
+    clearAction->setToolTip(tr("Clear log"));
+    clearAction->setIcon(QIcon(":/icons/img/log-clear.png"));
+    connect(clearAction, SIGNAL(triggered(bool)), this, SLOT(clear()));
+    toolbar->addAction(clearAction);
+
+    QAction *saveLogAction = new QAction(tr("Save log"), this);
+    saveLogAction->setToolTip(tr("Save log"));
+    saveLogAction->setIcon(QIcon(":/icons/img/save.png"));
+    connect(saveLogAction, SIGNAL(triggered(bool)), this, SLOT(saveLog()));
+    toolbar->addAction(saveLogAction);
+
+    QAction *stopAction = new QAction(tr("Stop compilation"), this);
+    stopAction->setToolTip(tr("Abort every process launched"));
+    stopAction->setIcon(QIcon(":/icons/img/stop.png"));
+    stopAction->setEnabled(false);
+    connect(stopAction, SIGNAL(triggered(bool)), this, SLOT(stopAll()));
+    connect(this, SIGNAL(stopAvailable(bool)), stopAction, SLOT(setEnabled(bool)));
+    toolbar->addAction(stopAction);
+
+    return toolbar;
 }
 
 GPNodeProject *CompileLogWidget::project() const
@@ -419,29 +471,6 @@ void CompileLogWidget::setProject(GPNodeProject *project)
     connect(project, SIGNAL(nodePathChanged(QString)), this, SLOT(updatePath(QString)));
     checkAction();
 }
-
-/*bool CompileLogWidget::checkProgramm(const QString &programm)
-{
-    QString programmPath = programm;
-    QProcess *process = new QProcess(this);
-    QProcessEnvironment env = getEnv();
-    process->setProcessEnvironment(env);
-    QString path = QStandardPaths::findExecutable(programm, env.value("PATH").split(QDir::listSeparator()));
-    if(!path.isEmpty())
-        programmPath = path;
-    QStringList args;
-    args.append("-v");
-    process->start(programmPath, args);
-    process->waitForFinished(3000);
-    QProcess::ExitStatus exitStatus = process->exitStatus();
-    delete process;
-    return (exitStatus==QProcess::NormalExit);
-}
-
-bool CompileLogWidget::checkPhp()
-{
-    return checkProgramm("php");
-}*/
 
 QProcessEnvironment CompileLogWidget::getEnv()
 {
