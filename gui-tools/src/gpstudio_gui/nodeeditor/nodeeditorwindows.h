@@ -70,6 +70,8 @@ private slots:
     void updateOldProjects();
     void openRecentFile();
 
+    void showMessage(const QString &message);
+
 private:
     GPNodeProject *_project;
 

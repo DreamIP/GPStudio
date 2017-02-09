@@ -65,7 +65,7 @@ void CompileLogWidget::launch(const QString &cmd, const QStringList &args)
     _process->setWorkingDirectory(QFileInfo(_project->path()).path());
     _process->start(cmd, args);
 
-    appendLog(QString("<hr><span style=\"color: blue;\">process '%1' start at %2...</span></hr>")
+    appendLog(QString(tr("<hr><span style=\"color: blue;\">process '%1' start at %2...</span></hr>"))
               .arg(_program + " " + _arguments.join(" "))
               .arg(QDateTime::currentDateTime().toString()));
 }
@@ -241,7 +241,7 @@ void CompileLogWidget::exitProcess()
     {
         exitCode = _process->exitCode();
         if(exitCode==0)
-            appendLog(QString("<p><span style=\"color: blue;\">process '%1' exit with code %2 at %3, elapsed time: %4s</span></p>")
+            appendLog(QString(tr("<p><span style=\"color: blue;\">process '%1' exit with code %2 at %3, elapsed time: %4s</span></p>"))
                   .arg(_program + " " + _arguments.join(" "))
                   .arg(exitCode)
                   .arg(QDateTime::currentDateTime().toString())
@@ -293,56 +293,56 @@ void CompileLogWidget::exitProcess()
         case CompileLogWidget::ActionClean:
             if(exitCode==0)
             {
-                title = "Clean successfully";
-                message = "Cleaning of built files terminated successfully.";
+                title = tr("Clean successfully");
+                message = tr("Cleaning of built files terminated successfully.");
                 error = false;
             }
             else
             {
-                title = "Clean failed...";
-                message = "Cleaning step failed.\nPlease check your make exe path or delete the Makefile file if it is corrupted and launch generate.";
+                title = tr("Clean failed...");
+                message = tr("Cleaning step failed.\nPlease check your make exe path or delete the Makefile file if it is corrupted and launch generate.");
                 error = true;
             }
             break;
         case CompileLogWidget::ActionGenerate:
             if(exitCode==0)
             {
-                title = "Generate successfully";
-                message = "Generation of project terminated successfully.";
+                title = tr("Generate successfully");
+                message = tr("Generation of project terminated successfully.");
                 error = false;
             }
             else
             {
-                title = "Generate failed...";
-                message = "Generate step failed.";
+                title = tr("Generate failed...");
+                message = tr("Generate step failed.");
                 error = true;
             }
             break;
         case CompileLogWidget::ActionCompile:
             if(exitCode==0)
             {
-                title = "Synthesys successfully";
-                message = "Synthesys of project terminated successfully.";
+                title = tr("Synthesys successfully");
+                message = tr("Synthesys of project terminated successfully.");
                 error = false;
             }
             else
             {
-                title = "Synthesys failed...";
-                message = "Synthesys step failed.\nPlease check your quartus exe path or re-generate your project.";
+                title = tr("Synthesys failed...");
+                message = tr("Synthesys step failed.\nPlease check your quartus exe path or re-generate your project.");
                 error = true;
             }
             break;
         case CompileLogWidget::ActionSend:
             if(exitCode==0)
             {
-                title = "Send successfully";
-                message = "Node programmation terminated successfully.";
+                title = tr("Send successfully");
+                message = tr("Node programmation terminated successfully.");
                 error = false;
             }
             else
             {
-                title = "Send failed...";
-                message = "Send step failed.\nPlease check your quartus exe or your camera connection. If you use it for the first time on windows, launch the Altera graphical tool to programm yor node";
+                title = tr("Send failed...");
+                message = tr("Send step failed.\nPlease check your quartus exe or your camera connection. If you use it for the first time on windows, launch the Altera graphical tool to programm yor node");
                 error = true;
             }
             break;
@@ -354,7 +354,7 @@ void CompileLogWidget::exitProcess()
         else
             messageBox.setIconPixmap(QMessageBox::standardIcon(QMessageBox::Information));
         messageBox.addButton(QMessageBox::Ok);
-        QCheckBox dontShowCheckBox("don't show this message again");
+        QCheckBox dontShowCheckBox(tr("don't show this message again"));
         messageBox.addButton(&dontShowCheckBox, QMessageBox::ActionRole);
 
         QSettings settings("GPStudio", "gpnode");
@@ -372,9 +372,9 @@ void CompileLogWidget::exitProcess()
 void CompileLogWidget::errorProcess()
 {
     if(_process)
-        appendLog(QString("<p><span style=\"color: red;\">failed exit code:%1 %2</span></p>").arg(_process->exitCode()).arg(_process->errorString()));
+        appendLog(QString(tr("<p><span style=\"color: red;\">failed exit code:%1 %2</span></p>")).arg(_process->exitCode()).arg(_process->errorString()));
     else
-        appendLog("failed...");
+        appendLog(tr("failed..."));
 
     checkAction();
 }

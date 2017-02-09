@@ -36,7 +36,7 @@ ConfigNodeDialog::ConfigNodeDialog(QWidget *parent) :
     QDialog(parent)
 {
     setupWidgets();
-    setWindowTitle("Platform configuration");
+    setWindowTitle(tr("Platform configuration"));
 }
 
 ConfigNodeDialog::~ConfigNodeDialog()

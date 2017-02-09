@@ -26,7 +26,7 @@
 #include <QDir>
 #include <QDebug>
 
-#include "compilelogwidget.h"
+#include "nodeeditor/compilelogwidget.h"
 
 PathEditWidget::PathEditWidget(QWidget *parent) : QWidget(parent)
 {

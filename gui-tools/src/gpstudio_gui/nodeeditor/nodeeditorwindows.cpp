@@ -165,7 +165,7 @@ void NodeEditorWindows::createDocks()
     setTabPosition(Qt::LeftDockWidgetArea, QTabWidget::North);
 
     // cam explorer dock
-    _camExplorerDock = new QDockWidget("Node project explorer", this);
+    _camExplorerDock = new QDockWidget(tr("Node project explorer"), this);
     QWidget *camExplorerContent = new QWidget(_camExplorerDock);
     QLayout *camExplorerLayout = new QVBoxLayout();
     _camExplorerWidget = new CamExplorerWidget();
@@ -175,7 +175,7 @@ void NodeEditorWindows::createDocks()
     addDockWidget(Qt::LeftDockWidgetArea, _camExplorerDock);
 
     // viewer explorer dock
-    _viewerExplorerDock = new QDockWidget("Viewers", this);
+    _viewerExplorerDock = new QDockWidget(tr("Viewers"), this);
     QWidget *viewerExplorerContent = new QWidget(_viewerExplorerDock);
     QLayout *viewerExplorerLayout = new QVBoxLayout();
     _viewerExplorerWidget = new ViewerExplorerWidget();
@@ -185,7 +185,7 @@ void NodeEditorWindows::createDocks()
     tabifyDockWidget(_camExplorerDock, _viewerExplorerDock);
 
     // lib treeview dock
-    _libTreeViewDock = new QDockWidget("IP library explorer", this);
+    _libTreeViewDock = new QDockWidget(tr("IP library explorer"), this);
     QWidget *libTreeViewContent = new QWidget(_libTreeViewDock);
     QLayout *libTreeViewLayout = new QVBoxLayout();
     _libTreeView = new LibTreeView();
@@ -196,7 +196,7 @@ void NodeEditorWindows::createDocks()
     addDockWidget(Qt::RightDockWidgetArea, _libTreeViewDock);
 
     // compile log dock
-    _compileLogDock = new QDockWidget("Compilation log", this);
+    _compileLogDock = new QDockWidget(tr("Compilation log"), this);
     QWidget *compileLogContent = new QWidget(_compileLogDock);
     QLayout *compileLogLayout = new QVBoxLayout();
     _compileLog = new CompileLogWidget();
@@ -204,6 +204,7 @@ void NodeEditorWindows::createDocks()
     compileLogContent->setLayout(compileLogLayout);
     _compileLogDock->setWidget(compileLogContent);
     addDockWidget(Qt::BottomDockWidgetArea, _compileLogDock);
+    connect(_compileLog, SIGNAL(messageSended(QString)), this, SLOT(showMessage(QString)));
 }
 
 void NodeEditorWindows::createToolBarAndMenu()
@@ -212,10 +213,10 @@ void NodeEditorWindows::createToolBarAndMenu()
     addToolBar(_mainToolBar);
 
     // ============= Node =============
-    QMenu *nodeMenu = menuBar()->addMenu("&Node");
+    QMenu *nodeMenu = menuBar()->addMenu(tr("&Node"));
 
-    QAction *newDocAction = new QAction("&New",this);
-    newDocAction->setStatusTip("Creates a new node project");
+    QAction *newDocAction = new QAction(tr("&New"),this);
+    newDocAction->setStatusTip(tr("Creates a new node project"));
     newDocAction->setIcon(QIcon(":/icons/img/new.png"));
     newDocAction->setShortcut(QKeySequence::New);
     _mainToolBar->addAction(newDocAction);
@@ -223,16 +224,16 @@ void NodeEditorWindows::createToolBarAndMenu()
     connect(newDocAction, SIGNAL(triggered(bool)), _project, SLOT(newProject()));
     connect(newDocAction, SIGNAL(triggered(bool)), _compileLog, SLOT(clear()));
 
-    QAction *openDocAction = new QAction("&Open",this);
-    openDocAction->setStatusTip("Opens a node project");
+    QAction *openDocAction = new QAction(tr("&Open"),this);
+    openDocAction->setStatusTip(tr("Opens a node project"));
     openDocAction->setIcon(QIcon(":/icons/img/open.png"));
     openDocAction->setShortcut(QKeySequence::Open);
     _mainToolBar->addAction(openDocAction);
     nodeMenu->addAction(openDocAction);
     connect(openDocAction, SIGNAL(triggered(bool)), _project, SLOT(openProject()));
 
-    QAction *saveDocAction = new QAction("&Save",this);
-    saveDocAction->setStatusTip("Saves the current node project");
+    QAction *saveDocAction = new QAction(tr("&Save"),this);
+    saveDocAction->setStatusTip(tr("Saves the current node project"));
     saveDocAction->setIcon(QIcon(":/icons/img/save.png"));
     saveDocAction->setShortcut(QKeySequence::Save);
     saveDocAction->setEnabled(false);
@@ -241,8 +242,8 @@ void NodeEditorWindows::createToolBarAndMenu()
     connect(saveDocAction, SIGNAL(triggered(bool)), _project, SLOT(saveProject()));
     connect(_project, SIGNAL(nodeModified(bool)), saveDocAction, SLOT(setEnabled(bool)));
 
-    QAction *saveDocAsAction = new QAction("Save &as...",this);
-    saveDocAsAction->setStatusTip("Saves the current node project with a new name");
+    QAction *saveDocAsAction = new QAction(tr("Save &as..."),this);
+    saveDocAsAction->setStatusTip(tr("Saves the current node project with a new name"));
     saveDocAsAction->setIcon(QIcon(":/icons/img/save.png"));
     saveDocAsAction->setShortcut(QKeySequence::SaveAs);
     nodeMenu->addAction(saveDocAsAction);
@@ -251,8 +252,8 @@ void NodeEditorWindows::createToolBarAndMenu()
     nodeMenu->addSeparator();
     _mainToolBar->addSeparator();
 
-    QAction *configNode = new QAction("&Platform configuration",this);
-    configNode->setStatusTip("Permits to choose the targeted platform and to choose associated periphericals");
+    QAction *configNode = new QAction(tr("&Platform configuration"),this);
+    configNode->setStatusTip(tr("Permits to choose the targeted platform and to choose associated periphericals"));
     configNode->setIcon(QIcon(":/icons/img/platform.png"));
     configNode->setShortcut(QKeySequence::Preferences);
     nodeMenu->addAction(configNode);
@@ -270,105 +271,105 @@ void NodeEditorWindows::createToolBarAndMenu()
     }
 
     nodeMenu->addSeparator();
-    QAction *exit = new QAction("E&xit",this);
-    exit->setStatusTip("Exits GPNode");
+    QAction *exit = new QAction(tr("E&xit"),this);
+    exit->setStatusTip(tr("Exits GPNode"));
     exit->setIcon(QIcon(":/icons/img/exit.png"));
     exit->setShortcut(QKeySequence::Quit);
     nodeMenu->addAction(exit);
     connect(exit, SIGNAL(triggered()), this, SLOT(close()));
 
     // ============= Edit =============
-    QMenu *editMenu = menuBar()->addMenu("&Edit");
+    QMenu *editMenu = menuBar()->addMenu(tr("&Edit"));
     _mainToolBar->addSeparator();
 
-    QAction *undoAction = _project->undoStack()->createUndoAction(this, "&Undo");
-    undoAction->setStatusTip("Undo the latest action");
+    QAction *undoAction = _project->undoStack()->createUndoAction(this, tr("&Undo"));
+    undoAction->setStatusTip(tr("Undo the latest action"));
     undoAction->setIcon(QIcon(":/icons/img/edit-undo.png"));
     undoAction->setShortcut(QKeySequence::Undo);
     _mainToolBar->addAction(undoAction);
     editMenu->addAction(undoAction);
 
-    QAction *redoAction = _project->undoStack()->createRedoAction(this, "&Redo");
-    redoAction->setStatusTip("Redo the latest action");
+    QAction *redoAction = _project->undoStack()->createRedoAction(this, tr("&Redo"));
+    redoAction->setStatusTip(tr("Redo the latest action"));
     redoAction->setIcon(QIcon(":/icons/img/edit-redo.png"));
     redoAction->setShortcut(QKeySequence::Redo);
     _mainToolBar->addAction(redoAction);
     editMenu->addAction(redoAction);
 
     // ============= View =============
-    QMenu *viewMenu = menuBar()->addMenu("&View");
+    QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
 
     viewMenu->addSeparator();
     QAction *viewLibAction = _libTreeViewDock->toggleViewAction();
-    viewLibAction->setStatusTip("Shows or hide the IP library explorer");
+    viewLibAction->setStatusTip(tr("Shows or hide the IP library explorer"));
     viewMenu->addAction(viewLibAction);
 
     QAction *viewCamexAction = _camExplorerDock->toggleViewAction();
-    viewCamexAction->setStatusTip("Shows or hide the camera explorer");
+    viewCamexAction->setStatusTip(tr("Shows or hide the camera explorer"));
     viewMenu->addAction(viewCamexAction);
 
     QAction *viewExplorerDock = _viewerExplorerDock->toggleViewAction();
-    viewExplorerDock->setStatusTip("Shows or hide the camera explorer");
+    viewExplorerDock->setStatusTip(tr("Shows or hide the camera explorer"));
     viewMenu->addAction(viewExplorerDock);
 
     QAction *viewLogAction = _compileLogDock->toggleViewAction();
-    viewLogAction->setStatusTip("Shows or hide the compilation log");
+    viewLogAction->setStatusTip(tr("Shows or hide the compilation log"));
     viewMenu->addAction(viewLogAction);
 
     // ============= Project =============
-    QMenu *projectMenu = menuBar()->addMenu("&Project");
+    QMenu *projectMenu = menuBar()->addMenu(tr("&Project"));
     _mainToolBar->addSeparator();
 
-    QAction *makecleanAction = new QAction("&Clean project", this);
-    makecleanAction->setStatusTip("Removes all intermediary files");
+    QAction *makecleanAction = new QAction(tr("&Clean project"), this);
+    makecleanAction->setStatusTip(tr("Removes all intermediary files"));
     makecleanAction->setIcon(QIcon(":/icons/img/make-clean.png"));
     connect(makecleanAction, SIGNAL(triggered(bool)), _compileLog, SLOT(launchClean()));
     connect(_compileLog, SIGNAL(cleanAvailable(bool)), makecleanAction, SLOT(setEnabled(bool)));
     _mainToolBar->addAction(makecleanAction);
     projectMenu->addAction(makecleanAction);
 
-    QAction *makegenerateAction = new QAction("&Generate project", this);
-    makegenerateAction->setStatusTip("Generate a synthetisable project");
+    QAction *makegenerateAction = new QAction(tr("&Generate project"), this);
+    makegenerateAction->setStatusTip(tr("Generate a synthetisable project"));
     makegenerateAction->setIcon(QIcon(":/icons/img/make-generate.png"));
     connect(makegenerateAction, SIGNAL(triggered(bool)), _compileLog, SLOT(launchGenerate()));
     connect(_compileLog, SIGNAL(generateAvailable(bool)), makegenerateAction, SLOT(setEnabled(bool)));
     _mainToolBar->addAction(makegenerateAction);
     projectMenu->addAction(makegenerateAction);
 
-    QAction *makecompileAction = new QAction("Comp&ile project", this);
-    makecompileAction->setStatusTip("Synthetises the HDL project");
+    QAction *makecompileAction = new QAction(tr("Comp&ile project"), this);
+    makecompileAction->setStatusTip(tr("Synthetises the HDL project"));
     makecompileAction->setIcon(QIcon(":/icons/img/make-compile.png"));
     connect(makecompileAction, SIGNAL(triggered(bool)), _compileLog, SLOT(launchCompile()));
     connect(_compileLog, SIGNAL(compileAvailable(bool)), makecompileAction, SLOT(setEnabled(bool)));
     _mainToolBar->addAction(makecompileAction);
     projectMenu->addAction(makecompileAction);
 
-    QAction *makesendAction = new QAction("&Program camera", this);
-    makesendAction->setStatusTip("Programs your camera");
+    QAction *makesendAction = new QAction(tr("&Program camera"), this);
+    makesendAction->setStatusTip(tr("Programs your camera"));
     makesendAction->setIcon(QIcon(":/icons/img/make-send.png"));
     connect(makesendAction, SIGNAL(triggered(bool)), _compileLog, SLOT(launchSend()));
     connect(_compileLog, SIGNAL(sendAvailable(bool)), makesendAction, SLOT(setEnabled(bool)));
     _mainToolBar->addAction(makesendAction);
     projectMenu->addAction(makesendAction);
 
-    QAction *makerunAction = new QAction("&Launch camera with viewer", this);
-    makerunAction->setStatusTip("Launch your project on your camera with GPViewer");
+    QAction *makerunAction = new QAction(tr("&Launch camera with viewer"), this);
+    makerunAction->setStatusTip(tr("Launch your project on your camera with GPViewer"));
     makerunAction->setIcon(QIcon(":/icons/img/run.png"));
     connect(makerunAction, SIGNAL(triggered(bool)), _compileLog, SLOT(launchView()));
     connect(_compileLog, SIGNAL(runAvailable(bool)), makerunAction, SLOT(setEnabled(bool)));
     _mainToolBar->addAction(makerunAction);
     projectMenu->addAction(makerunAction);
 
-    QAction *makeallAction = new QAction("&All previous action", this);
-    makeallAction->setStatusTip("Generate, compile and lauch your projects");
+    QAction *makeallAction = new QAction(tr("&All previous action"), this);
+    makeallAction->setStatusTip(tr("Generate, compile and lauch your projects"));
     makeallAction->setIcon(QIcon(":/icons/img/make-all.png"));
     connect(makeallAction, SIGNAL(triggered(bool)), _compileLog, SLOT(launchAll()));
     connect(_compileLog, SIGNAL(generateAvailable(bool)), makeallAction, SLOT(setEnabled(bool)));
     _mainToolBar->addAction(makeallAction);
     projectMenu->addAction(makeallAction);
 
-    QAction *stopAction = new QAction("&Abort command", this);
-    stopAction->setStatusTip("Aborts current launched command");
+    QAction *stopAction = new QAction(tr("&Abort command"), this);
+    stopAction->setStatusTip(tr("Aborts current launched command"));
     stopAction->setIcon(QIcon(":/icons/img/stop.png"));
     stopAction->setEnabled(false);
     connect(stopAction, SIGNAL(triggered(bool)), _compileLog, SLOT(stopAll()));
@@ -377,8 +378,8 @@ void NodeEditorWindows::createToolBarAndMenu()
     projectMenu->addAction(stopAction);
 
     projectMenu->addSeparator();
-    QAction *settingsAction = new QAction("&Project Settings", this);
-    settingsAction->setStatusTip("Paths settings");
+    QAction *settingsAction = new QAction(tr("&Project Settings"), this);
+    settingsAction->setStatusTip(tr("Paths settings"));
     settingsAction->setIcon(QIcon(":/icons/img/settings.png"));
     connect(settingsAction, SIGNAL(triggered(bool)), this, SLOT(showSettings()));
     _mainToolBar->addAction(settingsAction);
@@ -386,30 +387,34 @@ void NodeEditorWindows::createToolBarAndMenu()
 
     // ========== Block view ==========
     _mainToolBar->addSeparator();
-    QMenu *blockViewMenu = menuBar()->addMenu("&Blocks");
+    QMenu *blockViewMenu = menuBar()->addMenu(tr("&Blocks"));
 
-    QAction *zoomOut = new QAction("Zoom &out",this);
+    QAction *zoomOut = new QAction(tr("Zoom &out"),this);
+    zoomOut->setStatusTip(tr("Zoom out the the blocks view"));
     zoomOut->setIcon(QIcon(":/icons/img/zoom-out.png"));
     zoomOut->setShortcut(QKeySequence::ZoomOut);
     blockViewMenu->addAction(zoomOut);
     _mainToolBar->addAction(zoomOut);
     connect(zoomOut, SIGNAL(triggered()), _blocksView, SLOT(zoomOut()));
 
-    QAction *zoomIn = new QAction("Zoom &in",this);
+    QAction *zoomIn = new QAction(tr("Zoom &in"),this);
+    zoomIn->setStatusTip(tr("Zoom in the the blocks view"));
     zoomIn->setIcon(QIcon(":/icons/img/zoom-in.png"));
     zoomIn->setShortcut(QKeySequence::ZoomIn);
     blockViewMenu->addAction(zoomIn);
     _mainToolBar->addAction(zoomIn);
     connect(zoomIn, SIGNAL(triggered()), _blocksView, SLOT(zoomIn()));
 
-    QAction *zoomFit = new QAction("Zoom &fit",this);
+    QAction *zoomFit = new QAction(tr("Zoom &fit"),this);
+    zoomFit->setStatusTip(tr("Zoom fit the the blocks view"));
     zoomFit->setIcon(QIcon(":/icons/img/zoom-fit.png"));
     zoomFit->setShortcut(QKeySequence("*"));
     blockViewMenu->addAction(zoomFit);
     _mainToolBar->addAction(zoomFit);
     connect(zoomFit, SIGNAL(triggered()), _blocksView, SLOT(zoomFit()));
 
-    QAction *alignVerticalCenter = new QAction("Align block &vertically",this);
+    QAction *alignVerticalCenter = new QAction(tr("Align blocks &vertically"),this);
+    alignVerticalCenter->setStatusTip(tr("Align blocks vertically"));
     alignVerticalCenter->setIcon(QIcon(":/icons/img/align-vertical-center.png"));
     alignVerticalCenter->setEnabled(false);
     blockViewMenu->addAction(alignVerticalCenter);
@@ -417,7 +422,8 @@ void NodeEditorWindows::createToolBarAndMenu()
     connect(alignVerticalCenter, SIGNAL(triggered()), _blocksView, SLOT(alignVerticalCenter()));
     connect(_blocksView, SIGNAL(centerAvailable(bool)), alignVerticalCenter, SLOT(setEnabled(bool)));
 
-    QAction *alignHorizontalCenter = new QAction("Align block &horizontally",this);
+    QAction *alignHorizontalCenter = new QAction(tr("Align blocks &horizontally"),this);
+    alignHorizontalCenter->setStatusTip(tr("Align blocks horizontally"));
     alignHorizontalCenter->setIcon(QIcon(":/icons/img/align-horizontal-center.png"));
     alignHorizontalCenter->setEnabled(false);
     blockViewMenu->addAction(alignHorizontalCenter);
@@ -426,15 +432,15 @@ void NodeEditorWindows::createToolBarAndMenu()
     connect(_blocksView, SIGNAL(centerAvailable(bool)), alignHorizontalCenter, SLOT(setEnabled(bool)));
 
     // ============= Help =============
-    QMenu *helpMenu = menuBar()->addMenu("&Help");
+    QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
 
-    QAction *aboutAction = new QAction("&About", this);
-    aboutAction->setStatusTip("Shows abou");
+    QAction *aboutAction = new QAction(tr("&About"), this);
+    aboutAction->setStatusTip(tr("Shows abou"));
     connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(about()));
     helpMenu->addAction(aboutAction);
 
-    QAction *aboutQtAction = new QAction("About &Qt", this);
-    aboutQtAction->setStatusTip("About Qt version");
+    QAction *aboutQtAction = new QAction(tr("About &Qt"), this);
+    aboutQtAction->setStatusTip(tr("About Qt version"));
     connect(aboutQtAction, SIGNAL(triggered(bool)), this, SLOT(aboutQt()));
     helpMenu->addAction(aboutQtAction);
 }
@@ -465,7 +471,7 @@ void NodeEditorWindows::reloadNodePath()
 
 void NodeEditorWindows::about()
 {
-    QMessageBox::about(this,"GPStudio: GPNode 1.20", QString("Copyright (C) 2014-2017 Dream IP (<a href=\"http://dream-lab.fr\">dream-lab.fr</a>)<br>\
+    QMessageBox::about(this,"GPStudio: GPNode 1.21", QString("Copyright (C) 2014-2017 Dream IP (<a href=\"http://dream-lab.fr\">dream-lab.fr</a>)<br>\
 <br>\
 This sofware is part of GPStudio distribution. To check for new version, please visit <a href=\"http://gpstudio.univ-bpclermont.fr/download\">gpstudio.univ-bpclermont.fr/download</a><br>\
 <br>\
@@ -525,6 +531,7 @@ void NodeEditorWindows::updateOldProjects()
         _oldProjectsActions[i]->setVisible(true);
         _oldProjectsActions[i]->setData(path);
         _oldProjectsActions[i]->setText(QString("&%1. %2").arg(i+1).arg(path));
+        _oldProjectsActions[i]->setStatusTip(tr("Open recent project '")+path+"'");
     }
 }
 
@@ -533,6 +540,11 @@ void NodeEditorWindows::openRecentFile()
     QAction *action = qobject_cast<QAction *>(sender());
     if (action)
         _project->openProject(action->data().toString());
+}
+
+void NodeEditorWindows::showMessage(const QString &message)
+{
+    statusBar()->showMessage(message, 2000);
 }
 
 void NodeEditorWindows::writeSettings()

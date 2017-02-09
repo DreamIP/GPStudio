@@ -57,7 +57,7 @@ GPNodeProject::~GPNodeProject()
 QString GPNodeProject::name() const
 {
     if(_path.isEmpty())
-        return QString("unsaved_project");
+        return QString(tr("unsaved_project"));
     else
         return QFileInfo(_path).baseName();
 }
@@ -83,7 +83,7 @@ void GPNodeProject::newProject()
         return;
 
     setPath("");
-    setNode(new ModelNode("unsaved_project"));
+    setNode(new ModelNode(tr("unsaved_project")));
     setModified(false);
 }
 
@@ -97,7 +97,7 @@ bool GPNodeProject::openProject(const QString &nodeFileName)
 
     if(nodeFileName.isEmpty())
     {
-        fileName = QFileDialog::getOpenFileName(_nodeEditorWindow, "Open node project", "", "Node project (*.node)");
+        fileName = QFileDialog::getOpenFileName(_nodeEditorWindow, tr("Open node project"), "", tr("Node project (*.node)"));
         if(fileName.isEmpty())
         {
             newProject();
@@ -153,8 +153,8 @@ bool GPNodeProject::saveProjectAs(const QString &nodeFileName)
         QFileDialog fileDialog(_nodeEditorWindow);
         fileDialog.setAcceptMode(QFileDialog::AcceptSave);
         fileDialog.setDefaultSuffix(".node");
-        fileDialog.setNameFilter("Node project (*.node)");
-        fileDialog.setWindowTitle("Save node project");
+        fileDialog.setNameFilter(tr("Node project (*.node)"));
+        fileDialog.setWindowTitle(tr("Save node project"));
         if (fileDialog.exec())
             fileName = fileDialog.selectedFiles().first();
         if(fileName.isEmpty())
@@ -178,7 +178,7 @@ bool GPNodeProject::closeProject()
     if(_modified)
     {
         QMessageBox::StandardButton res;
-        res = QMessageBox::question(_nodeEditorWindow, "Project modified", "Would you like to save the project before close it ?", QMessageBox::Save | QMessageBox::Cancel | QMessageBox::Discard);
+        res = QMessageBox::question(_nodeEditorWindow, tr("Project modified"), tr("Would you like to save the project before close it ?"), QMessageBox::Save | QMessageBox::Cancel | QMessageBox::Discard);
         if(res==QMessageBox::Save)
             if(!saveProject())
                 return false;
@@ -601,7 +601,7 @@ void GPNodeProject::renameBlock(const QString &block_name, const QString &newNam
     QRegExp nameChecker("^[a-zA-Z][a-zA-Z0-9_]*$");
 
     if(name.isEmpty())
-        name = QInputDialog::getText(NULL, "Enter a new name for this block", "New name", QLineEdit::Normal, block_name);
+        name = QInputDialog::getText(NULL, tr("Enter a new name for this block"), tr("New name"), QLineEdit::Normal, block_name);
 
     if(block_name == name || name.isEmpty())
         return;
@@ -610,13 +610,13 @@ void GPNodeProject::renameBlock(const QString &block_name, const QString &newNam
     {
         if(block != NULL)
         {
-            name = QInputDialog::getText(NULL, "Enter a new name for this block", "This name already exists, try another name", QLineEdit::Normal, name + "_1");
+            name = QInputDialog::getText(NULL, tr("Enter a new name for this block"), tr("This name already exists, try another name"), QLineEdit::Normal, name + "_1");
             if(name.isEmpty())
                 return;
         }
         else
         {
-            name = QInputDialog::getText(NULL, "Enter a new name for this block", "Invalid name, try another name", QLineEdit::Normal, name.replace(QRegExp("\\W"),""));
+            name = QInputDialog::getText(NULL, tr("Enter a new name for this block"), tr("Invalid name, try another name"), QLineEdit::Normal, name.replace(QRegExp("\\W"),""));
             if(name.isEmpty())
                 return;
         }
