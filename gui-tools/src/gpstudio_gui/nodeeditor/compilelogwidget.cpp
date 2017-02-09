@@ -122,6 +122,12 @@ void CompileLogWidget::readProcess()
         QString stringRead = QString::fromLocal8Bit(dataRead);
         stringRead.replace(QRegExp("\\x001b\\[([0-9]+)m"),"");
 
+        #if QT_VERSION >= 0x050000
+        stringRead = stringRead.toHtmlEscaped();
+        #else
+        stringRead = Qt::Qt::escape(stringRead);
+        #endif
+
         pos = colorReg.indexIn(stringRead);
         if(pos != -1)
         {
@@ -137,11 +143,11 @@ void CompileLogWidget::readProcess()
             if(colorCode == "info")
                 colorHTML = "blue";
 
-            html.append("<p><span style=\"color: "+colorHTML+"\">"+stringRead.toHtmlEscaped()+"</span></p>");
+            html.append("<p><span style=\"color: " + colorHTML + "\">" + stringRead + "</span></p>");
         }
         else
         {
-            html.append("<p>" + stringRead.toHtmlEscaped() + "</p>");
+            html.append("<p>" + stringRead + "</p>");
         }
 
         dataRead = _process->readAllStandardError();
