@@ -167,6 +167,8 @@ RESOURCES += \
     flowvieweractions.qrc \
     flowviewertypes.qrc
 
+TRANSLATIONS = gpstudio_gui_fr.ts
+
 include(../../thirdparts/hexedit/hexedit.pri)
 include(../../thirdparts/qcustomplot/qcustomplot.pri)
 

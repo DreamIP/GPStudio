@@ -24,7 +24,7 @@
 #include <QLabel>
 #include <QSettings>
 
-#include "compilelogwidget.h"
+#include "nodeeditor/compilelogwidget.h"
 
 PathsSettingsPage::PathsSettingsPage(QWidget *parent) : QWidget(parent)
 {
