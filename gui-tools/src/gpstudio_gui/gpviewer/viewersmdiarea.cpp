@@ -70,6 +70,19 @@ void ViewersMdiArea::selectViewer(QString name)
         if(child->windowTitle() == name)
             setActiveSubWindow(child);
     }
+
+    if(_camera)
+    {
+        ModelViewer *viewer = _camera->node()->gpViewer()->getViewer(name);
+        if(!viewer)
+            return;
+        _blocksView->clearSelection();
+        QStringList list = viewer->viewerFlowsName();
+        for(int i=0; i<list.size(); i++)
+        {
+            _blocksView->selectFlowCom(list[i]);
+        }
+    }
 }
 
 void ViewersMdiArea::setMenu(QMenu *menu)
@@ -112,7 +125,10 @@ void ViewersMdiArea::updateWindowsMenu()
         {
             action->setChecked(true);
             if(child->windowTitle() != "Blocks view")
+            {
                 emit viewerSelected(child->windowTitle());
+                selectViewer(child->windowTitle());
+            }
         }
         connect(action, SIGNAL(triggered(bool)), this, SLOT(selectViewerAction()));
     }

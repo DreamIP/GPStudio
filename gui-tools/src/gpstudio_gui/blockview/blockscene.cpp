@@ -143,6 +143,11 @@ QList<BlockItem *> BlockScene::block(ModelBlock *modelBlock) const
     return _blocksModel.values(modelBlock);
 }
 
+QList<BlockItem *> BlockScene::block() const
+{
+    return _blocksModel.values();
+}
+
 void BlockScene::connectBlockPort(const ModelFlowConnect &flowConnect)
 {
     connectBlockPort(flowConnect.fromblock(), flowConnect.fromflow(), flowConnect.toblock(), flowConnect.toflow());
@@ -236,6 +241,20 @@ BlockConnectorItem *BlockScene::getConnector(const QString &fromblock, const QSt
         }
     }
     return NULL;
+}
+
+void BlockScene::clearHighlight()
+{
+    foreach (BlockItem *block, _blocksName)
+    {
+        foreach (BlockPortItem *port, block->ports())
+        {
+            foreach (BlockConnectorItem *connectorItem, port->connects())
+            {
+                connectorItem->setHighlight(false);
+            }
+        }
+    }
 }
 
 void BlockScene::updateKeyBlock(BlockItem *block, const QString &oldKey, const QString &newKey)

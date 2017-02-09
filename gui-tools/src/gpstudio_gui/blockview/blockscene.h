@@ -53,6 +53,7 @@ public:
     QList<BlockItem *> block(const QString &name) const;
     BlockPortItem *port(const QString &blockName, const QString &portName) const;
     QList<BlockItem *> block(ModelBlock *modelBlock) const;
+    QList<BlockItem *> block() const;
 
     void connectBlockPort(const ModelFlowConnect &flowConnect);
     void connectBlockPort(ModelFlow *fromflow, ModelFlow *toflow);
@@ -65,6 +66,9 @@ public:
 
     BlockConnectorItem *getConnector(const ModelFlowConnect &flowConnect);
     BlockConnectorItem *getConnector(const QString &fromblock, const QString &fromflow, const QString &toblock, const QString &toflow);
+
+public slots:
+    void clearHighlight();
 
 protected:
     QMap<QString, BlockItem* > _blocksName;

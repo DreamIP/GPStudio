@@ -81,7 +81,6 @@ private:
     bool _hover;
 
     QList<BlockConnectorItem *> _connects;
-    QList<BlockConnectorItem *> _oldConnects;
 };
 
 #endif // BLOCKPORTITEM_H

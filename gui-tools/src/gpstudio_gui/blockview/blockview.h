@@ -77,6 +77,7 @@ protected slots:
     void updateSelection();
 
 public slots:
+    void clearSelection();
     void selectBlock(QString blocksName);
     void changeNode(ModelNode *node);
 
@@ -92,6 +93,10 @@ public slots:
 
     void alignVerticalCenter();
     void alignHorizontalCenter();
+
+    void selectFlowCom(const QString &flowCom);
+    void selectFlowCom(const QString &viewer, const QString &viewerFlow);
+    //void selectFlowCom(const QStringList &flowComs);
 
 signals:
     void blockDetailsRequest(QString blockName);
@@ -111,6 +116,7 @@ signals:
 
 private:
     GPNodeProject *_project;
+    const ModelNode *_node;
 
     BlockScene *_scene;
     bool _editMode;

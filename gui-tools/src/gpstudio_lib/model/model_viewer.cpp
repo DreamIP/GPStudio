@@ -49,6 +49,14 @@ const QList<ModelViewerFlow *> &ModelViewer::viewerFlows() const
     return _viewerFlows;
 }
 
+QStringList ModelViewer::viewerFlowsName() const
+{
+    QStringList names;
+    foreach (ModelViewerFlow *viewerFlow, _viewerFlows)
+        names << viewerFlow->flowName();
+    return names;
+}
+
 void ModelViewer::addViewerFlow(ModelViewerFlow *viewerFlow)
 {
     _viewerFlows.append(viewerFlow);

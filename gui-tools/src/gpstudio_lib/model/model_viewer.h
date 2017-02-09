@@ -6,6 +6,7 @@
 #include <QList>
 #include <QMap>
 #include <QString>
+#include <QStringList>
 #include <QDomElement>
 
 class ModelGPViewer;
@@ -23,6 +24,7 @@ public:
 
     QList<ModelViewerFlow *> &viewerFlows();
     const QList<ModelViewerFlow *> &viewerFlows() const;
+    QStringList viewerFlowsName() const;
     void addViewerFlow(ModelViewerFlow *viewerFlow);
     void addViewerFlow(QList<ModelViewerFlow *> viewerFlows);
     void removeViewerFlow(ModelViewerFlow *viewerFlow);

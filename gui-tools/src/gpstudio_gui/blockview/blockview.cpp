@@ -35,6 +35,7 @@ BlockView::BlockView(QWidget *parent)
     : QGraphicsView(parent)
 {
     _project = NULL;
+    _node = NULL;
     _editMode = false;
     _scene = new BlockScene();
     scale(0.75, 0.75);
@@ -320,6 +321,12 @@ void BlockView::updateSelection()
     emit centerAvailable(blockSelectedCount >= 2);
 }
 
+void BlockView::clearSelection()
+{
+    _scene->clearSelection();
+    _scene->clearHighlight();
+}
+
 void BlockView::selectBlock(QString blocksName)
 {
     _scene->blockSignals(true);
@@ -390,6 +397,7 @@ BlockScene *BlockView::blockScene() const
 bool BlockView::loadFromNode(const ModelNode *node)
 {
     bool loaded = _scene->loadFromNode(node);
+    _node = node;
     zoomFit();
     return loaded;
 }
@@ -397,6 +405,7 @@ bool BlockView::loadFromNode(const ModelNode *node)
 bool BlockView::loadFromCam(const Camera *camera)
 {
     bool loaded = _scene->loadFromCamera(camera);
+    _node = camera->node();
     zoomFit();
     return loaded;
 }
@@ -466,6 +475,34 @@ void BlockView::alignVerticalCenter()
 void BlockView::alignHorizontalCenter()
 {
     alignCenter(0);
+}
+
+/*void selectFlowCom(const QStringList &flowComs)
+{
+    for(int i=0; i<flowComs.size(); i++)
+        selectFlowCom(flowComs[i]);
+}*/
+
+void BlockView::selectFlowCom(const QString &flowCom)
+{
+    if(!_node)
+        return;
+
+    QString comBlockName = _node->getIOCom()->name();
+    BlockPortItem *portItem = _scene->port(comBlockName, flowCom);
+    if(!portItem)
+        return;
+
+    foreach(BlockConnectorItem *connector, portItem->connects())
+    {
+        connector->setHighlight(true);
+    }
+}
+
+void BlockView::selectFlowCom(const QString &viewer, const QString &viewerFlow)
+{
+    Q_UNUSED(viewer)
+    selectFlowCom(viewerFlow);
 }
 
 bool BlockView::editMode() const
