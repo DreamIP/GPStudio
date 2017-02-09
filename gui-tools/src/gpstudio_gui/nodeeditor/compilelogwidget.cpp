@@ -65,7 +65,7 @@ void CompileLogWidget::launch(const QString &cmd, const QStringList &args)
     _process->setWorkingDirectory(QFileInfo(_project->path()).path());
     _process->start(cmd, args);
 
-    appendLog(QString(tr("<hr><span style=\"color: blue;\">process '%1' start at %2...</span></hr>"))
+    appendLog(QString("<hr><span style=\"color: blue;\">process '%1' start at %2...</span></hr>")
               .arg(_program + " " + _arguments.join(" "))
               .arg(QDateTime::currentDateTime().toString()));
 }
@@ -112,47 +112,44 @@ void CompileLogWidget::checkAction()
 
 void CompileLogWidget::readProcess()
 {
-/*#if defined(Q_OS_WIN)
-    QRegExp colorReg("([^\r\n]*)");
-    int capint = 0;
-#else
-    QRegExp colorReg("\\x001b\\[([0-9]+)m([^\r\n\\x001b]*)");
-    int capint = 2;
-#endif*/
-
     QString html;
+    int pos;
+    QRegExp colorReg(".*(Info|Warning|Critical|Error).*:");
+
     while(_process->canReadLine())
     {
         QByteArray dataRead = _process->readLine();
         QString stringRead = QString::fromLocal8Bit(dataRead);
-
-        /*int pos = 0;
-        while ((pos = colorReg.indexIn(stringRead, pos)) != -1)
-        {
-            QString colorCode = colorReg.cap(1);
-            QString colorHTML = "black";
-
-            if(colorCode == "33")
-                colorHTML = "orange";
-            if(colorCode == "31")
-                colorHTML = "red";
-            if(colorCode == "32")
-                colorHTML = "green";
-
-            html.append("<p><span style=\"color: "+colorHTML+"\">"+colorReg.cap(capint)+"</span></p>");
-
-            pos += colorReg.matchedLength()+1;
-        }*/
-
         stringRead.replace(QRegExp("\\x001b\\[([0-9]+)m"),"");
-        html.append("<p>"+stringRead+"</p>");
 
-        /*dataRead = _process->readAllStandardError();
+        pos = colorReg.indexIn(stringRead);
+        if(pos != -1)
+        {
+            QString colorCode = colorReg.cap(1).toLower();
+            QString colorHTML;
+
+            if(colorCode == "warning")
+                colorHTML = "orange";
+            if(colorCode == "critical")
+                colorHTML = "red";
+            if(colorCode == "error")
+                colorHTML = "red";
+            if(colorCode == "info")
+                colorHTML = "blue";
+
+            html.append("<p><span style=\"color: "+colorHTML+"\">"+stringRead.toHtmlEscaped()+"</span></p>");
+        }
+        else
+        {
+            html.append("<p>" + stringRead.toHtmlEscaped() + "</p>");
+        }
+
+        dataRead = _process->readAllStandardError();
         if(!dataRead.isEmpty())
-            html.append("<p><span style=\"color: red\">"+QString::fromLocal8Bit(dataRead)+"</span></p>");*/
+            html.append("<p><span style=\"color: red\">"+QString::fromLocal8Bit(dataRead)+"</span></p>");
 
-        appendLog(html);
     }
+    appendLog(html);
 }
 
 void CompileLogWidget::launchClean()
@@ -241,7 +238,7 @@ void CompileLogWidget::exitProcess()
     {
         exitCode = _process->exitCode();
         if(exitCode==0)
-            appendLog(QString(tr("<p><span style=\"color: blue;\">process '%1' exit with code %2 at %3, elapsed time: %4s</span></p>"))
+            appendLog(QString("<p><span style=\"color: blue;\">process '%1' exit with code %2 at %3, elapsed time: %4s</span></p>")
                   .arg(_program + " " + _arguments.join(" "))
                   .arg(exitCode)
                   .arg(QDateTime::currentDateTime().toString())
@@ -293,56 +290,56 @@ void CompileLogWidget::exitProcess()
         case CompileLogWidget::ActionClean:
             if(exitCode==0)
             {
-                title = tr("Clean successfully");
-                message = tr("Cleaning of built files terminated successfully.");
+                title = "Clean successfully";
+                message = "Cleaning of built files terminated successfully.";
                 error = false;
             }
             else
             {
-                title = tr("Clean failed...");
-                message = tr("Cleaning step failed.\nPlease check your make exe path or delete the Makefile file if it is corrupted and launch generate.");
+                title = "Clean failed...";
+                message = "Cleaning step failed.\nPlease check your make exe path or delete the Makefile file if it is corrupted and launch generate.";
                 error = true;
             }
             break;
         case CompileLogWidget::ActionGenerate:
             if(exitCode==0)
             {
-                title = tr("Generate successfully");
-                message = tr("Generation of project terminated successfully.");
+                title = "Generate successfully";
+                message = "Generation of project terminated successfully.";
                 error = false;
             }
             else
             {
-                title = tr("Generate failed...");
-                message = tr("Generate step failed.");
+                title = "Generate failed...";
+                message = "Generate step failed.";
                 error = true;
             }
             break;
         case CompileLogWidget::ActionCompile:
             if(exitCode==0)
             {
-                title = tr("Synthesys successfully");
-                message = tr("Synthesys of project terminated successfully.");
+                title = "Synthesys successfully";
+                message = "Synthesys of project terminated successfully.";
                 error = false;
             }
             else
             {
-                title = tr("Synthesys failed...");
-                message = tr("Synthesys step failed.\nPlease check your quartus exe path or re-generate your project.");
+                title = "Synthesys failed...";
+                message = "Synthesys step failed.\nPlease check your quartus exe path or re-generate your project.";
                 error = true;
             }
             break;
         case CompileLogWidget::ActionSend:
             if(exitCode==0)
             {
-                title = tr("Send successfully");
-                message = tr("Node programmation terminated successfully.");
+                title = "Send successfully";
+                message = "Node programmation terminated successfully.";
                 error = false;
             }
             else
             {
-                title = tr("Send failed...");
-                message = tr("Send step failed.\nPlease check your quartus exe or your camera connection. If you use it for the first time on windows, launch the Altera graphical tool to programm yor node");
+                title = "Send failed...";
+                message = "Send step failed.\nPlease check your quartus exe or your camera connection. If you use it for the first time on windows, launch the Altera graphical tool to programm yor node";
                 error = true;
             }
             break;
@@ -354,7 +351,7 @@ void CompileLogWidget::exitProcess()
         else
             messageBox.setIconPixmap(QMessageBox::standardIcon(QMessageBox::Information));
         messageBox.addButton(QMessageBox::Ok);
-        QCheckBox dontShowCheckBox(tr("don't show this message again"));
+        QCheckBox dontShowCheckBox("don't show this message again");
         messageBox.addButton(&dontShowCheckBox, QMessageBox::ActionRole);
 
         QSettings settings("GPStudio", "gpnode");
@@ -372,9 +369,9 @@ void CompileLogWidget::exitProcess()
 void CompileLogWidget::errorProcess()
 {
     if(_process)
-        appendLog(QString(tr("<p><span style=\"color: red;\">failed exit code:%1 %2</span></p>")).arg(_process->exitCode()).arg(_process->errorString()));
+        appendLog(QString("<p><span style=\"color: red;\">failed exit code:%1 %2</span></p>").arg(_process->exitCode()).arg(_process->errorString()));
     else
-        appendLog(tr("failed..."));
+        appendLog("failed...");
 
     checkAction();
 }
