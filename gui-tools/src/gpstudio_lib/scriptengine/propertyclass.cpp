@@ -143,6 +143,9 @@ QScriptValue PropertyClass::property(const QScriptValue &object, const QScriptSt
     if(name.toString()=="bits")
         return QScriptValue(_linkedProperty->bits());
 
+    if(name.toString()=="map")
+        return QScriptValue(_linkedProperty->propertymap());
+
     QString filteredName = name.toString();
     if(filteredName=="__in")
         filteredName="in";
