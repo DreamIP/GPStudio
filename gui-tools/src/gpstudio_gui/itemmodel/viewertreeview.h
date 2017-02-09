@@ -45,6 +45,7 @@ public:
 
 signals:
     void viewerSelected(QString viewerName);
+    void viewerFlowSelected(QString viewerName, QString viewerFlowName);
     void viewerDeleted(QString viewerName);
     void viewerFlowDeleted(QString viewerName, QString viewerFlowName);
 

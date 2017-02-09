@@ -52,6 +52,7 @@ public slots:
 
 protected slots:
     void updateWindowsMenu();
+    void selectViewerAction();
 
 signals:
     void viewerSelected(QString name);

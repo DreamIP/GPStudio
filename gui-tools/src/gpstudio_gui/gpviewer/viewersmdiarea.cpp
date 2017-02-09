@@ -22,6 +22,7 @@
 
 #include <QAction>
 #include <QMenu>
+#include <QDebug>
 
 #include "camera/camera.h"
 #include "camera/flowmanager.h"
@@ -105,6 +106,7 @@ void ViewersMdiArea::updateWindowsMenu()
         else
             text = tr("%1 %2").arg(i + 1).arg(child->windowTitle());
         QAction *action  = _menu->addAction(text);
+        action->setData(child->windowTitle());
         action->setCheckable(true);
         if(child == activeSubWindow())
         {
@@ -112,7 +114,15 @@ void ViewersMdiArea::updateWindowsMenu()
             if(child->windowTitle() != "Blocks view")
                 emit viewerSelected(child->windowTitle());
         }
+        connect(action, SIGNAL(triggered(bool)), this, SLOT(selectViewerAction()));
     }
+}
+
+void ViewersMdiArea::selectViewerAction()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (action)
+        selectViewer(action->data().toString());
 }
 
 BlockView *ViewersMdiArea::blocksView() const

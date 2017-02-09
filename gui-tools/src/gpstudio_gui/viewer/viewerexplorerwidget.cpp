@@ -136,7 +136,7 @@ void ViewerExplorerWidget::setupWidgets()
     QLayout *layoutBox2 = new QVBoxLayout();
     layoutBox2->setContentsMargins(0,10,0,0);
     _viewerTreeView = new ViewerTreeView();
-    _viewerTreeView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    _viewerTreeView->setSelectionMode(QAbstractItemView::SingleSelection);
     _viewerTreeView->setAcceptDrops(true);
     _viewerTreeView->viewport()->setAcceptDrops(true);
     _viewerTreeView->setDropIndicatorShown(true);

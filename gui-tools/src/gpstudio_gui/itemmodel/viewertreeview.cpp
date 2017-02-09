@@ -34,7 +34,8 @@ ViewerTreeView::ViewerTreeView()
     _modelSorted->setSourceModel(_model);
     setModel(_modelSorted);
 
-    connect(this->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(updateSelection()));
+    connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(updateSelection()));
+    connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(updateSelection()));
 }
 
 void ViewerTreeView::attachProject(GPNodeProject *project)
@@ -144,7 +145,7 @@ void ViewerTreeView::updateSelection()
     const ModelViewerFlow *viewerFlow = _model->viewerFlow(_modelSorted->mapToSource(currentIndex()));
     if(viewerFlow)
     {
-        emit viewerSelected(viewerFlow->viewer()->name());
+        emit viewerFlowSelected(viewerFlow->flowName(), viewerFlow->viewer()->name());
     }
 }
 
