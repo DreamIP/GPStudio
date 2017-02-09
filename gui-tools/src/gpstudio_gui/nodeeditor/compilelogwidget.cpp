@@ -30,6 +30,10 @@
 //#include <QStandardPaths>
 #include <QMessageBox>
 
+#if QT_VERSION < 0x050000
+  #include <Qt>
+#endif
+
 CompileLogWidget::CompileLogWidget(QWidget *parent) : QWidget(parent)
 {
     setupWidgets();
@@ -123,9 +127,9 @@ void CompileLogWidget::readProcess()
         stringRead.replace(QRegExp("\\x001b\\[([0-9]+)m"),"");
 
         #if QT_VERSION >= 0x050000
-        stringRead = stringRead.toHtmlEscaped();
+          stringRead = stringRead.toHtmlEscaped();
         #else
-        stringRead = Qt::Qt::escape(stringRead);
+          stringRead = Qt::Qt::escape(stringRead);
         #endif
 
         pos = colorReg.indexIn(stringRead);
