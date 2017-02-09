@@ -84,7 +84,7 @@ SOURCES += \
     viewer/viewerwidgets/docviewer.cpp \
     viewer/viewerwidgets/pdfviewer.cpp \
     viewer/viewerwidgets/layerwidget.cpp \
-    compilelogwidget.cpp \
+    nodeeditor/compilelogwidget.cpp \
     viewer/viewerexplorerwidget.cpp \
     itemmodel/propertycompleter.cpp \
     itemmodel/viewertreeview.cpp \
@@ -147,7 +147,7 @@ HEADERS  += \
     viewer/viewerwidgets/docviewer.h \
     viewer/viewerwidgets/pdfviewer.h \
     viewer/viewerwidgets/layerwidget.h \
-    compilelogwidget.h \
+    nodeeditor/compilelogwidget.h \
     viewer/viewerexplorerwidget.h \
     itemmodel/propertycompleter.h \
     itemmodel/viewertreeview.h \
