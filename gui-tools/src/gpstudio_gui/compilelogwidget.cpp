@@ -26,6 +26,7 @@
 #include <QCoreApplication>
 #include <QMessageBox>
 #include <QSettings>
+#include <QCheckBox>
 //#include <QStandardPaths>
 #include <QMessageBox>
 
@@ -146,9 +147,9 @@ void CompileLogWidget::readProcess()
         stringRead.replace(QRegExp("\\x001b\\[([0-9]+)m"),"");
         html.append("<p>"+stringRead+"</p>");
 
-        dataRead = _process->readAllStandardError();
+        /*dataRead = _process->readAllStandardError();
         if(!dataRead.isEmpty())
-            html.append("<p><span style=\"color: red\">"+QString::fromLocal8Bit(dataRead)+"</span></p>");
+            html.append("<p><span style=\"color: red\">"+QString::fromLocal8Bit(dataRead)+"</span></p>");*/
 
         appendLog(html);
     }
@@ -234,22 +235,25 @@ void CompileLogWidget::clear()
 
 void CompileLogWidget::exitProcess()
 {
-    int exitCode = _process->exitCode();
+    int exitCode = 1;
 
-    if(exitCode==0)
-        appendLog(QString("<p><span style=\"color: blue;\">process '%1' exit with code %2 at %3, elapsed time: %4s</span></p>")
-              .arg(_program + " " + _arguments.join(" "))
-              .arg(_process->exitCode())
-              .arg(QDateTime::currentDateTime().toString())
-              .arg((QDateTime::currentMSecsSinceEpoch() - _startProcessDate.toMSecsSinceEpoch())/1000));
-    else
+    if(_process)
     {
-        appendLog(QString("<p><span style=\"color: red;\">%1</span></p>").arg(QString::fromLocal8Bit(_process->readAllStandardError())));
-        appendLog(QString("<p><span style=\"color: red;\">failed exit code:%1 %2</span></p>").arg(_process->exitCode()).arg(_process->errorString()));
+        exitCode = _process->exitCode();
+        if(exitCode==0)
+            appendLog(QString("<p><span style=\"color: blue;\">process '%1' exit with code %2 at %3, elapsed time: %4s</span></p>")
+                  .arg(_program + " " + _arguments.join(" "))
+                  .arg(exitCode)
+                  .arg(QDateTime::currentDateTime().toString())
+                  .arg((QDateTime::currentMSecsSinceEpoch() - _startProcessDate.toMSecsSinceEpoch())/1000));
+        else
+        {
+            appendLog(QString("<p><span style=\"color: red;\">%1</span></p>").arg(QString::fromLocal8Bit(_process->readAllStandardError())));
+            appendLog(QString("<p><span style=\"color: red;\">failed exit code:%1 %2</span></p>").arg(exitCode).arg(_process->errorString()));
+        }
+        _process->deleteLater();
+        _process = NULL;
     }
-
-    _process->deleteLater();
-    _process = NULL;
 
     if(exitCode != 0)
         _allRequest = false;
@@ -277,6 +281,9 @@ void CompileLogWidget::exitProcess()
     }
     else
     {
+        QMessageBox messageBox(this);
+        QString title, message;
+        bool error;
         checkAction();
         switch(_currentAction)
         {
@@ -285,40 +292,87 @@ void CompileLogWidget::exitProcess()
             break;
         case CompileLogWidget::ActionClean:
             if(exitCode==0)
-                QMessageBox::information(this, "Clean successfully", "Cleaning of built files terminated successfully.");
+            {
+                title = "Clean successfully";
+                message = "Cleaning of built files terminated successfully.";
+                error = false;
+            }
             else
-                QMessageBox::critical(this, "Clean failed...", "Cleaning step failed.\nPlease check your make exe path or delete the Makefile file if it is corrupted and launch generate.");
+            {
+                title = "Clean failed...";
+                message = "Cleaning step failed.\nPlease check your make exe path or delete the Makefile file if it is corrupted and launch generate.";
+                error = true;
+            }
             break;
         case CompileLogWidget::ActionGenerate:
             if(exitCode==0)
-                QMessageBox::information(this, "Generate successfully", "Generation of project terminated successfully.");
+            {
+                title = "Generate successfully";
+                message = "Generation of project terminated successfully.";
+                error = false;
+            }
             else
-                QMessageBox::critical(this, "Generate failed...", "Generate step failed.");
+            {
+                title = "Generate failed...";
+                message = "Generate step failed.";
+                error = true;
+            }
             break;
         case CompileLogWidget::ActionCompile:
             if(exitCode==0)
-                QMessageBox::information(this, "Synthesys successfully", "Synthesys of project terminated successfully.");
+            {
+                title = "Synthesys successfully";
+                message = "Synthesys of project terminated successfully.";
+                error = false;
+            }
             else
-                QMessageBox::critical(this, "Synthesys failed...", "Synthesys step failed.\nPlease check your quartus exe path or re-generate your project.");
+            {
+                title = "Synthesys failed...";
+                message = "Synthesys step failed.\nPlease check your quartus exe path or re-generate your project.";
+                error = true;
+            }
             break;
         case CompileLogWidget::ActionSend:
             if(exitCode==0)
-                QMessageBox::information(this, "Send successfully", "Node programmation terminated successfully.");
+            {
+                title = "Send successfully";
+                message = "Node programmation terminated successfully.";
+                error = false;
+            }
             else
-                QMessageBox::critical(this, "Send failed...", "Send step failed.\nPlease check your quartus exe or your camera connection. If you use it for the first time on windows, launch the Altera graphical tool to programm yor node");
+            {
+                title = "Send failed...";
+                message = "Send step failed.\nPlease check your quartus exe or your camera connection. If you use it for the first time on windows, launch the Altera graphical tool to programm yor node";
+                error = true;
+            }
             break;
         }
+        messageBox.setWindowTitle(title);
+        messageBox.setText(message);
+        if(error)
+            messageBox.setIconPixmap(QMessageBox::standardIcon(QMessageBox::Critical));
+        else
+            messageBox.setIconPixmap(QMessageBox::standardIcon(QMessageBox::Information));
+        messageBox.addButton(QMessageBox::Ok);
+        QCheckBox dontShowCheckBox("don't show this message again");
+        messageBox.addButton(&dontShowCheckBox, QMessageBox::ActionRole);
+
+        QSettings settings("GPStudio", "gpnode");
+        settings.beginGroup("compilelog");
+        if(settings.value("showmessage", true).toBool())
+        {
+            if(messageBox.exec() == 0)
+                settings.setValue("showmessage", false);
+        }
+        settings.endGroup();
+        emit messageSended(message);
     }
 }
 
 void CompileLogWidget::errorProcess()
 {
     if(_process)
-    {
         appendLog(QString("<p><span style=\"color: red;\">failed exit code:%1 %2</span></p>").arg(_process->exitCode()).arg(_process->errorString()));
-        _process->deleteLater();
-        _process = NULL;
-    }
     else
         appendLog("failed...");
 

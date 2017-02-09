@@ -56,6 +56,7 @@ signals:
     void sendAvailable(bool available);
     void runAvailable(bool available);
     void stopAvailable(bool available);
+    void messageSended(QString message);
 
 public slots:
     void readProcess();
