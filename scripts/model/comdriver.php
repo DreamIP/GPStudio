@@ -96,15 +96,6 @@ class ComDriver
     }
 
     /**
-     * @brief Returns the type of the block as string, redefined by children.
-     * @return string type of the block.
-     */
-    public function type()
-    {
-        return 'iocom';
-    }
-
-    /**
      * @brief permits to output this instance
      * 
      * Return a formated node for the node_generated file. This method call all

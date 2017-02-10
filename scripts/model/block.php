@@ -490,7 +490,7 @@ class Block extends Component
     public function getXmlElement($xml, $format)
     {
         if ($this->type() == "io" or $this->type() == "iocom")
-            $typeName = $this->type();
+            $typeName = "io";
         elseif ($this->type() == "process")
             $typeName = "process";
         else

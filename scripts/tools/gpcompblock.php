@@ -209,7 +209,7 @@ if (!in_array($action, array("convert")))
             else
             {
                 $xml = simplexml_load_file($componentName);
-                if (isset($xml->com_connects))
+                if (isset($xml->com_driver))
                     $component = new IOCom($componentName);
                 else
                     $component = new IO($componentName);
