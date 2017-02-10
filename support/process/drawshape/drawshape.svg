@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<svg width="150" height="100">
-	<rect width="150" height="100" x="0" y="0" fill="lightgray"/>
-	<rect width="50" height="50" x="10" y="5" fill="transparent" stroke="red" stroke-width="2"/>
-	<text x="12" y="70">DRAWSHAPE</text>
-</svg>
