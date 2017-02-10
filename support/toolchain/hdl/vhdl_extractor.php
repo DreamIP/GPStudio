@@ -170,8 +170,16 @@ class VHDL_extractor
             {
                 if (preg_match("/:[[:space:]]*([^\:]+)[[:space:]]*:=[[:space:]]*([^\;]+)[[:space:]]*;*/", $part->content, $matches, PREG_OFFSET_CAPTURE) === FALSE)
                     continue;
+                if (empty($matches))
+                {
+                    if (preg_match("/:[[:space:]]*([^\;]+)[[:space:]]*;*/", $part->content, $matches, PREG_OFFSET_CAPTURE) === FALSE)
+                        continue;
+                }
                 $type = $matches[1][0];
-                $value = str_replace("\"", "", $matches[2][0]);
+                if (count($matches) > 2)
+                    $value = str_replace("\"", "", $matches[2][0]);
+                else
+                    $value = "";
 
                 $param = new Param();
                 $param->hard = true;
@@ -221,8 +229,25 @@ class VHDL_extractor
             if(preg_match("/\\([[:space:]]*(.*)[[:space:]]+downto[[:space:]]+0[[:space:]]*\\)/", $flowPart['data']->content, $matches, PREG_OFFSET_CAPTURE)===FALSE)
                 return false;
             $size = $matches[1][0];
-            $size = preg_replace("/[[:space:]]*/", "", $size); // remove all spaces
-            $size = str_replace("-1", "", $size);
+            $size = preg_replace("/[[:space:]\\(\\)]*/", "", $size); // remove all spaces
+            if (strpos($size, "-1") !== FALSE)
+            {
+                $size = str_replace("-1", "", $size);
+            }
+            else
+            {
+                $size = (int) $size + 1;
+            }
+
+            if (!is_int($size) and $component->getParam($size) == NULL)
+            {
+                $param = new Param();
+                $param->hard = true;
+                $param->name = $size;
+                $param->type = "integer";
+                $param->value = 8;
+                $component->addParam($param);
+            }
 
             $flow = $component->getFlow($flowName);
             if($flow == NULL)
@@ -260,7 +285,7 @@ class VHDL_extractor
             unset($portPart[$k]);
             $clock = new Clock();
             $clock->name = $part->name;
-            $clock->group = "clk_proc";
+            $clock->domain = "clk_proc";
             $clock->direction = $matches[3][0];
             $component->addClock($clock);
         }
@@ -284,8 +309,8 @@ class VHDL_extractor
                 if(preg_match("/\\([[:space:]]*(.*)[[:space:]]+downto[[:space:]]+0[[:space:]]*\\)/", $part->content, $matches, PREG_OFFSET_CAPTURE)===FALSE)
                     return false;
                 $size = $matches[1][0];
-                $size = preg_replace("/[[:space:]]*/", "", $size); // remove all spaces
-                if(strpos("-1", $size) !== FALSE)
+                $size = preg_replace("/[[:space:]\\(\\)]*/", "", $size); // remove all spaces
+                if (strpos($size, "-1") !== FALSE)
                 {
                     $size = str_replace("-1", "", $size);
                 }
@@ -294,6 +319,17 @@ class VHDL_extractor
                     $size = (int)$size+1;
                 }
                 $port->size = $size;
+
+
+                if (!is_int($size) and $component->getParam($size) == NULL)
+                {
+                    $param = new Param();
+                    $param->hard = true;
+                    $param->name = $size;
+                    $param->type = "integer";
+                    $param->value = 8;
+                    $component->addParam($param);
+                }
             }
             $component->addExtPort($port);
         }
