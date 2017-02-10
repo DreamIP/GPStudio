@@ -46,8 +46,12 @@ public:
 
     BlockView *blocksView() const;
 
+    QAction *tileAct() const;
+    QAction *closeAct() const;
+    QAction *viewBlockAct() const;
+
 public slots:
-    void toggleBlockView();
+    void toggleBlockView(bool visible);
     void selectViewer(QString name);
 
 protected slots:

@@ -54,10 +54,10 @@ void ViewersMdiArea::setCamera(Camera *camera)
     setupViewers();
 }
 
-void ViewersMdiArea::toggleBlockView()
+void ViewersMdiArea::toggleBlockView(bool visible)
 {
-    _blocksWindow->show();
-    _blocksView->show();
+    _blocksWindow->setVisible(visible);
+    _blocksView->setVisible(visible);
 }
 
 void ViewersMdiArea::selectViewer(QString name)
@@ -149,8 +149,11 @@ BlockView *ViewersMdiArea::blocksView() const
 void ViewersMdiArea::createMenu()
 {
     _viewBlockAct = new QAction(tr("Toggle block view show"), this);
+    _viewBlockAct->setIcon(QIcon(":/icons/img/view-blocks.png"));
     _viewBlockAct->setStatusTip(tr("Toggle block view show"));
-    connect(_viewBlockAct, SIGNAL(triggered()), this, SLOT(toggleBlockView()));
+    _viewBlockAct->setCheckable(true);
+    _viewBlockAct->setChecked(true);
+    connect(_viewBlockAct, SIGNAL(toggled(bool)), this, SLOT(toggleBlockView(bool)));
 
     _closeAct = new QAction(tr("Cl&ose"), this);
     _closeAct->setIcon(QIcon(":/icons/img/window-suppressed.png"));
@@ -183,6 +186,21 @@ void ViewersMdiArea::createMenu()
     connect(_previousAct, SIGNAL(triggered()), this, SLOT(activatePreviousSubWindow()));
 
     connect(this, SIGNAL(subWindowActivated(QMdiSubWindow*)), this, SLOT(updateWindowsMenu()));
+}
+
+QAction *ViewersMdiArea::viewBlockAct() const
+{
+    return _viewBlockAct;
+}
+
+QAction *ViewersMdiArea::closeAct() const
+{
+    return _closeAct;
+}
+
+QAction *ViewersMdiArea::tileAct() const
+{
+    return _tileAct;
 }
 
 void ViewersMdiArea::setupViewers()
