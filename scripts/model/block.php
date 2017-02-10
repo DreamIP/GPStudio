@@ -567,10 +567,13 @@ class Block extends Component
 
         if ($format == "complete" or $format == "blockdef")
         {
-            // master_count
-            $att = $xml->createAttribute('master_count');
-            $att->value = $this->master_count;
-            $xml_element->appendChild($att);
+            if (!empty($this->master_count) and $this->master_count != "0")
+            {
+                // master_count
+                $att = $xml->createAttribute('master_count');
+                $att->value = $this->master_count;
+                $xml_element->appendChild($att);
+            }
 
             // pi_size_addr_rel
             $att = $xml->createAttribute('pi_size_addr_rel');
@@ -668,6 +671,16 @@ class Block extends Component
             }
         }
 
+        // components
+        if (!empty($this->components))
+        {
+            $xml_components = $xml->createElement("components");
+            foreach ($this->components as $component)
+            {
+                $xml_components->appendChild($component->getXmlElement($xml, $format));
+            }
+            $xml_element->appendChild($xml_components);
+        }
 
         // flows
         if (!empty($this->flows))

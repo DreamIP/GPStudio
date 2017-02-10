@@ -128,6 +128,10 @@ switch ($action)
             echo TOOL . " delextport -n <port-name>" . "\n";
             echo TOOL . " showextport" . "\n";
         }
+        echo "# === components ===" . "\n";
+        echo TOOL . " addcomponent -n <component-name>" . "\n";
+        echo TOOL . " delcomponent -n <component-name>" . "\n";
+        echo TOOL . " showcomponent" . "\n";
         exit(0);
         break;
     case "-v":
@@ -1596,6 +1600,35 @@ switch ($action)
         }
         break;
 
+    // ======================== components commands ====================
+    case "addcomponent":
+        $options = getopt("a:n:");
+        if (array_key_exists('n', $options))
+            $name = $options['n'];
+        else
+            error("You should specify a name driver for the component with -n", 1);
+
+        if ($component->getComponent($name) != NULL)
+            error("The component '$name' is ever added.", 32);
+
+        $newcomp = new Component(NULL);
+        $newcomp->driver = $name;
+        $component->addComponent($newcomp);
+        break;
+
+    case "delcomponent":
+        $options = getopt("a:n:");
+        if (array_key_exists('n', $options))
+            $name = $options['n'];
+        else
+            error("You should specify a name driver for the component with -n", 1);
+
+        if ($component->getComponent($name) == NULL)
+            error("The component '$name' is not added.", 32);
+
+        $component->delComponent($name);
+        break;
+
     // ========================== list commands ========================
     case "listinfo":
         foreach ($component->infos as $info)
@@ -1606,6 +1639,12 @@ switch ($action)
     case "listfile":
         foreach ($component->files as $file)
             echo $file->path . ' ';
+        $save = false;
+        break;
+
+    case "listcomponent":
+        foreach ($component->components as $component)
+            echo $component->driver . ' ';
         $save = false;
         break;
 

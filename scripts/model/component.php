@@ -168,8 +168,40 @@ class Component
         $this->ext_ports = array();
         
         $this->parentComponent = NULL;
-        
-        if($component == NULL)
+
+        if (is_object($component) and get_class($component) === 'SimpleXMLElement')
+        {
+            $component_file = "";
+            
+            $inlib = false;
+            if (isset($component['inlib']))
+            {
+                if ($component['inlib'] == 'false')
+                    $inlib = false;
+                else
+                    $inlib = true;
+            }
+            $this->in_lib = $inlib;
+
+            if (isset($component['driver']))
+                $this->driver = (string) $component['driver'];
+            elseif (isset($component['name']))
+                $this->driver = (string) $component['name'];
+            $this->name = $this->driver;
+
+            if ($this->in_lib)
+                $component_file = "";
+            $this->path = SUPPORT_PATH . "component" . DIRECTORY_SEPARATOR . $this->driver . DIRECTORY_SEPARATOR;
+            $component_file = $this->path . $this->driver . '.comp';
+
+            if (!file_exists($component_file))
+                error("File $component_file doesn't exist", 5, "Component");
+            if (!($this->xml = simplexml_load_file($component_file)))
+                error("Error when parsing $component_file", 5, "Component");
+
+            $this->parse_xml($this->xml);
+        }
+        elseif ($component == NULL)
         {
             // nothing to do
         }
@@ -621,6 +653,25 @@ class Component
         return null;
     }
 
+    /**
+     * @brief delete a component support from his driver name
+     * @param string $driver name of the reset to delete
+     */
+    function delComponent($driver)
+    {
+        $i = 0;
+        foreach ($this->components as $component)
+        {
+            if ($component->driver == $driver)
+            {
+                unset($this->components[$i]);
+                return;
+            }
+            $i++;
+        }
+        return null;
+    }
+
     /** @brief Add a gui part
      *  @param ComponentPart $part component to add to the block
      */
@@ -885,127 +936,137 @@ class Component
     {
         $xml_element = $xml->createElement("component");
 
-        // name
-        $att = $xml->createAttribute('name');
-        $att->value = $this->name;
-        $xml_element->appendChild($att);
-
-        // desc
-        $att = $xml->createAttribute('desc');
-        $att->value = $this->desc;
-        $xml_element->appendChild($att);
-
-        // infos
-        if (!empty($this->infos))
+        if ($format == "blockdef")
         {
-            $xml_infos = $xml->createElement("infos");
-            foreach ($this->infos as $info)
-            {
-                $xml_infos->appendChild($info->getXmlElement($xml, $format));
-            }
-            $xml_element->appendChild($xml_infos);
+            // name
+            $att = $xml->createAttribute('driver');
+            $att->value = $this->driver;
+            $xml_element->appendChild($att);
         }
-
-        // parts
-        if (!empty($this->parts))
+        else
         {
-            $xml_parts = $xml->createElement("parts");
-            foreach ($this->parts as $part)
-            {
-                $xml_parts->appendChild($part->getXmlElement($xml, $format));
-            }
-            $xml_element->appendChild($xml_parts);
-        }
+            // name
+            $att = $xml->createAttribute('name');
+            $att->value = $this->name;
+            $xml_element->appendChild($att);
 
-        // files
-        if (!empty($this->files))
-        {
-            $xml_files = $xml->createElement("files");
-            foreach ($this->files as $file)
-            {
-                $xml_files->appendChild($file->getXmlElement($xml, $format));
-            }
-            $xml_element->appendChild($xml_files);
-        }
+            // desc
+            $att = $xml->createAttribute('desc');
+            $att->value = $this->desc;
+            $xml_element->appendChild($att);
 
-        // flows
-        if (!empty($this->flows))
-        {
-            $xml_flows = $xml->createElement("flows");
-            foreach ($this->flows as $flow)
+            // infos
+            if (!empty($this->infos))
             {
-                if ($flow->type == "in" or $flow->type == "out")
+                $xml_infos = $xml->createElement("infos");
+                foreach ($this->infos as $info)
                 {
-                    $xml_flows->appendChild($flow->getXmlElement($xml, $format));
+                    $xml_infos->appendChild($info->getXmlElement($xml, $format));
                 }
+                $xml_element->appendChild($xml_infos);
             }
-            $xml_element->appendChild($xml_flows);
-        }
 
-        // params
-        if (!empty($this->params))
-        {
-            $xml_params = $xml->createElement("params");
-            foreach ($this->params as $param)
+            // parts
+            if (!empty($this->parts))
             {
-                $xml_params->appendChild($param->getXmlElement($xml, $format));
+                $xml_parts = $xml->createElement("parts");
+                foreach ($this->parts as $part)
+                {
+                    $xml_parts->appendChild($part->getXmlElement($xml, $format));
+                }
+                $xml_element->appendChild($xml_parts);
             }
-            $xml_element->appendChild($xml_params);
-        }
 
-        // clocks
-        if (!empty($this->clocks))
-        {
-            $xml_clocks = $xml->createElement("clocks");
-            foreach ($this->clocks as $clock)
+            // files
+            if (!empty($this->files))
             {
-                $xml_clocks->appendChild($clock->getXmlElement($xml, $format));
+                $xml_files = $xml->createElement("files");
+                foreach ($this->files as $file)
+                {
+                    $xml_files->appendChild($file->getXmlElement($xml, $format));
+                }
+                $xml_element->appendChild($xml_files);
             }
-            $xml_element->appendChild($xml_clocks);
-        }
 
-        // resets
-        if (!empty($this->resets))
-        {
-            $xml_resets = $xml->createElement("resets");
-            foreach ($this->resets as $reset)
+            // flows
+            if (!empty($this->flows))
             {
-                $xml_resets->appendChild($reset->getXmlElement($xml, $format));
+                $xml_flows = $xml->createElement("flows");
+                foreach ($this->flows as $flow)
+                {
+                    if ($flow->type == "in" or $flow->type == "out")
+                    {
+                        $xml_flows->appendChild($flow->getXmlElement($xml, $format));
+                    }
+                }
+                $xml_element->appendChild($xml_flows);
             }
-            $xml_element->appendChild($xml_resets);
-        }
 
-        // attributes
-        if (!empty($this->attributes))
-        {
-            $xml_attributes = $xml->createElement("attributes");
-            foreach ($this->attributes as $attribute)
+            // params
+            if (!empty($this->params))
             {
-                $xml_attributes->appendChild($attribute->getXmlElement($xml, $format));
+                $xml_params = $xml->createElement("params");
+                foreach ($this->params as $param)
+                {
+                    $xml_params->appendChild($param->getXmlElement($xml, $format));
+                }
+                $xml_element->appendChild($xml_params);
             }
-            $xml_element->appendChild($xml_attributes);
-        }
 
-        // components
-        if (!empty($this->components))
-        {
-            $xml_components = $xml->createElement("components");
-            foreach ($this->components as $component)
+            // clocks
+            if (!empty($this->clocks))
             {
-                $xml_components->appendChild($component->getXmlElement($xml, $format));
+                $xml_clocks = $xml->createElement("clocks");
+                foreach ($this->clocks as $clock)
+                {
+                    $xml_clocks->appendChild($clock->getXmlElement($xml, $format));
+                }
+                $xml_element->appendChild($xml_clocks);
             }
-            $xml_element->appendChild($xml_components);
-        }
-        
-        // ports
-        if (!empty($this->ext_ports))
-        {
-            $xml_ports = $xml->createElement("ports");
-            foreach ($this->ext_ports as $port)
+
+            // resets
+            if (!empty($this->resets))
             {
-                $xml_ports->appendChild($port->getXmlElement($xml, $format));
+                $xml_resets = $xml->createElement("resets");
+                foreach ($this->resets as $reset)
+                {
+                    $xml_resets->appendChild($reset->getXmlElement($xml, $format));
+                }
+                $xml_element->appendChild($xml_resets);
             }
-            $xml_element->appendChild($xml_ports);
+
+            // attributes
+            if (!empty($this->attributes))
+            {
+                $xml_attributes = $xml->createElement("attributes");
+                foreach ($this->attributes as $attribute)
+                {
+                    $xml_attributes->appendChild($attribute->getXmlElement($xml, $format));
+                }
+                $xml_element->appendChild($xml_attributes);
+            }
+
+            // components
+            if (!empty($this->components))
+            {
+                $xml_components = $xml->createElement("components");
+                foreach ($this->components as $component)
+                {
+                    $xml_components->appendChild($component->getXmlElement($xml, $format));
+                }
+                $xml_element->appendChild($xml_components);
+            }
+
+            // ports
+            if (!empty($this->ext_ports))
+            {
+                $xml_ports = $xml->createElement("ports");
+                foreach ($this->ext_ports as $port)
+                {
+                    $xml_ports->appendChild($port->getXmlElement($xml, $format));
+                }
+                $xml_element->appendChild($xml_ports);
+            }
         }
 
         return $xml_element;
