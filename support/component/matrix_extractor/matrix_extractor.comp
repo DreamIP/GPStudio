@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="matrix_extractor_3_3" desc="">
+  <flows>
+    <flow name="in" size="PIX_WIDTH" type="in"/>
+    <flow name="out" size="PIX_WIDTH" type="out"/>
+  </flows>
+  <params>
+    <param name="LINE_WIDTH_MAX" type="integer" hard="1"/>
+    <param name="PIX_WIDTH" type="integer" hard="1"/>
+    <param name="OUTVALUE_WIDTH" type="integer" hard="1"/>
+  </params>
+  <clocks>
+    <clock name="clk_proc" typical="" domain="clk_proc" direction="in"/>
+  </clocks>
+  <resets>
+    <reset name="reset_n" group="reset_n" direction="in"/>
+  </resets>
+  <ports>
+    <port name="p00" type="out" size="PIX_WIDTH"/>
+    <port name="p01" type="out" size="PIX_WIDTH"/>
+    <port name="p02" type="out" size="PIX_WIDTH"/>
+    <port name="p10" type="out" size="PIX_WIDTH"/>
+    <port name="p11" type="out" size="PIX_WIDTH"/>
+    <port name="p12" type="out" size="PIX_WIDTH"/>
+    <port name="p20" type="out" size="PIX_WIDTH"/>
+    <port name="p21" type="out" size="PIX_WIDTH"/>
+    <port name="p22" type="out" size="PIX_WIDTH"/>
+    <port name="enable_i" type="in" size="1"/>
+    <port name="widthimg_i" type="in" size="16"/>
+    <port name="matrix_dv" type="out" size="1"/>
+    <port name="value_data" type="in" size="OUTVALUE_WIDTH"/>
+    <port name="value_dv" type="in" size="1"/>
+  </ports>
+</component>

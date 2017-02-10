@@ -27,9 +27,15 @@ entity matrix_extractor_3_3 is
 		out_dv : out std_logic;
 		
 		------------------------ matrix out ---------------------
-		p00, p01, p02 : out std_logic_vector((PIX_WIDTH-1) downto 0);
-		p10, p11, p12 : out std_logic_vector((PIX_WIDTH-1) downto 0);
-		p20, p21, p22 : out std_logic_vector((PIX_WIDTH-1) downto 0);
+		p00 : out std_logic_vector((PIX_WIDTH-1) downto 0);
+		p01 : out std_logic_vector((PIX_WIDTH-1) downto 0);
+		p02 : out std_logic_vector((PIX_WIDTH-1) downto 0);
+		p10 : out std_logic_vector((PIX_WIDTH-1) downto 0);
+		p11 : out std_logic_vector((PIX_WIDTH-1) downto 0);
+		p12 : out std_logic_vector((PIX_WIDTH-1) downto 0);
+		p20 : out std_logic_vector((PIX_WIDTH-1) downto 0);
+		p21 : out std_logic_vector((PIX_WIDTH-1) downto 0);
+		p22 : out std_logic_vector((PIX_WIDTH-1) downto 0);
 		matrix_dv : out std_logic;
 		
 		---------------------- computed value -------------------
