@@ -8,6 +8,7 @@
 #include <QToolBar>
 #include <QStatusBar>
 #include <QMessageBox>
+#include <QFileDialog>
 
 #include "lib_parser/lib.h"
 
@@ -17,6 +18,7 @@
 BlockEditorWindow::BlockEditorWindow(QWidget *parent, ModelBlock *block)
     : QMainWindow(parent)
 {
+    setWindowTitle(tr("gpblock (viewer only)"));
     setWindowIcon(QIcon(":/img/img/gpstudio_block.ico"));
 
     _filesModel = new QStandardItemModel();
@@ -43,6 +45,27 @@ void BlockEditorWindow::showImplementationsFiles(const QString &driver)
         BlockEditorWindow *blockEditor = new BlockEditorWindow(NULL, block->modelBlock());
         blockEditor->show();
     }
+}
+
+void BlockEditorWindow::openBlock(const QString blockFileName)
+{
+    ModelBlock *block = ModelBlock::readFromFile(blockFileName);
+    if(!block)
+        QMessageBox::critical(this, tr("Can not open IP file"), tr("This IP file block does not exist or can not be opened"));
+
+    setBlock(block);
+}
+
+void BlockEditorWindow::openBlock()
+{
+    QString fileName;
+    if(fileName.isEmpty())
+    {
+        fileName = QFileDialog::getOpenFileName(this, tr("Open block IP"), "", tr("All block type (*.io *.proc);;Process block (*.proc);;IO block (*.io))"));
+        if(fileName.isEmpty())
+            return;
+    }
+    openBlock(fileName);
 }
 
 void BlockEditorWindow::closeEvent(QCloseEvent *event)
@@ -81,6 +104,7 @@ void BlockEditorWindow::openFile(const QModelIndex &indexFile)
             _tabFiles->addTab(codeEditor, file->name());
             _tabFiles->setCurrentIndex(_tabFiles->count()-1);
             codeEditor->loadFileCode(_path + "/" + file->path());
+            qDebug()<<_path + "/" + file->path();
         }
     }
 }
@@ -132,35 +156,40 @@ void BlockEditorWindow::createToolBarAndMenu()
     addToolBar(_mainToolBar);
 
     // ============= File =============
-    QMenu *nodeMenu = menuBar()->addMenu("&Node");
+    QMenu *blockMenu = menuBar()->addMenu(tr("&Block"));
 
-    QAction *openDocAction = new QAction("&Open block",this);
+    QAction *openDocAction = new QAction(tr("&Open block"),this);
     openDocAction->setIcon(QIcon(":/icons/img/open.png"));
     openDocAction->setShortcut(QKeySequence::Open);
+    connect(openDocAction, SIGNAL(triggered()), this, SLOT(openBlock()));
     _mainToolBar->addAction(openDocAction);
-    nodeMenu->addAction(openDocAction);
+    blockMenu->addAction(openDocAction);
 
-    QAction *connectAction = new QAction("&Save block",this);
+    /*QAction *connectAction = new QAction(tr("&Save block"),this);
     connectAction->setIcon(QIcon(":/icons/img/save.png"));
     openDocAction->setShortcut(QKeySequence::Save);
     _mainToolBar->addAction(connectAction);
-    nodeMenu->addAction(connectAction);
+    blockMenu->addAction(connectAction);*/
 
-    nodeMenu->addSeparator();
-    QAction *exit = new QAction("E&xit",this);
+    blockMenu->addSeparator();
+    QAction *exit = new QAction(tr("E&xit"),this);
     exit->setIcon(QIcon(":/icons/img/exit.png"));
     exit->setShortcut(QKeySequence::Quit);
-    nodeMenu->addAction(exit);
+    blockMenu->addAction(exit);
     connect(exit, SIGNAL(triggered()), this, SLOT(close()));
 
     // ============= Help =============
-    QMenu *helpMenu = menuBar()->addMenu("&Help");
+    QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
 
-    QAction *aboutAction = new QAction("&About", this);
+    QAction *aboutAction = new QAction(tr("&About"), this);
+    aboutAction->setIcon(QIcon(":/img/img/gpstudio_block.ico"));
+    aboutAction->setStatusTip(tr("Shows informations about block editor"));
     connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(about()));
     helpMenu->addAction(aboutAction);
 
-    QAction *aboutQtAction = new QAction("About &Qt", this);
+    QAction *aboutQtAction = new QAction(tr("About &Qt"), this);
+    aboutQtAction->setIcon(QIcon(":/icons/img/qt.png"));
+    aboutQtAction->setStatusTip(tr("About Qt version"));
     connect(aboutQtAction, SIGNAL(triggered(bool)), this, SLOT(aboutQt()));
     helpMenu->addAction(aboutQtAction);
 
@@ -169,11 +198,11 @@ void BlockEditorWindow::createToolBarAndMenu()
 
 void BlockEditorWindow::setBlock(ModelBlock *block)
 {
+    _block = block;
     if(!block)
         return;
-    _block = block;
 
-    setWindowTitle(QString("gpblock | %1").arg(_block->driver()));
+    setWindowTitle(QString(tr("gpblock (viewer only) | %1")).arg(_block->driver()));
 
     QStandardItem *rootBlockItem = new QStandardItem(_block->driver());
     rootBlockItem->setEditable(false);
@@ -189,9 +218,9 @@ void BlockEditorWindow::setBlock(ModelBlock *block)
 
     _filesTreeView->expandAll();
 
-    BlockLib *process = Lib::getLib().process(_block->driver());
-    if(process)
-        _path = process->path();
+    BlockLib *blockLib = Lib::getLib().blockLib(_block->driver());
+    if(blockLib)
+        _path = blockLib->path();
     else
     {
         BlockLib *io = Lib::getLib().io(_block->driver());

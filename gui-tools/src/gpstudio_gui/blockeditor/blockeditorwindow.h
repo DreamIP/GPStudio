@@ -39,7 +39,11 @@ public:
 
     static void showImplementationsFiles(const QString &driver);
 
+    void openBlock(const QString blockFileName);
+
 public slots:
+    void openBlock();
+
     void about();
     void aboutQt();
 
