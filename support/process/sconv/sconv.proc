@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process name="sconv" categ="descriptor" pi_size_addr_rel="4" desc="Image convolution block">
+<process name="sconv" categ="filter" pi_size_addr_rel="4" desc="Static 3x3 Image convolution block">
   <parts>
     <part name="main">
       <svg width="150" height="100">
         <rect width="150" height="100" x="0" y="0" fill="lightgray"/>
-        <text x="50" y="50">Conv</text>
+        <text x="50" y="50">sConv</text>
       </svg>
     </part>
   </parts>

@@ -4,7 +4,7 @@
 --|| Author	: 	Kamel Eddine ABDELOUAHAB - PhD Student              ||--
 --|| Institution :	Institut Pascal - DREAM team                    ||--                                          
 --||                Université Blaise Pascal - Clermont Ferrand     ||--                                         
---|| Contact:	abdelouahab.kamel.eddine (at) gmail.com             ||--                                                  
+--|| Contact:	ke.abdelouahab(at) gmail.com                        ||--                                                  
 --||================================================================||--
 
 library IEEE;
@@ -12,7 +12,7 @@ use IEEE.STD_LOGIC_1164.all;
 use IEEE.NUMERIC_STD.all;
 
 
-entity conv is
+entity sconv is
 	generic (
 		LINE_WIDTH_MAX 	: integer	:=	320;
 		IN_SIZE 		: integer	:=	8;
@@ -40,9 +40,9 @@ entity conv is
 		datawr_i 	: in std_logic_vector(31 downto 0);
 		datard_o 	: out std_logic_vector(31 downto 0)
 	);
-end conv;
+end sconv;
 
-architecture rtl of conv is
+architecture rtl of sconv is
 
 component conv_slave
 	port (
