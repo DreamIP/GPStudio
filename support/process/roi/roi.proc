@@ -2,9 +2,9 @@
 <process name="roi" categ="segmentation" master_count="0" pi_size_addr_rel="2" desc="Region of interest extractor">
   <parts>
     <part name="main">
-      <svg width="150" height="100">
-        <rect width="150" height="100" x="0" y="0" fill="gray"/>
-        <rect width="45" height="30" x="35" y="30" fill="lightgray" stroke="red" stroke-width="2"/>
+      <svg width="127" height="127">
+        <rect width="127" height="127" x="0" y="0" style="fill:#a1a1a1;stroke:none"/>
+        <rect width="60" height="40" x="25" y="25" fill="white" stroke="red" stroke-width="2"/>
       </svg>
     </part>
   </parts>
