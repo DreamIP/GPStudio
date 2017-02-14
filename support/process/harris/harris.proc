@@ -2,10 +2,60 @@
 <process name="harris" categ="descriptor" pi_size_addr_rel="4" desc="Image convolution block">
   <parts>
     <part name="main">
-      <svg width="160" height="110">
-        <rect width="160" height="110" x="0" y="0" fill="lightgray"/>
-        <text x="50" y="50">Harris</text>
-      </svg>
+      <svg
+		   width="127px"
+		   height="127px"
+		   style="background-color: rgb(255, 255, 255);"
+		   id="svg14">
+		  <defs
+			 id="defs2" />
+		  <g
+			 id="g39">
+			<g
+			   id="g12"
+			   transform="translate(0.5,0.5)">
+			  <path
+				 id="path4"
+				 pointer-events="none"
+				 transform="rotate(-90,60.5,60)"
+				 stroke-miterlimit="10"
+				 stroke="#000000"
+				 fill="#000000"
+				 d="M 21 35 L 100 60 L 21 85 Z" />
+			  <rect
+				 id="rect6"
+				 pointer-events="none"
+				 stroke-width="2"
+				 stroke="#ff0000"
+				 fill="#ff0000"
+				 height="5"
+				 width="5"
+				 y="97"
+				 x="33" />
+			  <rect
+				 id="rect8"
+				 pointer-events="none"
+				 stroke-width="2"
+				 stroke="#ff0000"
+				 fill="#ff0000"
+				 height="5"
+				 width="5"
+				 y="97"
+				 x="82" />
+			  <rect
+				 id="rect10"
+				 pointer-events="none"
+				 stroke-width="2"
+				 stroke="#ff0000"
+				 fill="#ff0000"
+				 height="5"
+				 width="5"
+				 y="18"
+				 x="58" />
+				<text x="5" y="25" font-size="20">Ha</text>
+			</g>
+		  </g>
+		</svg>
     </part>
   </parts>
   <files>
