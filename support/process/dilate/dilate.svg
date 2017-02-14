@@ -1,77 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   style="background-color: rgb(255, 255, 255);"
-   width="127px"
-   height="127px">
-  <g
-     transform="matrix(1.354354,0,0,1.354354,-20.640355,-21.640354)"
-     id="g3065">
-    <rect
-       x="15.24"
-       y="15.24"
-       width="94.510002"
-       height="94.510002"
-       pointer-events="none"
-       id="rect3067"
-       style="fill:#ffffff;stroke:none" />
-    <g
-       transform="matrix(0.76219512,0,0,0.76219512,56.5,50.5)"
-       id="g3069">
-        <text
-           x="8"
-           y="23"
-           font-size="22px"
-           id="text3075"
-           style="font-size:22px;text-anchor:middle;fill:#fcfcfc;font-family:Helvetica">E</text>
+<svg style="background-color: rgb(255, 255, 255);" width="127px" height="127px" id="svg3061" version="0.48.4 r9939" docname="dilate.svg">
+        <g transform="matrix(1.354354,0,0,1.354354,-20.640355,-21.640354)" id="g3065">
+        <rect x="15.24" y="15.24" width="94.510002" height="94.510002" pointer-events="none" id="rect3067" style="fill:#ffffff;stroke:none"/>
+        <g transform="matrix(0.76219512,0,0,0.76219512,56.5,50.5)" id="g3069">
+            <text x="8" y="23" font-size="22px" id="text3075" style="font-size:22px;text-anchor:middle;fill:#fcfcfc;font-family:Helvetica">E</text>
+        </g>
+        <path d="m 16.77,16.77 q 45.73,45.73 91.46,0 -45.73,45.73 0,91.46 -45.73,-45.73 -91.46,0 45.73,-45.73 0,-91.46" stroke-miterlimit="10" pointer-events="none" id="path3077" connector-curvature="0" style="fill:#3d3d3d;stroke:#36393d;stroke-miterlimit:10"/>
+        <path d="m 70.48,20.17 5.39,5.39 -6.7,6.7 5.39,5.39 -24.26,8.08 8.09,-24.25 5.39,5.39 z" stroke-miterlimit="10" transform="matrix(-0.70710678,0.70710678,-0.70710678,-0.70710678,129.94731,15.034061)" pointer-events="none" id="path3079" connector-curvature="0" style="fill:#fff2cc;stroke:#d6b656;stroke-miterlimit:10"/>
+        <path d="m 43.04,47.61 5.39,5.39 -6.7,6.7 5.39,5.39 -24.25,8.08 8.08,-24.25 5.39,5.39 z" stroke-miterlimit="10" transform="matrix(0.70710678,-0.70710678,-0.70710678,-0.70710678,53.825939,129.94731)" pointer-events="none" id="path3081" connector-curvature="0" style="fill:#fff2cc;stroke:#d6b656;stroke-miterlimit:10"/>
+        <path d="m 71.24,76.57 5.39,5.39 -6.7,6.7 5.39,5.39 -24.25,8.08 8.08,-24.25 5.39,5.39 z" stroke-miterlimit="10" transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,-45.882607,70.889589)" pointer-events="none" id="path3083" connector-curvature="0" style="fill:#fff2cc;stroke:#d6b656;stroke-miterlimit:10"/>
+        <path d="m 99.44,48.37 5.39,5.39 -6.7,6.7 5.39,5.39 -24.25,8.08 8.08,-24.25 5.39,5.39 z" stroke-miterlimit="10" transform="matrix(-0.70710678,0.70710678,0.70710678,0.70710678,110.77041,-45.882607)" pointer-events="none" id="path3085" connector-curvature="0" style="fill:#fff2cc;stroke:#d6b656;stroke-miterlimit:10"/>
+        <g transform="matrix(0.76219512,0,0,0.76219512,55.5,50.5)" id="g3087">
+			<text x="8" y="23" font-size="22px" id="text3093" style="font-size:22px;text-anchor:middle;fill:#fcfcfc;font-family:Helvetica">D</text>
+        </g>
     </g>
-    <path
-       d="m 16.77,16.77 q 45.73,45.73 91.46,0 -45.73,45.73 0,91.46 -45.73,-45.73 -91.46,0 45.73,-45.73 0,-91.46"
-       stroke-miterlimit="10"
-       pointer-events="none"
-       id="path3077"
-       inkscape:connector-curvature="0"
-       style="fill:#3d3d3d;stroke:#36393d;stroke-miterlimit:10" />
-    <path
-       d="m 70.48,20.17 5.39,5.39 -6.7,6.7 5.39,5.39 -24.26,8.08 8.09,-24.25 5.39,5.39 z"
-       stroke-miterlimit="10"
-       transform="matrix(-0.70710678,0.70710678,-0.70710678,-0.70710678,129.94731,15.034061)"
-       pointer-events="none"
-       id="path3079"
-       inkscape:connector-curvature="0"
-       style="fill:#fff2cc;stroke:#d6b656;stroke-miterlimit:10" />
-    <path
-       d="m 43.04,47.61 5.39,5.39 -6.7,6.7 5.39,5.39 -24.25,8.08 8.08,-24.25 5.39,5.39 z"
-       stroke-miterlimit="10"
-       transform="matrix(0.70710678,-0.70710678,-0.70710678,-0.70710678,53.825939,129.94731)"
-       pointer-events="none"
-       id="path3081"
-       inkscape:connector-curvature="0"
-       style="fill:#fff2cc;stroke:#d6b656;stroke-miterlimit:10" />
-    <path
-       d="m 71.24,76.57 5.39,5.39 -6.7,6.7 5.39,5.39 -24.25,8.08 8.08,-24.25 5.39,5.39 z"
-       stroke-miterlimit="10"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,-45.882607,70.889589)"
-       pointer-events="none"
-       id="path3083"
-       inkscape:connector-curvature="0"
-       style="fill:#fff2cc;stroke:#d6b656;stroke-miterlimit:10" />
-    <path
-       d="m 99.44,48.37 5.39,5.39 -6.7,6.7 5.39,5.39 -24.25,8.08 8.08,-24.25 5.39,5.39 z"
-       stroke-miterlimit="10"
-       transform="matrix(-0.70710678,0.70710678,0.70710678,0.70710678,110.77041,-45.882607)"
-       pointer-events="none"
-       id="path3085"
-       inkscape:connector-curvature="0"
-       style="fill:#fff2cc;stroke:#d6b656;stroke-miterlimit:10" />
-    <g
-       transform="matrix(0.76219512,0,0,0.76219512,55.5,50.5)"
-       id="g3087">
-        <text
-           x="8"
-           y="23"
-           font-size="22px"
-           id="text3093"
-           style="font-size:22px;text-anchor:middle;fill:#fcfcfc;font-family:Helvetica">D</text>
-    </g>
-  </g>
 </svg>
