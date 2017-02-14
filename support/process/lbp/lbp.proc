@@ -2,8 +2,8 @@
 <process name="lbp" categ="descriptor" pi_size_addr_rel="2" desc="Software reconfigurable histogram core">
   <parts>
     <part name="main">
-      <svg width="160" height="110">
-        <rect width="160" height="110" x="0" y="0" fill="lightgray"/>
+      <svg width="127" height="127">
+        <rect width="127" height="127" x="0" y="0" fill="lightgray"/>
         <text x="50" y="50">LBP</text>
       </svg>
     </part>
