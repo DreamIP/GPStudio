@@ -2,11 +2,11 @@
 <process name="negate" categ="" master_count="0" pi_size_addr_rel="2" desc="Negation process from image flow">
   <parts>
     <part name="main">
-      <svg width="128px" height="128px">
+      <svg width="127px" height="127px">
         <g transform="matrix(1.0666667,0,0,1.0666667,-3.2,-3.2)" id="g3280">
           <rect x="3" y="3" width="120" height="120" pointer-events="none" id="rect3282" style="fill:#ffffff;stroke:none"/>
           <rect x="3" y="3" width="60" height="120" pointer-events="none" id="rect3284" style="fill:#ffffff;stroke:none"/>
-          <rect x="63" y="3" width="60" height="120" pointer-events="none" id="rect3286" style="fill:#050505;stroke:none"/>
+          <rect x="63" y="3" width="59" height="119" pointer-events="none" id="rect3286" style="fill:#050505;stroke:none"/>
           <path d="m 13,63 50,0" stroke-miterlimit="10" transform="matrix(-1,0,0,-1,76,126)" pointer-events="none" id="path3288" connector-curvature="0" style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10"/>
           <path d="m 63,63 44.76,0" stroke-miterlimit="10" pointer-events="none" id="path3290" connector-curvature="0" style="fill:none;stroke:#ffffff;stroke-width:2;stroke-miterlimit:10"/>
           <path d="m 113.76,63 -8,4 2,-4 -2,-4 z" stroke-miterlimit="10" pointer-events="none" id="path3292" connector-curvature="0" style="fill:#ffffff;stroke:#ffffff;stroke-width:2;stroke-miterlimit:10"/>
