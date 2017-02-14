@@ -7,8 +7,10 @@
 		<rect x="63.5" y="0" width="63.5" height="127" fill="#000000" stroke="none" pointer-events="none"/>	
 		<path d="M 76 49 C 76 54 108 54 108 49" fill="none" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"/>
 		<path d="M 76 49 C 76 42.33 108 42.33 108 49 L 108 66 C 108 72.67 76 72.67 76 66 Z" fill="none" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"/>		
-		<path d="M 20 49 C 20 42.33 52 42.33 52 49 L 52 66 C 52 72.67 20 72.67 20 66 Z" fill="#ffb366" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"/>
-		<path d="M 20 49 C 20 54 52 54 52 49" fill="none" stroke="#ffffff" stroke-miterlimit="10" pointer-events="none"/>
+		<path d="M 20 49 C 20 42.33 52 42.33 52 49 L 52 66 C 52 72.67 20 72.67 20 66 Z" fill="#ffb366" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
+		<path d="M 20 49 C 20 54 52 54 52 49" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/>
+		<path d="M 30 39 Q 61 10 85.18 35.18" fill="none" stroke="#FF0000" stroke-width="1" stroke-miterlimit="10" pointer-events="none"/>
+		<path d="M 89.42 39.42 L 80.93 36.59 L 85.18 35.18 L 86.59 30.93 Z" fill="#FF0000" stroke="#FF0000" stroke-width="2" stroke-miterlimit="10" pointer-events="none"/>
 		<text x="5" y="20" font-size="20">La</text>
 	</g>
 </svg>
