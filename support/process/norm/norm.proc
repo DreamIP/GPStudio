@@ -2,8 +2,8 @@
 <process name="norm" categ="histogram" pi_size_addr_rel="1" desc="Histogram Normalisation">
   <parts>
     <part name="main">
-      <svg width="160" height="110">
-        <rect width="160" height="110" x="0" y="0" fill="lightgray"/>
+      <svg width="127" height="127">
+        <rect width="127" height="127" x="0" y="0" fill="lightgray"/>
         <text x="50" y="50">norm</text>
       </svg>
     </part>
