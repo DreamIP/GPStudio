@@ -934,6 +934,20 @@ class Component
     {
         return 'component';
     }
+    
+    /**
+     * @brief Returns the type of the block as string, redefined by children.
+     * @return string type of the block.
+     */
+    public function componentsList()
+    {
+        $componentsList = array($this);
+        foreach ($this->components as $component)
+        {
+            $componentsList = array_merge($componentsList, $component->componentsList());
+        }
+        return $componentsList;
+    }
 
     /**
      * @brief permits to output this instance

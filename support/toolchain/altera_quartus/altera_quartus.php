@@ -71,11 +71,7 @@ class Altera_quartus_toolchain extends HDL_toolchain
         $this->componentsIP = array();
         foreach ($node->blocks as $block)
         {
-            $this->componentsIP[] = $block;
-            foreach ($block->components as $component)
-            {
-                $this->componentsIP[] = $component;
-            }
+            $this->componentsIP = array_merge($this->componentsIP, $block->componentsList());
         }
 
         $fileList = array();
