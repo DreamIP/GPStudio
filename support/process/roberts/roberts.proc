@@ -33,8 +33,6 @@
 	<file name="roberts.pdf" type="pdf" group="doc" path="doc/roberts.pdf"/>
     <file name="roberts_process.vhd" type="vhdl" group="hdl" path="hdl/roberts_process.vhd"/>
     <file name="roberts_slave.vhd" type="vhdl" group="hdl" path="hdl/roberts_slave.vhd"/>
-    <file name="matrix_extractor.vhd" type="vhdl" group="hdl" path="hwlib:matrix_extractor/hdl/matrix_extractor.vhd"/>
-    <file name="gp_fifo.vhd" type="vhdl" group="hdl" path="hwlib:gp_fifo/hdl/gp_fifo.vhd"/>
   </files>
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>
@@ -65,4 +63,7 @@
   <properties>
     <property name="enable" type="bool" value="1"/>
   </properties>
+  <components>
+    <component driver="matrix_extractor"/>
+  </components>
 </process>

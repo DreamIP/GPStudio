@@ -71,8 +71,6 @@ gpproc setdraw -f erode.svg
 gpproc addfile -p hdl/erode.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/erode_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/erode_slave.vhd -t vhdl -g hdl
-gpproc addfile -p "hwlib:matrix_extractor/hdl/matrix_extractor.vhd" -t vhdl -g hdl
-gpproc addfile -p "hwlib:gp_fifo/hdl/gp_fifo.vhd" -t vhdl -g hdl
 
 gpproc addfile -p doc/erode.tex -t tex -g doc
 gpproc addfile -p doc/erode.pdf -t pdf -g doc

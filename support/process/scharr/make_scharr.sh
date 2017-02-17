@@ -42,8 +42,6 @@ gpproc setdraw -f scharr.svg
 gpproc addfile -p hdl/scharr.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/scharr_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/scharr_slave.vhd -t vhdl -g hdl
-gpproc addfile -p "hwlib:matrix_extractor/hdl/matrix_extractor.vhd" -t vhdl -g hdl
-gpproc addfile -p "hwlib:gp_fifo/hdl/gp_fifo.vhd" -t vhdl -g hdl
 
 gpproc addfile -p doc/scharr.tex -t tex -g doc
 gpproc addfile -p doc/scharr.pdf -t pdf -g doc

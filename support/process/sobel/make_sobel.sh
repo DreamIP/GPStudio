@@ -42,8 +42,6 @@ gpproc setdraw -f sobel.svg
 gpproc addfile -p hdl/sobel.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/sobel_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/sobel_slave.vhd -t vhdl -g hdl
-gpproc addfile -p "hwlib:matrix_extractor/hdl/matrix_extractor.vhd" -t vhdl -g hdl
-gpproc addfile -p "hwlib:gp_fifo/hdl/gp_fifo.vhd" -t vhdl -g hdl
 
 gpproc addfile -p doc/sobel.tex -t tex -g doc
 gpproc addfile -p doc/sobel.pdf -t pdf -g doc

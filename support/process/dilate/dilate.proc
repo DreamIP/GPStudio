@@ -31,8 +31,6 @@
     <file name="dilate.vhd" type="vhdl" group="hdl" path="hdl/dilate.vhd"/>
     <file name="dilate_process.vhd" type="vhdl" group="hdl" path="hdl/dilate_process.vhd"/>
     <file name="dilate_slave.vhd" type="vhdl" group="hdl" path="hdl/dilate_slave.vhd"/>
-    <file name="matrix_extractor.vhd" type="vhdl" group="hdl" path="hwlib:matrix_extractor/hdl/matrix_extractor.vhd"/>
-    <file name="gp_fifo.vhd" type="vhdl" group="hdl" path="hwlib:gp_fifo/hdl/gp_fifo.vhd"/>
     <file name="dilate.tex" type="tex" group="doc" path="doc/dilate.tex"/>
     <file name="dilate.pdf" type="pdf" group="doc" path="doc/dilate.pdf"/>
   </files>
@@ -123,4 +121,7 @@
       </properties>
     </property>
   </properties>
+  <components>
+    <component driver="matrix_extractor"/>
+  </components>
 </process>

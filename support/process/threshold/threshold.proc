@@ -41,6 +41,6 @@
     <param name="threshold_reg" regaddr="0" propertymap="threshold.value"/>
   </params>
   <properties>
-    <property name="threshold" type="sint" value="0" min="0" max="255"/>
+    <property name="threshold" type="sint" value="127" min="0" max="255"/>
   </properties>
 </process>

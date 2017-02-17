@@ -18,13 +18,14 @@
     <file name="lbp.vhd" type="vhdl" group="hdl" path="hdl/lbp.vhd"/>
     <file name="lbp_slave.vhd" type="vhdl" group="hdl" path="hdl/lbp_slave.vhd"/>
     <file name="lbp_process.vhd" type="vhdl" group="hdl" path="hdl/lbp_process.vhd"/>
-    <file name="matrix_extractor.vhd" type="vhdl" group="hdl" path="hwlib:matrix_extractor/hdl/matrix_extractor.vhd"/>
-    <file name="gp_fifo.vhd" type="vhdl" group="hdl" path="hwlib:gp_fifo/hdl/gp_fifo.vhd"/>
     <file name="lbp.proc" type="proc" group="blockdef" path="lbp.proc"/>
   </files>
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>
   </resets>
+  <components>
+    <component driver="matrix_extractor"/>
+  </components>
   <flows>
     <flow name="in" size="8" type="in" desc="Input image to describe"/>
     <flow name="out" size="8" type="out" desc="Descriptor output">
@@ -49,4 +50,7 @@
     <property name="enable" type="bool" desc="Enable or disable process"/>
     <property name="theshold" type="sint" value="0" min="0" max="128" desc="Theshold LBP"/>
   </properties>
+  <components>
+    <component driver="matrix_extractor"/>
+  </components>
 </process>

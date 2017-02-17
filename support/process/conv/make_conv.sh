@@ -104,5 +104,3 @@ gpproc setdraw -f conv.svg
 gpproc addfile -p hdl/conv.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/conv_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/conv_slave.vhd -t vhdl -g hdl
-gpproc addfile -p "hwlib:matrix_extractor/hdl/matrix_extractor.vhd" -t vhdl -g hdl
-gpproc addfile -p "hwlib:gp_fifo/hdl/gp_fifo.vhd" -t vhdl -g hdl

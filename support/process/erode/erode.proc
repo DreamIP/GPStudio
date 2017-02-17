@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process name="erode" categ="morpho" master_count="0" pi_size_addr_rel="4" desc="Erosion process from image flow">
+<process name="erode" categ="morpho" pi_size_addr_rel="4" desc="Erosion process from image flow">
   <parts>
     <part name="main">
       <svg style="background-color: rgb(255, 255, 255);" width="127px" height="127px">
@@ -28,14 +28,15 @@
     <file name="erode.vhd" type="vhdl" group="hdl" path="hdl/erode.vhd"/>
     <file name="erode_process.vhd" type="vhdl" group="hdl" path="hdl/erode_process.vhd"/>
     <file name="erode_slave.vhd" type="vhdl" group="hdl" path="hdl/erode_slave.vhd"/>
-    <file name="matrix_extractor.vhd" type="vhdl" group="hdl" path="hwlib:matrix_extractor/hdl/matrix_extractor.vhd"/>
-    <file name="gp_fifo.vhd" type="vhdl" group="hdl" path="hwlib:gp_fifo/hdl/gp_fifo.vhd"/>
     <file name="erode.tex" type="tex" group="doc" path="doc/erode.tex"/>
     <file name="erode.pdf" type="pdf" group="doc" path="doc/erode.pdf"/>
   </files>
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>
   </resets>
+  <components>
+    <component driver="matrix_extractor"/>
+  </components>
   <flows>
     <flow name="in" size="8" type="in"/>
     <flow name="out" size="8" type="out">

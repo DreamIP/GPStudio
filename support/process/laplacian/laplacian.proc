@@ -33,8 +33,6 @@
 	<file name="laplacian.pdf" type="pdf" group="doc" path="doc/laplacian.pdf"/>
     <file name="laplacian_process.vhd" type="vhdl" group="hdl" path="hdl/laplacian_process.vhd"/>
     <file name="laplacian_slave.vhd" type="vhdl" group="hdl" path="hdl/laplacian_slave.vhd"/>
-    <file name="matrix_extractor.vhd" type="vhdl" group="hdl" path="hwlib:matrix_extractor/hdl/matrix_extractor.vhd"/>
-    <file name="gp_fifo.vhd" type="vhdl" group="hdl" path="hwlib:gp_fifo/hdl/gp_fifo.vhd"/>
   </files>
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>
@@ -141,4 +139,7 @@
       </enums>
     </property>
   </properties>
+  <components>
+    <component driver="matrix_extractor"/>
+  </components>
 </process>

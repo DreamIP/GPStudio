@@ -42,8 +42,6 @@ gpproc setdraw -f roberts.svg
 gpproc addfile -p hdl/roberts.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/roberts_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/roberts_slave.vhd -t vhdl -g hdl
-gpproc addfile -p "hwlib:matrix_extractor/hdl/matrix_extractor.vhd" -t vhdl -g hdl
-gpproc addfile -p "hwlib:gp_fifo/hdl/gp_fifo.vhd" -t vhdl -g hdl
 
 gpproc addfile -p doc/roberts.tex -t tex -g doc
 gpproc addfile -p doc/roberts.pdf -t pdf -g doc

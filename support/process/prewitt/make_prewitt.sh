@@ -42,8 +42,6 @@ gpproc setdraw -f prewitt.svg
 gpproc addfile -p hdl/prewitt.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/prewitt_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/prewitt_slave.vhd -t vhdl -g hdl
-gpproc addfile -p "hwlib:matrix_extractor/hdl/matrix_extractor.vhd" -t vhdl -g hdl
-gpproc addfile -p "hwlib:gp_fifo/hdl/gp_fifo.vhd" -t vhdl -g hdl
 
 gpproc addfile -p doc/prewitt.tex -t tex -g doc
 gpproc addfile -p doc/prewitt.pdf -t pdf -g doc

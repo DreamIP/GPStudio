@@ -42,4 +42,3 @@ gpproc setdraw -f gaussian.svg
 gpproc addfile -p hdl/gaussian.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/gaussian_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/gaussian_slave.vhd -t vhdl -g hdl
-gpproc addfile -p "hwlib:matrix_extractor/hdl/matrix_extractor.vhd" -t vhdl -g hdl
