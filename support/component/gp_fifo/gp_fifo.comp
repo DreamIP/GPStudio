@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component driver="gp_fifo" desc="">
+  <files>
+    <file name="gp_fifo.vhd" type="vhdl" group="hdl" path="hdl/gp_fifo.vhd"/>
+  </files>
+  <params>
+    <param name="DATA_WIDTH" type="positive" hard="1"/>
+    <param name="FIFO_DEPTH" type="positive" hard="1"/>
+  </params>
+  <clocks>
+    <clock name="clk" typical="" domain="clk_proc" direction="in"/>
+  </clocks>
+  <resets>
+    <reset name="reset_n" group="reset_n" direction="in"/>
+  </resets>
+  <ports>
+    <port name="data_wr" type="in" size="1"/>
+    <port name="data_in" type="in" size="DATA_WIDTH"/>
+    <port name="full" type="out" size="1"/>
+    <port name="data_rd" type="in" size="1"/>
+    <port name="data_out" type="out" size="DATA_WIDTH"/>
+  </ports>
+</component>
