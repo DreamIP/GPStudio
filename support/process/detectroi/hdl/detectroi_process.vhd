@@ -152,13 +152,14 @@ begin
 							if x_pos > x_max then
 								x_max <= x_pos;
 							end if;
-							--
+							--							
+							if y_pos > x_max then
+								y_max <= y_pos;
+							end if;		
 							if y_pos < y_min then
 								y_min <= y_pos;
 							end if;
-							if y_pos > x_max then
-								y_max <= y_pos;
-							end if;					
+			
 						end if;
 					end if;
 				else

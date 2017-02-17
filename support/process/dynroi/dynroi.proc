@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process name="dynroi" categ="segmentation" master_count="0" pi_size_addr_rel="2" desc="Dynamic region of interest extractor">
+<process name="dynroi" categ="segmentation" pi_size_addr_rel="2" desc="Dynamic region of interest extractor">
   <parts>
     <part name="main">
-      <svg style="background-color: rgb(255, 255, 255);" width="127px" height="127px">
-        <g transform="matrix(1.1209388,0,0,1.1169861,-7.2300546,-5.2022764)" id="g6">
-          <rect x="6.5" y="5" width="113.5" height="113.5" pointer-events="none" id="rect8" style="fill:#a1a1a1;stroke:none"/>
-          <rect x="45" y="35" width="55" height="46" pointer-events="none" id="rect10" style="fill:#ffffff;stroke:#ff0000;stroke-width:1.84000003"/>
-          <path d="M 6.5,118 40,87" stroke-miterlimit="10" pointer-events="none" id="path12" style="fill:none;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
+      <svg style="background-color: rgb(255, 255, 255);" width="128px" height="128px">
+        <g transform="matrix(1.1209388,0,0,1.1205349,-7.2300546,-7.1234444)" id="g6">
+          <rect x="6.4499998" y="6.4499998" width="114.19" height="114.19" pointer-events="none" id="rect8" style="fill:#a1a1a1;stroke:none"/>
+          <rect x="45.119999" y="35.91" width="55.25" height="46.040001" pointer-events="none" id="rect10" style="fill:#ffffff;stroke:#ff0000;stroke-width:1.84000002999999990;fill-opacity:1;opacity:1"/>
+          <path d="M 7.37,119.71 40.68,86.4" stroke-miterlimit="10" pointer-events="none" id="path12" style="fill:none;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
           <path d="m 44.59,82.49 -2.61,7.82 -1.3,-3.91 -3.91,-1.3 z" stroke-miterlimit="10" pointer-events="none" id="path14" style="fill:#ff0000;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
-          <path d="M 119,118 103.73,87.84" stroke-miterlimit="10" pointer-events="none" id="path16" style="fill:none;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
+          <path d="M 119.66,120.12 103.73,87.84" stroke-miterlimit="10" pointer-events="none" id="path16" style="fill:none;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
           <path d="m 101.29,82.88 6.56,4.98 -4.12,-0.02 -2.49,3.28 z" stroke-miterlimit="10" pointer-events="none" id="path18" style="fill:#ff0000;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
-          <path d="M 6.5,5 39.94,32.33" stroke-miterlimit="10" pointer-events="none" id="path20" style="fill:none;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
+          <path d="M 7.37,8.29 39.94,32.33" stroke-miterlimit="10" pointer-events="none" id="path20" style="fill:none;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
           <path d="m 44.39,35.61 -8.12,-1.41 3.67,-1.87 0.71,-4.06 z" stroke-miterlimit="10" pointer-events="none" id="path22" style="fill:#ff0000;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
-          <path d="M 119,5 104.44,29.42" stroke-miterlimit="10" pointer-events="none" id="path24" style="fill:none;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
+          <path d="M 119.71,7.37 104.44,29.42" stroke-miterlimit="10" pointer-events="none" id="path24" style="fill:none;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
           <path d="m 101.29,33.97 1.17,-8.16 1.98,3.61 4.07,0.59 z" stroke-miterlimit="10" pointer-events="none" id="path26" style="fill:#ff0000;stroke:#ff0000;stroke-width:1.84000003;stroke-miterlimit:10"/>
+          <rect style="fill:#000000;fill-opacity:1" id="rect5375" width="3.2055452" height="3.0251896" x="46.005222" y="57.301376"/>
+          <rect style="fill:#000000;fill-opacity:1" id="rect5375-3" width="3.2055452" height="3.0251896" x="96.235519" y="69.886162"/>
+          <rect style="fill:#000000;fill-opacity:1" id="rect5375-6" width="3.2055452" height="3.0251896" x="92.909004" y="36.790588"/>
+          <rect style="fill:#000000;fill-opacity:1" id="rect5375-7" width="3.2055452" height="3.0251896" x="59.583427" y="57.422382"/>
+          <rect style="fill:#000000;fill-opacity:1" id="rect5375-5" width="3.2055452" height="3.0251896" x="66.962234" y="77.993675"/>
+          <rect style="fill:#000000;fill-opacity:1" id="rect5375-35" width="3.2055452" height="3.0251896" x="72.889465" y="67.889534"/>
+          <rect style="fill:#000000;fill-opacity:1" id="rect5375-62" width="3.2055452" height="3.0251896" x="82.445625" y="56.87785"/>
         </g>
       </svg>
     </part>
@@ -21,7 +28,7 @@
   <infos>
     <info name="author" value="Raphael Bouterige"/>
     <info name="company" value="Institut Pascal"/>
-    <info name="revision" value="1.0"/>
+    <info name="revision" value="1.1"/>
     <info name="releasedate" value="2017-01-03"/>
   </infos>
   <files>
@@ -36,12 +43,19 @@
     <reset name="reset_n" group="reset_n" direction="in"/>
   </resets>
   <flows>
-    <flow name="in" size="8" type="in"/>
-    <flow name="out" size="8" type="out">
+    <flow name="BinImg" size="8" type="in"/>
+    <flow name="Img" size="8" type="in"/>
+    <flow name="roi" size="8" type="out">
       <properties>
         <property name="datatype" type="flowtype" value="image"/>
-        <property name="width" type="int" propertymap="in.width.value"/>
-        <property name="height" type="int" propertymap="in.height.value"/>
+        <property name="width" type="int" propertymap="static_res.value ? w.value : Img.width.value"/>
+        <property name="height" type="int" propertymap="static_res.value ? h.value : Img.height.value"/>
+      </properties>
+    </flow>
+    <flow name="coord" size="8" type="out">
+      <properties>
+        <property name="datatype" type="flowtype" value="features"/>
+        <property name="featuretype" type="featuretype" value="rect"/>
       </properties>
     </flow>
   </flows>
@@ -50,12 +64,25 @@
       <bitfields>
         <bitfield name="enable_bit" bitfield="0" propertymap="enable.value"/>
         <bitfield name="bypass_bit" bitfield="1" propertymap="bypass.value"/>
+        <bitfield name="static_res_bit" bitfield="2" propertymap="staticRes.value"/>
       </bitfields>
     </param>
-    <param name="in_size_reg" regaddr="1">
+    <param name="inImg_size_reg" regaddr="1">
       <bitfields>
-        <bitfield name="in_w_reg" bitfield="11-0" propertymap="in.width.value"/>
-        <bitfield name="in_h_reg" bitfield="27-16" propertymap="in.height.value"/>
+        <bitfield name="in_w_reg" bitfield="11-0" propertymap="Img.width.value"/>
+        <bitfield name="in_h_reg" bitfield="27-16" propertymap="Img.height.value"/>
+      </bitfields>
+    </param>
+    <param name="BinImg_size_reg" regaddr="2">
+      <bitfields>
+        <bitfield name="in_w_reg" bitfield="11-0" propertymap="BinImg.width.value"/>
+        <bitfield name="in_h_reg" bitfield="27-16" propertymap="BinImg.height.value"/>
+      </bitfields>
+    </param>
+    <param name="out_size_reg" regaddr="3">
+      <bitfields>
+        <bitfield name="out_w_reg" bitfield="11-0" propertymap="w.value"/>
+        <bitfield name="out_h_reg" bitfield="27-16" propertymap="h.value"/>
       </bitfields>
     </param>
   </params>
