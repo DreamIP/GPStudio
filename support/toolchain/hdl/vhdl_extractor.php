@@ -162,6 +162,15 @@ class VHDL_extractor
             $component = new IO();
 
         $component->name = $this->name;
+        $component->driver = $this->name;
+        
+        // add file
+        $file = new File();
+        $file->name = basename($this->file);
+        $file->path = $this->file;
+        $file->type="vhdl";
+        $file->group="hdl";
+        $component->addFile($file);
         
         // param extractor
         if (array_key_exists('generic', $this->parts))
@@ -186,6 +195,7 @@ class VHDL_extractor
                 $param->name = $part->name;
                 $param->type = trim($type);
                 $param->value = trim($value);
+                echo $param . "\n";
                 $component->addParam($param);
             }
         }

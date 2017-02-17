@@ -34,18 +34,6 @@ require_once("property.php");
 class Block extends Component
 {
     /**
-     * @brief Specify if the block is defined in the library or not
-     * @var bool $in_lib
-     */
-    public $in_lib;
-
-    /**
-     * @brief Specify the name of the driver for the block
-     * @var string $driver
-     */
-    public $driver;
-
-    /**
      * @brief The absolute adress of the block on BI
      * @var int $addr_abs
      */
