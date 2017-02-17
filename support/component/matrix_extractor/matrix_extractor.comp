@@ -9,6 +9,10 @@
     <param name="PIX_WIDTH" type="integer" hard="1"/>
     <param name="OUTVALUE_WIDTH" type="integer" hard="1"/>
   </params>
+  <files>
+    <file name="matrix_extractor.proc" type="proc" group="blockdef" path="matrix_extractor.comp"/>
+    <file name="matrix_extractor.vhd" type="vhdl" group="hdl" path="hdl/matrix_extractor.vhd"/>
+  </files>
   <clocks>
     <clock name="clk_proc" typical="" domain="clk_proc" direction="in"/>
   </clocks>
@@ -31,4 +35,7 @@
     <port name="value_data" type="in" size="OUTVALUE_WIDTH"/>
     <port name="value_dv" type="in" size="1"/>
   </ports>
+  <components>
+    <component driver="gp_fifo"/>
+  </components>
 </component>
