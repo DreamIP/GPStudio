@@ -42,7 +42,7 @@ end laplacian_process;
 
 architecture rtl of laplacian_process is
 
-component matrix_extractor_3_3
+component matrix_extractor
 	generic (
 		LINE_WIDTH_MAX : integer;
 		PIX_WIDTH : integer;
@@ -103,7 +103,7 @@ signal enable_s : std_logic;
 
 begin
 
-	matrix_extractor : matrix_extractor_3_3
+	matrix_extractor_inst : matrix_extractor
     generic map (
     	LINE_WIDTH_MAX		=> LINE_WIDTH_MAX,
     	PIX_WIDTH			=> IN_SIZE,

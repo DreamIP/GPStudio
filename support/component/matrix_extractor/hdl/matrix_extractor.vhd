@@ -6,7 +6,7 @@ library std;
 library altera_mf;
 use altera_mf.altera_mf_components.all;
 
-entity matrix_extractor_3_3 is
+entity matrix_extractor is
 	generic (
 		LINE_WIDTH_MAX : integer;
 		PIX_WIDTH : integer;
@@ -46,9 +46,9 @@ entity matrix_extractor_3_3 is
 		enable_i : in std_logic;
 		widthimg_i : in std_logic_vector(15 downto 0)
 	);
-end matrix_extractor_3_3;
+end matrix_extractor;
 
-architecture rtl of matrix_extractor_3_3 is
+architecture rtl of matrix_extractor is
 
 constant FIFO_LENGHT : integer := LINE_WIDTH_MAX;
 constant FIFO_LENGHT_WIDTH : integer := integer(ceil(log2(real(FIFO_LENGHT))));

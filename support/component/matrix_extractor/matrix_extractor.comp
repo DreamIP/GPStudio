@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component name="matrix_extractor_3_3" desc="">
+<component name="matrix_extractor" desc="">
   <flows>
     <flow name="in" size="PIX_WIDTH" type="in"/>
     <flow name="out" size="PIX_WIDTH" type="out"/>
