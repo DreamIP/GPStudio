@@ -38,6 +38,8 @@ class Altera_quartus_toolchain extends HDL_toolchain
     private $nopartitions;
 
     private $noqsf;
+    
+    private $componentsIP;
 
     public function configure_project($node)
     {
@@ -58,23 +60,29 @@ class Altera_quartus_toolchain extends HDL_toolchain
     {
         parent::generate_project($node, $path);
         $this->generate_project_file($node, $path);
+        $this->copy_ip_files($node, $path);
         $this->generate_tcl($node, $path);
         $this->generate_makefile($node, $path);
     }
 
-    protected function generate_project_file($node, $path)
+    protected function copy_ip_files($node, $path)
     {
-        $content = '';
-
-        $content.="QUARTUS_VERSION = \"13.1\"" . "\n";
-        $content.="PROJECT_REVISION = \"$node->name\"" . "\n";
-
-        $fileList = array();
-
-        // copy all files for block declared in library
+        // createIpList
+        $this->componentsIP = array();
         foreach ($node->blocks as $block)
         {
-            foreach ($block->files as $file)
+            $this->componentsIP[] = $block;
+            foreach ($block->components as $component)
+            {
+                $this->componentsIP[] = $component;
+            }
+        }
+
+        $fileList = array();
+        // copy all files for block declared in library
+        foreach ($this->componentsIP as $component)
+        {
+            foreach ($component->files as $file)
             {
                 if ($file->generated === true)
                     continue;
@@ -87,8 +95,8 @@ class Altera_quartus_toolchain extends HDL_toolchain
                 }
                 else
                 {
-                    $filepath = $block->path . $file->path;
-                    $subpath = 'IP' . DIRECTORY_SEPARATOR . $block->driver;
+                    $filepath = $component->path . $file->path;
+                    $subpath = 'IP' . DIRECTORY_SEPARATOR . $component->driver;
                     if (dirname($file->path) != ".")
                         $subpath .= DIRECTORY_SEPARATOR . dirname($file->path);
                 }
@@ -129,7 +137,7 @@ class Altera_quartus_toolchain extends HDL_toolchain
                         {
                             if (!copy($filepath, $path . DIRECTORY_SEPARATOR . $subpath . DIRECTORY_SEPARATOR . $file->name))
                             {
-                                warning("failed to copy $file->name", 5, $block->name);
+                                warning("failed to copy $file->name", 5, $component->name);
                             }
                         }
                     }
@@ -146,6 +154,14 @@ class Altera_quartus_toolchain extends HDL_toolchain
                 $file->path = $subpath . DIRECTORY_SEPARATOR . $file->name;
             }
         }
+    }
+
+    protected function generate_project_file($node, $path)
+    {
+        $content = '';
+
+        $content.="QUARTUS_VERSION = \"13.1\"" . "\n";
+        $content.="PROJECT_REVISION = \"$node->name\"" . "\n";
 
         // save file if it's different
         $filename = $path . DIRECTORY_SEPARATOR . "$node->name.qpf";
@@ -169,7 +185,7 @@ class Altera_quartus_toolchain extends HDL_toolchain
         $content = '';
 
         // global board attributes
-        $content.="# =============== global assignement ===============\n";
+        $content.="# ========================= global assignement =========================\n";
         foreach ($node->board->toolchain->attributes as $attribute)
         {
             $value = $attribute->value;
@@ -177,7 +193,10 @@ class Altera_quartus_toolchain extends HDL_toolchain
                 $value = '"' . $value . '"';
             $content.='set_' . $attribute->type . '_assignment -name ' . $attribute->name . ' ' . $value . "\n";
         }
-        $content.="\n# --------- pins ---------\n";
+        $content.="\nset_global_assignment -name REPORT_PARAMETER_SETTINGS OFF\n";
+        $content.="set_global_assignment -name REPORT_SOURCE_ASSIGNMENTS OFF\n";
+        $content.="set_global_assignment -name REPORT_CONNECTIVITY_CHECKS OFF\n";
+        $content.="\n# ------------ pins ------------\n";
         foreach ($node->board->pins as $pin)
         {
             if (!empty($pin->mapto))
@@ -190,7 +209,7 @@ class Altera_quartus_toolchain extends HDL_toolchain
                 $content.='set_' . $attribute->type . '_assignment -name ' . $attribute->name . ' ' . $value . ' -to ' . $pin->name . "\n";
             }
         }
-        $content.="\n# --------- files ---------\n";
+        $content.="\n# ----------- files ------------\n";
         $content.='set_global_assignment -name VHDL_FILE top.vhd' . "\n";
 
         if ($this->nopartitions == 0)
@@ -202,19 +221,26 @@ class Altera_quartus_toolchain extends HDL_toolchain
 
         // blocks assignement
         $fileList = array();
-        $content.="\n\n# ================================== blocks assignement ==================================\n";
-        foreach ($node->blocks as $block)
+        $componentUsed = array();
+        $content.="\n\n# ========================= blocks assignements ========================\n";
+        foreach ($this->componentsIP as $component)
         {
-            $content.="\n# ********************************** $block->name ($block->driver)**********************************";
+            if($component->type()=="component")
+            {
+                if(in_array($component->driver, $componentUsed))
+                    continue;
+                $componentUsed[] = $component->driver;
+            }
+            $content.="\n# " . str_pad(" $component->name ($component->driver) ", 70, '*', STR_PAD_BOTH);
 
             // pins
-            if (!empty($block->pins))
+            if (!empty($component->pins))
             {
-                $content.="\n# --------- pins ---------\n";
-                foreach ($block->pins as $pin)
+                $content.="\n# ------------ pins ------------\n";
+                foreach ($component->pins as $pin)
                 {
                     if (!empty($pin->mapto))
-                        $content.='set_location_assignment ' . $pin->name . ' -to ' . $block->name . '_' . $pin->mapto . "\n";
+                        $content.='set_location_assignment ' . $pin->name . ' -to ' . $component->name . '_' . $pin->mapto . "\n";
                     foreach ($pin->attributes as $attribute)
                     {
                         $value = $attribute->value;
@@ -226,8 +252,8 @@ class Altera_quartus_toolchain extends HDL_toolchain
             }
 
             // files
-            $content.="\n# --------- files ---------\n";
-            foreach ($block->files as $file)
+            $fileEmpty = true;
+            foreach ($component->files as $file)
             {
                 if ($file->group == "hdl" and $file->type != "directory")
                 {
@@ -260,16 +286,21 @@ class Altera_quartus_toolchain extends HDL_toolchain
                     {
                         $fileList[] = $file_path;
 
+                        if($fileEmpty)
+                        {
+                            $content.="\n# ----------- files ------------\n";
+                            $fileEmpty = false;
+                        }
                         $content.="set_global_assignment -name $type " . $file_path . "\n";
                     }
                 }
             }
 
             // attributes
-            if (!empty($block->attributes))
+            if (!empty($component->attributes))
             {
                 $content.="\n# --------- attributes ---------\n";
-                foreach ($block->attributes as $attribute)
+                foreach ($component->attributes as $attribute)
                 {
                     $value = $attribute->value;
                     if (strpos($attribute->type, "location") === false)
@@ -284,17 +315,17 @@ class Altera_quartus_toolchain extends HDL_toolchain
             }
 
             // partitions
-            if ($this->nopartitions == 0)
+            if ($this->nopartitions == 0 && $component->type()!="component")
             {
                 $content.="\n# --------- partitions ---------\n";
-                $driver = str_replace(".proc", "", $block->driver);
-                if ($block->name == $driver)
+                $driver = str_replace(".proc", "", $component->driver);
+                if ($component->name == $driver)
                 {
-                    $instance = $driver . ':' . $block->name . '_inst';
+                    $instance = $driver . ':' . $component->name . '_inst';
                 }
                 else
                 {
-                    $instance = $driver . ':' . $block->name;
+                    $instance = $driver . ':' . $component->name;
                 }
                 $partition_name = substr(str_replace('_', '', $driver), 0, 4) . '_' . substr(md5('top/' . $instance), 0, 4);
                 $content.="set_instance_assignment -name PARTITION_HIERARCHY $partition_name -to \"$instance\" -section_id \"$instance\"" . "\n";
@@ -479,7 +510,6 @@ class Altera_quartus_toolchain extends HDL_toolchain
                 preg_match_all("|(EP4)(SE{0,1})([0-9]+)([F]{0,1})([0-9]+)([A-Z][0-9]).*|", $device, $out, PREG_SET_ORDER);
                 $deviceMember = $out[0][4];
                 $speedgrade = $out[0][5];
-                echo $deviceMember . '   ' . $speedgrade . "\n";
                 break;
             default:
                 warning("family $family does'nt exist in toolchain", 5, 'Altera toolchain');
