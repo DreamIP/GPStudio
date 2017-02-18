@@ -48,7 +48,6 @@ entity dynroi_process is
 	);
 end dynroi_process;
 
-
 architecture rtl of dynroi_process is
 
 constant X_COUNTER_SIZE : integer := 12;
@@ -66,9 +65,6 @@ signal y_min	: unsigned(Y_COUNTER_SIZE-1 downto 0);
 signal y_max	: unsigned(Y_COUNTER_SIZE-1 downto 0);
 
 signal enabled  : std_logic;
-signal static_res_enabled : std_logic;
-
-signal current_image_data_send : std_logic;
 
 --process apply_roi vars
 --img reference coordinates
@@ -81,107 +77,77 @@ signal h		: unsigned(Y_COUNTER_SIZE-1 downto 0);
 signal xImg_pos : unsigned(X_COUNTER_SIZE-1 downto 0);
 signal yImg_pos : unsigned(Y_COUNTER_SIZE-1 downto 0);
 
-
-
---process send roi vars
+--Coord over serial line related vars
 signal frame_buffer 		        : std_logic_vector(63 downto 0);
-signal frame_buffer_position        : unsigned(6 downto 0);
 signal frame_buffer_has_been_filled : std_logic;
+signal frame_buffer_has_been_sent	: std_logic;
+signal frame_buffer_position        : unsigned(6 downto 0);
+
+
 
 begin
 ------------------------------------------------------------------------
-	send_roi : process(clk_proc, reset_n)
-	begin
-	if reset_n='0' then
-	--Cleaning frame_buffer
-	frame_buffer 			   <= (others=>'0');
-	frame_buffer_position      <= (others=>'0') ;
-	--Cleaning signals used to fill buffer
-	frame_buffer_has_been_filled <= '0';
-	-- 	Cleaning output
-	coord_data 	<= (others=>'0');
-	coord_fv <= '0';
-	coord_dv <= '0';
-	else
-	--coord are sent once for each img
-	coord_fv <= '0';
-	coord_dv <= '0';
-	--bin img and original img processing times are differents:
-	--here we want the coord processed with bin img to be sent
-	--when the original image processing is finished
-	if Img_fv = '0' then
-		--Bypass case is managed by data_process	
-		if frame_buffer_has_been_filled = '1' then
-			if enabled = '1' then
-				coord_fv <= '1';
-				coord_dv <= '1';
-				coord_data <= frame_buffer(to_integer(frame_buffer_position)+7 downto to_integer(frame_buffer_position));
-				
-				if frame_buffer_position >= 56 then
-					frame_buffer_has_been_filled <= '0';
-				else
-					frame_buffer_position <= frame_buffer_position + to_unsigned(8, 7);
-				end if;
-			end if;
-		end if;
-	end if;
-	end process;
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-	apply_roi : process(clk_proc, reset_n)
-	begin
-		if(reset_n='0') then
-			-- reset pixel counters
-			xImg_pos <= to_unsigned(0, X_COUNTER_SIZE);
-			yImg_pos <= to_unsigned(0, Y_COUNTER_SIZE);
-			-- reset ROI coord : default is central frame with param.w/h values
-			x 	<= ('0'&BinImg_size_reg_in_w_reg(10 downto 0))-('0'&out_size_reg_out_w_reg(10 downto 0));
-			y 	<= ('0'&BinImg_size_reg_in_h_reg(10 downto 0))-('0'&out_size_reg_out_h_reg(10 downto 0));
-			w 	<= unsigned(BinImg_size_reg_in_w_reg);
-			h 	<= unsigned(BinImg_size_reg_in_h_reg);			
-			roi_data <= (others => '0');
-			roi_dv <= '0';
-			roi_fv <= '0';
-		else
-			if Img_fv = '0' then
-				roi_fv <= '0';					
-				roi_dv <= '0';
-				roi_data <= (others => '0');
-				-- todo update coord x,y,w,h with img reference
-				xBin_pos 	 	   <= to_unsigned(0, X_COUNTER_SIZE);
-				yBin_pos    	   <= to_unsigned(0, Y_COUNTER_SIZE);
-				--Bypass case is managed by data_process	
-				--Updating last frame coordinates
-				x <= frame_buffer(X_COUNTER_SIZE-1 downto 0);
-				y <= frame_buffer(Y_COUNTER_SIZE+15 downto 16);
-				w <= frame_buffer(X_COUNTER_SIZE+31 downto 32);
-				h <= frame_buffer(Y_COUNTER_SIZE+47 downto 48);
-			else
-				if enabled =  '1' then
-					roi_fv =  '1';						
-					roi_dv <= '0';
-					--Pixel counter in img
-					xImg_pos <= xImg_pos + 1;
-					if(xImg_pos=unsigned(in_size_reg_in_w_reg)-1) then
-						yImg_pos <= yImg_pos + 1;
-						xImg_pos <= to_unsigned(0, X_COUNTER_SIZE);
-					end if;
-					
-					if Img_dv = '1' then
-						--ROI						
-						if(yBin_pos >= y
-						and yBin_pos < y + h
-						and xBin_pos >= x
-						and xBin_pos < x + w )then
-							roi_dv <= '1';								
-							roi_data <= Img_data;
-						end if;
-					end if;
-				end if;
-			end if;
-		end if;
-	end process;
+	 apply_roi : process(clk_proc, reset_n)
+	 begin
+		 if(reset_n='0') then
+			 -- reset pixel counters
+			 xImg_pos <= to_unsigned(0, X_COUNTER_SIZE);
+			 yImg_pos <= to_unsigned(0, Y_COUNTER_SIZE);
+			 -- reset ROI coord : default is central frame with param.w/h values
+			 x 	<= (unsigned(inImg_size_reg_in_w_reg)-unsigned(out_size_reg_out_w_reg))/2;
+			 y 	<= (unsigned(inImg_size_reg_in_h_reg)-unsigned(out_size_reg_out_h_reg))/2;
+			 w 	<= unsigned(out_size_reg_out_w_reg);
+			 h 	<= unsigned(out_size_reg_out_h_reg);			
+			 roi_data <= (others => '0');
+			 roi_dv <= '0';
+			 roi_fv <= '0';
+		 elsif(rising_edge(clk_proc)) then
+	         if(Img_fv = '1'
+				and enabled = '1'
+				and x < unsigned(inImg_size_reg_in_w_reg)
+				and y < unsigned(inImg_size_reg_in_h_reg) )then
+                roi_fv <= '1';
+			 else
+                roi_fv <= '0';
+             end if;
+			 roi_dv <= '0';	 
+			--Bypass case is managed by data_process	
+			 if frame_buffer_has_been_filled = '1' and enabled = '1' then
+				 --Updating last frame coordinates
+				 x <= unsigned(frame_buffer(X_COUNTER_SIZE-1 downto 0));
+				 y <= unsigned(frame_buffer(Y_COUNTER_SIZE+15 downto 16));
+				 w <= unsigned(frame_buffer(X_COUNTER_SIZE+31 downto 32));
+				 h <= unsigned(frame_buffer(Y_COUNTER_SIZE+47 downto 48));
+			 end if;
+				 
+			 if Img_fv = '0' then
+				 --reset pixel counters
+				 xImg_pos 	 	   <= to_unsigned(0, X_COUNTER_SIZE);
+				 yImg_pos    	   <= to_unsigned(0, Y_COUNTER_SIZE);
+				 
+				 	
+				 
+			 else
+				 if Img_dv = '1' and enabled = '1' then
+					 --Pixel counter in img
+					 xImg_pos <= xImg_pos + 1;
+					 if(xImg_pos=unsigned(inImg_size_reg_in_w_reg)-1) then
+						 yImg_pos <= yImg_pos + 1;
+						 xImg_pos <= to_unsigned(0, X_COUNTER_SIZE);
+					 end if;
+				 
+					 --ROI						
+					 if(yBin_pos >= y
+					 and yBin_pos < y + h
+					 and xBin_pos >= x
+					 and xBin_pos < x + w )then
+						 roi_dv <= '1';								
+						 roi_data <= Img_data;
+					 end if;
+				 end if;
+			 end if;
+		 end if;
+	 end process;
 ------------------------------------------------------------------------
 	
 ------------------------------------------------------------------------
@@ -197,14 +163,24 @@ begin
 			xBin_pos 	 	   <= to_unsigned(0, X_COUNTER_SIZE);
             yBin_pos    	   <= to_unsigned(0, Y_COUNTER_SIZE);
 			--Cleaning frame coordinates
-			x_max 		<= (others=>'0');
-			y_max 		<= (others=>'0');
-			x_min 		<= unsigned(BinImg_size_reg_in_w_reg);
-			y_min 		<= unsigned(BinImg_size_reg_in_h_reg);
-			current_image_data_send <= '1';
-			
+			x_max 			<= (others=>'0');
+			y_max 			<= (others=>'0');
+			x_min 			<= unsigned(BinImg_size_reg_in_w_reg);
+			y_min 			<= unsigned(BinImg_size_reg_in_h_reg);
+			--Cleaning frame buffer
+			frame_buffer    <= (others=>'0');
+			--Cleaning signals used to fill buffer
+			frame_buffer_has_been_filled <= '0';
+			frame_buffer_has_been_sent	 <= '0';
+			coord_fv 	<= '0';
+			coord_dv 	<= '0';
+			coord_data 	<= (others=>'0');
+			--Cleaning flags
+			enabled 	<= '0';
 		elsif(rising_edge(clk_proc)) then
-
+			coord_fv 	<= '0';
+			coord_dv 	<= '0';
+			coord_data 	<= (others=>'0');
             if(BinImg_fv = '0') then
                 xBin_pos <= to_unsigned(0, X_COUNTER_SIZE);
                 yBin_pos <= to_unsigned(0, Y_COUNTER_SIZE);
@@ -214,15 +190,15 @@ begin
 				if frame_buffer_has_been_filled = '0' then				
 
 					--We send frame coordinates only if there is something to send
-					if enabled = '1' and current_image_data_send = '0' then
+					if enabled = '1' and frame_buffer_has_been_sent	 = '0' then
 						
 						if status_reg_bypass_bit = '1' then
-							x_to_send := 0; 
-							y_to_send := 0;
-							w_to_send := inImg_size_reg_in_w_reg; 
-							h_to_send := inImg_size_reg_in_h_reg;
+							x_to_send := (others=>'0'); 
+							y_to_send := (others=>'0');
+							w_to_send := unsigned(inImg_size_reg_in_w_reg); 
+							h_to_send := unsigned(inImg_size_reg_in_h_reg);
 						else
-							--roi resolution fixed by user
+							----roi resolution fixed by user
 							if status_reg_static_res_bit = '1' then
 							
 								--something was detected
@@ -242,13 +218,13 @@ begin
 									h_to_send := unsigned(out_size_reg_out_h_reg);
 								else
 								--nothing found
-									x_to_send := (unsigned(inImg_size_reg_in_w_reg)-unsigned(BinImg_size_reg_in_w_reg))/2 ; 
-									y_to_send := (unsigned(inImg_size_reg_in_h_reg)-unsigned(BinImg_size_reg_in_h_reg))/2;
-									w_to_send := inImg_size_reg_in_w_reg ; 
-									h_to_send := inImg_size_reg_in_h_reg;								
+									x_to_send := (unsigned(inImg_size_reg_in_w_reg)-unsigned(out_size_reg_out_w_reg))/2 ; 
+									y_to_send := (unsigned(inImg_size_reg_in_h_reg)-unsigned(out_size_reg_out_h_reg))/2;
+									w_to_send := unsigned(out_size_reg_out_w_reg); 
+									h_to_send := unsigned(out_size_reg_out_h_reg);								
 								end if;
 								
-							--dynamic resolution for roi
+							----dynamic resolution for roi
 							else
 							
 								--something was detected
@@ -259,10 +235,10 @@ begin
 									h_to_send := y_max-y_min;
 								else
 								--nothing found -> empty rectangle at image center
-									x_to_send := inImg_size_reg_in_w_reg/2; 
-									y_to_send := inImg_size_reg_in_h_reg/2;
-									w_to_send := 0; 
-									h_to_send := 0;								
+									x_to_send := unsigned(inImg_size_reg_in_w_reg)/2; 
+									y_to_send := unsigned(inImg_size_reg_in_h_reg)/2;
+									w_to_send := (others=>'0'); 
+									h_to_send := (others=>'0');								
 								end if;
 							
 							end if;
@@ -279,12 +255,11 @@ begin
 						frame_buffer(31 downto X_COUNTER_SIZE+16) <= (others=>'0');
 						frame_buffer(47 downto X_COUNTER_SIZE+32) <= (others=>'0');
 						frame_buffer(63 downto X_COUNTER_SIZE+48) <= (others=>'0');
+						
 						-- Get buffer ready to send
 						frame_buffer_has_been_filled <= '1';
-						frame_buffer_position		 <= (others=>'0') ;	
-						--To fill buffer once for each image
-						current_image_data_send <= '1';
-						
+						frame_buffer_position		 <= (others=>'0') ;
+								
 					end if;
 					
 					--Cleaning frame coordinates
@@ -292,22 +267,40 @@ begin
 					y_max 		<= (others=>'0');
 					x_min 		<= unsigned(BinImg_size_reg_in_w_reg);
 					y_min 		<= unsigned(BinImg_size_reg_in_h_reg);
+					--To prevent sending coord after reset of x/y_min/max
+					frame_buffer_has_been_sent <= '1';
+				else
+					--send roi coord
+					coord_fv <= '1';
+					coord_dv <= '1';
+					coord_data <= frame_buffer(to_integer(frame_buffer_position)+7 downto to_integer(frame_buffer_position));
+					
+					if frame_buffer_position >= 56 then
+						frame_buffer_has_been_filled <= '0';
+						frame_buffer_has_been_sent	 <= '1';
+
+					else
+						frame_buffer_position <= frame_buffer_position + to_unsigned(8, 7);
+					end if;
+					
 				end if;
-				--
-	
-                enabled  <= status_reg_enable_bit;
+				
+				enabled  	<= status_reg_enable_bit;
 
-                
             else
-       			current_image_data_send <= '0';
-
+				coord_fv 	<= '0';
+				coord_dv 	<= '0';
+				coord_data 	<= (others=>'0');
+				
+				frame_buffer_has_been_sent	 <= '0';
+                
 				if status_reg_enable_bit = '1' and enabled = '1' then
 					
 					if(BinImg_dv = '1' ) then
 					
 						--bin img pixel counter
 						xBin_pos <= xBin_pos + 1;
-						if(xBin_pos=unsigned(in_size_reg_in_w_reg)-1) then
+						if(xBin_pos=unsigned(BinImg_size_reg_in_w_reg)-1) then
 							yBin_pos <= yBin_pos + 1;
 							xBin_pos <= to_unsigned(0, X_COUNTER_SIZE);
 						end if;
@@ -337,4 +330,5 @@ begin
 		end if;
 	end process;
 end rtl;
+
 

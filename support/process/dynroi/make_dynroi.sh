@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rm dynroi.proc
-#rm -rf hdl
+rm -rf hdl
 
 # block and flows
 gpproc new -n dynroi
@@ -27,15 +27,16 @@ gpproc setinfo -n "releasedate" -v "2017-01-03"
 gpproc setpisizeaddr -v 2
 
 # register status_reg for enable and bypass properties
-gpproc addparam -n status_reg -r 0
-gpproc addproperty -n enable -t bool -v 1
+gpproc addparam    -n status_reg -r 0
+gpproc addproperty -n enable -t bool -v 0
 gpproc addbitfield -n status_reg.enable_bit -b 0 -m enable.value
 
 gpproc addproperty -n bypass -t bool -v 0
 gpproc addbitfield -n status_reg.bypass_bit -b 1 -m bypass.value
+
 #parameter to set a fixed resolution on output image
 gpproc addproperty -n static_res -t bool -v 1
-gpproc addbitfield -n status_reg.static_res_bit -b 2 -m staticRes.value
+gpproc addbitfield -n status_reg.static_res_bit -b 2 -m static_res.value
 
 # register input flow size
 gpproc addparam -n inImg_size_reg -r 1
@@ -59,8 +60,10 @@ gpproc setproperty -n h -r 1:4095
 gpproc addproperty -n roi.datatype -t flowtype -v image
 
 #if not static_res, GPViewer won't be able to display. use <rect>.
-gpproc addproperty -n roi.width -t int  -m "static_res.value ? w.value : Img.width.value"
-gpproc addproperty -n roi.height -t int -m "static_res.value ? h.value : Img.height.value"
+#gpproc addproperty -n roi.width -t int  -m "static_res.value ? w.value : Img.width.value"
+#gpproc addproperty -n roi.height -t int -m "static_res.value ? h.value : Img.height.value"
+gpproc addproperty -n roi.width -t int  -m "bypass.value ? Img.width.value : (static_res.value ? w.value : Img.width.value)"
+gpproc addproperty -n roi.height -t int -m "bypass.value ? Img.height.value : (static_res.value ? h.value : Img.height.value)"
 
 # output status definition
 gpproc addproperty -n coord.datatype -t flowtype -v features
@@ -69,7 +72,7 @@ gpproc addproperty -n coord.featuretype -t featuretype -v rect
 # visual settings
 gpproc setdraw -f dynroi.svg
 
-#gpproc generate -o hdl
+gpproc generate -o hdl
 gpproc addfile -p hdl/dynroi.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/dynroi_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/dynroi_slave.vhd -t vhdl -g hdl

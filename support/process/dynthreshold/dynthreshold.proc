@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process name="dynthreshold" categ="segmentation" master_count="0" pi_size_addr_rel="2" desc="Dynamic threshold based on a desired ratio of white">
+<process name="dynthreshold" categ="morpho" pi_size_addr_rel="2" desc="Dynamic threshold based on a desired ratio of white">
   <parts>
     <part name="main">
       <svg style="background-color: rgb(255, 255, 255);" width="127px" height="127px">

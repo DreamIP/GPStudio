@@ -48,8 +48,8 @@
     <flow name="roi" size="8" type="out">
       <properties>
         <property name="datatype" type="flowtype" value="image"/>
-        <property name="width" type="int" propertymap="static_res.value ? w.value : Img.width.value"/>
-        <property name="height" type="int" propertymap="static_res.value ? h.value : Img.height.value"/>
+        <property name="width" type="int" propertymap="bypass.value ? Img.width.value : (static_res.value ? w.value : Img.width.value)"/>
+        <property name="height" type="int" propertymap="bypass.value ? Img.height.value : (static_res.value ? h.value : Img.height.value)"/>
       </properties>
     </flow>
     <flow name="coord" size="8" type="out">
@@ -64,7 +64,7 @@
       <bitfields>
         <bitfield name="enable_bit" bitfield="0" propertymap="enable.value"/>
         <bitfield name="bypass_bit" bitfield="1" propertymap="bypass.value"/>
-        <bitfield name="static_res_bit" bitfield="2" propertymap="staticRes.value"/>
+        <bitfield name="static_res_bit" bitfield="2" propertymap="static_res.value"/>
       </bitfields>
     </param>
     <param name="inImg_size_reg" regaddr="1">
@@ -87,7 +87,10 @@
     </param>
   </params>
   <properties>
-    <property name="enable" type="bool" value="1"/>
+    <property name="enable" type="bool" value="0"/>
     <property name="bypass" type="bool" value="0"/>
+    <property name="static_res" type="bool" value="1"/>
+    <property name="w" type="int" value="176" min="1" max="4095"/>
+    <property name="h" type="int" value="144" min="1" max="4095"/>
   </properties>
 </process>

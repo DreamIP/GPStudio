@@ -6,7 +6,7 @@ rm -rf hdl
 # block and flows
 gpproc new -n dynthreshold
 gpproc sethelp -v "Dynamic threshold based on a desired ratio of white"
-gpproc setcateg -v "segmentation"
+gpproc setcateg -v "morpho"
 gpproc addflow -n in -d in -s 8
 gpproc addflow -n out -d out -s 8
 gpproc showblock
