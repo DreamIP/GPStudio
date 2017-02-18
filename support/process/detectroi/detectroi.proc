@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process name="detectroi" categ="segmentation" master_count="0" pi_size_addr_rel="2" desc="Detection of the smallest non-black part of image">
+<process name="detectroi" categ="segmentation" pi_size_addr_rel="2" desc="Detection of the smallest non-black part of image">
   <parts>
     <part name="main">
       <svg style="background-color: rgb(255, 255, 255);" width="128px" height="128px">
@@ -34,7 +34,7 @@
   <infos>
     <info name="author" value="Raphael Bouterige"/>
     <info name="company" value="Institut Pascal"/>
-    <info name="revision" value="1.0"/>
+    <info name="revision" value="1.1"/>
     <info name="releasedate" value="2016-12-12"/>
   </infos>
   <files>
@@ -69,6 +69,6 @@
     </param>
   </params>
   <properties>
-    <property name="enable" type="bool" value="1"/>
+    <property name="enable" type="bool" value="0"/>
   </properties>
 </process>

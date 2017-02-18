@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process name="dynroiBinMask" categ="segmentation" master_count="0" pi_size_addr_rel="2" desc="Dynamic region of interest extractor">
+<process name="dynroiBinMask" categ="segmentation" pi_size_addr_rel="2" desc="Dynamic region of interest extractor">
   <parts>
     <part name="main">
       <svg style="background-color: rgb(255, 255, 255);" width="128px" height="128px">
@@ -29,7 +29,6 @@
     <file name="dynroiBinMask.vhd" type="vhdl" group="hdl" path="hdl/dynroiBinMask.vhd"/>
     <file name="dynroiBinMask_process.vhd" type="vhdl" group="hdl" path="hdl/dynroiBinMask_process.vhd"/>
     <file name="dynroiBinMask_slave.vhd" type="vhdl" group="hdl" path="hdl/dynroiBinMask_slave.vhd"/>
-    <file name="dynroiBinMask.tex" type="tex" group="doc" path="doc/dynroiBinMask.tex"/>
     <file name="dynroiBinMask.pdf" type="pdf" group="doc" path="doc/dynroiBinMask.pdf"/>
   </files>
   <resets>

@@ -23,7 +23,7 @@ gpproc setinfo -n "releasedate" -v "2017-01-03"
 gpproc setpisizeaddr -v 2
 
 # register status_reg for enable and bypass properties
-gpproc addparam -n status_reg -r 0
+gpproc addparam    -n status_reg -r 0
 gpproc addproperty -n enable -t bool -v 1
 gpproc addbitfield -n status_reg.enable_bit -b 0 -m enable.value
 gpproc addproperty -n bypass -t bool -v 0
@@ -47,5 +47,5 @@ gpproc setdraw -f dynroiBinMask.svg
 gpproc addfile -p hdl/dynroiBinMask.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/dynroiBinMask_process.vhd -t vhdl -g hdl
 gpproc addfile -p hdl/dynroiBinMask_slave.vhd -t vhdl -g hdl
-gpproc addfile -p doc/dynroiBinMask.tex -t tex -g doc
+#gpproc addfile -p doc/dynroiBinMask.tex -t tex -g doc
 gpproc addfile -p doc/dynroiBinMask.pdf -t pdf -g doc
