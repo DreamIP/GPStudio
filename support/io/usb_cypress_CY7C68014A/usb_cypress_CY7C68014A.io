@@ -56,7 +56,7 @@
     <file name="fv_signal_synchroniser.vhd" type="vhdl" group="hdl" path="hdl/utils/src/fv_signal_synchroniser.vhd"/>
     <file name="flow_out_arb.vhd" type="vhdl" group="hdl" path="hdl/utils/src/flow_out_arb.vhd"/>
     <file name="flow_out_arb4.vhd" type="vhdl" group="hdl" path="hdl/utils/src/flow_out_arb4.vhd"/>
-    <file name="usbnto16bits.vhd" type="vhdl" group="hdl" path="hdl/utils/src/usbnto16bits.vhd"/>
+    <file name="flowto16.vhd" type="vhdl" group="hdl" path="hdl/utils/src/flowto16.vhd"/>
     <file name="usb_cypress_CY7C68014A.io" type="io" group="blockdef" path="usb_cypress_CY7C68014A.io"/>
   </files>
   <resets>
