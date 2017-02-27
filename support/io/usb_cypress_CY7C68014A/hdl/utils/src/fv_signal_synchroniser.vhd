@@ -11,17 +11,17 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity fv_synchro_signal is
-  port(
-	fv_i: in std_logic;
-	signal_i : in std_logic;
-	signal_o: out std_logic;
-	clk_i :in std_logic;
-	rst_n_i :in std_logic
-);
-end fv_synchro_signal;
+entity fv_signal_synchroniser is
+    port (
+        clk         : in  std_logic;
+        rst_n       : in  std_logic;
+        fv_i        : in  std_logic;
+        signal_i    : in  std_logic;
+        signal_o    : out std_logic
+    );
+end fv_signal_synchroniser;
 
-architecture rtl of fv_synchro_signal is
+architecture rtl of fv_signal_synchroniser is
 
 type en_state_t is (WaitforSignal,WaitNextFrame,Run,WaitForEndFrame);
 signal en_state : en_state_t := WaitforSignal;
@@ -31,12 +31,12 @@ signal fv_r : std_logic := '0';
 
 begin
 -- This process synchronize signal with flow valid
-ENABLE_inst: process  (clk_i, rst_n_i) 
+ENABLE_inst: process  (clk, rst_n) 
 begin
-	if (rst_n_i = '0') then	
+	if (rst_n = '0') then	
 		en_state <= WaitforSignal;
 		signal_o <='0';
-	elsif rising_edge(clk_i) then
+	elsif rising_edge(clk) then
 		fv_r <= fv_i;
 		case en_state is
 

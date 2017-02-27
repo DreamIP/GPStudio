@@ -221,57 +221,57 @@ SLAVE_BUS_INST: component slave_usb
 		
 -- SYNC SIGNALS FOR SLAVE REG WITH THE FLOW VALID
 ---------------------------------------------
-ENABLE_S_INST: component fv_synchro_signal
-	  port map(
-		fv_i => in0_fv,
+ENABLE_S_INST : component fv_signal_synchroniser
+    port map (
+		clk      => clk_proc,
+		rst_n    => rst,
+		fv_i     => in0_fv,
 		signal_i => enable_s,
-		signal_o => enable_s_fvsync,
-		clk_i => clk_proc,
-		rst_n_i => rst
+		signal_o => enable_s_fvsync
 	);
 	
 Sync_fv0 : if IN0_NBWORDS > 0 generate
-	ENABLE_IN0_INST: component fv_synchro_signal
-	  port map(
-		fv_i => in0_fv,
-		signal_i => enable_in0_s,
-		signal_o => enable_in0_s_sync,
-		clk_i => clk_proc,
-		rst_n_i => rst
-	);
+	ENABLE_IN0_INST : component fv_signal_synchroniser
+        port map (
+            clk      => clk_proc,
+            rst_n    => rst,
+            fv_i     => in0_fv,
+            signal_i => enable_in0_s,
+            signal_o => enable_in0_s_sync
+        );
 end generate Sync_fv0;
 
 Sync_fv1 : if IN1_NBWORDS > 0 generate
-	ENABLE_IN1_INST: component fv_synchro_signal
-	  port map(
-		fv_i => in1_fv,
-		signal_i => enable_in1_s,
-		signal_o => enable_in1_s_sync,
-		clk_i => clk_proc,
-		rst_n_i => rst
-	);
+	ENABLE_IN1_INST : component fv_signal_synchroniser
+        port map (
+            clk      => clk_proc,
+            rst_n    => rst,
+            fv_i     => in1_fv,
+            signal_i => enable_in1_s,
+            signal_o => enable_in1_s_sync
+        );
 end generate Sync_fv1;
 
 Sync_fv2 : if IN2_NBWORDS > 0 generate
-	ENABLE_IN2_INST: component fv_synchro_signal
-	  port map(
-		fv_i => in2_fv,
-		signal_i => enable_in2_s,
-		signal_o => enable_in2_s_sync,
-		clk_i => clk_proc,
-		rst_n_i => rst
-	);
+	ENABLE_IN2_INST : component fv_signal_synchroniser
+        port map (
+            clk      => clk_proc,
+            rst_n    => rst,
+            fv_i     => in2_fv,
+            signal_i => enable_in2_s,
+            signal_o => enable_in2_s_sync
+        );
 end generate Sync_fv2;
 
 Sync_fv3 : if IN3_NBWORDS > 0 generate
-	ENABLE_IN3_INST: component fv_synchro_signal
-	  port map(
-		fv_i => in3_fv,
-		signal_i => enable_in3_s,
-		signal_o => enable_in3_s_sync,
-		clk_i => clk_proc,
-		rst_n_i => rst
-	);
+	ENABLE_IN3_INST : component fv_signal_synchroniser
+        port map (
+            clk      => clk_proc,
+            rst_n    => rst,
+            fv_i     => in3_fv,
+            signal_i => enable_in3_s,
+            signal_o => enable_in3_s_sync
+        );
 end generate Sync_fv3;
 
 --FLOW_IN 0

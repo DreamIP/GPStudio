@@ -148,16 +148,15 @@ package ComFlow_pkg is
 		);
 	end component;
 
-	component fv_synchro_signal
-		port(
-		fv_i: in std_logic;
-		signal_i : in std_logic;
-		signal_o: out std_logic;
-
-		clk_i :in std_logic;
-		rst_n_i :in std_logic
-		);
-	end component;
+    component fv_signal_synchroniser
+        port (
+            clk      : in  std_logic;
+            rst_n    : in  std_logic;
+            fv_i     : in  std_logic;
+            signal_i : in  std_logic;
+            signal_o : out std_logic
+        );
+    end component;
 
 	component  slave_usb is
 	  generic (

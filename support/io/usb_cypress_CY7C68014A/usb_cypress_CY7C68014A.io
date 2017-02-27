@@ -53,7 +53,7 @@
     <file name="ComFlow_pkg.vhd" type="vhdl" group="hdl" path="hdl/utils/src/ComFlow_pkg.vhd"/>
     <file name="synchronizer.vhd" type="vhdl" group="hdl" path="hdl/utils/src/synchronizer.vhd"/>
     <file name="slave_usb.vhd" type="vhdl" group="hdl" path="hdl/utils/src/slave_usb.vhd"/>
-    <file name="fv_synchro_signal.vhd" type="vhdl" group="hdl" path="hdl/utils/src/fv_synchro_signal.vhd"/>
+    <file name="fv_signal_synchroniser.vhd" type="vhdl" group="hdl" path="hdl/utils/src/fv_signal_synchroniser.vhd"/>
     <file name="flow_out_arb.vhd" type="vhdl" group="hdl" path="hdl/utils/src/flow_out_arb.vhd"/>
     <file name="flow_out_arb4.vhd" type="vhdl" group="hdl" path="hdl/utils/src/flow_out_arb4.vhd"/>
     <file name="usbnto16bits.vhd" type="vhdl" group="hdl" path="hdl/utils/src/usbnto16bits.vhd"/>
