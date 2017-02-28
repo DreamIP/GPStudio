@@ -580,28 +580,27 @@ USBFLOW_ARB : component flow_to_com_arb4
 	);
 
 --  FLOW_PARAMS module --> Bus Interconnect Master
-FLOW_PARAMS: component flow_wishbone
+FLOW_PARAMS : component com_to_master_pi
     generic map (
-        FIFO_DEPTH => 64,
-        FLOW_ID_SET => 15,
-        MASTER_ADDR_WIDTH=>MASTER_ADDR_WIDTH
+        FIFO_DEPTH          => 64,
+        FLOW_ID_SET         => 15,
+        MASTER_ADDR_WIDTH   => MASTER_ADDR_WIDTH
     )
     port map (
-        data_wr_i => flow_in1_wr_s,
-        data_i => flow_in1_data_s,
-        pktend_i => flow_in1_pktend_s,
-        fifo_full_o => flow_in1_full_s,
-
-        param_addr_o => master_addr_o,
-        param_data_o => master_datawr_o,
-        param_wr_o => master_wr_o,
-
+        clk_in              => ifclk,
+        clk_out             => clk_proc,
+        rst_n               => rst,
+        data_wr_i           => flow_in1_wr_s,
+        data_i              => flow_in1_data_s,
+        pktend_i            => flow_in1_pktend_s,
+        fifo_full_o         => flow_in1_full_s,
+        param_addr_o        => master_addr_o,
+        param_data_o        => master_datawr_o,
+        param_wr_o          => master_wr_o
         -- rajouter fin d'ecriture dans la memoire...
-        --~ tmp_update_port_o => update_port_s,
-        clk_in_i => ifclk,
-        clk_out_i => clk_proc,
-        rst_n_i => rst
+        --~ tmp_update_port_o => update_port_s
     );
 
     clk_usb <= ifclk;
+
 end rtl;

@@ -83,64 +83,62 @@ package ComFlow_pkg is
     end component;
 
 	constant BURSTMODE :std_logic_vector(7 downto 0) := X"BC";
-	component flow_wishbone
-	  generic (
-		FIFO_DEPTH : POSITIVE := 64;
-		FLOW_ID_SET : integer := 12;
-		--FLOW_ID_GET : integer := 13
-		MASTER_ADDR_WIDTH : integer
-		);
-	  port(
-			-- USB driver connexion
-		data_wr_i : in std_logic;
-		data_i : in std_logic_vector(15 downto 0);
-		-- rdreq_i : in std_logic;
-		pktend_i : in std_logic;
-		fifo_full_o : out std_logic;
+    component com_to_master_pi
+        generic (
+            FIFO_DEPTH          : POSITIVE := 64;
+            FLOW_ID_SET         : integer := 12;
+            --FLOW_ID_GET       : integer := 13
+            MASTER_ADDR_WIDTH   : integer
+        );
+        port (
+            clk_in              : in std_logic; -- clk_usb
+            clk_out             : in std_logic; -- clk_design
+            rst_n               : in std_logic;
+            
+            -- USB driver connexion
+            data_wr_i           : in std_logic;
+            data_i              : in std_logic_vector(15 downto 0);
+            -- rdreq_i          : in std_logic;
+            pktend_i            : in std_logic;
+            fifo_full_o         : out std_logic;
 
-		-- signaux pour wishbone
-		param_addr_o: out std_logic_vector(MASTER_ADDR_WIDTH-1 DOWNTO 0);
-		param_data_o : out std_logic_vector(31 downto 0);
-		param_wr_o : out std_logic;
+            -- signaux pour wishbone
+            param_addr_o        : out std_logic_vector(MASTER_ADDR_WIDTH-1 DOWNTO 0);
+            param_data_o        : out std_logic_vector(31 downto 0);
+            param_wr_o          : out std_logic;
 
-		-- may add RAM arbiter connexion
-		-- tmp signal to trigger caph update reg
-		tmp_update_port_o : out std_logic;
-
-		clk_in_i : in std_logic; -- clk_usb
-		clk_out_i :in std_logic; -- clk_design
-		rst_n_i :in std_logic
-		);
-	end component;
-
-
+            -- may add RAM arbiter connexion
+            -- tmp signal to trigger caph update reg
+            tmp_update_port_o   : out std_logic
+        );
+    end component;
 
 	component usb_sm
-	  port(
-		usb_ifclk    : in    std_logic;
-		usb_flaga    : in    std_logic;
-		usb_flagb    : in    std_logic;
-		usb_flagc    : in    std_logic;
-		usb_flagd    : in    std_logic;
-		usb_fd_io    : inout std_logic_vector(15 downto 0);
-		usb_sloe     : out   std_logic;
-		usb_slrd     : out   std_logic;
-		usb_slwr     : out   std_logic;
-		usb_pktend   : out   std_logic;
-		usb_addr     : out   std_logic_vector(1 downto 0);
+        port(
+            usb_ifclk    : in    std_logic;
+            usb_flaga    : in    std_logic;
+            usb_flagb    : in    std_logic;
+            usb_flagc    : in    std_logic;
+            usb_flagd    : in    std_logic;
+            usb_fd_io    : inout std_logic_vector(15 downto 0);
+            usb_sloe     : out   std_logic;
+            usb_slrd     : out   std_logic;
+            usb_slwr     : out   std_logic;
+            usb_pktend   : out   std_logic;
+            usb_addr     : out   std_logic_vector(1 downto 0);
 
-		usb_rst		  : in 	std_logic;
+            usb_rst		  : in 	std_logic;
 
-		flow_in_data_o  : out   std_logic_vector(15 downto 0);
-		flow_in_wr_o	: out   std_logic;
-		flow_in_full_i: in   std_logic;
-		flow_in_end_o : out std_logic;
+            flow_in_data_o  : out   std_logic_vector(15 downto 0);
+            flow_in_wr_o	: out   std_logic;
+            flow_in_full_i: in   std_logic;
+            flow_in_end_o : out std_logic;
 
-		flow_out_data_i  : in   std_logic_vector(15 downto 0);
-		flow_out_rd_o	: out   std_logic;
-		flow_out_empty_i: in   std_logic;
-		flow_out_rdy_i : in std_logic
-		);
+            flow_out_data_i  : in   std_logic_vector(15 downto 0);
+            flow_out_rd_o	: out   std_logic;
+            flow_out_empty_i: in   std_logic;
+            flow_out_rdy_i : in std_logic
+        );
 	end component;
 
     component fv_signal_synchroniser

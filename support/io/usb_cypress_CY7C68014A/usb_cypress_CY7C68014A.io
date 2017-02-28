@@ -47,8 +47,8 @@
     <file name="com_flow_fifo_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/com_flow_fifo_tx.vhd"/>
     <file name="write_flow.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/write_flow.vhd"/>
     <file name="flow_to_com.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flow_to_com.vhd"/>
-    <file name="flow_wishbone.vhd" type="vhdl" group="hdl" path="hdl/flowtobus/src/flow_wishbone.vhd"/>
-    <file name="params_flow_decoder.vhd" type="vhdl" group="hdl" path="hdl/flowtobus/src/params_flow_decoder.vhd"/>
+    <file name="com_to_master_pi.vhd" type="vhdl" group="hdl" path="hdl/com_to_master_pi/src/com_to_master_pi.vhd"/>
+    <file name="params_flow_decoder.vhd" type="vhdl" group="hdl" path="hdl/com_to_master_pi/src/params_flow_decoder.vhd"/>
     <file name="ComFlow_pkg.vhd" type="vhdl" group="hdl" path="hdl/utils/src/ComFlow_pkg.vhd"/>
     <file name="synchronizer.vhd" type="vhdl" group="hdl" path="hdl/utils/src/synchronizer.vhd"/>
     <file name="usb_slave.vhd" type="vhdl" group="hdl" path="hdl/usb/src/usb_slave.vhd"/>
