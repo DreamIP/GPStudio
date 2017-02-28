@@ -66,16 +66,9 @@ signal y_max	: unsigned(Y_COUNTER_SIZE-1 downto 0);
 
 signal enabled  : std_logic;
 
---process apply_roi vars
---img reference coordinates
-signal x		: unsigned(X_COUNTER_SIZE-1 downto 0);
-signal y 		: unsigned(Y_COUNTER_SIZE-1 downto 0);
-
-signal w		: unsigned(X_COUNTER_SIZE-1 downto 0);
-signal h		: unsigned(Y_COUNTER_SIZE-1 downto 0);
-
-signal xImg_pos : unsigned(X_COUNTER_SIZE-1 downto 0);
-signal yImg_pos : unsigned(Y_COUNTER_SIZE-1 downto 0);
+--conversion offset from binImg to img
+signal conv_offset_x : unsigned(X_COUNTER_SIZE-1 downto 0);
+signal conv_offset_y : unsigned(Y_COUNTER_SIZE-1 downto 0);
 
 --Coord over serial line related vars
 signal frame_buffer 		        : std_logic_vector(63 downto 0);
@@ -88,55 +81,53 @@ signal frame_buffer_position        : unsigned(6 downto 0);
 begin
 ------------------------------------------------------------------------
 	 apply_roi : process(clk_proc, reset_n)
-	 begin
+	--img reference coordinates
+	variable x		: unsigned(X_COUNTER_SIZE-1 downto 0);
+	variable y 		: unsigned(Y_COUNTER_SIZE-1 downto 0);
+
+	variable w		: unsigned(X_COUNTER_SIZE-1 downto 0);
+	variable h		: unsigned(Y_COUNTER_SIZE-1 downto 0);
+
+	variable xImg_pos : unsigned(X_COUNTER_SIZE-1 downto 0);
+	variable yImg_pos : unsigned(Y_COUNTER_SIZE-1 downto 0);	 
+	begin
 		 if(reset_n='0') then
 			 -- reset pixel counters
-			 xImg_pos <= to_unsigned(0, X_COUNTER_SIZE);
-			 yImg_pos <= to_unsigned(0, Y_COUNTER_SIZE);
+			 xImg_pos := to_unsigned(0, X_COUNTER_SIZE);
+			 yImg_pos := to_unsigned(0, Y_COUNTER_SIZE);
 			 -- reset ROI coord : default is central frame with param.w/h values
-			 x 	<= (unsigned(inImg_size_reg_in_w_reg)-unsigned(out_size_reg_out_w_reg))/2;
-			 y 	<= (unsigned(inImg_size_reg_in_h_reg)-unsigned(out_size_reg_out_h_reg))/2;
-			 w 	<= unsigned(out_size_reg_out_w_reg);
-			 h 	<= unsigned(out_size_reg_out_h_reg);			
+			 x 	:= (others => '0');
+			 y 	:= (others => '0');
+			 w 	:= (others => '0');
+			 h 	:= (others => '0');			
 			 roi_data <= (others => '0');
 			 roi_dv <= '0';
 			 roi_fv <= '0';
 		 elsif(rising_edge(clk_proc)) then
-	         if(Img_fv = '1'
-				and enabled = '1'
-				and x < unsigned(inImg_size_reg_in_w_reg)
-				and y < unsigned(inImg_size_reg_in_h_reg) )then
+             if Img_fv = '1' and enabled = '1' then
                 roi_fv <= '1';
-			 else
+             else
                 roi_fv <= '0';
              end if;
-			 roi_dv <= '0';	 
-			--Bypass case is managed by data_process	
+			 roi_dv <= '0';
+			 roi_data <= (others => '1');
+			 	 
+			 --Updating last frame coordinates
 			 if frame_buffer_has_been_filled = '1' and enabled = '1' then
-				 --Updating last frame coordinates
-				 x <= unsigned(frame_buffer(X_COUNTER_SIZE-1 downto 0));
-				 y <= unsigned(frame_buffer(Y_COUNTER_SIZE+15 downto 16));
-				 w <= unsigned(frame_buffer(X_COUNTER_SIZE+31 downto 32));
-				 h <= unsigned(frame_buffer(Y_COUNTER_SIZE+47 downto 48));
+				 x := unsigned(frame_buffer(X_COUNTER_SIZE-1 downto 0));
+				 y := unsigned(frame_buffer(Y_COUNTER_SIZE+15 downto 16));
+				 w := unsigned(frame_buffer(X_COUNTER_SIZE+31 downto 32));
+				 h := unsigned(frame_buffer(Y_COUNTER_SIZE+47 downto 48));
 			 end if;
 				 
+			 -- ROI action	 
 			 if Img_fv = '0' then
 				 --reset pixel counters
-				 xImg_pos 	 	   <= to_unsigned(0, X_COUNTER_SIZE);
-				 yImg_pos    	   <= to_unsigned(0, Y_COUNTER_SIZE);
-				 
-				 	
-				 
+				 xImg_pos 	 	   := to_unsigned(0, X_COUNTER_SIZE);
+				 yImg_pos    	   := to_unsigned(0, Y_COUNTER_SIZE);
 			 else
 				 if Img_dv = '1' and enabled = '1' then
-					 --Pixel counter in img
-					 xImg_pos <= xImg_pos + 1;
-					 if(xImg_pos=unsigned(inImg_size_reg_in_w_reg)-1) then
-						 yImg_pos <= yImg_pos + 1;
-						 xImg_pos <= to_unsigned(0, X_COUNTER_SIZE);
-					 end if;
-				 
-					 --ROI						
+	 				 --ROI						
 					 if(yBin_pos >= y
 					 and yBin_pos < y + h
 					 and xBin_pos >= x
@@ -144,8 +135,16 @@ begin
 						 roi_dv <= '1';								
 						 roi_data <= Img_data;
 					 end if;
+					 					 
+					 --Pixel counter in img
+					 xImg_pos := xImg_pos + 1;
+					 if(xImg_pos=unsigned(inImg_size_reg_in_w_reg)) then
+						 yImg_pos := yImg_pos + 1;
+						 xImg_pos := to_unsigned(0, X_COUNTER_SIZE);
+					 end if;
 				 end if;
 			 end if;
+			 
 		 end if;
 	 end process;
 ------------------------------------------------------------------------
@@ -165,8 +164,8 @@ begin
 			--Cleaning frame coordinates
 			x_max 			<= (others=>'0');
 			y_max 			<= (others=>'0');
-			x_min 			<= unsigned(BinImg_size_reg_in_w_reg);
-			y_min 			<= unsigned(BinImg_size_reg_in_h_reg);
+			x_min 			<= (others => '0');
+			y_min 			<= (others => '0');
 			--Cleaning frame buffer
 			frame_buffer    <= (others=>'0');
 			--Cleaning signals used to fill buffer
@@ -177,10 +176,17 @@ begin
 			coord_data 	<= (others=>'0');
 			--Cleaning flags
 			enabled 	<= '0';
+			--Cleaning conv offset
+			conv_offset_x <= (others => '0');
+			conv_offset_y <= (others => '0');
 		elsif(rising_edge(clk_proc)) then
 			coord_fv 	<= '0';
 			coord_dv 	<= '0';
 			coord_data 	<= (others=>'0');
+			--offset calculation
+			conv_offset_x <= (unsigned(inImg_size_reg_in_w_reg)-unsigned(BinImg_size_reg_in_w_reg))/2;
+			conv_offset_y <= (unsigned(inImg_size_reg_in_h_reg)-unsigned(BinImg_size_reg_in_h_reg))/2;
+			
             if(BinImg_fv = '0') then
                 xBin_pos <= to_unsigned(0, X_COUNTER_SIZE);
                 yBin_pos <= to_unsigned(0, Y_COUNTER_SIZE);
@@ -204,15 +210,15 @@ begin
 								--something was detected
 								if x_max > 0 then
 									--checking top left corner position to ensure frame width is matching static_res 
-									if x_min > (unsigned(inImg_size_reg_in_w_reg)-unsigned(out_size_reg_out_w_reg)) then
-										x_to_send := (unsigned(inImg_size_reg_in_w_reg)-unsigned(out_size_reg_out_w_reg));
+									if x_min + conv_offset_x > (unsigned(inImg_size_reg_in_w_reg)-unsigned(out_size_reg_out_w_reg)) then
+										x_to_send := unsigned(inImg_size_reg_in_w_reg) - unsigned(out_size_reg_out_w_reg);
 									else
-										x_to_send := x_min;										
+										x_to_send := x_min + conv_offset_x;										
 									end if;									
-									if y_min > (unsigned(inImg_size_reg_in_h_reg)-unsigned(out_size_reg_out_h_reg)) then
+									if y_min + conv_offset_y > (unsigned(inImg_size_reg_in_h_reg)-unsigned(out_size_reg_out_h_reg)) then
 										y_to_send := (unsigned(inImg_size_reg_in_h_reg)-unsigned(out_size_reg_out_h_reg));
 									else
-										y_to_send := y_min;										
+										y_to_send := y_min + conv_offset_y;										
 									end if;
 									w_to_send := unsigned(out_size_reg_out_w_reg) ; 
 									h_to_send := unsigned(out_size_reg_out_h_reg);
@@ -229,8 +235,8 @@ begin
 							
 								--something was detected
 								if x_max > 0 then
-									x_to_send := x_min; 
-									y_to_send := y_min;
+									x_to_send := x_min + conv_offset_x; 
+									y_to_send := y_min + conv_offset_y;
 									w_to_send := x_max-x_min; 
 									h_to_send := y_max-y_min;
 								else
