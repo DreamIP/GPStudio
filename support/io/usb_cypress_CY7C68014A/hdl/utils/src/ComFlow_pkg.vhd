@@ -154,25 +154,27 @@ package ComFlow_pkg is
         );
     end component;
 
-	component  slave_usb is
-	  generic (
-		DATA_WIDTH : integer := 32
-	    );
-	  port(
-		clk_i : in std_logic;
-		rst_n_i : in std_logic;
+component usb_cypress_CY7C68014A_slave is
+    generic (
+		CLK_PROC_FREQ   : integer
+    );
+    port(
+        clk_proc        : in std_logic;
+        reset_n         : in std_logic;
 
-		addr_i : in std_logic_vector(3 DOWNTO 0);		--(addr_rel_0_o),
-		wr_i : in std_logic;			--(wr_0_o),
-		datawr_i : in std_logic_vector(DATA_WIDTH-1 downto 0);
+        addr_rel_i      : in std_logic_vector(3 downto 0);
+        wr_i            : in std_logic;
+		rd_i            : in std_logic;
+		datawr_i        : in std_logic_vector(31 downto 0);
+		datard_o        : out std_logic_vector(31 downto 0);
 
-		enable_usb_o : out std_logic;
-		enable_in0_o : out std_logic;
-		enable_in1_o : out std_logic;
-		enable_in2_o : out std_logic;
-		enable_in3_o : out std_logic
-	    );
-	end  component;
+		status_enable   : out std_logic;
+		flow_in0_enable : out std_logic;
+		flow_in1_enable : out std_logic;
+		flow_in2_enable : out std_logic;
+		flow_in3_enable : out std_logic
+    );
+end component;
 
 component flow_to_com_arb4
     port (
@@ -212,32 +214,29 @@ component flow_to_com_arb4
 end component;
 
 component flowto16
-		generic (
-			INPUT_SIZE: integer;
-			FIFO_DEPTH : integer := 32
-		);
-		port (
-			rst_n       : in  std_logic;
-			clk         : in  std_logic;
-			in_data     : in  std_logic_vector(INPUT_SIZE-1 downto 0);
-			in_fv       : in  std_logic;
-			in_dv       : in  std_logic;
-			out_data    : out std_logic_vector(15 downto 0);
-			out_fv      : out std_logic;
-			out_dv      : out std_logic
-		);
+    generic (
+        INPUT_SIZE: integer;
+        FIFO_DEPTH : integer := 32
+    );
+    port (
+        rst_n       : in  std_logic;
+        clk         : in  std_logic;
+        in_data     : in  std_logic_vector(INPUT_SIZE-1 downto 0);
+        in_fv       : in  std_logic;
+        in_dv       : in  std_logic;
+        out_data    : out std_logic_vector(15 downto 0);
+        out_fv      : out std_logic;
+        out_dv      : out std_logic
+    );
 end component;
 
 end package ComFlow_pkg;
 
-
-
 package body ComFlow_pkg is
-
 
 	function clog2(x : integer) return integer is
 	begin
-      return integer(ceil(log2(real(x))));
+        return integer(ceil(log2(real(x))));
 	end;
 
 end ComFlow_pkg;

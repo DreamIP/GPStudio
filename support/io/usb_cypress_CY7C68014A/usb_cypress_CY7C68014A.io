@@ -52,10 +52,10 @@
     <file name="params_flow_decoder.vhd" type="vhdl" group="hdl" path="hdl/flowtobus/src/params_flow_decoder.vhd"/>
     <file name="ComFlow_pkg.vhd" type="vhdl" group="hdl" path="hdl/utils/src/ComFlow_pkg.vhd"/>
     <file name="synchronizer.vhd" type="vhdl" group="hdl" path="hdl/utils/src/synchronizer.vhd"/>
-    <file name="slave_usb.vhd" type="vhdl" group="hdl" path="hdl/utils/src/slave_usb.vhd"/>
-    <file name="fv_signal_synchroniser.vhd" type="vhdl" group="hdl" path="hdl/utils/src/fv_signal_synchroniser.vhd"/>
+    <file name="usb_slave.vhd" type="vhdl" group="hdl" path="hdl/usb/src/usb_slave.vhd"/>
+    <file name="fv_signal_synchroniser.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/fv_signal_synchroniser.vhd"/>
     <file name="flow_to_com_arb4.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flow_to_com_arb4.vhd"/>
-    <file name="flowto16.vhd" type="vhdl" group="hdl" path="hdl/utils/src/flowto16.vhd"/>
+    <file name="flowto16.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flowto16.vhd"/>
     <file name="usb_cypress_CY7C68014A.io" type="io" group="blockdef" path="usb_cypress_CY7C68014A.io"/>
   </files>
   <resets>

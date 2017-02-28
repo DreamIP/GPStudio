@@ -23,7 +23,7 @@ end fv_signal_synchroniser;
 
 architecture rtl of fv_signal_synchroniser is
 
-type en_state_t is (WaitforSignal,WaitNextFrame,Run,WaitForEndFrame);
+type en_state_t is (WaitforSignal, WaitNextFrame, Run, WaitForEndFrame);
 signal en_state : en_state_t := WaitforSignal;
 
 signal enable_s : std_logic :='0';
