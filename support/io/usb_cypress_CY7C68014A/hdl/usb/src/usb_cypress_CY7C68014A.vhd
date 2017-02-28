@@ -349,45 +349,45 @@ FO0_label3 : if IN0_NBWORDS = 0 generate
 end generate FO0_label3;
 
 FO0_label4 : if IN0_NBWORDS > 0 generate
+    -- Adapt input flow size to 16 bits
+    USBFLOW_OUT0_BUSADAPTER: component flowto16
+    generic map (
+        INPUT_SIZE => IN1_SIZE,
+        FIFO_DEPTH => 128
+    )
+    port map (
+        rst_n           => rst,
+        clk             => clk_proc,
+        in_data			=> in0_data,
+        in_fv           => in0_fv,
+        in_dv           => in0_dv,
+        out_data        => in0_data_s,
+        out_fv          => in0_fv_s,
+        out_dv          => in0_dv_s
+    );
 
-	-- Adapt input flow size to 16 bits
-	USBFLOW_OUT0_BUSADAPTER: component flowto16
-			generic map (
-				INPUT_SIZE => IN0_SIZE,
-				FIFO_DEPTH => 128
-			)
-			port map(
-				rst_n           => rst,
-				clk             => clk_proc,
-				in_data			=> in0_data,
-				in_fv           => in0_fv,
-				in_dv           => in0_dv,
-				out_data        => in0_data_s,
-				out_fv          => in0_fv_s,
-				out_dv          => in0_dv_s
-			);
+    USBFLOW_OUT0: component flow_to_com
+    generic map (
+        FIFO_DEPTH => IN1_NBWORDS,
+        FLOW_ID => 128,
+        PACKET_SIZE => 256, -- header inclus
+        FLAGS_CODES => InitFlagCodes
+    )
+    port map (
+        clk_in          => clk_proc,
+        clk_out         => ifclk,
+        rst_n           => rst,
 
-	USBFLOW_OUT0: component flow_out
-	  generic map (
-		FIFO_DEPTH => IN0_NBWORDS,
-		FLOW_ID => 128,
-		PACKET_SIZE => 256, -- header inclus
-		FLAGS_CODES => InitFlagCodes
-		)
-	  port map(
-		data_i => in0_data_s,
-		fv_i => in0_fv_s,
-		dv_i => in0_dv_s,
-		rdreq_i => flow_out_rd_0_s,-- to arb
-		enable_i => enable_s_fvsync and enable_in0_s_sync,
-		data_o => flow_out_data_0_s,-- to arb
-		flow_rdy_o=> flow_out_rdy_0_s,-- to arb
-		f_empty_o => flow_out_empty_0_s,-- to arb
+        in_data         => in0_data_s,
+        in_fv           => in0_fv_s,
+        in_dv           => in0_dv_s,
 
-		clk_in_i => clk_proc,
-		clk_out_i => ifclk,
-		rst_n_i=> rst
-);
+        rdreq_i         => flow_out_rd_0_s, -- to arb
+        enable_i        => enable_s_fvsync and enable_in0_s_sync,
+        data_o          => flow_out_data_0_s, -- to arb
+        flow_rdy_o      => flow_out_rdy_0_s, -- to arb
+        f_empty_o       => flow_out_empty_0_s -- to arb
+    );
 end generate FO0_label4;
 ------------------------------------------------------------
 
@@ -400,45 +400,45 @@ FO1_label3 : if IN1_NBWORDS = 0 generate
 end generate FO1_label3;
 
 FO1_label4 : if IN1_NBWORDS > 0 generate
+    -- Adapt input flow size to 16 bits
+    USBFLOW_OUT1_BUSADAPTER: component flowto16
+    generic map (
+        INPUT_SIZE => IN1_SIZE,
+        FIFO_DEPTH => 128
+    )
+    port map (
+        rst_n           => rst,
+        clk             => clk_proc,
+        in_data			=> in1_data,
+        in_fv           => in1_fv,
+        in_dv           => in1_dv,
+        out_data        => in1_data_s,
+        out_fv          => in1_fv_s,
+        out_dv          => in1_dv_s
+    );
 
-	-- Adapt input flow size to 16 bits
-	USBFLOW_OUT1_BUSADAPTER: component flowto16
-			generic map (
-				INPUT_SIZE => IN1_SIZE,
-				FIFO_DEPTH => 128
-			)
-			port map(
-				rst_n           => rst,
-				clk             => clk_proc,
-				in_data			=> in1_data,
-				in_fv           => in1_fv,
-				in_dv           => in1_dv,
-				out_data        => in1_data_s,
-				out_fv          => in1_fv_s,
-				out_dv          => in1_dv_s
-			);
-	USBFLOW_OUT1: component flow_out
-	  generic map (
-		FIFO_DEPTH => IN1_NBWORDS,
-		FLOW_ID => 129,
-		PACKET_SIZE => 256, -- header inclus
-		FLAGS_CODES => InitFlagCodes
-		)
-	  port map(
-		data_i => in1_data_s,
-		fv_i => in1_fv_s,
-		dv_i => in1_dv_s,
+    USBFLOW_OUT1: component flow_to_com
+    generic map (
+        FIFO_DEPTH => IN1_NBWORDS,
+        FLOW_ID => 129,
+        PACKET_SIZE => 256, -- header inclus
+        FLAGS_CODES => InitFlagCodes
+    )
+    port map (
+        clk_in          => clk_proc,
+        clk_out         => ifclk,
+        rst_n           => rst,
 
-		rdreq_i => flow_out_rd_1_s, -- to arb
-		enable_i => enable_s_fvsync and enable_in1_s_sync,
-		data_o => flow_out_data_1_s, -- to arb
-		flow_rdy_o=> flow_out_rdy_1_s, -- to arb
-		f_empty_o => flow_out_empty_1_s, -- to arb
+        in_data         => in1_data_s,
+        in_fv           => in1_fv_s,
+        in_dv           => in1_dv_s,
 
-		clk_in_i => clk_proc,
-		clk_out_i => ifclk,
-		rst_n_i=> rst
-		);
+        rdreq_i         => flow_out_rd_1_s, -- to arb
+        enable_i        => enable_s_fvsync and enable_in1_s_sync,
+        data_o          => flow_out_data_1_s, -- to arb
+        flow_rdy_o      => flow_out_rdy_1_s, -- to arb
+        f_empty_o       => flow_out_empty_1_s -- to arb
+    );
 end generate FO1_label4;
 ------------------------------------------------------------
 
@@ -451,42 +451,45 @@ FO2_label3 : if IN2_NBWORDS = 0 generate
 end generate FO2_label3;
 
 FO2_label4 : if IN2_NBWORDS > 0 generate
--- Adapt input flow size to 16 bits
-	USBFLOW_OUT2_BUSADAPTER: component flowto16
-			generic map (
-				INPUT_SIZE => IN2_SIZE,
-				FIFO_DEPTH => 128
-			)
-			port map(
-				rst_n           => rst,
-				clk             => clk_proc,
-				in_data			=> in2_data,
-				in_fv           => in2_fv,
-				in_dv           => in2_dv,
-				out_data        => in2_data_s,
-				out_fv          => in2_fv_s,
-				out_dv          => in2_dv_s
-			);
-	USBFLOW_OUT2: component flow_out
-		generic map (
-			FIFO_DEPTH => IN2_NBWORDS,
-			FLOW_ID => 130,
-			PACKET_SIZE => 256, -- header inclus
-			FLAGS_CODES => InitFlagCodes
-		)
-		port map(
-			data_i => in2_data_s,
-			fv_i => in2_fv_s,
-			dv_i => in2_dv_s,
-			rdreq_i => flow_out_rd_2_s, -- to arb
-			enable_i => enable_s_fvsync and enable_in2_s_sync,
-			data_o => flow_out_data_2_s, -- to arb
-			flow_rdy_o=> flow_out_rdy_2_s, -- to arb
-			f_empty_o => flow_out_empty_2_s, -- to arb
-			clk_in_i => clk_proc,
-			clk_out_i => ifclk,
-			rst_n_i=> rst
-		);
+    -- Adapt input flow size to 16 bits
+    USBFLOW_OUT2_BUSADAPTER: component flowto16
+    generic map (
+        INPUT_SIZE => IN1_SIZE,
+        FIFO_DEPTH => 128
+    )
+    port map (
+        rst_n           => rst,
+        clk             => clk_proc,
+        in_data			=> in2_data,
+        in_fv           => in2_fv,
+        in_dv           => in2_dv,
+        out_data        => in2_data_s,
+        out_fv          => in2_fv_s,
+        out_dv          => in2_dv_s
+    );
+
+    USBFLOW_OUT2: component flow_to_com
+    generic map (
+        FIFO_DEPTH => IN1_NBWORDS,
+        FLOW_ID => 130,
+        PACKET_SIZE => 256, -- header inclus
+        FLAGS_CODES => InitFlagCodes
+    )
+    port map (
+        clk_in          => clk_proc,
+        clk_out         => ifclk,
+        rst_n           => rst,
+
+        in_data         => in2_data_s,
+        in_fv           => in2_fv_s,
+        in_dv           => in2_dv_s,
+
+        rdreq_i         => flow_out_rd_2_s, -- to arb
+        enable_i        => enable_s_fvsync and enable_in2_s_sync,
+        data_o          => flow_out_data_2_s, -- to arb
+        flow_rdy_o      => flow_out_rdy_2_s, -- to arb
+        f_empty_o       => flow_out_empty_2_s -- to arb
+    );
 end generate FO2_label4;
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -499,86 +502,85 @@ FO3_label3 : if IN3_NBWORDS = 0 generate
 end generate FO3_label3;
 
 FO3_label4 : if IN3_NBWORDS > 0 generate
+    -- Adapt input flow size to 16 bits
+    USBFLOW_OUT3_BUSADAPTER: component flowto16
+    generic map (
+        INPUT_SIZE => IN1_SIZE,
+        FIFO_DEPTH => 128
+    )
+    port map (
+        rst_n           => rst,
+        clk             => clk_proc,
+        in_data			=> in3_data,
+        in_fv           => in3_fv,
+        in_dv           => in3_dv,
+        out_data        => in3_data_s,
+        out_fv          => in3_fv_s,
+        out_dv          => in3_dv_s
+    );
 
--- Adapt input flow size to 16 bits
-	USBFLOW_OUT3_BUSADAPTER: component flowto16
-			generic map (
-				INPUT_SIZE => IN3_SIZE,
-				FIFO_DEPTH => 128
-			)
-			port map(
-				rst_n           => rst,
-				clk             => clk_proc,
-				in_data			=> in3_data,
-				in_fv           => in3_fv,
-				in_dv           => in3_dv,
-				out_data        => in3_data_s,
-				out_fv          => in3_fv_s,
-				out_dv          => in3_dv_s
-			);
+    USBFLOW_OUT3: component flow_to_com
+    generic map (
+        FIFO_DEPTH => IN1_NBWORDS,
+        FLOW_ID => 131,
+        PACKET_SIZE => 256, -- header inclus
+        FLAGS_CODES => InitFlagCodes
+    )
+    port map (
+        clk_in          => clk_proc,
+        clk_out         => ifclk,
+        rst_n           => rst,
 
-	USBFLOW_OUT3: component flow_out
-		generic map (
-			FIFO_DEPTH => IN3_NBWORDS,
-			FLOW_ID => 131,
-			PACKET_SIZE => 256, -- header inclus
-			FLAGS_CODES => InitFlagCodes
-		)
-		port map(
-			data_i => in3_data_s,
-			fv_i => in3_fv_s,
-			dv_i => in3_dv_s,
-			rdreq_i => flow_out_rd_3_s, -- to arb
-			enable_i => enable_s_fvsync and enable_in3_s_sync,
-			data_o => flow_out_data_3_s, -- to arb
-			flow_rdy_o=> flow_out_rdy_3_s, -- to arb
-			f_empty_o => flow_out_empty_3_s, -- to arb
-			clk_in_i => clk_proc,
-			clk_out_i => ifclk,
-			rst_n_i=> rst
-	);
+        in_data         => in3_data_s,
+        in_fv           => in3_fv_s,
+        in_dv           => in3_dv_s,
+
+        rdreq_i         => flow_out_rd_3_s, -- to arb
+        enable_i        => enable_s_fvsync and enable_in3_s_sync,
+        data_o          => flow_out_data_3_s, -- to arb
+        flow_rdy_o      => flow_out_rdy_3_s, -- to arb
+        f_empty_o       => flow_out_empty_3_s -- to arb
+    );
 end generate FO3_label4;
 ------------------------------------------------------------
 
 -- component flow_out_arbiter
 
-USBFLOW_ARB : component flow_out_arb4
+USBFLOW_ARB : component flow_to_com_arb4
  port map(
+		clk             => ifclk,
+		rst_n           => rst,
+
 		-- fv 0 signals
-		rdreq_0_o => flow_out_rd_0_s,
-		data_0_i => flow_out_data_0_s,
-		flow_rdy_0_i => flow_out_rdy_0_s,
-		f_empty_0_i  => flow_out_empty_0_s,
+		rdreq_0_o       => flow_out_rd_0_s,
+		data_0_i        => flow_out_data_0_s,
+		flow_rdy_0_i    => flow_out_rdy_0_s,
+		f_empty_0_i     => flow_out_empty_0_s,
 
 		-- fv 1 signals
-		rdreq_1_o => flow_out_rd_1_s,
-		data_1_i => flow_out_data_1_s,
-		flow_rdy_1_i=> flow_out_rdy_1_s,
-		f_empty_1_i => flow_out_empty_1_s,
+		rdreq_1_o       => flow_out_rd_1_s,
+		data_1_i        => flow_out_data_1_s,
+		flow_rdy_1_i    => flow_out_rdy_1_s,
+		f_empty_1_i     => flow_out_empty_1_s,
 
 		-- fv 2 signals
-		rdreq_2_o => flow_out_rd_2_s,
-		data_2_i => flow_out_data_2_s,
-		flow_rdy_2_i => flow_out_rdy_2_s,
-		f_empty_2_i  => flow_out_empty_2_s,
+		rdreq_2_o       => flow_out_rd_2_s,
+		data_2_i        => flow_out_data_2_s,
+		flow_rdy_2_i    => flow_out_rdy_2_s,
+		f_empty_2_i     => flow_out_empty_2_s,
 
 		-- fv 3 signals
-		rdreq_3_o => flow_out_rd_3_s,
-		data_3_i => flow_out_data_3_s,
-		flow_rdy_3_i=> flow_out_rdy_3_s,
-		f_empty_3_i => flow_out_empty_3_s,
+		rdreq_3_o       => flow_out_rd_3_s,
+		data_3_i        => flow_out_data_3_s,
+		flow_rdy_3_i    => flow_out_rdy_3_s,
+		f_empty_3_i     => flow_out_empty_3_s,
 
 		-- fv usb signals
-		rdreq_usb_i => flow_out_rd_s,
-		data_usb_o => flow_out_data_s,
-		flow_rdy_usb_o =>flow_out_rdy_s,
-		f_empty_usb_o =>flow_out_empty_s,
-
-		clk_i => ifclk,
-		rst_n_i => rst
+		rdreq_usb_i     => flow_out_rd_s,
+		data_usb_o      => flow_out_data_s,
+		flow_rdy_usb_o  => flow_out_rdy_s,
+		f_empty_usb_o   => flow_out_empty_s
 	);
-
-
 
 --  FLOW_PARAMS module --> Bus Interconnect Master
 FLOW_PARAMS: component flow_wishbone

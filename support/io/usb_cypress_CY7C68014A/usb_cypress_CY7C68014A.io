@@ -44,18 +44,17 @@
     <file name="read_flow.vhd" type="vhdl" group="hdl" path="hdl/flow_in/src/read_flow.vhd"/>
     <file name="read_flow_nbits.vhd" type="vhdl" group="hdl" path="hdl/flow_in/src/read_flow_nbits.vhd"/>
     <file name="flow_in.vhd" type="vhdl" group="hdl" path="hdl/flow_in/src/flow_in.vhd"/>
-    <file name="fifo_com_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_out/src/fifo_com_tx.vhd"/>
-    <file name="com_flow_fifo_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_out/src/com_flow_fifo_tx.vhd"/>
-    <file name="write_flow.vhd" type="vhdl" group="hdl" path="hdl/flow_out/src/write_flow.vhd"/>
-    <file name="flow_out.vhd" type="vhdl" group="hdl" path="hdl/flow_out/src/flow_out.vhd"/>
+    <file name="fifo_com_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/fifo_com_tx.vhd"/>
+    <file name="com_flow_fifo_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/com_flow_fifo_tx.vhd"/>
+    <file name="write_flow.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/write_flow.vhd"/>
+    <file name="flow_to_com.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flow_to_com.vhd"/>
     <file name="flow_wishbone.vhd" type="vhdl" group="hdl" path="hdl/flowtobus/src/flow_wishbone.vhd"/>
     <file name="params_flow_decoder.vhd" type="vhdl" group="hdl" path="hdl/flowtobus/src/params_flow_decoder.vhd"/>
     <file name="ComFlow_pkg.vhd" type="vhdl" group="hdl" path="hdl/utils/src/ComFlow_pkg.vhd"/>
     <file name="synchronizer.vhd" type="vhdl" group="hdl" path="hdl/utils/src/synchronizer.vhd"/>
     <file name="slave_usb.vhd" type="vhdl" group="hdl" path="hdl/utils/src/slave_usb.vhd"/>
     <file name="fv_signal_synchroniser.vhd" type="vhdl" group="hdl" path="hdl/utils/src/fv_signal_synchroniser.vhd"/>
-    <file name="flow_out_arb.vhd" type="vhdl" group="hdl" path="hdl/utils/src/flow_out_arb.vhd"/>
-    <file name="flow_out_arb4.vhd" type="vhdl" group="hdl" path="hdl/utils/src/flow_out_arb4.vhd"/>
+    <file name="flow_to_com_arb4.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flow_to_com_arb4.vhd"/>
     <file name="flowto16.vhd" type="vhdl" group="hdl" path="hdl/utils/src/flowto16.vhd"/>
     <file name="usb_cypress_CY7C68014A.io" type="io" group="blockdef" path="usb_cypress_CY7C68014A.io"/>
   </files>

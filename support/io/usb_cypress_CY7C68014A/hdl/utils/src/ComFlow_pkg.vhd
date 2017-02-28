@@ -59,33 +59,29 @@ package ComFlow_pkg is
     );
 	end component;
 
-	component flow_out is
-	  generic (
-		FIFO_DEPTH : POSITIVE := 1024;
-		FLOW_ID : integer := 1;
-		PACKET_SIZE : integer := 256;
-		FLAGS_CODES : my_array_t := InitFlagCodes
-		);
-	  port(
+    component flow_to_com is
+        generic (
+            FIFO_DEPTH      : POSITIVE := 1024;
+            FLOW_ID         : integer := 1;
+            PACKET_SIZE     : integer := 256;
+            FLAGS_CODES     : my_array_t := InitFlagCodes
+        );
+        port(
+            clk_in          : in std_logic;
+            clk_out         : in std_logic;
+            rst_n           : in std_logic;
+            
+            in_data         : in std_logic_vector(15 downto 0);
+            in_fv           : in std_logic;
+            in_dv           : in std_logic;
+            rdreq_i         : in std_logic;
+            enable_i        : in std_logic;
 
-		data_i : in std_logic_vector(15 downto 0);
-		fv_i: in std_logic;
-		dv_i : in std_logic;
-		rdreq_i : in std_logic;
-		enable_i : in std_logic;
-
-		data_o : out std_logic_vector(15 downto 0);
-		flow_rdy_o: out std_logic;
-		f_empty_o : out std_logic;
-
-	--	fifos_f_o : out std_logic;
-
-		clk_in_i : in std_logic;
-		clk_out_i :in std_logic;
-		rst_n_i :in std_logic
-		);
-
-	end component;
+            data_o          : out std_logic_vector(15 downto 0);
+            flow_rdy_o      : out std_logic;
+            f_empty_o       : out std_logic
+        );
+    end component;
 
 	constant BURSTMODE :std_logic_vector(7 downto 0) := X"BC";
 	component flow_wishbone
@@ -178,70 +174,40 @@ package ComFlow_pkg is
 	    );
 	end  component;
 
-component flow_out_arb
+component flow_to_com_arb4
+    port (
+        clk             : in std_logic;
+        rst_n           : in std_logic;
+        
+        -- fv 0 signals
+        rdreq_0_o       : out std_logic;
+        data_0_i        : in std_logic_vector(15 downto 0);
+        flow_rdy_0_i    : in std_logic;
+        f_empty_0_i     : in std_logic;
 
-  port(
-	-- fv 0 signals
-	rdreq_0_o : out std_logic;
-	data_0_i : in std_logic_vector(15 downto 0);
-	flow_rdy_0_i: in std_logic;
-	f_empty_0_i : in std_logic;
+        -- fv 1signals
+        rdreq_1_o       : out std_logic;
+        data_1_i        : in std_logic_vector(15 downto 0);
+        flow_rdy_1_i    : in std_logic;
+        f_empty_1_i     : in std_logic;
 
-	-- fv 1signals
-	rdreq_1_o : out std_logic;
-	data_1_i : in std_logic_vector(15 downto 0);
-	flow_rdy_1_i: in std_logic;
-	f_empty_1_i : in std_logic;
+        -- fv 2 signals
+        rdreq_2_o       : out std_logic;
+        data_2_i        : in std_logic_vector(15 downto 0);
+        flow_rdy_2_i    : in std_logic;
+        f_empty_2_i     : in std_logic;
 
-	-- fv usb signals
-	rdreq_usb_i : in std_logic;
-	data_usb_o : out std_logic_vector(15 downto 0);
-	flow_rdy_usb_o: out std_logic;
-	f_empty_usb_o: out std_logic;
+        -- fv 3 signals
+        rdreq_3_o       : out std_logic;
+        data_3_i        : in std_logic_vector(15 downto 0);
+        flow_rdy_3_i    : in std_logic;
+        f_empty_3_i     : in std_logic;
 
-	clk_i :in std_logic;
-	rst_n_i :in std_logic
-
-    );
-end component;
-
-
-component flow_out_arb4
-
-  port(
-	-- fv 0 signals
-	rdreq_0_o : out std_logic;
-	data_0_i : in std_logic_vector(15 downto 0);
-	flow_rdy_0_i: in std_logic;
-	f_empty_0_i : in std_logic;
-
-	-- fv 1signals
-	rdreq_1_o : out std_logic;
-	data_1_i : in std_logic_vector(15 downto 0);
-	flow_rdy_1_i: in std_logic;
-	f_empty_1_i : in std_logic;
-
-	-- fv 2 signals
-	rdreq_2_o : out std_logic;
-	data_2_i : in std_logic_vector(15 downto 0);
-	flow_rdy_2_i: in std_logic;
-	f_empty_2_i : in std_logic;
-
-	-- fv 3 signals
-	rdreq_3_o : out std_logic;
-	data_3_i : in std_logic_vector(15 downto 0);
-	flow_rdy_3_i: in std_logic;
-	f_empty_3_i : in std_logic;
-
-	-- fv usb signals
-	rdreq_usb_i : in std_logic;
-	data_usb_o : out std_logic_vector(15 downto 0);
-	flow_rdy_usb_o: out std_logic;
-	f_empty_usb_o: out std_logic;
-
-	clk_i :in std_logic;
-	rst_n_i :in std_logic
-
+        -- fv usb signals
+        rdreq_usb_i     : in std_logic;
+        data_usb_o      : out std_logic_vector(15 downto 0);
+        flow_rdy_usb_o  : out std_logic;
+        f_empty_usb_o   : out std_logic
     );
 end component;
 
