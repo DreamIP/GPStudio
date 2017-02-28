@@ -281,7 +281,7 @@ FI0_label0 : if OUT0_NBWORDS = 0 generate
 end generate FI0_label0;
 
 FI0_label1 : if OUT0_NBWORDS > 0 generate
-    USBFLOW_IN0: component flow_in
+    USBFLOW_IN0: component com_to_flow
     generic map (
         FIFO_DEPTH  => OUT0_NBWORDS,
         FLOW_ID     => 1,
@@ -289,9 +289,9 @@ FI0_label1 : if OUT0_NBWORDS > 0 generate
         OUTPUT_SIZE => OUT0_SIZE
     )
     port map (
-        clk_in_i    => ifclk,
-        clk_out_i   => clk_proc,
-        rst_n_i     => rst,
+        clk_in      => ifclk,
+        clk_out     => clk_proc,
+        rst_n       => rst,
 
         data_wr_i   => flow_in1_wr_s,
         data_i      => flow_in1_data_s,
@@ -313,7 +313,7 @@ FI1_label0 : if OUT1_NBWORDS = 0 generate
 end generate FI1_label0;
 
 FI1_label1 : if OUT1_NBWORDS > 0 generate
-    USBFLOW_IN1: component flow_in
+    USBFLOW_IN1: component com_to_flow
     generic map (
         FIFO_DEPTH  => OUT1_NBWORDS,
         FLOW_ID     => 2,
@@ -321,9 +321,9 @@ FI1_label1 : if OUT1_NBWORDS > 0 generate
         OUTPUT_SIZE => OUT1_SIZE
     )
     port map (
-        clk_in_i    => ifclk,
-        clk_out_i   => clk_proc,
-        rst_n_i     => rst,
+        clk_in      => ifclk,
+        clk_out     => clk_proc,
+        rst_n       => rst,
 
         data_wr_i   => flow_in1_wr_s,
         data_i      => flow_in1_data_s,

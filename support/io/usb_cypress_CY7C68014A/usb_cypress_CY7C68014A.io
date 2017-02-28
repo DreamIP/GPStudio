@@ -39,11 +39,10 @@
     <file name="usb.sdc" type="sdc" group="hdl" path="usb.sdc"/>
     <file name="usb_cypress_CY7C68014A.vhd" type="vhdl" group="hdl" path="hdl/usb/src/usb_cypress_CY7C68014A.vhd"/>
     <file name="usb_sm.vhd" type="vhdl" group="hdl" path="hdl/usb/src/usb_sm.vhd"/>
-    <file name="fifo_com_rx.vhd" type="vhdl" group="hdl" path="hdl/flow_in/src/fifo_com_rx.vhd"/>
-    <file name="com_flow_fifo_rx.vhd" type="vhdl" group="hdl" path="hdl/flow_in/src/com_flow_fifo_rx.vhd"/>
-    <file name="read_flow.vhd" type="vhdl" group="hdl" path="hdl/flow_in/src/read_flow.vhd"/>
-    <file name="read_flow_nbits.vhd" type="vhdl" group="hdl" path="hdl/flow_in/src/read_flow_nbits.vhd"/>
-    <file name="flow_in.vhd" type="vhdl" group="hdl" path="hdl/flow_in/src/flow_in.vhd"/>
+    <file name="fifo_com_rx.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/fifo_com_rx.vhd"/>
+    <file name="com_flow_fifo_rx.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/com_flow_fifo_rx.vhd"/>
+    <file name="read_flow_nbits.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/read_flow_nbits.vhd"/>
+    <file name="com_to_flow.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/com_to_flow.vhd"/>
     <file name="fifo_com_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/fifo_com_tx.vhd"/>
     <file name="com_flow_fifo_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/com_flow_fifo_tx.vhd"/>
     <file name="write_flow.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/write_flow.vhd"/>

@@ -61,9 +61,9 @@ component  com_flow_fifo_rx
 	f_empty_o : out std_logic;
 	fifos_f_o : out std_logic;
 	flag_o : out std_logic_vector(7 downto 0);
-	clk_in_i : in std_logic;
-	clk_out_i :in std_logic;
-	rst_n_i :in std_logic    
+	clk_in : in std_logic;
+	clk_out :in std_logic;
+	rst_n :in std_logic    
     );
 end component;
 
@@ -157,9 +157,9 @@ COM_RX_PARAMS: component  com_flow_fifo_rx
 	fifos_f_o => fifo_full_o,
 	flag_o => flag_s,
 
-	clk_in_i => clk_in_i,
-	clk_out_i => clk_out_i,
-	rst_n_i => rst_n_i
+	clk_in => clk_in_i,
+	clk_out => clk_out_i,
+	rst_n => rst_n_i
     );
 
 -- MAP CLOCK DOMAIN CROSSING Synchronizer
