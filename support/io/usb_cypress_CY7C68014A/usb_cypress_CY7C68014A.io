@@ -38,7 +38,7 @@
     <file name="USB datasheet" type="doc" group="doc" path="doc/CY7C68013A_14A_15A_16A_38-08032.pdf"/>
     <file name="usb.sdc" type="sdc" group="hdl" path="usb.sdc"/>
     <file name="usb_cypress_CY7C68014A.vhd" type="vhdl" group="hdl" path="hdl/usb/src/usb_cypress_CY7C68014A.vhd"/>
-    <file name="usb_sm.vhd" type="vhdl" group="hdl" path="hdl/usb/src/usb_sm.vhd"/>
+    <file name="usb_hal.vhd" type="vhdl" group="hdl" path="hdl/usb/src/usb_hal.vhd"/>
     <file name="fifo_com_rx.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/fifo_com_rx.vhd"/>
     <file name="com_flow_fifo_rx.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/com_flow_fifo_rx.vhd"/>
     <file name="read_flow_nbits.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/read_flow_nbits.vhd"/>
@@ -121,7 +121,7 @@
     <property name="enableflow4" caption="Enable Flow 4" type="bool" value="1"/>
   </properties>
   <clocks>
-    <clock name="clk_usb" typical="48000000" direction="out"/>
+    <clock name="clk_hal" typical="48000000" direction="out"/>
   </clocks>
   <ports>
     <port name="rst" type="in" size="1"/>

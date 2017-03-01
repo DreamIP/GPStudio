@@ -35,7 +35,7 @@ entity usb_cypress_CY7C68014A is
 	);
 	port (
 		clk_proc        : in std_logic;
-		clk_usb         : out std_logic;
+		clk_hal         : out std_logic;
 		reset           : out std_logic;
 
 		------ external ports ------
@@ -144,11 +144,14 @@ architecture rtl of usb_cypress_CY7C68014A is
 	-- FLOW_PARAMS
     signal update_port_s        : std_logic := '0';
 
+    -- clock
+    signal clk_hal_s            : std_logic := '0';
+
 begin
 
 reset <= rst;
 
-USB_SM_INST : usb_sm
+USB_SM_INST : usb_hal
 port map (
     usb_ifclk           => ifclk,
     usb_flaga           => flaga,
@@ -209,7 +212,7 @@ FI0_label1 : if OUT0_NBWORDS > 0 generate
         OUTPUT_SIZE => OUT0_SIZE
     )
     port map (
-        clk_in      => ifclk,
+        clk_in      => clk_hal_s,
         clk_out     => clk_proc,
         rst_n       => rst,
 
@@ -241,7 +244,7 @@ FI1_label1 : if OUT1_NBWORDS > 0 generate
         OUTPUT_SIZE => OUT1_SIZE
     )
     port map (
-        clk_in      => ifclk,
+        clk_in      => clk_hal_s,
         clk_out     => clk_proc,
         rst_n       => rst,
 
@@ -277,7 +280,7 @@ FO0_label4 : if IN0_NBWORDS > 0 generate
     )
     port map (
         clk_in          => clk_proc,
-        clk_out         => ifclk,
+        clk_out         => clk_hal_s,
         rst_n           => rst,
 
         in_data         => in0_data,
@@ -315,7 +318,7 @@ FO1_label4 : if IN1_NBWORDS > 0 generate
     )
     port map (
         clk_in          => clk_proc,
-        clk_out         => ifclk,
+        clk_out         => clk_hal_s,
         rst_n           => rst,
 
         in_data         => in1_data,
@@ -353,7 +356,7 @@ FO2_label4 : if IN2_NBWORDS > 0 generate
     )
     port map (
         clk_in          => clk_proc,
-        clk_out         => ifclk,
+        clk_out         => clk_hal_s,
         rst_n           => rst,
 
         in_data         => in2_data,
@@ -391,7 +394,7 @@ FO3_label4 : if IN3_NBWORDS > 0 generate
     )
     port map (
         clk_in          => clk_proc,
-        clk_out         => ifclk,
+        clk_out         => clk_hal_s,
         rst_n           => rst,
 
         in_data         => in3_data,
@@ -413,7 +416,7 @@ end generate FO3_label4;
 
 USBFLOW_ARB : component flow_to_com_arb4
     port map (
-		clk             => ifclk,
+		clk             => clk_hal_s,
 		rst_n           => rst,
 
 		-- fv 0 signals
@@ -455,7 +458,7 @@ FLOW_PARAMS : component com_to_master_pi
         MASTER_ADDR_WIDTH   => MASTER_ADDR_WIDTH
     )
     port map (
-        clk_in              => ifclk,
+        clk_in              => clk_hal_s,
         clk_out             => clk_proc,
         rst_n               => rst,
         data_wr_i           => flow_in1_wr_s,
@@ -468,7 +471,8 @@ FLOW_PARAMS : component com_to_master_pi
         -- rajouter fin d'ecriture dans la memoire...
         --~ tmp_update_port_o => update_port_s
     );
-
-    clk_usb <= ifclk;
+    
+    clk_hal_s <= ifclk;
+    clk_hal <= clk_hal_s;
 
 end rtl;
