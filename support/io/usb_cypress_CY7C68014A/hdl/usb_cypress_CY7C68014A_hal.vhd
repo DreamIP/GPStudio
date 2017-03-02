@@ -7,8 +7,9 @@ use ieee.std_logic_unsigned.all;
 library work;
 use work.ComFlow_pkg.all;
 
-entity usb_hal is
-    port(
+entity usb_cypress_CY7C68014A_hal is
+    port (
+    -- external port, to CY7C68014A physical component
         usb_ifclk           : in    std_logic;
         usb_flaga           : in    std_logic;
         usb_flagb           : in    std_logic;
@@ -22,7 +23,8 @@ entity usb_hal is
         usb_addr            : out   std_logic_vector(1 downto 0);
 
         usb_rst		        : in 	std_logic;
-
+    
+    -- connection to com manager
         flow_in_data_o      : out   std_logic_vector(15 downto 0);
         flow_in_wr_o	    : out   std_logic;
         flow_in_full_i      : in    std_logic;
@@ -33,9 +35,9 @@ entity usb_hal is
         flow_out_empty_i    : in    std_logic;
         flow_out_rdy_i      : in    std_logic
     );
-end usb_hal;
+end usb_cypress_CY7C68014A_hal;
 
-architecture rtl of usb_hal is
+architecture rtl of usb_cypress_CY7C68014A_hal is
 
     type sm is (idle, rd, wr, wr_end, WaitOneCycleBeforeWr);
     signal state : sm := idle;

@@ -36,25 +36,29 @@
   </parts>
   <files>
     <file name="USB datasheet" type="doc" group="doc" path="doc/CY7C68013A_14A_15A_16A_38-08032.pdf"/>
-    <file name="usb.sdc" type="sdc" group="hdl" path="usb.sdc"/>
-    <file name="usb_cypress_CY7C68014A.vhd" type="vhdl" group="hdl" path="hdl/usb/src/usb_cypress_CY7C68014A.vhd"/>
-    <file name="usb_hal.vhd" type="vhdl" group="hdl" path="hdl/usb/src/usb_hal.vhd"/>
+    <file name="usb_cypress_CY7C68014A.sdc" type="sdc" group="hdl" path="hdl/usb_cypress_CY7C68014A.sdc"/>
+    <file name="usb_cypress_CY7C68014A.vhd" type="vhdl" group="hdl" path="hdl/usb_cypress_CY7C68014A.vhd"/>
+    <file name="usb_cypress_CY7C68014A_hal.vhd" type="vhdl" group="hdl" path="hdl/usb_cypress_CY7C68014A_hal.vhd"/>
+    <file name="usb_cypress_CY7C68014A_slave.vhd" type="vhdl" group="hdl" path="hdl/usb_cypress_CY7C68014A_slave.vhd"/>
+
+    <file name="com_to_flow.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/com_to_flow.vhd"/>
     <file name="fifo_com_rx.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/fifo_com_rx.vhd"/>
     <file name="com_flow_fifo_rx.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/com_flow_fifo_rx.vhd"/>
     <file name="read_flow_nbits.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/read_flow_nbits.vhd"/>
-    <file name="com_to_flow.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/com_to_flow.vhd"/>
+
+    <file name="flow_to_com.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flow_to_com.vhd"/>
     <file name="fifo_com_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/fifo_com_tx.vhd"/>
     <file name="com_flow_fifo_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/com_flow_fifo_tx.vhd"/>
     <file name="write_flow.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/write_flow.vhd"/>
-    <file name="flow_to_com.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flow_to_com.vhd"/>
-    <file name="com_to_master_pi.vhd" type="vhdl" group="hdl" path="hdl/com_to_master_pi/src/com_to_master_pi.vhd"/>
-    <file name="params_flow_decoder.vhd" type="vhdl" group="hdl" path="hdl/com_to_master_pi/src/params_flow_decoder.vhd"/>
-    <file name="ComFlow_pkg.vhd" type="vhdl" group="hdl" path="hdl/utils/src/ComFlow_pkg.vhd"/>
-    <file name="synchronizer.vhd" type="vhdl" group="hdl" path="hdl/utils/src/synchronizer.vhd"/>
-    <file name="usb_slave.vhd" type="vhdl" group="hdl" path="hdl/usb/src/usb_slave.vhd"/>
     <file name="fv_signal_synchroniser.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/fv_signal_synchroniser.vhd"/>
     <file name="flow_to_com_arb4.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flow_to_com_arb4.vhd"/>
     <file name="flowto16.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flowto16.vhd"/>
+
+    <file name="com_to_master_pi.vhd" type="vhdl" group="hdl" path="hdl/com_to_master_pi/src/com_to_master_pi.vhd"/>
+    <file name="params_flow_decoder.vhd" type="vhdl" group="hdl" path="hdl/com_to_master_pi/src/params_flow_decoder.vhd"/>
+
+    <file name="ComFlow_pkg.vhd" type="vhdl" group="hdl" path="hdl/utils/src/ComFlow_pkg.vhd"/>
+    <file name="synchronizer.vhd" type="vhdl" group="hdl" path="hdl/utils/src/synchronizer.vhd"/>
     <file name="usb_cypress_CY7C68014A.io" type="io" group="blockdef" path="usb_cypress_CY7C68014A.io"/>
   </files>
   <resets>

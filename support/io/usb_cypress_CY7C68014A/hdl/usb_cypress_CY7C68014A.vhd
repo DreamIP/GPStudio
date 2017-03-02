@@ -110,33 +110,33 @@ architecture rtl of usb_cypress_CY7C68014A is
 	signal enable_in3_s         : std_logic := '0';
 
 -- USBFLOW_IN
-	signal flow_in1_data_s      : std_logic_vector(15 downto 0) := (others=>'0');
+	signal flow_in1_data_s      : std_logic_vector(15 downto 0) := (others => '0');
 	signal flow_in1_wr_s        : std_logic := '0';
 	signal flow_in1_full_s      : std_logic := '0';
 	signal flow_in1_pktend_s    : std_logic := '0';
 
 -- USBFLOW OUT
-	signal flow_out_data_s      : std_logic_vector(15 downto 0) := (others=>'0');
+	signal flow_out_data_s      : std_logic_vector(15 downto 0) := (others => '0');
 	signal flow_out_empty_s     : std_logic := '0';
 	signal flow_out_rd_s        : std_logic := '0';
 	signal flow_out_rdy_s       : std_logic := '0';
 
-	signal flow_out_data_0_s    : std_logic_vector(15 downto 0) := (others=>'0');
+	signal flow_out_data_0_s    : std_logic_vector(15 downto 0) := (others => '0');
 	signal flow_out_empty_0_s   : std_logic := '0';
 	signal flow_out_rd_0_s      : std_logic := '0';
 	signal flow_out_rdy_0_s     : std_logic := '0';
 
-	signal flow_out_data_1_s    : std_logic_vector(15 downto 0) := (others=>'0');
+	signal flow_out_data_1_s    : std_logic_vector(15 downto 0) := (others => '0');
 	signal flow_out_empty_1_s   : std_logic := '0';
 	signal flow_out_rd_1_s      : std_logic := '0';
 	signal flow_out_rdy_1_s     : std_logic := '0';
 
-	signal flow_out_data_2_s    : std_logic_vector(15 downto 0) := (others=>'0');
+	signal flow_out_data_2_s    : std_logic_vector(15 downto 0) := (others => '0');
 	signal flow_out_empty_2_s   : std_logic := '0';
 	signal flow_out_rd_2_s      : std_logic := '0';
 	signal flow_out_rdy_2_s     : std_logic := '0';
 
-	signal flow_out_data_3_s    : std_logic_vector(15 downto 0) := (others=>'0');
+	signal flow_out_data_3_s    : std_logic_vector(15 downto 0) := (others => '0');
 	signal flow_out_empty_3_s   : std_logic := '0';
 	signal flow_out_rd_3_s      : std_logic := '0';
 	signal flow_out_rdy_3_s     : std_logic := '0';
@@ -151,7 +151,8 @@ begin
 
 reset <= rst;
 
-USB_SM_INST : usb_hal
+-- USB HAL, control of USB cypress
+USB_HAL_INST : usb_cypress_CY7C68014A_hal
 port map (
     usb_ifclk           => ifclk,
     usb_flaga           => flaga,
@@ -177,6 +178,7 @@ port map (
     flow_out_rdy_i      => flow_out_rdy_s
 );
 
+-- 
 SLAVE_BUS_INST : component usb_cypress_CY7C68014A_slave
 generic map (
     CLK_PROC_FREQ  => CLK_PROC_FREQ
@@ -198,7 +200,7 @@ port map (
 
 --FLOW_IN 0
 FI0_label0 : if OUT0_NBWORDS = 0 generate
-	out0_data   <= (others=>'0');
+	out0_data   <= (others => '0');
 	out0_fv     <= '0';
 	out0_dv     <= '0';
 end generate FI0_label0;
@@ -230,7 +232,7 @@ end generate FI0_label1;
 
 --FLOW_IN 1
 FI1_label0 : if OUT1_NBWORDS = 0 generate
-	out1_data   <= (others=>'0');
+	out1_data   <= (others => '0');
 	out1_fv     <= '0';
 	out1_dv     <= '0';
 end generate FI1_label0;
@@ -264,8 +266,8 @@ end generate FI1_label1;
 --Disable flow if not used
 FO0_label3 : if IN0_NBWORDS = 0 generate
 	flow_out_rdy_0_s <= '0';
-	flow_out_empty_0_s <='0';
-	flow_out_data_0_s <= (others=>'0');
+	flow_out_empty_0_s <= '0';
+	flow_out_data_0_s <= (others => '0');
 end generate FO0_label3;
 
 FO0_label4 : if IN0_NBWORDS > 0 generate
@@ -303,7 +305,7 @@ end generate FO0_label4;
 FO1_label3 : if IN1_NBWORDS = 0 generate
 	flow_out_rdy_1_s    <= '0';
 	flow_out_empty_1_s  <= '0';
-	flow_out_data_1_s   <= (others=>'0');
+	flow_out_data_1_s   <= (others => '0');
 end generate FO1_label3;
 
 FO1_label4 : if IN1_NBWORDS > 0 generate
@@ -340,8 +342,8 @@ end generate FO1_label4;
 --FLOW OUT 2
 FO2_label3 : if IN2_NBWORDS = 0 generate
 	flow_out_rdy_2_s <= '0';
-	flow_out_empty_2_s <='0';
-	flow_out_data_2_s <= (others=>'0');
+	flow_out_empty_2_s <= '0';
+	flow_out_data_2_s <= (others => '0');
 end generate FO2_label3;
 
 FO2_label4 : if IN2_NBWORDS > 0 generate
@@ -378,8 +380,8 @@ end generate FO2_label4;
 
 FO3_label3 : if IN3_NBWORDS = 0 generate
 	flow_out_rdy_3_s <= '0';
-	flow_out_empty_3_s <='0';
-	flow_out_data_3_s <= (others=>'0');
+	flow_out_empty_3_s <= '0';
+	flow_out_data_3_s <= (others => '0');
 end generate FO3_label3;
 
 FO3_label4 : if IN3_NBWORDS > 0 generate

@@ -116,7 +116,7 @@ package ComFlow_pkg is
         );
     end component;
 
-	component usb_hal
+	component usb_cypress_CY7C68014A_hal
         port(
             usb_ifclk    : in    std_logic;
             usb_flaga    : in    std_logic;
