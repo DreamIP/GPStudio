@@ -67,8 +67,8 @@ begin
 			--Cleaning frame coordinates
 			x_max 			<= (others=>'0');
 			y_max 			<= (others=>'0');
-			x_min 			<= unsigned(in_size_reg_in_w_reg);
-			y_min 			<= unsigned(in_size_reg_in_h_reg);
+			x_min 			<= (others=>'0');
+			y_min 			<= (others=>'0');
 			--Cleaning frame buffer
 			frame_buffer    <= (others=>'0');
 			--Cleaning signals used to fill buffer

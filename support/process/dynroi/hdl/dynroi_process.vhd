@@ -76,6 +76,11 @@ signal frame_buffer_has_been_filled : std_logic;
 signal frame_buffer_has_been_sent	: std_logic;
 signal frame_buffer_position        : unsigned(6 downto 0);
 
+--Apply_roi signals
+signal x_temp		: unsigned(X_COUNTER_SIZE-1 downto 0);
+signal y_temp 		: unsigned(Y_COUNTER_SIZE-1 downto 0);
+signal w_temp		: unsigned(X_COUNTER_SIZE-1 downto 0);
+signal h_temp		: unsigned(Y_COUNTER_SIZE-1 downto 0);
 
 
 begin
@@ -99,10 +104,16 @@ begin
 			 x 	:= (others => '0');
 			 y 	:= (others => '0');
 			 w 	:= (others => '0');
-			 h 	:= (others => '0');			
+			 h 	:= (others => '0');					 
+			 
+			 x_temp 	<= (others => '0');
+			 y_temp 	<= (others => '0');
+			 w_temp		<= (others => '0');
+			 h_temp 	<= (others => '0');			
+			 
 			 roi_data <= (others => '0');
-			 roi_dv <= '0';
-			 roi_fv <= '0';
+			 roi_dv   <= '0';
+			 roi_fv   <= '0';
 		 elsif(rising_edge(clk_proc)) then
              if Img_fv = '1' and enabled = '1' then
                 roi_fv <= '1';
@@ -114,15 +125,20 @@ begin
 			 	 
 			 --Updating last frame coordinates
 			 if frame_buffer_has_been_filled = '1' and enabled = '1' then
-				 x := unsigned(frame_buffer(X_COUNTER_SIZE-1 downto 0));
-				 y := unsigned(frame_buffer(Y_COUNTER_SIZE+15 downto 16));
-				 w := unsigned(frame_buffer(X_COUNTER_SIZE+31 downto 32));
-				 h := unsigned(frame_buffer(Y_COUNTER_SIZE+47 downto 48));
+				 x_temp <= unsigned(frame_buffer(X_COUNTER_SIZE-1 downto 0));
+				 y_temp <= unsigned(frame_buffer(Y_COUNTER_SIZE+15 downto 16));
+				 w_temp <= unsigned(frame_buffer(X_COUNTER_SIZE+31 downto 32));
+				 h_temp <= unsigned(frame_buffer(Y_COUNTER_SIZE+47 downto 48));
 			 end if;
 				 
 			 -- ROI action	 
 			 if Img_fv = '0' then
-				 --reset pixel counters
+			     --Update ROI coords
+			     x := x_temp;
+				 y := y_temp;
+				 w := w_temp;
+				 h := h_temp;
+				 --Reset pixel counters
 				 xImg_pos 	 	   := to_unsigned(0, X_COUNTER_SIZE);
 				 yImg_pos    	   := to_unsigned(0, Y_COUNTER_SIZE);
 			 else
