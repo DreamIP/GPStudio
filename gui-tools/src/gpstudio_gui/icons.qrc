@@ -40,6 +40,9 @@
         <file>../img/log-clear.png</file>
         <file>../img/view-blocks.png</file>
         <file>../img/qt.png</file>
+        <file>../img/show-information.png</file>
+        <file>../img/show-warning.png</file>
+        <file>../img/show-error.png</file>
     </qresource>
     <qresource prefix="/img">
         <file>../img/gpstudio_node.ico</file>

@@ -140,20 +140,37 @@ void CompileLogWidget::readProcess()
             QString colorCode = colorReg.cap(1).toLower();
             QString colorHTML;
 
-            if(colorCode == "warning")
-                colorHTML = "orange";
-            if(colorCode == "critical")
-                colorHTML = "red";
-            if(colorCode == "error")
-                colorHTML = "red";
-            if(colorCode == "info")
-                colorHTML = "blue";
+            bool show = true;
 
-            html.append("<p><span style=\"color: " + colorHTML + "\">" + stringRead + "</span></p>");
+            if(colorCode == "warning")
+            {
+                colorHTML = "orange";
+                show = _showWarningAction->isChecked();
+            }
+            if(colorCode == "critical")
+            {
+                colorHTML = "red";
+                show = _showErrorAction->isChecked();
+            }
+            if(colorCode == "error")
+            {
+                colorHTML = "red";
+                show = _showErrorAction->isChecked();
+            }
+            if(colorCode == "info")
+            {
+                colorHTML = "blue";
+                show = _showInfoAction->isChecked();
+            }
+
+            if(show)
+                html.append("<p><span style=\"color: " + colorHTML + "\">" + stringRead + "</span></p>");
         }
         else
         {
-            html.append("<p>" + stringRead + "</p>");
+            bool show = _showInfoAction->isChecked();
+            if(show)
+                html.append("<p>" + stringRead + "</p>");
         }
 
         dataRead = _process->readAllStandardError();
@@ -313,7 +330,7 @@ void CompileLogWidget::exitProcess()
     {
         QMessageBox messageBox(this);
         QString title, message;
-        bool error;
+        bool error = false;
         checkAction();
         switch(_currentAction)
         {
@@ -456,6 +473,29 @@ QToolBar *CompileLogWidget::getToolBar()
     connect(stopAction, SIGNAL(triggered(bool)), this, SLOT(stopAll()));
     connect(this, SIGNAL(stopAvailable(bool)), stopAction, SLOT(setEnabled(bool)));
     toolbar->addAction(stopAction);
+
+    toolbar->addSeparator();
+
+    _showInfoAction = new QAction(tr("Show information"), this);
+    _showInfoAction->setToolTip(tr("Show information messages"));
+    _showInfoAction->setIcon(QIcon(":/icons/img/show-information.png"));
+    _showInfoAction->setCheckable(true);
+    _showInfoAction->setChecked(true);
+    toolbar->addAction(_showInfoAction);
+
+    _showWarningAction = new QAction(tr("Show warning"), this);
+    _showWarningAction->setToolTip(tr("Show warning messages"));
+    _showWarningAction->setIcon(QIcon(":/icons/img/show-warning.png"));
+    _showWarningAction->setCheckable(true);
+    _showWarningAction->setChecked(true);
+    toolbar->addAction(_showWarningAction);
+
+    _showErrorAction = new QAction(tr("Show error"), this);
+    _showErrorAction->setToolTip(tr("Show error messages"));
+    _showErrorAction->setIcon(QIcon(":/icons/img/show-error.png"));
+    _showErrorAction->setCheckable(true);
+    _showErrorAction->setChecked(true);
+    toolbar->addAction(_showErrorAction);
 
     return toolbar;
 }

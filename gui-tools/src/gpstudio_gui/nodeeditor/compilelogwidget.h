@@ -103,6 +103,10 @@ private:
     QProcess *_process;
     QDateTime _startProcessDate;
 
+    QAction *_showInfoAction;
+    QAction *_showWarningAction;
+    QAction *_showErrorAction;
+
     GPNodeProject *_project;
 };
 
