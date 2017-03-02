@@ -124,6 +124,7 @@ void LayerWidget::showImage(const QPixmap &image, const QString &title)
 
 void LayerWidget::setRectSize(QSize size)
 {
+    _rect = QRect(QPoint(0, 0), size);
     if(!size.isValid())
     {
         _scene->removeItem(_rectItem);
@@ -137,6 +138,11 @@ void LayerWidget::setRectSize(QSize size)
     }
     else
         _rectItem->setRect(0, 0, size.width(), size.height());
+}
+
+QRect LayerWidget::rectSize() const
+{
+    return _rect;
 }
 
 void LayerWidget::setMask(const QImage &mask)

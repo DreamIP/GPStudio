@@ -53,6 +53,7 @@ public:
     void showImage(const QPixmap &image, const QString &title=QString());
 
     void setRectSize(QSize size);
+    QRect rectSize() const;
 
     void setMask(const QImage &mask);
 
@@ -61,6 +62,7 @@ public:
 
     unsigned int propertyView() const;
     void setPropertyView(unsigned int propertyView);
+
 
 public slots:
     void setView(const QRect &viewRect);
@@ -93,6 +95,7 @@ private:
     QGraphicsPixmapItem *_maskItem;
     QGraphicsSimpleTextItem *_titleItem;
     QGraphicsRectItem *_rectItem;
+    QRect _rect;
 
     QMap<uint, QList<FeatureItem *> > _featureItems;
 };

@@ -97,7 +97,7 @@ void LayerViewer::showFlowConnection(int flowId)
     {
         QImage image(_widget->scene()->sceneRect().size().toSize(), QImage::Format_RGB32);
         QPainter painter(&image);
-        _widget->scene()->render(&painter);
+        _widget->scene()->render(&painter, _widget->rectSize());
         image.save(QString("%1/%2_%3.jpg")
                    .arg(_recordPath)
                    .arg(_flowViewerInterface->flowConnections()[flowId]->flow()->name())
@@ -109,7 +109,7 @@ void LayerViewer::saveImage()
 {
     QImage image(_widget->scene()->sceneRect().size().toSize(), QImage::Format_RGB32);
     QPainter painter(&image);
-    _widget->scene()->render(&painter);
+    _widget->scene()->render(&painter, _widget->rectSize());
 
     QString fileName = QFileDialog::getSaveFileName(this, "Save image...", "", "Images (*.png *.bmp *.jpg)");
     if(!fileName.isEmpty())
