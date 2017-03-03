@@ -27,7 +27,6 @@ entity  com_flow_fifo_tx is
 
         data_wr_i       : in std_logic;
         data_i          : in std_logic_vector(15 downto 0);
-        rdreq_i         : in std_logic;
         flag_wr_i       : in std_logic;
         flag_i          : in std_logic_vector(7 downto 0);
 
@@ -35,10 +34,13 @@ entity  com_flow_fifo_tx is
         fifo_pkt_wr_i   : in std_logic;
         fifo_pkt_data_i : in std_logic_vector(15 downto 0);
 
+        -- to arbitrer
+        rdreq_i         : in std_logic;
         data_o          : out std_logic_vector(15 downto 0);
         flow_rdy_o      : out std_logic;
         f_empty_o       : out std_logic;
-        fifos_f_o       : out std_logic
+        fifos_f_o       : out std_logic;
+        size_packet_o   : out std_logic_vector(15 downto 0)
     );
 end com_flow_fifo_tx;
 
@@ -235,14 +237,15 @@ begin
                 if(rdreq_i='1') then -- si l'usb est pret
 
                     pkt_cpt := fifo_pkt_q_s;
-                    cpt:=0;
+                    size_packet_o <= fifo_pkt_q_s;
+                    cpt := 0;
                     -- header 1 en sortie
                     data_s <= std_logic_vector(to_unsigned(FLOW_ID,8)) & fifo_flag_q_s(7 downto 0);
                     -- assert fifo request here to be ready for Unpile state
                     fifo_1_rdreq_s <= '1';
                     -- go to unpile packet number
                     RDUSB_state <= UnpileHeader;
-                    cpt:=cpt+1;
+                    cpt := cpt+1;
                 --  pkt_cpt := std_logic_vector(unsigned(pkt_cpt) - X"0001");
                 end if;
 
@@ -257,14 +260,14 @@ begin
 
                 data_s <= packet_number;
                 RDUSB_state <= Unpile;
-                cpt:=cpt+1;
+                cpt := cpt+1;
                 --  pkt_cpt := std_logic_vector(unsigned(pkt_cpt) - X"0001");
 
 
             when Unpile =>
                 data_s <= fifo_1_q_s;
 
-                cpt:=cpt+1;
+                cpt := cpt+1;
                 pkt_cpt := std_logic_vector(unsigned(pkt_cpt) - X"0001");
                 --if (cpt = PACKET_SIZE or fifo_1_rdempty_s='1') then
                 if (pkt_cpt = X"0001") then
@@ -272,7 +275,7 @@ begin
                 end if;
 
                 if (pkt_cpt = X"0000") then
-                    flow_rdy_o <='0';
+                    flow_rdy_o <= '0';
                     --fifo_1_rdreq_s <= '0';
                     RDUSB_state <= Idle;
                 end if;

@@ -103,43 +103,48 @@ end entity;
 
 architecture rtl of usb_cypress_CY7C68014A is
 -- SLAVE BUS
-	signal enable_s             : std_logic := '0';
-	signal enable_in0_s         : std_logic := '0';
-	signal enable_in1_s         : std_logic := '0';
-	signal enable_in2_s         : std_logic := '0';
-	signal enable_in3_s         : std_logic := '0';
+	signal enable_s                 : std_logic := '0';
+	signal enable_in0_s             : std_logic := '0';
+	signal enable_in1_s             : std_logic := '0';
+	signal enable_in2_s             : std_logic := '0';
+	signal enable_in3_s             : std_logic := '0';
 
 -- USBFLOW_IN
-	signal flow_in1_data_s      : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_in1_wr_s        : std_logic := '0';
-	signal flow_in1_full_s      : std_logic := '0';
-	signal flow_in1_pktend_s    : std_logic := '0';
+	signal flow_in1_data_s          : std_logic_vector(15 downto 0) := (others => '0');
+	signal flow_in1_wr_s            : std_logic := '0';
+	signal flow_in1_full_s          : std_logic := '0';
+	signal flow_in1_pktend_s        : std_logic := '0';
 
 -- USBFLOW OUT
-	signal flow_out_data_s      : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_out_empty_s     : std_logic := '0';
-	signal flow_out_rd_s        : std_logic := '0';
-	signal flow_out_rdy_s       : std_logic := '0';
+	signal flow_out_data_s          : std_logic_vector(15 downto 0) := (others => '0');
+	signal flow_out_empty_s         : std_logic := '0';
+	signal flow_out_rd_s            : std_logic := '0';
+	signal flow_out_rdy_s           : std_logic := '0';
+	signal flow_out_size_packet_s   : std_logic_vector(15 downto 0) := (others => '0');
 
-	signal flow_out_data_0_s    : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_out_empty_0_s   : std_logic := '0';
-	signal flow_out_rd_0_s      : std_logic := '0';
-	signal flow_out_rdy_0_s     : std_logic := '0';
-
-	signal flow_out_data_1_s    : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_out_empty_1_s   : std_logic := '0';
-	signal flow_out_rd_1_s      : std_logic := '0';
-	signal flow_out_rdy_1_s     : std_logic := '0';
-
-	signal flow_out_data_2_s    : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_out_empty_2_s   : std_logic := '0';
-	signal flow_out_rd_2_s      : std_logic := '0';
-	signal flow_out_rdy_2_s     : std_logic := '0';
-
-	signal flow_out_data_3_s    : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_out_empty_3_s   : std_logic := '0';
-	signal flow_out_rd_3_s      : std_logic := '0';
-	signal flow_out_rdy_3_s     : std_logic := '0';
+	signal flow_out_data_0_s        : std_logic_vector(15 downto 0) := (others => '0');
+	signal flow_out_empty_0_s       : std_logic := '0';
+	signal flow_out_rd_0_s          : std_logic := '0';
+	signal flow_out_rdy_0_s         : std_logic := '0';
+	signal flow_out_size_0_packet_s : std_logic_vector(15 downto 0) := (others => '0');
+    
+	signal flow_out_data_1_s        : std_logic_vector(15 downto 0) := (others => '0');
+	signal flow_out_empty_1_s       : std_logic := '0';
+	signal flow_out_rd_1_s          : std_logic := '0';
+	signal flow_out_rdy_1_s         : std_logic := '0';
+	signal flow_out_size_1_packet_s : std_logic_vector(15 downto 0) := (others => '0');
+    
+	signal flow_out_data_2_s        : std_logic_vector(15 downto 0) := (others => '0');
+	signal flow_out_empty_2_s       : std_logic := '0';
+	signal flow_out_rd_2_s          : std_logic := '0';
+	signal flow_out_rdy_2_s         : std_logic := '0';
+	signal flow_out_size_2_packet_s : std_logic_vector(15 downto 0) := (others => '0');
+    
+	signal flow_out_data_3_s        : std_logic_vector(15 downto 0) := (others => '0');
+	signal flow_out_empty_3_s       : std_logic := '0';
+	signal flow_out_rd_3_s          : std_logic := '0';
+	signal flow_out_rdy_3_s         : std_logic := '0';
+	signal flow_out_size_3_packet_s : std_logic_vector(15 downto 0) := (others => '0');
 
 	-- FLOW_PARAMS
     signal update_port_s        : std_logic := '0';
@@ -292,10 +297,12 @@ FO0_label4 : if IN0_NBWORDS > 0 generate
         enable_flow_i   => enable_in0_s,
         enable_global_i => enable_s,
 
-        rdreq_i         => flow_out_rd_0_s, -- to arb
-        data_o          => flow_out_data_0_s, -- to arb
-        flow_rdy_o      => flow_out_rdy_0_s, -- to arb
-        f_empty_o       => flow_out_empty_0_s -- to arb
+        -- to arbitrer
+        rdreq_i         => flow_out_rd_0_s, 
+        data_o          => flow_out_data_0_s,
+        flow_rdy_o      => flow_out_rdy_0_s,
+        f_empty_o       => flow_out_empty_0_s,
+        size_packet_o   => flow_out_size_0_packet_s
     );
 end generate FO0_label4;
 ------------------------------------------------------------
@@ -330,10 +337,12 @@ FO1_label4 : if IN1_NBWORDS > 0 generate
         enable_flow_i   => enable_in1_s,
         enable_global_i => enable_s,
 
-        rdreq_i         => flow_out_rd_1_s, -- to arb
-        data_o          => flow_out_data_1_s, -- to arb
-        flow_rdy_o      => flow_out_rdy_1_s, -- to arb
-        f_empty_o       => flow_out_empty_1_s -- to arb
+        -- to arbitrer
+        rdreq_i         => flow_out_rd_1_s,
+        data_o          => flow_out_data_1_s,
+        flow_rdy_o      => flow_out_rdy_1_s,
+        f_empty_o       => flow_out_empty_1_s,
+        size_packet_o   => flow_out_size_1_packet_s
     );
 end generate FO1_label4;
 ------------------------------------------------------------
@@ -368,10 +377,12 @@ FO2_label4 : if IN2_NBWORDS > 0 generate
         enable_flow_i   => enable_in2_s,
         enable_global_i => enable_s,
 
-        rdreq_i         => flow_out_rd_2_s, -- to arb
-        data_o          => flow_out_data_2_s, -- to arb
-        flow_rdy_o      => flow_out_rdy_2_s, -- to arb
-        f_empty_o       => flow_out_empty_2_s -- to arb
+        -- to arbitrer
+        rdreq_i         => flow_out_rd_2_s,
+        data_o          => flow_out_data_2_s,
+        flow_rdy_o      => flow_out_rdy_2_s,
+        f_empty_o       => flow_out_empty_2_s,
+        size_packet_o   => flow_out_size_2_packet_s
     );
 end generate FO2_label4;
 ------------------------------------------------------------
@@ -406,10 +417,12 @@ FO3_label4 : if IN3_NBWORDS > 0 generate
         enable_flow_i   => enable_in3_s,
         enable_global_i => enable_s,
 
-        rdreq_i         => flow_out_rd_3_s, -- to arb
-        data_o          => flow_out_data_3_s, -- to arb
-        flow_rdy_o      => flow_out_rdy_3_s, -- to arb
-        f_empty_o       => flow_out_empty_3_s -- to arb
+        -- to arbitrer
+        rdreq_i         => flow_out_rd_3_s,
+        data_o          => flow_out_data_3_s,
+        flow_rdy_o      => flow_out_rdy_3_s,
+        f_empty_o       => flow_out_empty_3_s,
+        size_packet_o   => flow_out_size_3_packet_s
     );
 end generate FO3_label4;
 ------------------------------------------------------------
@@ -426,30 +439,35 @@ USBFLOW_ARB : component flow_to_com_arb4
 		data_0_i        => flow_out_data_0_s,
 		flow_rdy_0_i    => flow_out_rdy_0_s,
 		f_empty_0_i     => flow_out_empty_0_s,
+		size_packet_0_i => flow_out_size_0_packet_s,
 
 		-- fv 1 signals
 		rdreq_1_o       => flow_out_rd_1_s,
 		data_1_i        => flow_out_data_1_s,
 		flow_rdy_1_i    => flow_out_rdy_1_s,
 		f_empty_1_i     => flow_out_empty_1_s,
+		size_packet_1_i => flow_out_size_1_packet_s,
 
 		-- fv 2 signals
 		rdreq_2_o       => flow_out_rd_2_s,
 		data_2_i        => flow_out_data_2_s,
 		flow_rdy_2_i    => flow_out_rdy_2_s,
 		f_empty_2_i     => flow_out_empty_2_s,
+		size_packet_2_i => flow_out_size_2_packet_s,
 
 		-- fv 3 signals
 		rdreq_3_o       => flow_out_rd_3_s,
 		data_3_i        => flow_out_data_3_s,
 		flow_rdy_3_i    => flow_out_rdy_3_s,
 		f_empty_3_i     => flow_out_empty_3_s,
+		size_packet_3_i => flow_out_size_3_packet_s,
 
 		-- fv usb signals
 		rdreq_usb_i     => flow_out_rd_s,
 		data_usb_o      => flow_out_data_s,
 		flow_rdy_usb_o  => flow_out_rdy_s,
-		f_empty_usb_o   => flow_out_empty_s
+		f_empty_usb_o   => flow_out_empty_s,
+		size_packet_o   => flow_out_size_packet_s
 	);
 
 --  FLOW_PARAMS module --> Bus Interconnect Master

@@ -29,12 +29,15 @@ entity flow_to_com is
         in_fv               : in std_logic;
         in_dv               : in std_logic;
 
-        rdreq_i             : in std_logic;
         enable_flow_i       : in std_logic;
         enable_global_i     : in std_logic;
+
+        -- to arbitrer
+        rdreq_i             : in std_logic;
         data_o              : out std_logic_vector(OUTPUT_SIZE-1 downto 0);
         flow_rdy_o          : out std_logic;
-        f_empty_o           : out std_logic
+        f_empty_o           : out std_logic;
+        size_packet_o       : out std_logic_vector(15 downto 0)
     );
 end flow_to_com;
 
@@ -93,10 +96,12 @@ component com_flow_fifo_tx
         fifo_pkt_wr_i       : in std_logic;
         fifo_pkt_data_i     : in std_logic_vector(15 downto 0);
 
+        -- to arbitrer
         data_o              : out std_logic_vector(15 downto 0);
         flow_rdy_o          : out std_logic;
         f_empty_o           : out std_logic;
-        fifos_f_o           : out std_logic
+        fifos_f_o           : out std_logic;
+        size_packet_o   : out std_logic_vector(15 downto 0)
     );
 end component;
 
@@ -227,7 +232,8 @@ port map (
     data_o          => data_o,
     flow_rdy_o      => flow_rdy_o,
     f_empty_o       => f_empty_o,
-    fifos_f_o       => fifo_f_s
+    fifos_f_o       => fifo_f_s,
+    size_packet_o   => size_packet_o
 );
 
 enable_s <= enable_flow_sync and enable_global_sync;

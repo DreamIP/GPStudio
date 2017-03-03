@@ -81,7 +81,8 @@ package ComFlow_pkg is
 
             data_o          : out std_logic_vector(OUTPUT_SIZE-1 downto 0);
             flow_rdy_o      : out std_logic;
-            f_empty_o       : out std_logic
+            f_empty_o       : out std_logic;
+            size_packet_o   : out std_logic_vector(15 downto 0)
         );
     end component;
 
@@ -176,30 +177,35 @@ package ComFlow_pkg is
             data_0_i        : in std_logic_vector(15 downto 0);
             flow_rdy_0_i    : in std_logic;
             f_empty_0_i     : in std_logic;
+            size_packet_0_i : in std_logic_vector(15 downto 0);
 
             -- fv 1signals
             rdreq_1_o       : out std_logic;
             data_1_i        : in std_logic_vector(15 downto 0);
             flow_rdy_1_i    : in std_logic;
             f_empty_1_i     : in std_logic;
+            size_packet_1_i : in std_logic_vector(15 downto 0);
 
             -- fv 2 signals
             rdreq_2_o       : out std_logic;
             data_2_i        : in std_logic_vector(15 downto 0);
             flow_rdy_2_i    : in std_logic;
             f_empty_2_i     : in std_logic;
+            size_packet_2_i : in std_logic_vector(15 downto 0);
 
             -- fv 3 signals
             rdreq_3_o       : out std_logic;
             data_3_i        : in std_logic_vector(15 downto 0);
             flow_rdy_3_i    : in std_logic;
             f_empty_3_i     : in std_logic;
+            size_packet_3_i : in std_logic_vector(15 downto 0);
 
             -- fv usb signals
             rdreq_usb_i     : in std_logic;
             data_usb_o      : out std_logic_vector(15 downto 0);
             flow_rdy_usb_o  : out std_logic;
-            f_empty_usb_o   : out std_logic
+            f_empty_usb_o   : out std_logic;
+            size_packet_o   : out std_logic_vector(15 downto 0)
         );
     end component;
 
