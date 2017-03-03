@@ -1,10 +1,10 @@
 # GPStudio installation
 
 Important, if you are using a zip or tar package, you need to add the
-bin directory to your PATH. On windows, add also thirdparts/ and 
+bin directory to your PATH. Under windows, add also thirdparts/ and 
 thirdparts/php.
 
-You may need a distribution of quartus 13.1 for dreamcam.
+You may need a distribution of quartus 13.1 for the dreamcam.
 
 ## Dependencies
 
@@ -13,7 +13,7 @@ You may need a distribution of quartus 13.1 for dreamcam.
 back-end generation
 * Qt (with qmake bin in your path) Qt 4.7 or more recent version (Qt5 
 supported) for GUI tools
-* quartus (with bin in your path) if you want to use Atlera branded FPGA
+* quartus (with bin in your path) if you want to use Atlera (Intel) branded FPGA
 [Quartus download](https://www.altera.com/downloads/download-center.html)
 * libusb for USB camera comunication
 
@@ -51,7 +51,7 @@ In case it does not work, check if you have a distribution of Qt:
 
 To install Qt5 with apt (linux Debian/Ubuntu):
 
-> sudo apt-get install g++ libusb-1.0-0-dev qtbase5-dev qtbase5-dev-tools
+> sudo apt-get install g++ libusb-1.0-0-dev qtbase5-dev qtbase5-dev-tools qt5-default
 
 You may also need:
 
@@ -63,7 +63,7 @@ To install Qt4 with apt (old Debian/Ubuntu versions):
 
 You may also need:
 
-> sudo apt-get qt4-dev-tools libqtscript4-core
+> sudo apt-get install qt4-dev-tools libqtscript4-core
 
 You also can download it from <https://www.qt.io/download-open-source/>
 

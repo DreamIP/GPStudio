@@ -1,26 +1,31 @@
 # Change Log
 
-## Future Release [v1.21](https://github.com/DreamIP/GPStudio/tree/v1.21) (2017-02-01)
-[Full changelog](https://github.com/DreamIP/GPStudio/compare/v1.20...dev)
+## Future Release [v1.21](https://github.com/DreamIP/GPStudio/tree/v1.21) (2017-03-03)
+[Full changelog](https://github.com/DreamIP/GPStudio/compare/v1.20...v1.21)
 
-### New Feature
+### New Features
 * Messages in gpnode to inform end of process
+* Improved log for gpnode with syntaxic color and select level of verbosity
 * Added list of recent opened projects in gpnode_gui
 * Improved toolbar in gpnode_gui
 * Tab in GPViewer to send picture to camera
 * Added point/point + value/rect/rect + value in layer viewer
+* Improved script in gpviewer with call and echo commands
+* Added support for component, removed hwlib
 
 ### Changes
 * Removed poppler to simplify dependencies
 
 ### Bug fixes
 * Fixed toolchain windows for cross compile
-* camera explorer fixed interractions delete/select
+* Camera explorer fixed interractions delete/select
+* Fixed image save in flow viewer (bad image size)
+* Fixed warning in quartus synthesis
 
 ## Release [v1.20](https://github.com/DreamIP/GPStudio/tree/v1.20) (2017-01-10)
 [Full changelog](https://github.com/DreamIP/GPStudio/compare/v1.10...v1.20)
 
-### New Feature
+### New Features
 * HWLoop functionnalities (exemple project for test automation on real platform)
 * Auto test bench creation
 * Multi flows viewers (mask, rect, points...)
@@ -55,7 +60,7 @@
 ## Release [v1.10](https://github.com/DreamIP/GPStudio/tree/v1.10) (2016-09-09)
 [Full changelog](https://github.com/DreamIP/GPStudio/compare/v1.00...v1.10)
 
-### New Feature
+### New Features
 * Backend component introduction
 * Informations (author, version, licence...) ingregrated to IP
 * Base components for IP devellopement
