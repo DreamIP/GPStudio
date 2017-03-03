@@ -21,8 +21,8 @@ entity flow_to_com is
         FLAGS_CODES         : my_array_t := InitFlagCodes
     );
     port (
-        clk_in              : in std_logic;
-        clk_out             : in std_logic;
+        clk_proc              : in std_logic;
+        clk_hal             : in std_logic;
         rst_n               : in std_logic;
 
         in_data             : in std_logic_vector(INPUT_SIZE-1 downto 0);
@@ -81,8 +81,8 @@ component com_flow_fifo_tx
         FLAGS_CODES         : my_array_t := InitFlagCodes
     );
     port (
-        clk_in              : in std_logic;
-        clk_out             : in std_logic;
+        clk_proc            : in std_logic;
+        clk_hal             : in std_logic;
 
         rst_n               : in std_logic;
 
@@ -161,7 +161,7 @@ generic map (
     FIFO_DEPTH      => 128
 )
 port map (
-    clk             => clk_in,
+    clk             => clk_proc,
     rst_n           => rst_n,
     in_data			=> in_data,
     in_fv           => in_fv,
@@ -173,7 +173,7 @@ port map (
 
 ENABLE_FLOW_INST : component fv_signal_synchroniser
 port map (
-    clk      => clk_in,
+    clk      => clk_proc,
     rst_n    => rst_n,
     fv_i     => in_fv_s,
     signal_i => enable_flow_i,
@@ -182,7 +182,7 @@ port map (
 
 ENABLE_GLOBAL_INST : component fv_signal_synchroniser
 port map (
-    clk      => clk_in,
+    clk      => clk_proc,
     rst_n    => rst_n,
     fv_i     => in_fv_s,
     signal_i => enable_global_i,
@@ -196,7 +196,7 @@ generic map (
     FLAGS_CODES     => FLAGS_CODES
 )
 port map (
-    clk             => clk_in,
+    clk             => clk_proc,
     rst_n           => rst_n,
     in_data         => in_data_s,
     in_fv           => in_fv_s,
@@ -219,8 +219,8 @@ generic map (
     FLAGS_CODES     => FLAGS_CODES
 )
 port map (
-    clk_in          => clk_in,
-    clk_out         => clk_out,
+    clk_proc        => clk_proc,
+    clk_hal         => clk_hal,
     rst_n           => rst_n and enable_s,
     data_wr_i       => data_wr_s,
     data_i          => data_s,

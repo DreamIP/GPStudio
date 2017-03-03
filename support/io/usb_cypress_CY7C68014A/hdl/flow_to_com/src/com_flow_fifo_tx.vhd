@@ -12,7 +12,7 @@ use ieee.math_real.all;
 
 use work.ComFlow_pkg.all;
 
-entity  com_flow_fifo_tx is
+entity com_flow_fifo_tx is
     generic (
         FIFO_DEPTH      : integer := 1024;
         FLOW_ID         : integer := 1;
@@ -20,8 +20,8 @@ entity  com_flow_fifo_tx is
         FLAGS_CODES     : my_array_t := InitFlagCodes
     );
     port (
-        clk_in          : in std_logic;
-        clk_out         : in std_logic;
+        clk_proc          : in std_logic;
+        clk_hal         : in std_logic;
 
         rst_n           : in std_logic;
 
@@ -142,9 +142,9 @@ begin
     PORT map
     (
         data        => data_i,
-        rdclk       => clk_out,
+        rdclk       => clk_hal,
         rdreq       => fifo_1_rdreq_s,
-        wrclk       => clk_in,
+        wrclk       => clk_proc,
         wrreq       => data_wr_i,
         aclr        => aclr,
         q           => fifo_1_q_s,
@@ -161,9 +161,9 @@ begin
     (
         --data      => X"00"& flag_i,
         data        => flag_s,
-        rdclk       => clk_out,
+        rdclk       => clk_hal,
         rdreq       => fifo_flag_rdreq_s,
-        wrclk       => clk_in,
+        wrclk       => clk_proc,
         wrreq       => flag_wr_i,
         aclr        => aclr,
         q           => fifo_flag_q_s,
@@ -179,9 +179,9 @@ begin
     PORT map
     (
         data        => fifo_pkt_data_i,
-        rdclk       => clk_out,
+        rdclk       => clk_hal,
         rdreq       => fifo_pkt_rdreq_s,
-        wrclk       => clk_in,
+        wrclk       => clk_proc,
         wrreq       => fifo_pkt_wr_i,
         aclr        => aclr,
         q           => fifo_pkt_q_s,
@@ -192,7 +192,7 @@ begin
     );
 
 --- Connexion au composant USB SM
-RDUSB : process (clk_out, rst_n)
+RDUSB : process (clk_hal, rst_n)
     variable cpt : integer range 0 to PACKET_SIZE:=0;
     variable pkt_cpt : std_logic_vector(15 downto 0):=(others=>'0');
     variable packet_number : std_logic_vector(15 downto 0):=(others=>'0');
@@ -207,7 +207,7 @@ begin
         fifo_pkt_rdreq_s <= '0';
         pkt_cpt := (others=>'0');
         counter:= 0;
-    elsif rising_edge(clk_out) then
+    elsif rising_edge(clk_hal) then
         case RDUSB_state is
             when Idle =>
                 flow_rdy_o <= '0';

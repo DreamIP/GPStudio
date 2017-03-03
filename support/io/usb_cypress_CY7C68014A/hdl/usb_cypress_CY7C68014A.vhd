@@ -219,8 +219,8 @@ FI0_label1 : if OUT0_NBWORDS > 0 generate
         OUTPUT_SIZE => OUT0_SIZE
     )
     port map (
-        clk_in      => clk_hal_s,
-        clk_out     => clk_proc,
+        clk_hal     => clk_hal_s,
+        clk_proc    => clk_proc,
         rst_n       => rst,
 
         data_wr_i   => flow_in1_wr_s,
@@ -251,8 +251,8 @@ FI1_label1 : if OUT1_NBWORDS > 0 generate
         OUTPUT_SIZE => OUT1_SIZE
     )
     port map (
-        clk_in      => clk_hal_s,
-        clk_out     => clk_proc,
+        clk_hal     => clk_hal_s,
+        clk_proc    => clk_proc,
         rst_n       => rst,
 
         data_wr_i   => flow_in1_wr_s,
@@ -286,8 +286,8 @@ FO0_label4 : if IN0_NBWORDS > 0 generate
         FLAGS_CODES     => InitFlagCodes
     )
     port map (
-        clk_in          => clk_proc,
-        clk_out         => clk_hal_s,
+        clk_proc        => clk_proc,
+        clk_hal         => clk_hal_s,
         rst_n           => rst,
 
         in_data         => in0_data,
@@ -326,8 +326,8 @@ FO1_label4 : if IN1_NBWORDS > 0 generate
         FLAGS_CODES     => InitFlagCodes
     )
     port map (
-        clk_in          => clk_proc,
-        clk_out         => clk_hal_s,
+        clk_proc        => clk_proc,
+        clk_hal         => clk_hal_s,
         rst_n           => rst,
 
         in_data         => in1_data,
@@ -366,8 +366,8 @@ FO2_label4 : if IN2_NBWORDS > 0 generate
         FLAGS_CODES     => InitFlagCodes
     )
     port map (
-        clk_in          => clk_proc,
-        clk_out         => clk_hal_s,
+        clk_proc        => clk_proc,
+        clk_hal         => clk_hal_s,
         rst_n           => rst,
 
         in_data         => in2_data,
@@ -406,8 +406,8 @@ FO3_label4 : if IN3_NBWORDS > 0 generate
         FLAGS_CODES     => InitFlagCodes
     )
     port map (
-        clk_in          => clk_proc,
-        clk_out         => clk_hal_s,
+        clk_proc        => clk_proc,
+        clk_hal         => clk_hal_s,
         rst_n           => rst,
 
         in_data         => in3_data,
@@ -478,8 +478,8 @@ FLOW_PARAMS : component com_to_master_pi
         MASTER_ADDR_WIDTH   => MASTER_ADDR_WIDTH
     )
     port map (
-        clk_in              => clk_hal_s,
-        clk_out             => clk_proc,
+        clk_hal             => clk_hal_s,
+        clk_proc            => clk_proc,
         rst_n               => rst,
         data_wr_i           => flow_in1_wr_s,
         data_i              => flow_in1_data_s,

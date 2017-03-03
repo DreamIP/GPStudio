@@ -9,15 +9,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-
 entity  com_flow_fifo_rx is
     generic (
         FIFO_DEPTH  : POSITIVE := 1024;
         FLOW_ID     : INTEGER := 1
     );
     port (
-        clk_in      : in std_logic;
-        clk_out     : in std_logic;
+        clk_hal     : in std_logic;
+        clk_proc    : in std_logic;
 
         rst_n       : in std_logic;
 
@@ -45,13 +44,13 @@ architecture rtl of com_flow_fifo_rx is
 		DEPTH       : POSITIVE := FIFO_DEPTH
 	);
 	port (
-		aclr		: in std_logic  := '0';
-		data		: in std_logic_vector (15 downto 0);
+		aclr		: in std_logic := '0';
+		data		: in std_logic_vector(15 downto 0);
 		rdclk		: in std_logic;
 		rdreq		: in std_logic;
 		wrclk		: in std_logic;
 		wrreq		: in std_logic;
-		q		    : out std_logic_vector (15 downto 0);
+		q		    : out std_logic_vector(15 downto 0);
 		rdempty		: out std_logic;
 		wrfull		: out std_logic
 	);
@@ -63,41 +62,40 @@ END component;
 -------------
 -- FIFO 1 SIGNALS
 -------------
-	signal	fifo_1_data_s       : std_logic_vector(15 downto 0):=(others=>'0');
-	signal	fifo_1_wrclk_s      : std_logic:= '0';
-	signal	fifo_1_wrreq_s      : std_logic:= '0';
-	signal	fifo_1_wrfull_s     : std_logic:= '0';
+	signal fifo_1_data_s        : std_logic_vector(15 downto 0) := (others=>'0');
+	signal fifo_1_wrclk_s       : std_logic := '0';
+	signal fifo_1_wrreq_s       : std_logic := '0';
+	signal fifo_1_wrfull_s      : std_logic := '0';
 
-	signal	fifo_1_q_s          : std_logic_vector(15 downto 0):=(others=>'0');
-	signal	fifo_1_rdclk_s      : std_logic:= '0';
-	signal	fifo_1_rdreq_s      : std_logic:= '0';
-	signal	fifo_1_rdempty_s    : std_logic:= '0';
+	signal fifo_1_q_s           : std_logic_vector(15 downto 0) := (others=>'0');
+	signal fifo_1_rdclk_s       : std_logic := '0';
+	signal fifo_1_rdreq_s       : std_logic := '0';
+	signal fifo_1_rdempty_s     : std_logic := '0';
 
 -- registers
-	signal fifo_1_readable      : std_logic:= '0';
-	signal fifo_1_rdempty_r     : std_logic:= '0';
-	signal fifo_1_rdempty_rr    : std_logic:= '0';
-	signal flag_fifo1           : std_logic_vector(7 downto 0):=(others=>'0');
-	signal fifo_1_aclr_s        : std_logic:='0';
+	signal fifo_1_readable      : std_logic := '0';
+	signal fifo_1_rdempty_r     : std_logic := '0';
+	signal fifo_1_rdempty_rr    : std_logic := '0';
+	signal flag_fifo1           : std_logic_vector(7 downto 0) := (others=>'0');
+	signal fifo_1_aclr_s        : std_logic :='0';
 -------------
 -- FIFO 2 SIGNALS
 -------------
-	signal	fifo_2_data_s       : std_logic_vector(15 downto 0):=(others=>'0');
-	signal	fifo_2_wrclk_s      : std_logic:= '0';
-	signal	fifo_2_wrreq_s      : std_logic:= '0';
-	signal	fifo_2_wrfull_s     : std_logic:= '0';
+	signal fifo_2_data_s        : std_logic_vector(15 downto 0) := (others=>'0');
+	signal fifo_2_wrclk_s       : std_logic := '0';
+	signal fifo_2_wrreq_s       : std_logic := '0';
+	signal fifo_2_wrfull_s      : std_logic := '0';
 
-	signal	fifo_2_q_s          : std_logic_vector(15 downto 0):=(others=>'0');
-	signal	fifo_2_rdclk_s      : std_logic:= '0';
-	signal	fifo_2_rdreq_s      : std_logic:= '0';
-	signal	fifo_2_rdempty_s    : std_logic:= '0';
-	signal 	fifo_2_aclr_s       : std_logic:='0';
+	signal fifo_2_q_s           : std_logic_vector(15 downto 0) := (others=>'0');
+	signal fifo_2_rdclk_s       : std_logic := '0';
+	signal fifo_2_rdreq_s       : std_logic := '0';
+	signal fifo_2_rdempty_s     : std_logic := '0';
+	signal fifo_2_aclr_s        : std_logic := '0';
 
 -- registers
-
-	signal fifo_2_readable      : std_logic:= '0';
-	signal fifo_2_rdempty_r     : std_logic:= '0';
-	signal fifo_2_rdempty_rr    : std_logic:= '0';
+	signal fifo_2_readable      : std_logic := '0';
+	signal fifo_2_rdempty_r     : std_logic := '0';
+	signal fifo_2_rdempty_rr    : std_logic := '0';
 	signal flag_fifo2           : std_logic_vector(7 downto 0) := (others=>'0');
 
 -------------
@@ -125,20 +123,19 @@ begin
 -------
 -- MAP CLK
 -------
-    fifo_1_wrclk_s <= clk_in;
-    fifo_2_wrclk_s <= clk_in;
+    fifo_1_wrclk_s <= clk_hal;
+    fifo_2_wrclk_s <= clk_hal;
 
-    fifo_1_rdclk_s <= clk_out;
-    fifo_2_rdclk_s <= clk_out;
+    fifo_1_rdclk_s <= clk_proc;
+    fifo_2_rdclk_s <= clk_proc;
 
     flow_rdy_o <= fifo_1_readable or fifo_2_readable;
 
     FIFO_1 : fifo_com_rx
-	GENERIC MAP(
+	generic map (
 		DEPTH => FIFO_DEPTH
 	)
-	PORT map
-	(
+	port map (
 		aclr 		=> fifo_1_aclr_s,
 		data		=> fifo_1_data_s,
 		rdclk		=> fifo_1_rdclk_s,
@@ -150,12 +147,11 @@ begin
 		wrfull	    => fifo_1_wrfull_s
 	);
 
-  FIFO_2 : fifo_com_rx
-  	GENERIC MAP(
+    FIFO_2 : fifo_com_rx
+  	generic map (
 		DEPTH => FIFO_DEPTH
 	)
-	PORT map
-	(
+	port map (
 		aclr 		=> fifo_2_aclr_s,
 		data		=> fifo_2_data_s,
 		rdclk		=> fifo_2_rdclk_s,
@@ -167,11 +163,10 @@ begin
 		wrfull	    => fifo_2_wrfull_s
 	);
 
-
 fifo_1_aclr_s <= not(rst_n or enable_i);
 fifo_2_aclr_s <= not(rst_n or enable_i);
 
-FSM:process (clk_in, rst_n)
+FSM : process (clk_hal, rst_n)
 begin
 	if (rst_n = '0') then
 		cur_fifo_wrreq_s <= '0';
@@ -184,11 +179,10 @@ begin
 	--	data_wr_r <='0';
 		frame_number <= (others=>'0');
 
-	elsif (rising_edge(clk_in)) then
+	elsif (rising_edge(clk_hal)) then
 		data_wr_r <= data_wr_i;
 
 		case fsm_state is
-
 			when Idle =>
 				-- si un packet vient de l USB
 				if (enable_i='1' and data_wr_r ='0' and data_wr_i ='1') then
@@ -261,12 +255,12 @@ begin
 end process;
 
  -- Gere l'etat des flags fifos pretes a etre lues
-READABLE_PROCESS: process(clk_in, rst_n)
+READABLE_PROCESS : process(clk_hal, rst_n)
 begin
 	if (rst_n = '0') then
 		fifo_1_readable <='0';
 		fifo_2_readable <='0';
-	elsif rising_edge(clk_in) then
+	elsif rising_edge(clk_hal) then
 
 		-- register values for rising/falling edge detection on signals
 		fifo_1_rdempty_r <= fifo_1_rdempty_s;
@@ -303,13 +297,12 @@ begin
 end process;
 
 --
-FLAG_PROCESS: process(clk_in, rst_n)
-
+FLAG_PROCESS : process(clk_hal, rst_n)
 begin
 	if (rst_n = '0') then
 		flag_fifo1 <= (others=>'0');
 		flag_fifo2 <= (others=>'0');
-	elsif rising_edge(clk_in) then
+	elsif rising_edge(clk_hal) then
 
 		--data_wr_r <= data_wr_i; -- deja fait dans le FSM Process
 		if (data_wr_r ='0' and data_wr_i = '1') then
@@ -327,8 +320,6 @@ begin
 			flag_fifo1 <= flag_fifo1;
 			flag_fifo2 <= flag_fifo2;
 		end if;
-
-
 	end if;
 end process;
 
@@ -339,9 +330,8 @@ with fifo_sel select
 			  flag_fifo2 when '0',
 			  (others=>'0') when others;
 
-
 -- fifos connection according to sel position
-FIFO_SEL_MUX:process (fifo_sel,cur_fifo_data_s,cur_fifo_wrreq_s,fifo_1_readable,fifo_2_readable,fifo_1_wrfull_s,fifo_2_wrfull_s,rdreq_i,fifo_1_q_s,fifo_2_q_s,fifo_1_rdempty_s,fifo_2_rdempty_s)
+FIFO_SEL_MUX : process (fifo_sel,cur_fifo_data_s,cur_fifo_wrreq_s,fifo_1_readable,fifo_2_readable,fifo_1_wrfull_s,fifo_2_wrfull_s,rdreq_i,fifo_1_q_s,fifo_2_q_s,fifo_1_rdempty_s,fifo_2_rdempty_s)
 begin
 	case (fifo_sel) is
 		when '0' =>
@@ -362,7 +352,6 @@ begin
 			f_empty_o <= fifo_2_rdempty_s;
 
 		when '1' =>
-
 			fifo_1_wrreq_s <= '0';
 			fifo_2_wrreq_s <= cur_fifo_wrreq_s;
 
@@ -383,7 +372,6 @@ begin
 			fifo_1_wrreq_s <= cur_fifo_wrreq_s;
 			fifo_2_wrreq_s <= '0';
 	end case;
-
 end process;
 
 end rtl;

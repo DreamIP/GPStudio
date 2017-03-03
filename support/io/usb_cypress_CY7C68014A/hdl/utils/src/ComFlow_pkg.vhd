@@ -42,8 +42,8 @@ package ComFlow_pkg is
             OUTPUT_SIZE : INTEGER:=16
         );
         port(
-            clk_in      : in std_logic;
-            clk_out     : in std_logic;
+            clk_hal     : in std_logic;
+            clk_proc    : in std_logic;
             rst_n       : in std_logic;
 
             data_wr_i   : in std_logic;
@@ -68,8 +68,8 @@ package ComFlow_pkg is
             FLAGS_CODES     : my_array_t := InitFlagCodes
         );
         port(
-            clk_in          : in std_logic;
-            clk_out         : in std_logic;
+            clk_proc        : in std_logic;
+            clk_hal         : in std_logic;
             rst_n           : in std_logic;
             
             in_data         : in std_logic_vector(INPUT_SIZE-1 downto 0);
@@ -87,6 +87,7 @@ package ComFlow_pkg is
     end component;
 
 	constant BURSTMODE :std_logic_vector(7 downto 0) := X"BC";
+
     component com_to_master_pi
         generic (
             FIFO_DEPTH          : POSITIVE := 64;
@@ -95,8 +96,8 @@ package ComFlow_pkg is
             MASTER_ADDR_WIDTH   : integer
         );
         port (
-            clk_in              : in std_logic; -- clk_usb
-            clk_out             : in std_logic; -- clk_design
+            clk_hal             : in std_logic; -- clk_usb
+            clk_proc            : in std_logic; -- clk_design
             rst_n               : in std_logic;
             
             -- USB driver connexion

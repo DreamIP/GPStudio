@@ -19,8 +19,8 @@ entity com_to_flow is
         OUTPUT_SIZE : INTEGER := 16
     );
     port (
-        clk_in      : in std_logic;
-        clk_out     : in std_logic;
+        clk_proc    : in std_logic;
+        clk_hal     : in std_logic;
         rst_n       : in std_logic;
         
         data_wr_i   : in std_logic;
@@ -46,8 +46,8 @@ architecture rtl of com_to_flow is
             FLOW_ID     : integer := 1
         );
         port (
-            clk_in      : in std_logic;
-            clk_out     : in std_logic;
+            clk_proc    : in std_logic;
+            clk_hal     : in std_logic;
 
             rst_n       : in std_logic;
 
@@ -118,8 +118,8 @@ generic map (
     FLOW_ID     => FLOW_ID
 )
 port map (
-    clk_in      => clk_in,
-    clk_out     => clk_out,
+    clk_proc    => clk_proc,
+    clk_hal     => clk_hal,
     rst_n       => rst_n,
 
     data_wr_i   => data_wr_i,
@@ -141,8 +141,8 @@ generic map (
     CDC_SYNC_FF_CHAIN_DEPTH => 2
 )
 port map (
-    clk_i       => clk_in,
-    clk_o       => clk_out,
+    clk_i       => clk_hal,
+    clk_o       => clk_proc,
     signal_i    => flow_rdy_s,
     signal_o    => flow_rdy_resync_s
 );
@@ -153,7 +153,7 @@ generic map (
     DATA_SZ     => OUTPUT_SIZE
 )
 port map (
-    clk         => clk_out,
+    clk         => clk_proc,
     rst_n       => rst_n,
     data_i      => data_o_s,
     flow_rdy_i  => flow_rdy_resync_s,
