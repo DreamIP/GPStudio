@@ -1,0 +1,105 @@
+%------------------------ Packages ------------------------
+\documentclass[12pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[pdftex]{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[FIGTOPCAP]{subfigure}
+\usepackage{color}
+\usepackage[hidelinks]{hyperref}
+
+\input{../../../../docsrc/gpstudio_doc.tex}
+
+\begin{document}
+
+\begin{center}
+\textbf{\huge  \underline{Dynroi operator}}
+\end{center}
+\vspace{0.5cm}
+
+The dynroi operator is a segmentation operator used to identify the knowledge rich part of an incoming binary image, and apply a reduction on an incoming image at the region of interest coordinates. With the assumption that the binary image has been stripped of all noises, the region of interest returned by this operator is defined as the smallest rectangle containing all the binary image white pixels.\\
+Two output flows are returned by this IP: 
+\begin{itemize}
+\item The rectangle coordinates are sent on a serial format via a 64 bits frame, with the following disposition: \\
+\begin{center}
+$<x,y,w,h>$\\
+\end{center}
+Each component is 16 bits wide and the sending order is left to right, Less Significant Byte first. The output is called $roi\_coordinates$ in the above diagram, and $coord$ in the gpnode interface.
+\item The original image truncated to its region of interest. 
+\end{itemize}
+
+
+If the bypass option is enabled, the ROI coordinates will be fixed to the original image resolution, which means the reduced image is the incoming image. This option predates the static\_res behaviour.\\\\
+If the static\_res option is enabled, the size of the ROI is no longer dynamic and is defined by the $w$ and $h$ parameters in gpviewer interface. If the region of interest cannot contain all detected white pixels, the ROI rectangle is cropped with top left corner as the starting point.
+
+
+
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+\node[block,rectangle,minimum height=2cm,minimum width=3cm] (bloc) {\textbf{Dynroi}};
+
+\path[connect,<-] ([yshift=-0.75cm]bloc.west) -- node{/} node[above]{img} ++(-2.5cm,0);
+\path[connect,<-] ([yshift=0.75cm]bloc.west) -- node{/} node[above]{binary\_image} ++(-2.5cm,0);
+\path[connect,->] ([yshift=-0.75cm]bloc.east) -- node{/} node[above]{roi\_coordinates} ++(3cm,0);
+\path[connect,->] ([yshift=0.75cm]bloc.east) -- node{/} node[above]{reduced\_image} ++(3cm,0);
+ ([xshift=0.5cm,yshift=-0.6cm]bloc.north);
+
+\end{tikzpicture}
+\end{figure}
+
+
+\section*{Properties}
+\properties{
+enable           	 & bool & Enable the processing \\ 
+bypass           	 & bool & Enable Image reduction \\ 
+static\_res           & bool & Enable static resolution usage for ROI\\ 
+}
+
+\vspace{0.5cm}
+
+\section*{Constants}
+
+\constants{
+BinImg & Size of the input binary image flow\\
+Img & Size of the input image flow\\
+roi & Size of the output image flow\\
+coord & Size of the output coordinate flow\\
+}
+
+
+\section*{Processing chain}
+
+The operator initializes 4 variables $x_{min}$, $y_{min}$, $x_{max}$ and $y_{max}$ containing measured extrema for $x$ and $y$ coordinates, and update these variables for each non black pixel of the incoming binary image. The coordinates are then processed with the following rules:
+
+\centering
+$x = x_{min}$ \hspace*{2cm} $y = y_{min}$\\
+$w = x_{max} - x_{min}$ \hspace*{2cm} $h = y_{max} - y_{min}$\\
+
+The newly obtained set of coordinates is then sent to a parallel process, which apply the reduction on this area with the original image flow. The current ROI coordinates apply to the next image brought by the $img$ flow.
+
+\section*{Usage}
+The following gpnode project uses dynroi output to display a rectangle on the original image, and display the reduced image:
+\begin{figure}[h!]
+\centering
+\label{dynroiUsage}
+\caption{Model project using detectroi bloc}
+\includegraphics[width=14cm]{dynroiUsage.png}
+\end{figure}
+
+\textbf{NB: gpviewer will be able to display the reduced image flow only if the static\_res option is enabled. The interface is using a fixed resolution, thus a dynamic roi detection will not be managed by gpviewer.}
+
+\begin{figure}
+\centering
+\subfigure[Original image with received rectangle from dynroi]{
+\includegraphics[width=14cm]{detected.png}}
+\subfigure[Coordinates of the detected ROI]{
+\includegraphics[width=14cm]{roi.png}}
+
+\end{figure}
+
+
+\end{document}
