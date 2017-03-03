@@ -360,7 +360,8 @@ void NodeEditorWindows::createToolBarAndMenu()
     _mainToolBar->addAction(makerunAction);
     projectMenu->addAction(makerunAction);
 
-    QAction *makeallAction = new QAction(tr("&All previous action"), this);
+    QAction *makeallAction = new QAction(tr("Generate, &compile, send and run"), this);
+    makeallAction->setShortcut(QKeySequence("Ctrl+R"));
     makeallAction->setStatusTip(tr("Generate, compile and lauch your projects"));
     makeallAction->setIcon(QIcon(":/icons/img/make-all.png"));
     connect(makeallAction, SIGNAL(triggered(bool)), _compileLog, SLOT(launchAll()));
@@ -435,11 +436,13 @@ void NodeEditorWindows::createToolBarAndMenu()
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
 
     QAction *aboutAction = new QAction(tr("&About"), this);
-    aboutAction->setStatusTip(tr("Shows abou"));
+    aboutAction->setIcon(QIcon(":/img/img/gpstudio_viewer.ico"));
+    aboutAction->setStatusTip(tr("Shows informations about node editor"));
     connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(about()));
     helpMenu->addAction(aboutAction);
 
     QAction *aboutQtAction = new QAction(tr("About &Qt"), this);
+    aboutQtAction->setIcon(QIcon(":/icons/img/qt.png"));
     aboutQtAction->setStatusTip(tr("About Qt version"));
     connect(aboutQtAction, SIGNAL(triggered(bool)), this, SLOT(aboutQt()));
     helpMenu->addAction(aboutQtAction);

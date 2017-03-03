@@ -167,10 +167,6 @@ void ViewerWindow::createToolBarAndMenu()
 
     // ============= Windows =============
     _viewersMdiArea->setMenu(menuBar()->addMenu("&Viewers"));
-    _mainToolBar->addSeparator();
-    _mainToolBar->addAction(_viewersMdiArea->viewBlockAct());
-    _mainToolBar->addAction(_viewersMdiArea->tileAct());
-    _mainToolBar->addAction(_viewersMdiArea->closeAct());
 
     // ============= Help =============
     QMenu *helpMenu = menuBar()->addMenu("&Help");
