@@ -39,22 +39,34 @@ architecture rtl of com_flow_fifo_rx is
 ---------------------------------------------------------
 --	COMPONENT DECLARATION
 ---------------------------------------------------------
- component fifo_com_rx IS
-	generic (
-		DEPTH       : POSITIVE := FIFO_DEPTH
-	);
-	port (
-		aclr		: in std_logic := '0';
-		data		: in std_logic_vector(15 downto 0);
-		rdclk		: in std_logic;
-		rdreq		: in std_logic;
-		wrclk		: in std_logic;
-		wrreq		: in std_logic;
-		q		    : out std_logic_vector(15 downto 0);
-		rdempty		: out std_logic;
-		wrfull		: out std_logic
-	);
-END component;
+    component fifo_com_rx IS
+    generic (
+        DEPTH       : POSITIVE := FIFO_DEPTH
+    );
+    port (
+        aclr		: in std_logic := '0';
+        data		: in std_logic_vector(15 downto 0);
+        rdclk		: in std_logic;
+        rdreq		: in std_logic;
+        wrclk		: in std_logic;
+        wrreq		: in std_logic;
+        q		    : out std_logic_vector(15 downto 0);
+        rdempty		: out std_logic;
+        wrfull		: out std_logic
+    );
+    end component;
+
+    component synchronizer
+        generic (
+            CDC_SYNC_FF_CHAIN_DEPTH: integer := 2 -- CDC Flip flop Chain depth
+        );
+        port (
+            signal_i    : in std_logic;
+            signal_o    : out std_logic;
+            clk_i       : in std_logic;
+            clk_o       : in std_logic
+        );
+    end component;
 
 ---------------------------------------------------------
 --	SIGNALS
@@ -117,6 +129,8 @@ END component;
 	signal cur_fifo_readable_r  : std_logic := '0';
 	signal other_fifo_readable  : std_logic := '0';
 	signal cur_fifo_full_s      : std_logic := '0';
+    
+	signal flow_rdy_s           : std_logic := '0';
 
 begin
 
@@ -129,7 +143,7 @@ begin
     fifo_1_rdclk_s <= clk_proc;
     fifo_2_rdclk_s <= clk_proc;
 
-    flow_rdy_o <= fifo_1_readable or fifo_2_readable;
+    flow_rdy_s <= fifo_1_readable or fifo_2_readable;
 
     FIFO_1 : fifo_com_rx
 	generic map (
@@ -162,6 +176,18 @@ begin
 		rdempty     => fifo_2_rdempty_s,
 		wrfull	    => fifo_2_wrfull_s
 	);
+
+    -- CDC Synchronizer
+    Sync_inst : component synchronizer
+    generic map (
+        CDC_SYNC_FF_CHAIN_DEPTH => 2
+    )
+    port map (
+        clk_i       => clk_hal,
+        clk_o       => clk_proc,
+        signal_i    => flow_rdy_s,
+        signal_o    => flow_rdy_o
+    );
 
 fifo_1_aclr_s <= not(rst_n or enable_i);
 fifo_2_aclr_s <= not(rst_n or enable_i);

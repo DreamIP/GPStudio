@@ -65,18 +65,6 @@ architecture rtl of com_to_flow is
         );
     end component;
 
-    component synchronizer
-        generic (
-            CDC_SYNC_FF_CHAIN_DEPTH: integer := 2 -- CDC Flip flop Chain depth
-        );
-        port (
-            signal_i    : in std_logic;
-            signal_o    : out std_logic;
-            clk_i       : in std_logic;
-            clk_o       : in std_logic
-        );
-    end component;
-
     component read_flow_nbits is
         generic (
             FLAGS_CODES : my_array_t := InitFlagCodes;
@@ -103,7 +91,6 @@ architecture rtl of com_to_flow is
 --	SIGNALS FOR INTERCONNECT
 ---------------------------------------------------------
 	signal flow_rdy_s           : std_logic := '0';
-	signal flow_rdy_resync_s    : std_logic := '0';
 	signal read_data_s          : std_logic := '0';
 	signal empty_s              : std_logic := '0';
 	signal data_o_s             : std_logic_vector(15 downto 0) := (others=>'0');
@@ -135,18 +122,6 @@ port map (
     fifos_f_o   => flow_full_o
 );
 
--- CDC Synchronizer
-Sync_inst : component synchronizer
-generic map (
-    CDC_SYNC_FF_CHAIN_DEPTH => 2
-)
-port map (
-    clk_i       => clk_hal,
-    clk_o       => clk_proc,
-    signal_i    => flow_rdy_s,
-    signal_o    => flow_rdy_resync_s
-);
-
 RD_process : component read_flow_nbits
 generic map (
     FLAGS_CODES => FLAGS_CODES,
@@ -156,7 +131,7 @@ port map (
     clk         => clk_proc,
     rst_n       => rst_n,
     data_i      => data_o_s,
-    flow_rdy_i  => flow_rdy_resync_s,
+    flow_rdy_i  => flow_rdy_s,
     f_empty_i   => empty_s,
     enable_i    => enable_i,
     flag_i      => flag_s,
