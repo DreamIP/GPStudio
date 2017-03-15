@@ -203,15 +203,15 @@ port map (
     flow_in3_enable => enable_in3_s
 );
 
---FLOW_IN 0
-FI0_label0 : if OUT0_NBWORDS = 0 generate
+--FLOW_OUT out0
+FO0_disabled : if OUT0_NBWORDS = 0 generate
 	out0_data   <= (others => '0');
 	out0_fv     <= '0';
 	out0_dv     <= '0';
-end generate FI0_label0;
+end generate FO0_disabled;
 
-FI0_label1 : if OUT0_NBWORDS > 0 generate
-    USBFLOW_IN0: component com_to_flow
+FO0_enabled : if OUT0_NBWORDS > 0 generate
+    FLOW_OUT0: component com_to_flow
     generic map (
         FIFO_DEPTH  => OUT0_NBWORDS,
         FLOW_ID     => 1,
@@ -233,17 +233,17 @@ FI0_label1 : if OUT0_NBWORDS > 0 generate
         dv_o        => out0_dv,
         flow_full_o => open
     );
-end generate FI0_label1;
+end generate FO0_enabled;
 
---FLOW_IN 1
-FI1_label0 : if OUT1_NBWORDS = 0 generate
+--FLOW_OUT out1
+FO1_disabled : if OUT1_NBWORDS = 0 generate
 	out1_data   <= (others => '0');
 	out1_fv     <= '0';
 	out1_dv     <= '0';
-end generate FI1_label0;
+end generate FO1_disabled;
 
-FI1_label1 : if OUT1_NBWORDS > 0 generate
-    USBFLOW_IN1: component com_to_flow
+FO1_enabled : if OUT1_NBWORDS > 0 generate
+    FLOW_OUT1: component com_to_flow
     generic map (
         FIFO_DEPTH  => OUT1_NBWORDS,
         FLOW_ID     => 2,
@@ -265,18 +265,19 @@ FI1_label1 : if OUT1_NBWORDS > 0 generate
         dv_o        => out1_dv,
         flow_full_o => open
     );
-end generate FI1_label1;
+end generate FO1_enabled;
+
 ------------------------------------------------------------
---FLOW OUT 0
+--FLOW IN in0
 --Disable flow if not used
-FO0_label3 : if IN0_NBWORDS = 0 generate
+FI0_disabled : if IN0_NBWORDS = 0 generate
 	flow_out_rdy_0_s <= '0';
 	flow_out_empty_0_s <= '0';
 	flow_out_data_0_s <= (others => '0');
-end generate FO0_label3;
+end generate FI0_disabled;
 
-FO0_label4 : if IN0_NBWORDS > 0 generate
-    USBFLOW_OUT0: component flow_to_com
+FI0_enabled : if IN0_NBWORDS > 0 generate
+    FLOW_IN0: component flow_to_com
     generic map (
         INPUT_SIZE      => IN0_SIZE,
         FIFO_DEPTH      => IN0_NBWORDS,
@@ -304,19 +305,19 @@ FO0_label4 : if IN0_NBWORDS > 0 generate
         f_empty_o       => flow_out_empty_0_s,
         size_packet_o   => flow_out_size_0_packet_s
     );
-end generate FO0_label4;
+end generate FI0_enabled;
 ------------------------------------------------------------
 
 ------------------------------------------------------------
---FLOW OUT 1
-FO1_label3 : if IN1_NBWORDS = 0 generate
+--FLOW IN in1
+FI1_disabled : if IN1_NBWORDS = 0 generate
 	flow_out_rdy_1_s    <= '0';
 	flow_out_empty_1_s  <= '0';
 	flow_out_data_1_s   <= (others => '0');
-end generate FO1_label3;
+end generate FI1_disabled;
 
-FO1_label4 : if IN1_NBWORDS > 0 generate
-    USBFLOW_OUT1: component flow_to_com
+FI1_enabled : if IN1_NBWORDS > 0 generate
+    FLOW_IN1: component flow_to_com
     generic map (
         INPUT_SIZE      => IN1_SIZE,
         FIFO_DEPTH      => IN1_NBWORDS,
@@ -344,19 +345,19 @@ FO1_label4 : if IN1_NBWORDS > 0 generate
         f_empty_o       => flow_out_empty_1_s,
         size_packet_o   => flow_out_size_1_packet_s
     );
-end generate FO1_label4;
+end generate FI1_enabled;
 ------------------------------------------------------------
 
 ------------------------------------------------------------
---FLOW OUT 2
-FO2_label3 : if IN2_NBWORDS = 0 generate
+--FLOW IN in2
+FI2_disabled : if IN2_NBWORDS = 0 generate
 	flow_out_rdy_2_s <= '0';
 	flow_out_empty_2_s <= '0';
 	flow_out_data_2_s <= (others => '0');
-end generate FO2_label3;
+end generate FI2_disabled;
 
-FO2_label4 : if IN2_NBWORDS > 0 generate
-    USBFLOW_OUT2: component flow_to_com
+FI2_enabled : if IN2_NBWORDS > 0 generate
+    FLOW_IN2: component flow_to_com
     generic map (
         INPUT_SIZE      => IN2_SIZE,
         FIFO_DEPTH      => IN2_NBWORDS,
@@ -384,19 +385,19 @@ FO2_label4 : if IN2_NBWORDS > 0 generate
         f_empty_o       => flow_out_empty_2_s,
         size_packet_o   => flow_out_size_2_packet_s
     );
-end generate FO2_label4;
+end generate FI2_enabled;
 ------------------------------------------------------------
-------------------------------------------------------------
---FLOW OUT 3
 
-FO3_label3 : if IN3_NBWORDS = 0 generate
+------------------------------------------------------------
+--FLOW IN in3
+FI3_disabled : if IN3_NBWORDS = 0 generate
 	flow_out_rdy_3_s <= '0';
 	flow_out_empty_3_s <= '0';
 	flow_out_data_3_s <= (others => '0');
-end generate FO3_label3;
+end generate FI3_disabled;
 
-FO3_label4 : if IN3_NBWORDS > 0 generate
-    USBFLOW_OUT3: component flow_to_com
+FI3_enabled : if IN3_NBWORDS > 0 generate
+    FLOW_IN3: component flow_to_com
     generic map (
         INPUT_SIZE      => IN3_SIZE,
         FIFO_DEPTH      => IN3_NBWORDS,
@@ -424,12 +425,11 @@ FO3_label4 : if IN3_NBWORDS > 0 generate
         f_empty_o       => flow_out_empty_3_s,
         size_packet_o   => flow_out_size_3_packet_s
     );
-end generate FO3_label4;
+end generate FI3_enabled;
 ------------------------------------------------------------
 
--- component flow_out_arbiter
-
-USBFLOW_ARB : component flow_to_com_arb4
+-- component flow_to_com_arb4
+FLOW_ARB : component flow_to_com_arb4
     port map (
 		clk             => clk_hal_s,
 		rst_n           => rst,
@@ -470,7 +470,7 @@ USBFLOW_ARB : component flow_to_com_arb4
 		size_packet_o   => flow_out_size_packet_s
 	);
 
---  FLOW_PARAMS module --> Bus Interconnect Master
+--  FLOW_PARAMS module --> Parameter Interconnect Master
 FLOW_PARAMS : component com_to_master_pi
     generic map (
         FIFO_DEPTH          => 64,
