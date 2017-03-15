@@ -626,7 +626,8 @@
 				</pin>
 			</pins>
 		</io>
-		<io name="ethernet_rgmii" type="communication" driver="eth_marvell_88e1111_rgmii" optional="false" optionalgroup="2" description="Marvell 88e1111 ethernet controler in RGMII mode">
+-->
+		<io name="ethernet_rgmii" type="communication" driver="eth_marvell_88e1111" optional="false" optionalgroup="2" description="Marvell 88e1111 ethernet controler in RGMII mode">
 			<pins>
 				<pin name="PIN_Y14" mapto="eth_reset_n_o">
 					<attributes>
@@ -705,6 +706,7 @@
 				</pin>
 			</pins>
 		</io>
+<!--
 		<io name="sram_bank0" type="memory" driver="sram_is61wv102416bll" optional="true" description="External SRAM bank number 0">
 			<pins>
 				<pin name="PIN_E18" mapto="mem1_ce_n_o">
