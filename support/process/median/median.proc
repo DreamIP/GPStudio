@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="median" categ="filter" master_count="0" pi_size_addr_rel="4" desc="Median filter">
+  <parts>
+    <part name="main">
+      <svg width="127" height="127">
+        <rect width="127" height="127" x="0" y="0" fill="lightgray"/>
+        <text x="20" y="35" font-size="13">MEDIAN</text>
+      </svg>
+    </part>
+  </parts>
+  <infos>
+    <info name="author" value="Edouard Hendrickx"/>
+    <info name="email" value="edouard.hendrickx@uca.fr"/>
+    <info name="company" value="Institut Pascal"/>
+    <info name="revision" value="1.0"/>
+  </infos>
+  <files>
+    <file name="median.proc" type="proc" group="blockdef" path="median.proc"/>
+    <file name="median.vhd" type="vhdl" group="hdl" path="hdl/median.vhd"/>
+    <file name="median_process.vhd" type="vhdl" group="hdl" path="hdl/median_process.vhd"/>
+    <file name="median_slave.vhd" type="vhdl" group="hdl" path="hdl/median_slave.vhd"/>
+    <file name="matrix_extractor.vhd" type="vhdl" group="hdl" path="hwlib:matrix_extractor/hdl/matrix_extractor.vhd"/>
+    <file name="gp_fifo.vhd" type="vhdl" group="hdl" path="hwlib:gp_fifo/hdl/gp_fifo.vhd"/>
+	<file name="Medianfilter.tex" type="pdf" group="doc" path="doc/Medianfilter.tex"/>
+    <file name="Medianfilter.pdf" type="pdf" group="doc" path="doc/Medianfilter.pdf"/>
+  </files>
+  <resets>
+    <reset name="reset_n" group="reset_n" direction="in"/>
+  </resets>
+  <flows>
+    <flow name="in" size="8" type="in"/>
+    <flow name="out" size="8" type="out">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int" propertymap="in.width.value-2"/>
+        <property name="height" type="int" propertymap="in.height.value-2"/>
+      </properties>
+    </flow>
+  </flows>
+  <params>
+    <param name="LINE_WIDTH_MAX" type="int" hard="1" value="1280" desc="maximum line width"/>
+    <param name="status_reg" regaddr="0">
+      <bitfields>
+        <bitfield name="enable_bit" bitfield="0" propertymap="enable.value"/>
+      </bitfields>
+    </param>
+    <param name="widthimg_reg" regaddr="1">
+      <bitfields>
+        <bitfield name="width" bitfield="15-0" propertymap="in.width.value"/>
+      </bitfields>
+    </param>
+  </params>
+  <properties>
+    <property name="enable" type="bool" value="1"/>
+  </properties>
+</process>
