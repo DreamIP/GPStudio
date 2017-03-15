@@ -1,0 +1,135 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2013 Altera Corporation
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, Altera MegaCore Function License 
+# Agreement, or other applicable license agreement, including, 
+# without limitation, that your use is for the sole purpose of 
+# programming logic devices manufactured by Altera and sold by 
+# Altera or its authorized distributors.  Please refer to the 
+# applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II 64-Bit
+# Version 13.1.0 Build 162 10/23/2013 SJ Full Version
+# Date created = 15:30:00  January 24, 2017
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		udp_ip_stack_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone III"
+set_global_assignment -name DEVICE EP3C120F780C7
+set_global_assignment -name TOP_LEVEL_ENTITY UDP_MAC_GE
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 13.1
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "15:30:00  JANUARY 24, 2017"
+set_global_assignment -name LAST_QUARTUS_VERSION 13.1
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
+set_global_assignment -name NOMINAL_CORE_SUPPLY_VOLTAGE 1.2V
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (VHDL)"
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT VHDL -section_id eda_simulation
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
+set_location_assignment PIN_AF5 -to ENET1_GTX_CLK
+set_location_assignment PIN_AH14 -to ENET1_RX_CLK
+set_location_assignment PIN_AE8 -to ENET1_RX_DATA[3]
+set_location_assignment PIN_AB8 -to ENET1_RX_DATA[2]
+set_location_assignment PIN_AD8 -to ENET1_RX_DATA[1]
+set_location_assignment PIN_AB9 -to ENET1_RX_DATA[0]
+set_location_assignment PIN_AF9 -to ENET1_RX_DV
+set_location_assignment PIN_AD11 -to ENET1_TX_DATA[3]
+set_location_assignment PIN_AF11 -to ENET1_TX_DATA[2]
+set_location_assignment PIN_AH11 -to ENET1_TX_DATA[1]
+set_location_assignment PIN_AA10 -to ENET1_TX_DATA[0]
+set_location_assignment PIN_AD10 -to ENET1_TX_EN
+set_location_assignment PIN_J28 -to CLK50M
+set_location_assignment PIN_AB14 -to ENET1_PHY_MDC
+set_location_assignment PIN_Y15 -to ENET1_PHY_MDIO
+set_location_assignment PIN_Y14 -to ENET1_PHY_RESET_L
+set_location_assignment PIN_AG6 -to iRst_n
+set_global_assignment -name ENABLE_SIGNALTAP OFF
+set_global_assignment -name USE_SIGNALTAP_FILE output_files/stp2_icmp_check_udp.stp
+set_global_assignment -name OPTIMIZE_HOLD_TIMING "ALL PATHS"
+set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
+set_global_assignment -name FITTER_EFFORT "STANDARD FIT"
+set_global_assignment -name CYCLONEII_OPTIMIZATION_TECHNIQUE SPEED
+set_global_assignment -name SYNTH_TIMING_DRIVEN_SYNTHESIS ON
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name VHDL_FILE rtl/vhdl/tx_arbitrator_over_ip.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/icmp.vhd
+set_global_assignment -name VHDL_FILE rgmii_tx_2.vhd
+set_global_assignment -name VHDL_FILE rgmii_rx_2.vhd
+set_global_assignment -name VHDL_FILE eth_mdio.vhd
+set_global_assignment -name VHDL_FILE UDP_MAC_GE.vhd
+set_global_assignment -name VHDL_FILE rgmii_tx_top_2.vhd
+set_global_assignment -name VHDL_FILE gbe_mac.vhd
+set_global_assignment -name VHDL_FILE rgmii_rx.vhd
+set_global_assignment -name VHDL_FILE rgmii_rx_top_2.vhd
+set_global_assignment -name VHDL_FILE rgmii1000_pll.vhd
+set_global_assignment -name VHDL_FILE rgmii1000_io.vhd
+set_global_assignment -name VHDL_FILE rgmii_mdio.vhd
+set_global_assignment -name VHDL_FILE fifo32x8.vhd
+set_global_assignment -name VHDL_FILE fifo_sc_34x64.vhd
+set_global_assignment -name VHDL_FILE fifo_sc_6x64.vhd
+set_global_assignment -name VHDL_FILE eth_pkg.vhd
+set_global_assignment -name VHDL_FILE eth_ddr_out.vhd
+set_global_assignment -name VHDL_FILE eth_ddr_in.vhd
+set_global_assignment -name VHDL_FILE eth_crc32.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/UDP_TX.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/UDP_RX.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/UDP_Complete_nomac.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/tx_arbitrator.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/ipv4_types.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/IPv4_TX.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/IPv4_RX.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/IPv4.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/IP_complete_nomac.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/axi.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/arpv2.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/arp_types.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/arp_TX.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/arp_SYNC.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/arp_STORE_br.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/arp_RX.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/arp_REQ.vhd
+set_global_assignment -name VHDL_FILE rtl/vhdl/arp.vhd
+set_global_assignment -name QIP_FILE fifo_tx_udp.qip
+set_global_assignment -name SDC_FILE UDP_GBE_MAC.sdc
+set_global_assignment -name VHDL_FILE debounce.vhd
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2.stp
+set_global_assignment -name QIP_FILE fifo_rx_udp.qip
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2_rx_2.stp
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2_rx.stp
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2_rx_udp.stp
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2_rx_udp_tx_arp.stp
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2_tx_check.stp
+set_global_assignment -name QIP_FILE ff_icmp.qip
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2_icmp_check.stp
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2_icmp_check_udp.stp
+set_global_assignment -name SEARCH_PATH output_files/ -tag from_archive
+set_global_assignment -name SEARCH_PATH rtl/vhdl/ -tag from_archive
