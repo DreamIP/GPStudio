@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <io driver="d5m" categ="imagesensor" pi_size_addr_rel="4" desc="">
+  <parts>
+    <part name="main">
+      <svg width="100" height="100">
+        <rect width="100" height="100" x="0" y="0" fill="lightgray"/>
+        <path d="M10 20 L40 40 L40 25 L90 25 L90 75 L40 75 L40 60 L10 80 Z" fill="black" stroke="black" stroke-width="10" stroke-linejoin="round"/>
+      </svg>
+    </part>
+  </parts>
   <files>
     <file name="d5m.io" type="io" group="blockdef" path="d5m.io"/>
     <file name="d5m.vhd" type="vhdl" group="hdl" path="hdl/d5m.vhd"/>

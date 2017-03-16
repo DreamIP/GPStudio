@@ -884,9 +884,6 @@
 			</pins>
 		</io>
         <io name="d5m_cam" type="imagesensor" driver="d5m" optional="true" optionalgroup="1" description="D5M Terasic sensor">
-			<params>
-				<param name="GPIOCOUNT" value="36"/>
-			</params>
 			<pins>
                 <pin name="ccd_pixclk" mapto="PIN_AB17">
                     <attributes>
