@@ -6,19 +6,20 @@ _gpdevice()
     _init_completion || return
 
     # see if the user selected a command already
-    local COMMANDS=("new"         "showblock"
-                    "generate"    "generatetop" "generateslave" "generateprocess" "generatetb"
-                    "addfile"     "delfile"     "showfile"
-                    "addflow"     "delflow"     "showflow"      "renameflow"     "setflow"
-                    "addparam"    "delparam"    "showparam"     "renameparam"    "setparam"    "fixparam"  "setpisizeaddr"
-                    "addbitfield" "delbitfield" "showbitfield"  "renamebitfield" "setbitfield"
-                    "addreset"    "delreset"    "showreset"     "renamereset"    "setreset"
-                    "addclock"    "delclock"    "showclock"     "renameclock"    "setclock"
-                    "addextport"  "delextport"  "showextport"
-                    "addproperty" "delproperty" "showproperty"  "renameproperty" "setproperty" "setpropertymap"
-                    "addenum"     "delenum"     "showenum"
-                    "sethelp"     "setdraw"     "setcateg"      "categ"          "setinfo"     "info"
-                    "convert"     "extract"     "help"
+    local COMMANDS=("new"          "showblock"
+                    "generate"     "generatetop"  "generateslave" "generateprocess" "generatetb"
+                    "addfile"      "delfile"      "showfile"
+                    "addflow"      "delflow"      "showflow"      "renameflow"     "setflow"
+                    "addparam"     "delparam"     "showparam"     "renameparam"    "setparam"    "fixparam"  "setpisizeaddr"
+                    "addbitfield"  "delbitfield"  "showbitfield"  "renamebitfield" "setbitfield"
+                    "addreset"     "delreset"     "showreset"     "renamereset"    "setreset"
+                    "addclock"     "delclock"     "showclock"     "renameclock"    "setclock"
+                    "addextport"   "delextport"   "showextport"
+                    "addproperty"  "delproperty"  "showproperty"  "renameproperty" "setproperty" "setpropertymap"
+                    "addenum"      "delenum"      "showenum"
+                    "addcomponent" "delcomponent" "showcomponent"
+                    "sethelp"      "setdraw"      "setcateg"      "categ"          "setinfo"     "info"
+                    "convert"      "extract"      "help"
     )
 
     local command i
@@ -44,7 +45,7 @@ _gpdevice()
                         COMPREPLY=( $( compgen -W '-p' -- "$cur" ) )
                         return 0
                         ;;
-                    new|addflow|delflow|renameflow|setflow|addparam|delparam|renameparam|setparam|fixparam|addbitfield|delbitfield|showbitfield|renamebitfield|setbitfield|addreset|delreset|renamereset|setreset|addclock|delclock|renameclock|setclock|addextport|delextport|showextport|addproperty|delproperty|showproperty|renameproperty|setproperty|setpropertymap|addenum|delenum|showenum|setinfo|info|extract)
+                    new|addflow|delflow|renameflow|setflow|addparam|delparam|renameparam|setparam|fixparam|addbitfield|delbitfield|showbitfield|renamebitfield|setbitfield|addreset|delreset|renamereset|setreset|addclock|delclock|renameclock|setclock|addextport|delextport|showextport|addproperty|delproperty|showproperty|renameproperty|setproperty|setpropertymap|addenum|delenum|showenum|addcomponent|delcomponent|setinfo|info|extract)
                         COMPREPLY=( $( compgen -W '-n' -- "$cur" ) )
                         return 0
                         ;;
@@ -122,6 +123,14 @@ _gpdevice()
                         ;;
                     convert)
                         COMPREPLY=( $( compgen -A file -- "$cur" ) )
+                        return 0
+                        ;;
+                    addcomponent)
+                        COMPREPLY=( $( compgen -W '$( gplib listcomponent )' -- "$cur" ) )
+                        return 0
+                        ;;
+                    delcomponent)
+                        COMPREPLY=( $( compgen -W '$( gpdevice listcomponent )' -- "$cur" ) )
                         return 0
                         ;;
                 esac

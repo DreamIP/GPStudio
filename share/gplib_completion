@@ -6,7 +6,7 @@ _gplib()
     _init_completion || return
 
     # see if the user selected a command already
-    local COMMANDS=("listio" "listprocess" "listboard" "listtoolchain" "checklib")
+    local COMMANDS=("listio" "listprocess" "listboard" "listtoolchain" "listcomponent" "checklib")
 
     local command i
     for (( i=0; i < ${#words[@]}-1; i++ )); do

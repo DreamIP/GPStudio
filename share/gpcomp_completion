@@ -6,15 +6,16 @@ _gpcomp()
     _init_completion || return
 
     # see if the user selected a command already
-    local COMMANDS=("new"         "showblock"
-                    "generate"    "generatetb"
-                    "addfile"     "delfile"     "showfile"
-                    "addflow"     "delflow"     "showflow"      "renameflow"     "setflow"
-                    "addparam"    "delparam"    "showparam"     "renameparam"    "setparam"
-                    "addreset"    "delreset"    "showreset"     "renamereset"    "setreset"
-                    "addclock"    "delclock"    "showclock"     "renameclock"    "setclock"
-                    "sethelp"     "setdraw"     "setcateg"      "categ"          "setinfo"     "info"
-                    "convert"     "extract"     "help"
+    local COMMANDS=("new"          "showblock"
+                    "generate"     "generatetb"
+                    "addfile"      "delfile"      "showfile"
+                    "addflow"      "delflow"      "showflow"      "renameflow"     "setflow"
+                    "addparam"     "delparam"     "showparam"     "renameparam"    "setparam"
+                    "addreset"     "delreset"     "showreset"     "renamereset"    "setreset"
+                    "addclock"     "delclock"     "showclock"     "renameclock"    "setclock"
+                    "addcomponent" "delcomponent" "showcomponent"
+                    "sethelp"      "setdraw"      "setcateg"      "categ"          "setinfo"     "info"
+                    "convert"      "extract"      "help"
     )
 
     local command i
@@ -40,7 +41,7 @@ _gpcomp()
                         COMPREPLY=( $( compgen -W '-p' -- "$cur" ) )
                         return 0
                         ;;
-                    new|addflow|delflow|renameflow|setflow|addparam|delparam|renameparam|setparam|addreset|delreset|renamereset|setreset|addclock|delclock|renameclock|setclock|setinfo|info|extract)
+                    new|addflow|delflow|renameflow|setflow|addparam|delparam|renameparam|setparam|addreset|delreset|renamereset|setreset|addclock|delclock|renameclock|setclock|addcomponent|delcomponent|setinfo|info|extract)
                         COMPREPLY=( $( compgen -W '-n' -- "$cur" ) )
                         return 0
                         ;;
@@ -102,6 +103,14 @@ _gpcomp()
                         ;;
                     convert)
                         COMPREPLY=( $( compgen -A file -- "$cur" ) )
+                        return 0
+                        ;;
+                    addcomponent)
+                        COMPREPLY=( $( compgen -W '$( gplib listcomponent )' -- "$cur" ) )
+                        return 0
+                        ;;
+                    delcomponent)
+                        COMPREPLY=( $( compgen -W '$( gpdevice listcomponent )' -- "$cur" ) )
                         return 0
                         ;;
                 esac
