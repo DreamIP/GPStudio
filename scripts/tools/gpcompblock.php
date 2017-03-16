@@ -408,7 +408,7 @@ switch ($action)
         if ($component->getFileByPath($path) != NULL)
             error("This file already exists added with the same path.", 1);
         if (!file_exists($path))
-            warning("This file does not exist, you should create it.", 4);
+            warning("This file '" . $path . "' does not exist, you should create it.", 4);
 
         $file = new File();
         $file->name = basename($path);
