@@ -497,10 +497,10 @@ class Altera_quartus_toolchain extends HDL_toolchain
                 $deviceMember = $out[0][2];
                 $speedgrade = $out[0][4];
                 break;
-            case 'Cyclone V':
-                preg_match_all("|(5C)(SX{0,1})([F]{0,1})([A-Z][0-9])([A-Z][0-9])([A-Z][0-9]+).*|", $device, $out, PREG_SET_ORDER);
-                $deviceMember = $out[0][5];
-                $speedgrade = $out[0][4];
+            case 'Cyclone V': // 5CSEMA5F31C6
+                preg_match_all("|(5C)(S[XE]{0,1})([FM]{0,1})([A-Z][0-9])([A-Z][0-9][0-9])([CIA][6-8])|", $device, $out, PREG_SET_ORDER);
+                $deviceMember = $out[0][4];
+                $speedgrade = $out[0][6];
                 break;
             case 'Stratix IV': // EP4SE820F43C3
                 preg_match_all("|(EP4)(SE{0,1})([0-9]+)([F]{0,1})([0-9]+)([A-Z][0-9]).*|", $device, $out, PREG_SET_ORDER);
