@@ -1629,6 +1629,16 @@ switch ($action)
         $component->delComponent($name);
         break;
 
+    case "showcomponent":
+        echo "components :" . "\n";
+        foreach ($component->components as $subcomponent)
+        {
+            echo "  + " . $subcomponent->driver . "\n";
+        }
+        $save = false;
+
+        break;
+
     // ========================== list commands ========================
     case "listinfo":
         foreach ($component->infos as $info)
@@ -1643,8 +1653,8 @@ switch ($action)
         break;
 
     case "listcomponent":
-        foreach ($component->components as $component)
-            echo $component->driver . ' ';
+        foreach ($component->components as $subcomponent)
+            echo $subcomponent->driver . ' ';
         $save = false;
         break;
 
