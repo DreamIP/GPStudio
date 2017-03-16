@@ -8,7 +8,8 @@ gpdevice setcateg -v imagesensor
 #Files
 # GPStudio generated files
 gpdevice addfile -p hdl/d5m.vhd -t vhdl -g hdl
-gpdevice addfile -p hdl/d5m_slave.vhd -t vhdl -g hdl
+#gpdevice addfile -p hdl/d5m_slave.vhd -t vhdl -g hdl
+#gpdevice addfile -p hdl/d5m_process.vhd -t vhdl -g hdl
 # GPStudio library files
 gpdevice addfile -p "hwlib:video_sampler/video_sampler.v" -t verilog -g hdl
 # Manually written files
@@ -17,6 +18,8 @@ gpdevice addfile -p hdl/I2C_CCD_Config.v -t verilog -g hdl
 gpdevice addfile -p hdl/CCD_Capture.v -t verilog -g hdl
 gpdevice addfile -p hdl/RGB2GRY.vhd -t vhdl -g hdl
 gpdevice addfile -p hdl/RAW2RGB.v -t verilog -g hdl
+gpdevice addfile -p hdl/I2C_Controller.v -t verilog -g hdl
+gpdevice addfile -p hdl/Line_Buffer.v -t verilog -g hdl
 
 #Flows
 
@@ -49,6 +52,12 @@ gpdevice addproperty -n enable -t bool -v 0
 gpdevice addbitfield -n status_reg.enable_bit -b 0 -m enable.value
 
 #Generate device
-gpdevice generate -o hdl/
+
+# Generate top, process and slave
+# gpdevice generate -o hdl/ 
+#gpdevice generatetop -o hdl/
+#gpdevice generateprocess -o hdl/
+#gpdevice generateslave -o hdl/
+#gpdevice generatetb -o hdl/
 
 

@@ -3,13 +3,14 @@
   <files>
     <file name="d5m.io" type="io" group="blockdef" path="d5m.io"/>
     <file name="d5m.vhd" type="vhdl" group="hdl" path="hdl/d5m.vhd"/>
-    <file name="d5m_slave.vhd" type="vhdl" group="hdl" path="hdl/d5m_slave.vhd"/>
     <file name="video_sampler.v" type="verilog" group="hdl" path="hwlib:video_sampler/video_sampler.v"/>
     <file name="d5m_controller.vhd" type="vhdl" group="hdl" path="hdl/d5m_controller.vhd"/>
     <file name="I2C_CCD_Config.v" type="verilog" group="hdl" path="hdl/I2C_CCD_Config.v"/>
     <file name="CCD_Capture.v" type="verilog" group="hdl" path="hdl/CCD_Capture.v"/>
     <file name="RGB2GRY.vhd" type="vhdl" group="hdl" path="hdl/RGB2GRY.vhd"/>
     <file name="RAW2RGB.v" type="verilog" group="hdl" path="hdl/RAW2RGB.v"/>
+    <file name="I2C_Controller.v" type="verilog" group="hdl" path="hdl/I2C_Controller.v"/>
+    <file name="Line_Buffer.v" type="verilog" group="hdl" path="hdl/Line_Buffer.v"/>
   </files>
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>
