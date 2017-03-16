@@ -696,7 +696,7 @@
                 </pin>
 			</pins>
 		</io>
-        <io name="gpio1" type="gpio" driver="gpio" optional="true" description="GPIO port 1">
+        <io name="gpio1" type="gpio" driver="gpio" optional="true" optionalgroup="1" description="GPIO port 1">
 			<params>
 				<param name="GPIOCOUNT" value="36"/>
 			</params>
@@ -877,6 +877,113 @@
                     </attributes>
                 </pin>
                 <pin name="gpio1_io[35]" mapto="PIN_AC22">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+			</pins>
+		</io>
+        <io name="d5m_cam" type="imagesensor" driver="d5m" optional="true" optionalgroup="1" description="D5M Terasic sensor">
+			<params>
+				<param name="GPIOCOUNT" value="36"/>
+			</params>
+			<pins>
+                <pin name="ccd_pixclk" mapto="PIN_AB17">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[11]" mapto="PIN_AA21">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[10]" mapto="PIN_AC23">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[9]" mapto="PIN_AD24">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[8]" mapto="PIN_AE23">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[7]" mapto="PIN_AE24">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[6]" mapto="PIN_AF25">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[5]" mapto="PIN_AF26">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[4]" mapto="PIN_AG25">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[3]" mapto="PIN_AG26">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[2]" mapto="PIN_AH24">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[1]" mapto="PIN_AH27">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_data[0]" mapto="PIN_AJ27">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_xclkin" mapto="PIN_AK27">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_reset" mapto="PIN_AJ26">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_trigger" mapto="PIN_AH25">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_lval" mapto="PIN_AJ24">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="ccd_fval" mapto="PIN_AK24">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="i2c_sdata" mapto="PIN_AG23">
+                    <attributes>
+                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+                    </attributes>
+                </pin>
+                <pin name="i2c_sclk" mapto="PIN_AK23">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>
