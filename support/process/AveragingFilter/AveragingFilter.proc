@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="AveragingFilter" categ="filter" master_count="0" pi_size_addr_rel="4" desc="Averaging Filter">
+  <parts>
+    <part name="main">
+		<svg width="127" height="127">
+			<rect width="127" height="127" x="0" y="0" fill="lightgray"/>
+			<text x="20" y="35" font-size="13">Averaging</text>
+		</svg>
+    </part>
+  </parts>
+  <infos>
+    <info name="author" value="Edouard Hendrickx"/>
+    <info name="email" value="edouard.hendrickx@univ-bpclermont.fr"/>
+    <info name="company" value="Institut Pascal"/>
+    <info name="revision" value="1.0"/>
+    <info name="releasedate" value="2016-09-25"/>
+  </infos>
+  <files>
+    <file name="AveragingFilter.proc" type="proc" group="blockdef" path="AveragingFilter.proc"/>
+    <file name="AveragingFilter.vhd" type="vhdl" group="hdl" path="hdl/AveragingFilter.vhd"/>
+    <file name="AveragingFilter_process.vhd" type="vhdl" group="hdl" path="hdl/AveragingFilter_process.vhd"/>
+    <file name="AveragingFilter_slave.vhd" type="vhdl" group="hdl" path="hdl/AveragingFilter_slave.vhd"/>
+	<file name="averagingfilter.tex" type="pdf" group="doc" path="doc/averagingfilter.tex"/>
+    <file name="averagingfilter.pdf" type="pdf" group="doc" path="doc/averagingfilter.pdf"/>
+  </files>
+  <resets>
+    <reset name="reset_n" group="reset_n" direction="in"/>
+  </resets>
+  <flows>
+    <flow name="in" size="8" type="in"/>
+    <flow name="out" size="8" type="out">
+      <properties>
+        <property name="datatype" type="flowtype" value="image"/>
+        <property name="width" type="int" propertymap="in.width.value-2"/>
+        <property name="height" type="int" propertymap="in.height.value-2"/>
+      </properties>
+    </flow>
+  </flows>
+  <params>
+    <param name="LINE_WIDTH_MAX" type="int" hard="1" value="1280" desc="maximum line width"/>
+    <param name="status_reg" regaddr="0">
+      <bitfields>
+        <bitfield name="enable_bit" bitfield="0" propertymap="enable.value"/>
+      </bitfields>
+    </param>
+    <param name="widthimg_reg" regaddr="1">
+      <bitfields>
+        <bitfield name="width" bitfield="15-0" propertymap="in.width.value"/>
+      </bitfields>
+    </param>
+  </params>
+  <properties>
+    <property name="enable" type="bool" value="1"/>
+  </properties>
+  <components>
+    <component driver="matrix_extractor"/>
+  </components>
+</process>
