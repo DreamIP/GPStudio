@@ -147,6 +147,8 @@ Commands of \tool{} always have the same naming convention. This table is a brie
 \hline 
 \textbf{clock} & \hyperref[subsec:addclock]{addclock} & \hyperref[subsec:delclock]{delclock} & \hyperref[subsec:showclock]{showclock} & \hyperref[subsec:renameclock]{renameclock} & \hyperref[subsec:setclock]{setclock}  \\ 
 \hline 
+\textbf{component} & \hyperref[subsec:addcomponent]{addcomponent} & \hyperref[subsec:delcomponent]{delcomponent} & \hyperref[subsec:showcomponent]{showcomponent} &  &  \\ 
+\hline 
 \gpdevice{
 \textbf{extport} & \hyperref[subsec:addextport]{addextport} & \hyperref[subsec:delextport]{delextport} & \hyperref[subsec:showextport]{showextport} &  &   \\ 
 \hline 
@@ -1116,6 +1118,54 @@ Removes the external port with the name \texttt{<port-name>}.\\
 
 Prints the list of external ports in the current block project.
 }
+
+\subsection{component}
+% ==============================================
+\subsubsection{addcomponent}
+\label{subsec:addcomponent}
+\command{\textbf{\tool{} addcomponent} -n <component-driver>}
+
+Adds a subcomponent to this \kind{}. All files and parameters of this component driver will be include in the final project. If you have multiple instance of the sub-component inside your \kind{}, you need to add the support only one time.\\
+
+\paramcommand{
+-n & name of the component driver & gp\_fifo \\
+}
+
+\begin{sampletitle}
+> \textbf{\tool{} addcomponent} -n gp\_fifo
+\end{sampletitle}
+\samplecomment{Add the support for a gp\_fifo inside this \kind{}}
+
+% ==============================================
+\subsubsection{delcomponent}
+\label{subsec:delcomponent}
+\command{\textbf{\tool{} delcomponent} -n <component-driver>}
+
+Remove the support of a component. \\
+
+\paramcommand{
+-n & name of the component driver & gp\_fifo \\
+}
+
+\begin{sampletitle}
+> \textbf{\tool{} delcomponent} -n gp\_fifo
+\end{sampletitle}
+\samplecomment{Remove the support of gp\_fifo inside this \kind{}}
+
+% ==============================================
+\subsubsection{showcomponent}
+\label{subsec:showcomponent}
+\command{\textbf{\tool{} showcomponent}}
+
+Shows the list of sub-components support. \\
+
+\begin{sampletitle}
+> \textbf{\tool{} showcomponent} -n gp\_fifo
+components :\\
+  + gp\_fifo \\
+  + gp\_dcfifo
+\end{sampletitle}
+\samplecomment{Print the list of components support.}
 
 \subsection{global}
 % ==============================================
