@@ -3,28 +3,29 @@
   <parts>
     <part name="main">
       <svg width="100pt" height="100pt">
-        <g transform="translate(-169.5 -97.862)">
-         <rect rx="3" ry="3" height="109.79" width="85" stroke="#000" y="100.15" x="189.5" fill="#9c9cff"/>
-         <g fill="#fff">
-          <rect rx="3" ry="3" height="7.0833" width="2.125" y="132.03" x="253.25"/>
-          <rect rx="3" ry="3" height="7.0833" width="2.125" y="132.03" x="208.62"/>
-          <rect rx="5.7" ry="5.7" height="42.5" width="42.5" stroke="#000" y="114.32" x="210.75"/>
-          <ellipse rx="14.167" ry="14.167" stroke="#000" cy="135.57" cx="232"/>
-         </g>
-         <ellipse rx="14.614" ry="14.614" stroke="#000" cy="135.57" cx="232" stroke-dasharray="3.00000004, 1.00000001" fill="none"/>
-         <g stroke="#000">
-          <ellipse rx="1.4167" ry="1.4167" cy="135.57" cx="232" fill="#fff"/>
-          <path fill="#fff" d="m208.62 139.11a3.5417 3.5417 0 0 1 -3.0672 -1.7708 3.5417 3.5417 0 0 1 0 -3.5417 3.5417 3.5417 0 0 1 3.0672 -1.7708"/>
-          <path d="m208.62 132.03h2.125" fill-rule="evenodd" stroke-width="1px" fill="#ff0"/>
-          <path d="m208.62 139.11h2.125" fill-rule="evenodd" stroke-width="1px" fill="#ff0"/>
-          <ellipse rx=".70833" ry=".70833" cy="135.57" cx="208.62" fill="#fff"/>
-          <path fill="#fff" transform="scale(-1,1)" d="m-255.38 139.11a3.5417 3.5417 0 0 1 -3.0672 -1.7708 3.5417 3.5417 0 0 1 0 -3.5417 3.5417 3.5417 0 0 1 3.0672 -1.7708"/>
-          <path d="m255.38 132.03h-2.125" fill-rule="evenodd" stroke-width="1px" fill="#ff0"/>
-          <path d="m255.38 139.11h-2.125" fill-rule="evenodd" stroke-width="1px" fill="#ff0"/>
-          <ellipse rx=".70833" ry=".70833" transform="scale(-1,1)" cy="135.57" cx="-255.38" fill="#fff"/>
-         </g>
-         <rect rx=".0000068484" ry=".0000068484" height="10.625" width="70.833" stroke="#000" y="209.95" x="196.58" fill="none"/>
+       <g transform="translate(-169.5 -97.862)">
+        <rect rx="3" ry="3" height="125" width="125" y="97.862" x="169.5" fill="#fff"/>
+        <rect rx="3" ry="3" height="109.79" width="85" stroke="#000" y="100.15" x="189.5" fill="#9c9cff"/>
+        <g fill="#fff">
+         <rect rx="3" ry="3" height="7.0833" width="2.125" y="132.03" x="253.25"/>
+         <rect rx="3" ry="3" height="7.0833" width="2.125" y="132.03" x="208.62"/>
+         <rect rx="5.7" ry="5.7" height="42.5" width="42.5" stroke="#000" y="114.32" x="210.75"/>
+         <ellipse rx="14.167" ry="14.167" stroke="#000" cy="135.57" cx="232"/>
         </g>
+        <ellipse rx="14.614" ry="14.614" stroke="#000" cy="135.57" cx="232" stroke-dasharray="3.00000004, 1.00000001" fill="none"/>
+        <g stroke="#000">
+         <ellipse rx="1.4167" ry="1.4167" cy="135.57" cx="232" fill="#fff"/>
+         <path fill="#fff" d="m208.62 139.11a3.5417 3.5417 0 0 1 -3.0672 -1.7708 3.5417 3.5417 0 0 1 0 -3.5417 3.5417 3.5417 0 0 1 3.0672 -1.7708"/>
+         <path d="m208.62 132.03h2.125" fill-rule="evenodd" stroke-width="1px" fill="#ff0"/>
+         <path d="m208.62 139.11h2.125" fill-rule="evenodd" stroke-width="1px" fill="#ff0"/>
+         <ellipse rx=".70833" ry=".70833" cy="135.57" cx="208.62" fill="#fff"/>
+         <path fill="#fff" transform="scale(-1,1)" d="m-255.38 139.11a3.5417 3.5417 0 0 1 -3.0672 -1.7708 3.5417 3.5417 0 0 1 0 -3.5417 3.5417 3.5417 0 0 1 3.0672 -1.7708"/>
+         <path d="m255.38 132.03h-2.125" fill-rule="evenodd" stroke-width="1px" fill="#ff0"/>
+         <path d="m255.38 139.11h-2.125" fill-rule="evenodd" stroke-width="1px" fill="#ff0"/>
+         <ellipse rx=".70833" ry=".70833" transform="scale(-1,1)" cy="135.57" cx="-255.38" fill="#fff"/>
+        </g>
+        <rect rx=".0000068484" ry=".0000068484" height="10.625" width="70.833" stroke="#000" y="209.95" x="196.58" fill="none"/>
+       </g>
       </svg>
     </part>
   </parts>
