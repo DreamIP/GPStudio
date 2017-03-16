@@ -20,12 +20,12 @@ gpdevice addfile -p hdl/RAW2RGB.v -t verilog -g hdl
 
 #Flows
 
-gpdevice addflow -n data -d out -s 8
+gpdevice addflow -n out -d out -s 8
 
 #Flow properties
-gpdevice addproperty -n data.datatype -t flowtype -v image
-gpdevice addproperty -n data.width -t int -v 1280
-gpdevice addproperty -n data.height -t int -v 1024
+gpdevice addproperty -n out.datatype -t flowtype -v image
+gpdevice addproperty -n out.width -t int -v 1280
+gpdevice addproperty -n out.height -t int -v 1024
 
 #Reset
 #gpdevice addreset -n reset_n -d in -g reset_n

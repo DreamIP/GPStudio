@@ -7,11 +7,11 @@
 	</svg>
 	<toolchain name="altera_quartus" type="5CSEMA5F31C6" family="Cyclone V">
 		<attributes>
-			<attribute name="FAMILY" value="MAX 10" type="global"/>
-			<attribute name="DEVICE" value="10M50SAE144C8GES" type="global"/>
+			<attribute name="FAMILY" value="Cyclone V" type="global"/>
+			<attribute name="DEVICE" value="5CSEMA5F31C6" type="global"/>
 			<attribute name="TOP_LEVEL_ENTITY" value="top" type="global"/>
-			<attribute name="ORIGINAL_QUARTUS_VERSION" value="13.1" type="global"/>
-			<attribute name="LAST_QUARTUS_VERSION" value="13.1" type="global"/>
+			<attribute name="ORIGINAL_QUARTUS_VERSION" value="15.1" type="global"/>
+			<attribute name="LAST_QUARTUS_VERSION" value="15.1" type="global"/>
 			<attribute name="PROJECT_OUTPUT_DIRECTORY" value="output_files" type="global"/>
 			<attribute name="MIN_CORE_JUNCTION_TEMP" value="0" type="global"/>
 			<attribute name="MAX_CORE_JUNCTION_TEMP" value="85" type="global"/>
@@ -47,9 +47,6 @@
 		</pins>
 		<clocks>
 			<clock name="clock_50_i" typical="50M" desc=""/>
-			<clock name="clock2_50_i" typical="50M" desc=""/>
-			<clock name="clock3_50_i" typical="50M" desc=""/>
-			<clock name="clock4_50_i" typical="50M" desc=""/>
 		</clocks>
 	</global>
 	<ios>
