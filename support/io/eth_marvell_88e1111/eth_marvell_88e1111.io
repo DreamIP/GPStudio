@@ -49,9 +49,6 @@
     <file name="tx_arbitrator.vhd" type="vhdl" group="hdl" path="hdl/other/tx_arbitrator.vhd"/>
     <file name="tx_arbitrator_over_ip.vhd" type="vhdl" group="hdl" path="hdl/other/tx_arbitrator_over_ip.vhd"/>
 
-    <file name="ff_icmp_inst.vhd" type="vhdl" group="hdl" path="hdl/ICMP/ff_icmp_inst.vhd"/>
-    <file name="ff_icmp.qip" type="vhdl" group="hdl" path="hdl/ICMP/ff_icmp.qip"/>
-    <file name="ff_icmp.cmp" type="vhdl" group="hdl" path="hdl/ICMP/ff_icmp.cmp"/>
     <file name="ff_icmp.vhd" type="vhdl" group="hdl" path="hdl/ICMP/ff_icmp.vhd"/>
     <file name="icmp.vhd" type="vhdl" group="hdl" path="hdl/ICMP/icmp.vhd"/>
 
@@ -59,8 +56,6 @@
     <file name="rgmii_rx_top_2.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii_rx_top_2.vhd"/>
     <file name="rgmii_rx.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii_rx.vhd"/>
     <file name="rgmii_mdio.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii_mdio.vhd"/>
-    <file name="fifo_tx_udp.cmp" type="vhdl" group="hdl" path="hdl/RGMII_MAC/fifo_tx_udp.cmp"/>
-    <file name="fifo_tx_udp_inst.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/fifo_tx_udp_inst.vhd"/>
     <file name="eth_crc32.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/eth_crc32.vhd"/>
     <file name="eth_ddr_in.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/eth_ddr_in.vhd"/>
     <file name="eth_mdio.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/eth_mdio.vhd"/>
@@ -68,7 +63,6 @@
     <file name="fifo_tx_udp.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/fifo_tx_udp.vhd"/>
     <file name="rgmii1000_io.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii1000_io.vhd"/>
     <file name="rgmii_tx_2.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii_tx_2.vhd"/>
-    <file name="fifo_tx_udp.qip" type="vhdl" group="hdl" path="hdl/RGMII_MAC/fifo_tx_udp.qip"/>
     <file name="eth_ddr_out.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/eth_ddr_out.vhd"/>
     <file name="rgmii1000_pll.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii1000_pll.vhd"/>
 
@@ -76,7 +70,6 @@
     <file name="axi.vhd" type="vhdl" group="hdl" path="hdl/types/axi.vhd"/>
     <file name="ipv4_types.vhd" type="vhdl" group="hdl" path="hdl/types/ipv4_types.vhd"/>
 
-    <file name="udp_ip_stack.qsf" type="vhdl" group="hdl" path="hdl/udp_ip_stack.qsf"/>
     <file name="IPv4_RX.vhd" type="vhdl" group="hdl" path="hdl/IP/IPv4_RX.vhd"/>
     <file name="IPv4.vhd" type="vhdl" group="hdl" path="hdl/IP/IPv4.vhd"/>
     <file name="IPv4_TX.vhd" type="vhdl" group="hdl" path="hdl/IP/IPv4_TX.vhd"/>
@@ -87,9 +80,25 @@
     <file name="UDP_Complete_nomac.vhd" type="vhdl" group="hdl" path="hdl/UDP/UDP_Complete_nomac.vhd"/>
     <file name="UDP_GBE_MAC.sdc" type="sdc" group="hdl" path="hdl/UDP_GBE_MAC.sdc"/>
     <file name="UDP_MAC_GE.vhd" type="vhdl" group="hdl" path="hdl/UDP_MAC_GE.vhd"/>
+    
+    <file name="com_to_flow.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_flow/src/com_to_flow.vhd"/>
+    <file name="fifo_com_rx.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_flow/src/fifo_com_rx.vhd"/>
+    <file name="com_flow_fifo_rx.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_flow/src/com_flow_fifo_rx.vhd"/>
+    <file name="read_flow_nbits.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_flow/src/read_flow_nbits.vhd"/>
+
+    <file name="flow_to_com.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/flow_to_com.vhd"/>
+    <file name="fifo_com_tx.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/fifo_com_tx.vhd"/>
+    <file name="com_flow_fifo_tx.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/com_flow_fifo_tx.vhd"/>
+    <file name="write_flow.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/write_flow.vhd"/>
+    <file name="fv_signal_synchroniser.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/fv_signal_synchroniser.vhd"/>
+    <file name="flow_to_com_arb4.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/flow_to_com_arb4.vhd"/>
+    <file name="flowto16.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/flowto16.vhd"/>
+
+    <file name="com_to_master_pi.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_master_pi/src/com_to_master_pi.vhd"/>
+    <file name="params_flow_decoder.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_master_pi/src/params_flow_decoder.vhd"/>
 
     <file name="eth_marvell_88e1111.vhd" type="vhdl" group="hdl" path="hdl/eth_marvell_88e1111.vhd"/>
-    <file name="eth_marvell_88e1111.io" type="io" group="blockdef" path="usb_cypress_CY7C68014A.io"/>
+    <file name="eth_marvell_88e1111.io" type="io" group="blockdef" path="eth_marvell_88e1111.io"/>
   </files>
   <resets>
     <reset name="reset" group="reset_n" direction="out"/>
