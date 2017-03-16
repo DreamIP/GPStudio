@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<io driver="usb_cypress_CY7C68014A" categ="communication" pi_size_addr_rel="4" master_count="1" desc="">
+<io driver="usb_cypress_CY7C68014A" categ="communication" master_count="1" pi_size_addr_rel="4" desc="">
   <parts>
     <part name="inputs">
       <svg width="160" height="200">
         <rect width="160" height="200" x="0" y="0" fill="lightgray"/>
         <g transform="rotate(90)">
-          <text x="60" y="-140" font-size = "14">To computer</text>
+          <text x="60" y="-140" font-size="14">To computer</text>
         </g>
         <g id="usb" transform="translate(40,50) scale(0.2)">
           <path d="M393.221,56.001H81.224c-13.202,0-24.002,10.795-24.002,24.001v311.999c0,13.202,10.8,24.002,24.002,24.002h311.998   c13.203,0,24.002-10.8,24.002-24.002V80.002C417.223,66.796,406.424,56.001,393.221,56.001z M316.239,203.177c0,2.209-1.791,4-4,4   h-9.76l0.01,16.667c0,11.14-6.158,21.546-11.951,27.608c-0.031,0.034-0.074,0.077-0.104,0.112c-0.01,0-0.01,0.013-0.01,0.013   c-0.043,0.047-0.086,0.077-0.129,0.125c-0.738,0.737-38.58,39.392-38.58,39.392c-2.18,2.735-3.625,6.467-3.711,9.971v13.138   c16.123,4.72,27.51,19.674,27.51,36.721c0,21.11-17.172,38.282-38.274,38.282c-21.103,0-38.266-17.172-38.266-38.282   c0-17.047,11.373-31.983,27.483-36.721v-0.764c-0.086-3.409-1.531-7.158-3.961-10.187c-0.056,0-37.562-35.375-38.312-36.078   c-0.107-0.112-0.211-0.203-0.314-0.328c-6.835-7.235-11.93-23.363-11.93-33.049l0.008-7.701   c-8.326-4.082-13.741-12.568-13.741-21.943c0-13.522,11.002-24.524,24.523-24.524c13.526,0,24.523,11.002,24.523,24.524   c0,9.375-5.423,17.861-13.75,21.943c0.009,1.247,0.009,4.388,0.009,13.591c0.077,3.391,1.522,7.14,3.969,10.203l28.977,27.268   V136.66h-20.912c-1.488,0-2.852-0.828-3.542-2.14c-0.695-1.32-0.592-2.917,0.25-4.134l31.703-45.863   c0.742-1.078,1.976-1.726,3.292-1.726c1.312,0,2.536,0.647,3.287,1.726l31.798,45.854c0.842,1.226,0.945,2.813,0.254,4.134   c-0.693,1.32-2.062,2.148-3.547,2.148h-21.037v127.48l29.209-29.985c2.188-2.749,3.633-6.498,3.715-9.997   c0-8.763,0-13.944,0.004-16.981H271.2c-2.209,0-4-1.791-4-4v-41.048c0-2.209,1.791-4,4-4h41.039c2.209,0,4,1.791,4,4V203.177z"/>
@@ -22,7 +22,7 @@
       <svg width="160" height="200">
         <rect width="160" height="200" x="0" y="0" fill="lightgray"/>
         <g transform="rotate(90)">
-          <text x="50" y="-10" font-size = "14">From computer</text>
+          <text x="50" y="-10" font-size="14">From computer</text>
         </g>
         <g id="usb" transform="translate(20,50) scale(0.2)">
           <path d="M393.221,56.001H81.224c-13.202,0-24.002,10.795-24.002,24.001v311.999c0,13.202,10.8,24.002,24.002,24.002h311.998   c13.203,0,24.002-10.8,24.002-24.002V80.002C417.223,66.796,406.424,56.001,393.221,56.001z M316.239,203.177c0,2.209-1.791,4-4,4   h-9.76l0.01,16.667c0,11.14-6.158,21.546-11.951,27.608c-0.031,0.034-0.074,0.077-0.104,0.112c-0.01,0-0.01,0.013-0.01,0.013   c-0.043,0.047-0.086,0.077-0.129,0.125c-0.738,0.737-38.58,39.392-38.58,39.392c-2.18,2.735-3.625,6.467-3.711,9.971v13.138   c16.123,4.72,27.51,19.674,27.51,36.721c0,21.11-17.172,38.282-38.274,38.282c-21.103,0-38.266-17.172-38.266-38.282   c0-17.047,11.373-31.983,27.483-36.721v-0.764c-0.086-3.409-1.531-7.158-3.961-10.187c-0.056,0-37.562-35.375-38.312-36.078   c-0.107-0.112-0.211-0.203-0.314-0.328c-6.835-7.235-11.93-23.363-11.93-33.049l0.008-7.701   c-8.326-4.082-13.741-12.568-13.741-21.943c0-13.522,11.002-24.524,24.523-24.524c13.526,0,24.523,11.002,24.523,24.524   c0,9.375-5.423,17.861-13.75,21.943c0.009,1.247,0.009,4.388,0.009,13.591c0.077,3.391,1.522,7.14,3.969,10.203l28.977,27.268   V136.66h-20.912c-1.488,0-2.852-0.828-3.542-2.14c-0.695-1.32-0.592-2.917,0.25-4.134l31.703-45.863   c0.742-1.078,1.976-1.726,3.292-1.726c1.312,0,2.536,0.647,3.287,1.726l31.798,45.854c0.842,1.226,0.945,2.813,0.254,4.134   c-0.693,1.32-2.062,2.148-3.547,2.148h-21.037v127.48l29.209-29.985c2.188-2.749,3.633-6.498,3.715-9.997   c0-8.763,0-13.944,0.004-16.981H271.2c-2.209,0-4-1.791-4-4v-41.048c0-2.209,1.791-4,4-4h41.039c2.209,0,4,1.791,4,4V203.177z" fill="blue"/>
@@ -40,30 +40,28 @@
     <file name="usb_cypress_CY7C68014A.vhd" type="vhdl" group="hdl" path="hdl/usb_cypress_CY7C68014A.vhd"/>
     <file name="usb_cypress_CY7C68014A_hal.vhd" type="vhdl" group="hdl" path="hdl/usb_cypress_CY7C68014A_hal.vhd"/>
     <file name="usb_cypress_CY7C68014A_slave.vhd" type="vhdl" group="hdl" path="hdl/usb_cypress_CY7C68014A_slave.vhd"/>
-
-    <file name="com_to_flow.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/com_to_flow.vhd"/>
-    <file name="fifo_com_rx.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/fifo_com_rx.vhd"/>
-    <file name="com_flow_fifo_rx.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/com_flow_fifo_rx.vhd"/>
-    <file name="read_flow_nbits.vhd" type="vhdl" group="hdl" path="hdl/com_to_flow/src/read_flow_nbits.vhd"/>
-
-    <file name="flow_to_com.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flow_to_com.vhd"/>
-    <file name="fifo_com_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/fifo_com_tx.vhd"/>
-    <file name="com_flow_fifo_tx.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/com_flow_fifo_tx.vhd"/>
-    <file name="write_flow.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/write_flow.vhd"/>
-    <file name="fv_signal_synchroniser.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/fv_signal_synchroniser.vhd"/>
-    <file name="flow_to_com_arb4.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flow_to_com_arb4.vhd"/>
-    <file name="flowto16.vhd" type="vhdl" group="hdl" path="hdl/flow_to_com/src/flowto16.vhd"/>
-
-    <file name="com_to_master_pi.vhd" type="vhdl" group="hdl" path="hdl/com_to_master_pi/src/com_to_master_pi.vhd"/>
-    <file name="params_flow_decoder.vhd" type="vhdl" group="hdl" path="hdl/com_to_master_pi/src/params_flow_decoder.vhd"/>
-
-    <file name="ComFlow_pkg.vhd" type="vhdl" group="hdl" path="hdl/utils/src/ComFlow_pkg.vhd"/>
-    <file name="synchronizer.vhd" type="vhdl" group="hdl" path="hdl/utils/src/synchronizer.vhd"/>
     <file name="usb_cypress_CY7C68014A.io" type="io" group="blockdef" path="usb_cypress_CY7C68014A.io"/>
   </files>
   <resets>
     <reset name="reset" group="reset_n" direction="out"/>
   </resets>
+  <ports>
+    <port name="rst" type="in" size="1"/>
+    <port name="ifclk" type="in" size="1"/>
+    <port name="flaga" type="in" size="1"/>
+    <port name="flagb" type="in" size="1"/>
+    <port name="flagc" type="in" size="1"/>
+    <port name="flagd" type="in" size="1"/>
+    <port name="fd_io" type="inout" size="16"/>
+    <port name="sloe" type="out" size="1"/>
+    <port name="slrd" type="out" size="1"/>
+    <port name="slwr" type="out" size="1"/>
+    <port name="pktend" type="out" size="1"/>
+    <port name="addr" type="out" size="2"/>
+  </ports>
+  <components>
+    <component driver="gp_com" desc=""/>
+  </components>
   <flows>
     <flow name="in0" size="8" type="in" desc="flow 0 return for supervise results of process"/>
     <flow name="in1" size="8" type="in" desc="flow 1 return for supervise results of process"/>
@@ -127,20 +125,6 @@
   <clocks>
     <clock name="clk_hal" typical="48000000" direction="out"/>
   </clocks>
-  <ports>
-    <port name="rst" type="in" size="1"/>
-    <port name="ifclk" type="in" size="1"/>
-    <port name="flaga" type="in" size="1"/>
-    <port name="flagb" type="in" size="1"/>
-    <port name="flagc" type="in" size="1"/>
-    <port name="flagd" type="in" size="1"/>
-    <port name="fd_io" type="inout" size="16"/>
-    <port name="sloe" type="out" size="1"/>
-    <port name="slrd" type="out" size="1"/>
-    <port name="slwr" type="out" size="1"/>
-    <port name="pktend" type="out" size="1"/>
-    <port name="addr" type="out" size="2"/>
-  </ports>
   <pins/>
   <com_driver driverio="usb">
     <com_connects>

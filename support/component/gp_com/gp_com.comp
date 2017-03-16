@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component driver="gp_com" desc="">
+  <files>
+    <file name="com_to_flow.vhd" type="vhdl" group="hdl" path="com_to_flow/src/com_to_flow.vhd"/>
+    <file name="fifo_com_rx.vhd" type="vhdl" group="hdl" path="com_to_flow/src/fifo_com_rx.vhd"/>
+    <file name="com_flow_fifo_rx.vhd" type="vhdl" group="hdl" path="com_to_flow/src/com_flow_fifo_rx.vhd"/>
+    <file name="read_flow_nbits.vhd" type="vhdl" group="hdl" path="com_to_flow/src/read_flow_nbits.vhd"/>
+
+    <file name="flow_to_com.vhd" type="vhdl" group="hdl" path="flow_to_com/src/flow_to_com.vhd"/>
+    <file name="fifo_com_tx.vhd" type="vhdl" group="hdl" path="flow_to_com/src/fifo_com_tx.vhd"/>
+    <file name="com_flow_fifo_tx.vhd" type="vhdl" group="hdl" path="flow_to_com/src/com_flow_fifo_tx.vhd"/>
+    <file name="write_flow.vhd" type="vhdl" group="hdl" path="flow_to_com/src/write_flow.vhd"/>
+    <file name="fv_signal_synchroniser.vhd" type="vhdl" group="hdl" path="flow_to_com/src/fv_signal_synchroniser.vhd"/>
+    <file name="flow_to_com_arb4.vhd" type="vhdl" group="hdl" path="flow_to_com/src/flow_to_com_arb4.vhd"/>
+    <file name="flowto16.vhd" type="vhdl" group="hdl" path="flow_to_com/src/flowto16.vhd"/>
+
+    <file name="com_to_master_pi.vhd" type="vhdl" group="hdl" path="com_to_master_pi/src/com_to_master_pi.vhd"/>
+    <file name="params_flow_decoder.vhd" type="vhdl" group="hdl" path="com_to_master_pi/src/params_flow_decoder.vhd"/>
+
+    <file name="ComFlow_pkg.vhd" type="vhdl" group="hdl" path="utils/src/ComFlow_pkg.vhd"/>
+    <file name="synchronizer.vhd" type="vhdl" group="hdl" path="utils/src/synchronizer.vhd"/>
+  </files>
+</component>
