@@ -178,75 +178,61 @@ class Altera_quartus_toolchain extends HDL_toolchain
 
     protected function generate_tcl($node, $path)
     {
-        $content = '';
+        $qsf = '';
+        $QIP = '';
 
         // global board attributes
-        $content.="# ========================= global assignement =========================\n";
-        $content.="set_global_assignment -name TOP_LEVEL_ENTITY " . $node->name . "\n";
+        $qsf.="# ========================= global assignement =========================\n";
+        $qsf.="set_global_assignment -name TOP_LEVEL_ENTITY " . $node->name . "\n";
         foreach ($node->board->toolchain->attributes as $attribute)
         {
             $value = $attribute->value;
             if (strpos($value, ' ') !== false and strpos($value, '-section_id') === false)
                 $value = '"' . $value . '"';
-            $content.='set_' . $attribute->type . '_assignment -name ' . $attribute->name . ' ' . $value . "\n";
+            $qsf.='set_' . $attribute->type . '_assignment -name ' . $attribute->name . ' ' . $value . "\n";
         }
-        $content.="\nset_global_assignment -name REPORT_PARAMETER_SETTINGS OFF\n";
-        $content.="set_global_assignment -name REPORT_SOURCE_ASSIGNMENTS OFF\n";
-        $content.="set_global_assignment -name REPORT_CONNECTIVITY_CHECKS OFF\n";
-        $content.="\n# ------------ pins ------------\n";
+        $qsf.="\nset_global_assignment -name REPORT_PARAMETER_SETTINGS OFF\n";
+        $qsf.="set_global_assignment -name REPORT_SOURCE_ASSIGNMENTS OFF\n";
+        $qsf.="set_global_assignment -name REPORT_CONNECTIVITY_CHECKS OFF\n";
+        $qsf.="\n# ------------ pins ------------\n";
         foreach ($node->board->pins as $pin)
         {
             if (!empty($pin->mapto))
-                $content.='set_location_assignment ' . $pin->name . ' -to ' . $pin->mapto . "\n";
+                $qsf.='set_location_assignment ' . $pin->name . ' -to ' . $pin->mapto . "\n";
             foreach ($pin->attributes as $attribute)
             {
                 $value = $attribute->value;
                 if (strpos($value, ' ') !== false and strpos($value, '-section_id') === false)
                     $value = '"' . $value . '"';
-                $content.='set_' . $attribute->type . '_assignment -name ' . $attribute->name . ' ' . $value . ' -to ' . $pin->name . "\n";
+                $qsf.='set_' . $attribute->type . '_assignment -name ' . $attribute->name . ' ' . $value . ' -to ' . $pin->name . "\n";
             }
         }
-        $content.="\n# ----------- files ------------\n";
-        $content.='set_global_assignment -name VHDL_FILE ' . $node->name . '.vhd' . "\n";
+        $QIP.="\n# ----------- files ------------\n";
+        $QIP.='set_global_assignment -name VHDL_FILE ' . $node->name . '.vhd' . "\n";
+        $qsf.="\n# ----------- files ------------\n";
+        $qsf.='set_global_assignment -name VHDL_FILE ' . $node->name . '.vhd' . "\n";
 
         if ($this->nopartitions == 0)
         {
-            $content.="\n# -------- partitions --------\n";
-            $content.="set_global_assignment -name IGNORE_PARTITIONS ON\n";      // disabled for web edition
-            $content.='set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id ' . $node->name . "\n";
+            $qsf.="\n# -------- partitions --------\n";
+            $qsf.="set_global_assignment -name IGNORE_PARTITIONS ON\n";      // disabled for web edition
+            $qsf.='set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id ' . $node->name . "\n";
         }
 
         // blocks assignement
         $fileList = array();
         $componentUsed = array();
-        $content.="\n\n# ========================= blocks assignements ========================\n";
+        $QIP.="\n\n# ========================= blocks assignements ========================\n";
         foreach ($this->componentsIP as $component)
         {
+            $fileContent = '';
             if($component->type()=="component")
             {
                 if(in_array($component->driver, $componentUsed))
                     continue;
                 $componentUsed[] = $component->driver;
             }
-            $content.="\n# " . str_pad(" $component->name ($component->driver) ", 70, '*', STR_PAD_BOTH);
-
-            // pins
-            if (!empty($component->pins))
-            {
-                $content.="\n# ------------ pins ------------\n";
-                foreach ($component->pins as $pin)
-                {
-                    if (!empty($pin->mapto))
-                        $content.='set_location_assignment ' . $pin->name . ' -to ' . $component->name . '_' . $pin->mapto . "\n";
-                    foreach ($pin->attributes as $attribute)
-                    {
-                        $value = $attribute->value;
-                        if (strpos($value, ' ') !== false and strpos($value, '-section_id') === false)
-                            $value = '"' . $value . '"';
-                        $content.='set_' . $attribute->type . '_assignment -name ' . $attribute->name . ' ' . $value . ' -to ' . $pin->name . "\n";
-                    }
-                }
-            }
+            $fileContent.="\n# " . str_pad(" $component->name ($component->driver) ", 70, '*', STR_PAD_BOTH);
 
             // files
             $fileEmpty = true;
@@ -285,10 +271,10 @@ class Altera_quartus_toolchain extends HDL_toolchain
 
                         if($fileEmpty)
                         {
-                            $content.="\n# ----------- files ------------\n";
+                            $fileContent.="\n# ----------- files ------------\n";
                             $fileEmpty = false;
                         }
-                        $content.="set_global_assignment -name $type " . $file_path . "\n";
+                        $fileContent.="set_global_assignment -name $type " . $file_path . "\n";
                     }
                 }
             }
@@ -296,17 +282,37 @@ class Altera_quartus_toolchain extends HDL_toolchain
             // attributes
             if (!empty($component->attributes))
             {
-                $content.="\n# --------- attributes ---------\n";
+                $fileContent.="\n# --------- attributes ---------\n";
                 foreach ($component->attributes as $attribute)
                 {
                     $value = $attribute->value;
                     if (strpos($attribute->type, "location") === false)
                     {
-                        $content.='set_' . $attribute->type . '_assignment -name ' . $attribute->name . ' ' . $value . "\n";
+                        $fileContent.='set_' . $attribute->type . '_assignment -name ' . $attribute->name . ' ' . $value . "\n";
                     }
                     else
                     {
-                        $content.='set_' . $attribute->type . '_assignment ' . $attribute->name . ' -to ' . $value . "\n";
+                        $fileContent.='set_' . $attribute->type . '_assignment ' . $attribute->name . ' -to ' . $value . "\n";
+                    }
+                }
+            }
+            
+            $QIP .= $fileContent;
+
+            // pins
+            if (!empty($component->pins))
+            {
+                $fileContent.="\n# ------------ pins ------------\n";
+                foreach ($component->pins as $pin)
+                {
+                    if (!empty($pin->mapto))
+                        $fileContent.='set_location_assignment ' . $pin->name . ' -to ' . $component->name . '_' . $pin->mapto . "\n";
+                    foreach ($pin->attributes as $attribute)
+                    {
+                        $value = $attribute->value;
+                        if (strpos($value, ' ') !== false and strpos($value, '-section_id') === false)
+                            $value = '"' . $value . '"';
+                        $fileContent.='set_' . $attribute->type . '_assignment -name ' . $attribute->name . ' ' . $value . ' -to ' . $pin->name . "\n";
                     }
                 }
             }
@@ -314,7 +320,7 @@ class Altera_quartus_toolchain extends HDL_toolchain
             // partitions
             if ($this->nopartitions == 0 && $component->type()!="component")
             {
-                $content.="\n# --------- partitions ---------\n";
+                $fileContent.="\n# --------- partitions ---------\n";
                 $driver = str_replace(".proc", "", $component->driver);
                 if ($component->name == $driver)
                 {
@@ -325,37 +331,18 @@ class Altera_quartus_toolchain extends HDL_toolchain
                     $instance = $driver . ':' . $component->name;
                 }
                 $partition_name = substr(str_replace('_', '', $driver), 0, 4) . '_' . substr(md5($node->name . '/' . $instance), 0, 4);
-                $content.="set_instance_assignment -name PARTITION_HIERARCHY $partition_name -to \"$instance\" -section_id \"$instance\"" . "\n";
-                $content.="set_global_assignment -name PARTITION_NETLIST_TYPE POST_SYNTH -section_id \"$instance\"" . "\n";
-                $content.="set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id \"$instance\"" . "\n";
+                $fileContent.="set_instance_assignment -name PARTITION_HIERARCHY $partition_name -to \"$instance\" -section_id \"$instance\"" . "\n";
+                $fileContent.="set_global_assignment -name PARTITION_NETLIST_TYPE POST_SYNTH -section_id \"$instance\"" . "\n";
+                $fileContent.="set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id \"$instance\"" . "\n";
             }
+            
+            $qsf .= $fileContent;
         }
 
         if ($this->noqsf == 0)
         {
-            // save file if it's different
-            $filename = $path . DIRECTORY_SEPARATOR . "$node->name.qsf";
-            $needToReplace = false;
-
-            if (file_exists($filename))
-            {
-                $handle = fopen($filename, 'r');
-                $actualContent = fread($handle, filesize($filename));
-                fclose($handle);
-                if ($actualContent != $content)
-                    $needToReplace = true;
-            }
-            else
-                $needToReplace = true;
-
-            if ($needToReplace)
-            {
-                if (!$handle = fopen($filename, 'w'))
-                    error("$filename cannot be openned", 5, "Altera toolchain");
-                if (fwrite($handle, $content) === FALSE)
-                    error("$filename cannot be written", 5, "Altera toolchain");
-                fclose($handle);
-            }
+            saveIfDifferent($path . DIRECTORY_SEPARATOR . $node->name . ".qsf", $qsf);
+            saveIfDifferent($path . DIRECTORY_SEPARATOR . $node->name . ".qip", $QIP);
         }
     }
 
