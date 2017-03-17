@@ -115,7 +115,7 @@ begin
     );
 
 	process (clk_proc, reset_n, matrix_dv)
-        variable sum   : signed((WEIGHT_SIZE + IN_SIZE) downto 0);
+		variable sum   : unsigned(12 downto 0);
 
 	begin
 		if(reset_n='0') then
@@ -133,32 +133,24 @@ begin
             -- product calculation pipeline stage
 			prod_dv <= '0';
 			if(matrix_dv = '1' and enable_s = '1') then
-                prod00 <= "00000001" * signed('0' & p00); -- w00 = 1
-                prod01 <= "00000001" * signed('0' & p01); -- w01 = 1
-                prod02 <= "00000001" * signed('0' & p02); -- w02 = 1
-                prod10 <= "00000001" * signed('0' & p10); -- w10 = 1
-                prod11 <= "00000001" * signed('0' & p11); -- w11 = 1
-                prod12 <= "00000001" * signed('0' & p12); -- w12 = 1
-                prod20 <= "00000001" * signed('0' & p20); -- w20 = 1
-                prod21 <= "00000001" * signed('0' & p21); -- w21 = 1
-                prod22 <= "00000001" * signed('0' & p22); -- w22 = 1
+				
+				sum := unsigned('0' & '0' & '0' & '0' & '0' & p22) + unsigned('0' & '0' & '0' & '0' & '0' & p21) + unsigned('0' & '0' & '0' & '0' & '0' & p20)
+					 + unsigned('0' & '0' & '0' & '0' & '0' & p12) + unsigned('0' & '0' & '0' & '0' & '0' & p11) + unsigned('0' & '0' & '0' & '0' & '0' & p10) 
+					 + unsigned('0' & '0' & '0' & '0' & '0' & p02) + unsigned('0' & '0' & '0' & '0' & '0' & p01) + unsigned('0' & '0' & '0' & '0' & '0' & p00);
 
 				prod_dv <= '1';
 			end if;
             
 			value_dv <= '0';
-			if(prod_dv='1' and enable_s = '1') then
-                sum := prod00 + prod01 + prod02 +
-                       prod10 + prod11 + prod12 +
-                       prod20 + prod21 + prod22;			
-								
-				if (sum(sum'left) = '1') then
-                    sum := (others => '0');
-                end if;
-				
-                value_data <= std_logic_vector(shift_right(unsigned(sum),3))(OUT_SIZE -1 downto 0);
-				value_dv <= '1';	
-				
+			if(prod_dv='1' and enable_s = '1') then	
+
+				if (unsigned(sum) >= to_unsigned(2048,13)) then 
+					value_data <= (others => '1');
+					value_dv <= '1';
+				else 
+					value_data <= std_logic_vector(shift_right(sum,3))(OUT_SIZE -1 downto 0);
+					value_dv <= '1';
+				end if;
 			end if;
 		end if;
 	end process;
