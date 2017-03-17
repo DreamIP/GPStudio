@@ -47,7 +47,7 @@ architecture rtl of vga_out is
     port
       (
         OSC_50                       : in  std_logic;
-        RESET                        : in  std_logic;
+        RESET_N                        : in  std_logic;
         VGA_HS, VGA_VS               : out std_logic;
         VGA_SYNC, VGA_BLANK          : out std_logic;
         VGA_RED, VGA_GREEN, VGA_BLUE : out std_logic_vector(7 downto 0);
@@ -72,7 +72,7 @@ begin
     (
       -- External I/Os
       OSC_50    => clk_proc,
-      RESET     => reset_n,
+      RESET_N     => reset_n,
       VGA_HS    => vga_hs,
       VGA_VS    => vga_vs,
       VGA_SYNC  => vga_sync_n,

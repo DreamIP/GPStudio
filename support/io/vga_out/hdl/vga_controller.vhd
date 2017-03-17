@@ -51,7 +51,7 @@ entity vga_controller is
     -----
     -- Board I/Os
     OSC_50                       : in  std_logic;
-    RESET                        : in  std_logic;
+    RESET_N                        : in  std_logic;
     VGA_HS, VGA_VS               : out std_logic;
     VGA_SYNC, VGA_BLANK          : out std_logic;
     VGA_RED, VGA_GREEN, VGA_BLUE : out std_logic_vector(7 downto 0);
@@ -83,7 +83,7 @@ end component PLL108;
     port(
       CLOCK            : in  std_logic;
       PIX_IN           : in  std_logic_vector(7 downto 0);
-      RESET            : in  std_logic;
+      RESET_N            : in  std_logic;
       HSYNC, VSYNC     : out std_logic;
       SYNC, BLANK      : out std_logic;
       RED, GREEN, BLUE : out std_logic_vector(7 downto 0);
@@ -106,7 +106,6 @@ end component PLL108;
         );
   end component FrameBuffer;
 
-  signal RESET_n    : std_logic;        -- negative logic
   signal rdaddress  : std_logic_vector (14 downto 0);
   signal PIX_IN_fb1 : std_logic_vector(7 downto 0);  -- VGA input signal when using frame buffer 1
   signal PIX_IN_fb2 : std_logic_vector(7 downto 0);  -- VGA input signal when using frame buffer 2
@@ -128,7 +127,7 @@ begin
   port map
   (
     refclk => OSC_50,
-    rst => RESET_n,
+    rst => RESET_N,
     outclk_0 => OSC_108_own
   );
 
@@ -137,7 +136,7 @@ begin
     (
       CLOCK  => OSC_108_own,
       PIX_IN => PIX_IN,
-      RESET  => RESET_n,
+      RESET_N  => RESET_N,
       HSYNC  => VGA_HS,
       VSYNC  => VGA_VS,
       SYNC   => VGA_SYNC,
@@ -178,11 +177,11 @@ begin
   PIX_IN <= PIX_IN_fb2 when (fb_index = '0') else PIX_IN_fb1;
 
   -- Generating address for reading the image from the frame buffer
-  process(OSC_108_own, RESET)
+  process(OSC_108_own, RESET_N)
     variable line_offset  : integer range 0 to 176*144 := 0;  -- pixel offset due to previous lines
     variable pixel_offset : integer range 0 to 176     := 0;  -- pixel offset due to previous pixels in the line
   begin
-    if(RESET = '0') then
+    if(RESET_N = '0') then
       rdaddress <= (others => '0');
     else
       if (OSC_108_own' event and OSC_108_own = '1') then
@@ -199,13 +198,13 @@ begin
   end process;
 
   -- Generating address for writing the image in the frame buffer
-  process(OSC_50, RESET)
+  process(OSC_50, RESET_N)
     variable line_nr      : integer range 0 to 144     := 0;  -- current line number
     variable pixel_nr     : integer range 0 to 177     := 0;  -- current pixel number in the row
     variable line_offset  : integer range 0 to 176*144 := 0;  -- pixel offset due to previous lines
     variable pixel_offset : integer range 0 to 176     := 0;  -- pixel offset due to previous pixels in the line
   begin
-    if(RESET = '0') then
+    if(RESET_N = '0') then
       wraddress <= (others => '0');
       wrdata    <= (others => '0');
       wren      <= '0';
@@ -260,6 +259,5 @@ begin
     end if;
   end process;
 
-  RESET_n  <= not RESET;
 end hdl;
 
