@@ -70,6 +70,15 @@ end vga_controller;
 
 architecture hdl of vga_controller is
 
+		
+component PLL108
+  port (
+    refclk   : in  std_logic := '0'; --  refclk.clk
+    rst      : in  std_logic := '0'; --   reset.reset
+    outclk_0 : out std_logic         -- outclk0.clk
+  );
+end component PLL108;
+
   component vga_generate
     port(
       CLOCK            : in  std_logic;
@@ -110,12 +119,23 @@ architecture hdl of vga_controller is
   signal wren      : std_logic;                      -- enabling writing to memory
   signal fb_index  : std_logic;                      -- 0 to write on fb1, read on fb2; 1 to write on fb2, readon fb1
 
+  signal OSC_108_own   : std_logic;
+
 begin
+
+  -- Bug fix:ignoring GPStudio clock andd generating own 108MHz
+  PLL108_inst : PLL108
+  port map
+  (
+    refclk => OSC_50,
+    rst => RESET_n,
+    outclk_0 => OSC_108_own
+  );
 
   VGA_inst : vga_generate
     port map
     (
-      CLOCK  => CLOCK108,
+      CLOCK  => OSC_108_own,
       PIX_IN => PIX_IN,
       RESET  => RESET_n,
       HSYNC  => VGA_HS,
@@ -139,7 +159,7 @@ begin
       wrclock   => OSC_50,
       wren      => wren and (not fb_index),
       rdaddress => rdaddress,
-      rdclock   => CLOCK108,
+      rdclock   => OSC_108_own,
       q         => PIX_IN_fb1           -- output data
       );
 
@@ -151,21 +171,21 @@ begin
       wrclock   => OSC_50,
       wren      => wren and fb_index,
       rdaddress => rdaddress,
-      rdclock   => CLOCK108,
+      rdclock   => OSC_108_own,
       q         => PIX_IN_fb2           -- output data
       );
 
   PIX_IN <= PIX_IN_fb2 when (fb_index = '0') else PIX_IN_fb1;
 
   -- Generating address for reading the image from the frame buffer
-  process(CLOCK108, RESET)
+  process(OSC_108_own, RESET)
     variable line_offset  : integer range 0 to 176*144 := 0;  -- pixel offset due to previous lines
     variable pixel_offset : integer range 0 to 176     := 0;  -- pixel offset due to previous pixels in the line
   begin
     if(RESET = '0') then
       rdaddress <= (others => '0');
     else
-      if (CLOCK108' event and CLOCK108 = '1') then
+      if (OSC_108_own' event and OSC_108_own = '1') then
         if(X < 176*2 and Y < 144*2) then
           line_offset  := Y/2; -- Doubling the apparent size of the image
           line_offset  := line_offset * 176;

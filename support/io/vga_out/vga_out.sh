@@ -13,6 +13,10 @@ gpdevice addfile -p hdl/vga_out.vhd -t vhdl -g hdl
 gpdevice addfile -p hdl/FrameBuffer.vhd -t vhdl -g hdl
 gpdevice addfile -p hdl/vga_controller.vhd -t vhdl -g hdl
 gpdevice addfile -p hdl/vga_generate.vhd -t vhdl -g hdl
+gpdevice addfile -p hdl/PLL108.vhd -t vhdl -g hdl
+gpdevice addfile -p hdl/PLL108.qip -t qip -g hdl
+gpdevice addfile -p hdl/PLL108/PLL108_0002.qip -t qip -g hdl
+gpdevice addfile -p hdl/PLL108/PLL108_0002.v -t verilog -g hdl
 
 #Clocks
 

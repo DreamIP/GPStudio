@@ -3,6 +3,15 @@
   <parts>
     <part name="main">
       <svg height="100pt" width="100pt" version="1.1" viewBox="0 0 125.00001 125">
+        <metadata>
+          <rdf:RDF>
+            <cc:Work about="">
+              <dc:format>image/svg+xml</dc:format>
+              <dc:type resource="http://purl.org/dc/dcmitype/StillImage"/>
+              <dc:title/>
+            </cc:Work>
+          </rdf:RDF>
+        </metadata>
         <rect rx="3" ry="3" height="125" width="125" y="-4.8828e-7" x="0" fill="#fff"/>
         <rect rx="3" ry="3" height="77.066" width="107.52" stroke="#000" y="25.159" x="9.2691" fill="#fff"/>
         <path d="m40.254 9.5339c11.123 15.625 11.123 15.36 11.123 15.36l7.945-19.333" stroke="#000" stroke-width="1px" fill="none"/>
@@ -41,6 +50,10 @@
     <file name="FrameBuffer.vhd" type="vhdl" group="hdl" path="hdl/FrameBuffer.vhd"/>
     <file name="vga_controller.vhd" type="vhdl" group="hdl" path="hdl/vga_controller.vhd"/>
     <file name="vga_generate.vhd" type="vhdl" group="hdl" path="hdl/vga_generate.vhd"/>
+    <file name="PLL108.vhd" type="vhdl" group="hdl" path="hdl/PLL108.vhd"/>
+    <file name="PLL108.qip" type="qip" group="hdl" path="hdl/PLL108.qip"/>
+    <file name="PLL108_0002.qip" type="qip" group="hdl" path="hdl/PLL108/PLL108_0002.qip"/>
+    <file name="PLL108_0002.v" type="verilog" group="hdl" path="hdl/PLL108/PLL108_0002.v"/>
   </files>
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>
