@@ -8,8 +8,7 @@ entity AveragingFilter_process is
 		LINE_WIDTH_MAX : integer;
 		CLK_PROC_FREQ  : integer;
 		IN_SIZE        : integer;
-		OUT_SIZE       : integer;
-		WEIGHT_SIZE    : integer := 8
+		OUT_SIZE       : integer
 	);
 	port (
 		clk_proc               : in std_logic;
@@ -76,9 +75,6 @@ signal p20, p21, p22 	: std_logic_vector((IN_SIZE-1) downto 0);
 signal matrix_dv 		: std_logic;
 
 -- products calculation
-signal prod00, prod01, prod02 	: signed((WEIGHT_SIZE + IN_SIZE) downto 0);
-signal prod10, prod11, prod12 	: signed((WEIGHT_SIZE + IN_SIZE) downto 0);
-signal prod20, prod21, prod22 	: signed((WEIGHT_SIZE + IN_SIZE) downto 0);
 signal prod_dv 					: std_logic;
 
 signal value_data 	: std_logic_vector((IN_SIZE-1) downto 0);
