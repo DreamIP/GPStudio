@@ -182,6 +182,7 @@ class Altera_quartus_toolchain extends HDL_toolchain
 
         // global board attributes
         $content.="# ========================= global assignement =========================\n";
+        $content.="set_global_assignment -name TOP_LEVEL_ENTITY " . $node->name . "\n";
         foreach ($node->board->toolchain->attributes as $attribute)
         {
             $value = $attribute->value;
@@ -206,13 +207,13 @@ class Altera_quartus_toolchain extends HDL_toolchain
             }
         }
         $content.="\n# ----------- files ------------\n";
-        $content.='set_global_assignment -name VHDL_FILE top.vhd' . "\n";
+        $content.='set_global_assignment -name VHDL_FILE ' . $node->name . '.vhd' . "\n";
 
         if ($this->nopartitions == 0)
         {
             $content.="\n# -------- partitions --------\n";
             $content.="set_global_assignment -name IGNORE_PARTITIONS ON\n";      // disabled for web edition
-            $content.='set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top' . "\n";
+            $content.='set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id ' . $node->name . "\n";
         }
 
         // blocks assignement
@@ -323,7 +324,7 @@ class Altera_quartus_toolchain extends HDL_toolchain
                 {
                     $instance = $driver . ':' . $component->name;
                 }
-                $partition_name = substr(str_replace('_', '', $driver), 0, 4) . '_' . substr(md5('top/' . $instance), 0, 4);
+                $partition_name = substr(str_replace('_', '', $driver), 0, 4) . '_' . substr(md5($node->name . '/' . $instance), 0, 4);
                 $content.="set_instance_assignment -name PARTITION_HIERARCHY $partition_name -to \"$instance\" -section_id \"$instance\"" . "\n";
                 $content.="set_global_assignment -name PARTITION_NETLIST_TYPE POST_SYNTH -section_id \"$instance\"" . "\n";
                 $content.="set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id \"$instance\"" . "\n";
@@ -411,7 +412,7 @@ class Altera_quartus_toolchain extends HDL_toolchain
         // clean
         $content .= "clean:" . "\r\n";
         $content .= "	$rmreq output_files incremental_db db IP greybox_tmp" . "\r\n";
-        $content .= "	$rm top.vhd pi.vhd fi.vhd ci.vhd" . "\r\n";
+        $content .= "	$rm " . $node->name . ".vhd pi.vhd fi.vhd ci.vhd" . "\r\n";
         $content .= "	$rm node_generated.xml PLLJ_PLLSPE_INFO.txt fi.dot fi.png params.h" . "\r\n";
         $content .= "	$rm $nodename.qpf $nodename.qsf $nodename.qws $nodename.sdc $nodename.cdf" . "\r\n";
 
@@ -556,7 +557,7 @@ class Altera_quartus_toolchain extends HDL_toolchain
                         else
                             $attr['maxPLL'] = 4;
 
-                        $attr['clkByPLL'] = 6;
+                        $attr['clkByPLL'] = 9;
                         $attr['vcomin'] = 600000000;
 
                         if ($speedgrade == 'C6')

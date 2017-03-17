@@ -9,7 +9,6 @@
 		<attributes>
 			<attribute name="FAMILY" value="Cyclone V" type="global"/>
 			<attribute name="DEVICE" value="5CSXFC6D6F31C6" type="global"/>
-			<attribute name="TOP_LEVEL_ENTITY" value="top" type="global"/>
 			<attribute name="ORIGINAL_QUARTUS_VERSION" value="13.1" type="global"/>
 			<attribute name="LAST_QUARTUS_VERSION" value="13.1" type="global"/>
 			<attribute name="PROJECT_OUTPUT_DIRECTORY" value="output_files" type="global"/>
@@ -18,8 +17,6 @@
 			<attribute name="DEVICE_FILTER_PACKAGE" value="FBGA" type="global"/>
 			<attribute name="DEVICE_FILTER_PIN_COUNT" value="896" type="global"/>
 			<attribute name="ERROR_CHECK_FREQUENCY_DIVISOR" value="256" type="global"/>
-			<attribute name="PARTITION_NETLIST_TYPE" value="SOURCE -section_id Top" type="global"/>
-			<attribute name="PARTITION_FITTER_PRESERVATION_LEVEL" value="PLACEMENT_AND_ROUTING -section_id Top" type="global"/>
 			<attribute name="UNIPHY_SEQUENCER_DQS_CONFIG_ENABLE" value="ON" type="global"/>
 			<attribute name="OPTIMIZE_MULTI_CORNER_TIMING" value="ON" type="global"/>
 			<attribute name="ECO_REGENERATE_REPORT" value="ON" type="global"/>

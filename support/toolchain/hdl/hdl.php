@@ -66,7 +66,7 @@ class HDL_toolchain extends Toolchain
 
     protected function generate_top_level($node, $path)
     {
-        $generator = new VHDL_generator('top');
+        $generator = new VHDL_generator($node->name);
 
         // clocks
         foreach ($node->board->clocks as $clock)
@@ -208,6 +208,6 @@ class HDL_toolchain extends Toolchain
         //print_r($ci->domains);
 
         $generator->code = $code;
-        $generator->save_as_ifdiff($path . DIRECTORY_SEPARATOR . 'top.vhd');
+        $generator->save_as_ifdiff($path . DIRECTORY_SEPARATOR . $node->name . '.vhd');
     }
 }
