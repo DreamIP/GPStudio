@@ -485,8 +485,9 @@ class Altera_quartus_toolchain extends HDL_toolchain
                 $deviceMember = $out[0][2];
                 $speedgrade = $out[0][4];
                 break;
-            case 'Cyclone V': // 5CSEMA5F31C6
-                preg_match_all("|(5C)(S[XE]{0,1})([FM]{0,1})([A-Z][0-9])([A-Z][0-9][0-9])([CIA][6-8])|", $device, $out, PREG_SET_ORDER);
+            case 'Cyclone V': // 5C SE M A5    F31 C6
+                              // 5C SX F C6 D6 F31 C6
+                preg_match_all("|(5C)([SG]{0,1}[XET])([FM]{0,1})([A-Z][0-9])[A-Z]{0,1}[0-9]{0,1}([A-Z][0-9][0-9])([CIA][6-8])([NESC]{0,2})|", $device, $out, PREG_SET_ORDER);
                 $deviceMember = $out[0][4];
                 $speedgrade = $out[0][6];
                 break;
