@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<io driver="eth_marvell_88e1111" categ="communication" pi_size_addr_rel="4" master_count="1" desc="">
+<io driver="eth_marvell_88e1111" categ="communication" master_count="1" pi_size_addr_rel="4" desc="">
   <parts>
     <part name="inputs">
       <svg width="160" height="200">
         <rect width="160" height="200" x="0" y="0" fill="lightgray"/>
         <g transform="rotate(90)">
-          <text x="60" y="-140" font-size = "14">To computer</text>
+          <text x="60" y="-140" font-size="14">To computer</text>
         </g>
         <g id="eth" transform="translate(30,55) scale(0.01)">
           <path d="M2910 6080 l0 -1240 585 0 585 0 0 -325 0 -325 -1955 0 -1955 0 0 -165 0 -165 850 0 850 0 -2 -347 -3 -348 -627 -3 -628 -2 0 -1240 0 -1240 1418 2 1417 3 3 1238 2 1237 -565 0 -565 0 0 350 0 350 2015 0 2015 0 0 -330 0 -330 -640 0 -640 0 0 -1245 0 -1245 1420 0 1420 0 -2 1243 -3 1242 -552 3 -553 2 0 330 0 330 515 0 515 0 0 165 0 165 -1650 0 -1650 0 2 323 3 322 608 3 607 2 -2 1238 -3 1237 -1417 3 -1418 2 0 -1240z m2390 -5 l0 -795 -975 0 -975 0 0 795 0 795 975 0 975 0 0 -795z m2160 -4120 l0 -795 -975 0 -975 0 0 795 0 795 975 0 975 0 0 -795z m-4460 -30 l0 -795 -975 0 -975 0 0 795 0 795 975 0 975 0 0 -795z"/>
@@ -22,7 +22,7 @@
       <svg width="160" height="200">
         <rect width="160" height="200" x="0" y="0" fill="lightgray"/>
         <g transform="rotate(90)">
-          <text x="50" y="-10" font-size = "14">From computer</text>
+          <text x="50" y="-10" font-size="14">From computer</text>
         </g>
         <g id="eth" transform="translate(30,55) scale(0.01)">
           <path d="M2910 6080 l0 -1240 585 0 585 0 0 -325 0 -325 -1955 0 -1955 0 0 -165 0 -165 850 0 850 0 -2 -347 -3 -348 -627 -3 -628 -2 0 -1240 0 -1240 1418 2 1417 3 3 1238 2 1237 -565 0 -565 0 0 350 0 350 2015 0 2015 0 0 -330 0 -330 -640 0 -640 0 0 -1245 0 -1245 1420 0 1420 0 -2 1243 -3 1242 -552 3 -553 2 0 330 0 330 515 0 515 0 0 165 0 165 -1650 0 -1650 0 2 323 3 322 608 3 607 2 -2 1238 -3 1237 -1417 3 -1418 2 0 -1240z m2390 -5 l0 -795 -975 0 -975 0 0 795 0 795 975 0 975 0 0 -795z m2160 -4120 l0 -795 -975 0 -975 0 0 795 0 795 975 0 975 0 0 -795z m-4460 -30 l0 -795 -975 0 -975 0 0 795 0 795 975 0 975 0 0 -795z" fill="blue"/>
@@ -36,7 +36,6 @@
   </parts>
   <files>
     <file name="Marvell-Alaska-Ultra-88E1111-GbE.pdf" type="doc" group="doc" path="doc/Marvell-Alaska-Ultra-88E1111-GbE.pdf"/>
-
     <file name="arpv2.vhd" type="vhdl" group="hdl" path="hdl/ARP/arpv2.vhd"/>
     <file name="arp_RX.vhd" type="vhdl" group="hdl" path="hdl/ARP/arp_RX.vhd"/>
     <file name="arp_SYNC.vhd" type="vhdl" group="hdl" path="hdl/ARP/arp_SYNC.vhd"/>
@@ -45,13 +44,10 @@
     <file name="arp_TX.vhd" type="vhdl" group="hdl" path="hdl/ARP/arp_TX.vhd"/>
     <file name="arp.vhd" type="vhdl" group="hdl" path="hdl/ARP/arp.vhd"/>
     <file name="arp_REQ.vhd" type="vhdl" group="hdl" path="hdl/ARP/arp_REQ.vhd"/>
-
     <file name="tx_arbitrator.vhd" type="vhdl" group="hdl" path="hdl/other/tx_arbitrator.vhd"/>
     <file name="tx_arbitrator_over_ip.vhd" type="vhdl" group="hdl" path="hdl/other/tx_arbitrator_over_ip.vhd"/>
-
     <file name="ff_icmp.vhd" type="vhdl" group="hdl" path="hdl/ICMP/ff_icmp.vhd"/>
     <file name="icmp.vhd" type="vhdl" group="hdl" path="hdl/ICMP/icmp.vhd"/>
-
     <file name="rgmii_tx_top_2.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii_tx_top_2.vhd"/>
     <file name="rgmii_rx_top_2.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii_rx_top_2.vhd"/>
     <file name="rgmii_rx.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii_rx.vhd"/>
@@ -65,44 +61,41 @@
     <file name="rgmii_tx_2.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii_tx_2.vhd"/>
     <file name="eth_ddr_out.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/eth_ddr_out.vhd"/>
     <file name="rgmii1000_pll.vhd" type="vhdl" group="hdl" path="hdl/RGMII_MAC/rgmii1000_pll.vhd"/>
-
     <file name="eth_pkg.vhd" type="vhdl" group="hdl" path="hdl/types/eth_pkg.vhd"/>
     <file name="axi.vhd" type="vhdl" group="hdl" path="hdl/types/axi.vhd"/>
     <file name="ipv4_types.vhd" type="vhdl" group="hdl" path="hdl/types/ipv4_types.vhd"/>
-
     <file name="IPv4_RX.vhd" type="vhdl" group="hdl" path="hdl/IP/IPv4_RX.vhd"/>
     <file name="IPv4.vhd" type="vhdl" group="hdl" path="hdl/IP/IPv4.vhd"/>
     <file name="IPv4_TX.vhd" type="vhdl" group="hdl" path="hdl/IP/IPv4_TX.vhd"/>
     <file name="IP_complete_nomac.vhd" type="vhdl" group="hdl" path="hdl/IP/IP_complete_nomac.vhd"/>
-
     <file name="UDP_TX.vhd" type="vhdl" group="hdl" path="hdl/UDP/UDP_TX.vhd"/>
     <file name="UDP_RX.vhd" type="vhdl" group="hdl" path="hdl/UDP/UDP_RX.vhd"/>
     <file name="UDP_Complete_nomac.vhd" type="vhdl" group="hdl" path="hdl/UDP/UDP_Complete_nomac.vhd"/>
     <file name="UDP_GBE_MAC.sdc" type="sdc" group="hdl" path="hdl/UDP_GBE_MAC.sdc"/>
     <file name="UDP_MAC_GE.vhd" type="vhdl" group="hdl" path="hdl/UDP_MAC_GE.vhd"/>
-    
-    <file name="com_to_flow.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_flow/src/com_to_flow.vhd"/>
-    <file name="fifo_com_rx.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_flow/src/fifo_com_rx.vhd"/>
-    <file name="com_flow_fifo_rx.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_flow/src/com_flow_fifo_rx.vhd"/>
-    <file name="read_flow_nbits.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_flow/src/read_flow_nbits.vhd"/>
-
-    <file name="flow_to_com.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/flow_to_com.vhd"/>
-    <file name="fifo_com_tx.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/fifo_com_tx.vhd"/>
-    <file name="com_flow_fifo_tx.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/com_flow_fifo_tx.vhd"/>
-    <file name="write_flow.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/write_flow.vhd"/>
-    <file name="fv_signal_synchroniser.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/fv_signal_synchroniser.vhd"/>
-    <file name="flow_to_com_arb4.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/flow_to_com_arb4.vhd"/>
-    <file name="flowto16.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/flow_to_com/src/flowto16.vhd"/>
-
-    <file name="com_to_master_pi.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_master_pi/src/com_to_master_pi.vhd"/>
-    <file name="params_flow_decoder.vhd" type="vhdl" group="hdl" path="../usb_cypress_CY7C68014A/hdl/com_to_master_pi/src/params_flow_decoder.vhd"/>
-
     <file name="eth_marvell_88e1111.vhd" type="vhdl" group="hdl" path="hdl/eth_marvell_88e1111.vhd"/>
     <file name="eth_marvell_88e1111.io" type="io" group="blockdef" path="eth_marvell_88e1111.io"/>
   </files>
   <resets>
     <reset name="reset" group="reset_n" direction="out"/>
   </resets>
+  <clocks>
+    <clock name="clk_hal" domain="clk_eth" typical="125000000" direction="out"/>
+  </clocks>
+  <ports>
+    <port name="gtx_clk" type="out" size="1"/>
+    <port name="tx_en" type="out" size="1"/>
+    <port name="tx_data" type="out" size="4"/>
+    <port name="rx_clk" type="in" size="1"/>
+    <port name="rx_dv" type="in" size="1"/>
+    <port name="rx_data" type="in" size="4"/>
+    <port name="phy_reset_l" type="out" size="1"/>
+    <port name="phy_mdc" type="out" size="1"/>
+    <port name="phy_mdio" type="inout" size="1"/>
+  </ports>
+  <components>
+    <component driver="gp_com" desc=""/>
+  </components>
   <flows>
     <flow name="in0" size="8" type="in" desc="flow 0 return for supervise results of process"/>
     <flow name="in1" size="8" type="in" desc="flow 1 return for supervise results of process"/>
@@ -164,22 +157,9 @@
     <property name="enableflow4" caption="Enable Flow 4" type="bool" value="1"/>
   </properties>
   <clocks>
-    <clock name="clk_hal" typical="48000000" direction="out"/>
+    <clock name="clk_hal" typical="125000000" direction="out"/>
+    <clock name="clk_proc" direction="in"/>
   </clocks>
-  <ports>
-    <port name="rst" type="in" size="1"/>
-    <port name="ifclk" type="in" size="1"/>
-    <port name="flaga" type="in" size="1"/>
-    <port name="flagb" type="in" size="1"/>
-    <port name="flagc" type="in" size="1"/>
-    <port name="flagd" type="in" size="1"/>
-    <port name="fd_io" type="inout" size="16"/>
-    <port name="sloe" type="out" size="1"/>
-    <port name="slrd" type="out" size="1"/>
-    <port name="slwr" type="out" size="1"/>
-    <port name="pktend" type="out" size="1"/>
-    <port name="addr" type="out" size="2"/>
-  </ports>
   <pins/>
   <com_driver driverio="usb">
     <com_connects>

@@ -87,117 +87,117 @@
 			<pins>
 				<pin name="PIN_C3" mapto="data_i[0]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_F10" mapto="data_i[1]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_J10" mapto="data_i[2]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_B10" mapto="data_i[3]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_G11" mapto="data_i[4]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_G13" mapto="data_i[5]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_C9" mapto="data_i[6]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_F11" mapto="data_i[7]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_B12" mapto="data_i[8]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_E12" mapto="data_i[9]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_C11" mapto="data_i[10]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_A14" mapto="data_i[11]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_D5" mapto="extclk_o">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_A10" mapto="fval_i">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_H10" mapto="lval_i">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_D12" mapto="oe_n_o">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_B14" mapto="pixclk_i">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_J13" mapto="reset_n_o">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_F12" mapto="saddr_o">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_C5" mapto="sclk_o">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_D11" mapto="sdata_io">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_A11" mapto="standby_o">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 				<pin name="PIN_H12" mapto="trigger_o">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="1.8 V" type="instance"/>
 					</attributes>
 				</pin>
 			</pins>
@@ -625,79 +625,79 @@
 -->
 		<io name="ethernet_rgmii" type="communication" driver="eth_marvell_88e1111" optional="false" optionalgroup="2" description="Marvell 88e1111 ethernet controler in RGMII mode">
 			<pins>
-				<pin name="PIN_Y14" mapto="eth_reset_n_o">
+				<pin name="PIN_Y14" mapto="phy_reset_l">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="PIN_AB14" mapto="eth_mdc_o">
+				<pin name="PIN_AB14" mapto="phy_mdc">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="PIN_Y15" mapto="eth_mdio_io">
+				<pin name="PIN_Y15" mapto="phy_mdio">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_i.rx_clk" mapto="PIN_AE5">
+				<pin name="PIN_AH14" mapto="rx_clk">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_i.rx_ctrl" mapto="PIN_AF9">
+				<pin name="PIN_AF9" mapto="rx_dv">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_i.rx_data[0]" mapto="PIN_AB9">
+				<pin name="PIN_AB9" mapto="rx_data[0]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_i.rx_data[1]" mapto="PIN_AD8">
+				<pin name="PIN_AD8" mapto="rx_data[1]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_i.rx_data[2]" mapto="PIN_AB8">
+				<pin name="PIN_AB8" mapto="rx_data[2]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_i.rx_data[3]" mapto="PIN_AE8">
+				<pin name="PIN_AE8" mapto="rx_data[3]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_o.gtx_clk" mapto="PIN_AF5">
+				<pin name="PIN_AF5" mapto="gtx_clk">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_o.tx_ctrl" mapto="PIN_AD10">
+				<pin name="PIN_AD10" mapto="tx_en">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_o.tx_data[0]" mapto="PIN_AA10">
+				<pin name="PIN_AA10" mapto="tx_data[0]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_o.tx_data[1]" mapto="PIN_AH11">
+				<pin name="PIN_AH11" mapto="tx_data[1]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_o.tx_data[2]" mapto="PIN_AF11">
+				<pin name="PIN_AF11" mapto="tx_data[2]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
-				<pin name="rgmii_o.tx_data[3]" mapto="PIN_AD11">
+				<pin name="PIN_AD11" mapto="tx_data[3]">
 					<attributes>
-						<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+						<attribute name="IO_STANDARD" value="2.5 V" type="instance"/>
 					</attributes>
 				</pin>
 			</pins>
