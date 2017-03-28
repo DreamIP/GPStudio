@@ -82,7 +82,7 @@ data_in <= ip_rx.data.data_in;
 -----FIFO SYNC clock domains & store data icmp
 ff_icmp_inst : entity work.ff_icmp PORT MAP (
 		aclr	 	=> ff_reset_int,
-		data	 	=> data_in,
+		data	 	=> ff_data_in_int,--data_in,
 		rdclk	 	=> tx_clk,
 		rdreq	 	=> ff_rdreq_int,
 		wrclk	 	=> rx_clk,
@@ -487,8 +487,8 @@ end process;
 
 -----STATES TX
 
-icmp_tx.data.data_out <= icmp_tx_data;
-icmp_tx.data.data_out_valid <= icmp_tx_dv;
+icmp_tx.data.data_out <= icmp_tx_data_tmp;--icmp_tx_data;
+icmp_tx.data.data_out_valid <= icmp_tx_dv or icmp_tx_dv_tmp ;--icmp_tx_dv;
 icmp_tx.data.data_out_last <= icmp_tx_last;
 icmp_tx.hdr.protocol <= x"01";
 icmp_tx.hdr.data_length <= icmp_data_length;
@@ -551,7 +551,7 @@ elsif rising_edge(tx_clk) then
 			else
 				ip_tx_start			<= '0';
 				req_ip_layer		<= '1';
-				ack_start_tx		<= '0';--acknowledge to rx, rx can go idle
+				ack_start_tx		<= '0';
 				transmit_done		<= '1';
 				icmp_tx_data_tmp		<= (others => '0');
 				icmp_tx_dv_tmp			<= '0';
@@ -582,7 +582,7 @@ elsif rising_edge(tx_clk) then
 			ack_start_tx		<= '0';
 			req_ip_layer		<= '1';
 			transmit_done		<= '0';
-			icmp_tx_data_tmp		<= (others => '0');--reply 
+			icmp_tx_data_tmp		<= (others => '0');--type = reply 
 			icmp_tx_dv_tmp			<= '1';
 			icmp_tx_first_tmp		<= '1';--first byte
 			icmp_tx_last		<= '0';
@@ -608,7 +608,7 @@ elsif rising_edge(tx_clk) then
 	when checksum_1_tx =>
 		if ip_tx_data_out_rdy = '1' then
 			ip_tx_start			<= '0';
-			ff_rdreq_int		<= '0';
+			ff_rdreq_int		<= '1';
 			ack_start_tx		<= '0';
 			req_ip_layer		<= '1';
 			transmit_done		<= '0';
