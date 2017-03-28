@@ -5,13 +5,11 @@ library std;
 
 entity eth_marvell_88e1111_slave is
 	generic (
-		CLK_PROC_FREQ : integer;
-		CLK_HAL_FREQ  : integer
+		CLK_PROC_FREQ : integer
 	);
 	port (
 		clk_proc        : in std_logic;
-		clk_hal         : in std_logic;
-		reset           : in std_logic;
+		reset_n         : in std_logic;
 
 		---------------- dynamic parameters ports ---------------
 		status_enable   : out std_logic;

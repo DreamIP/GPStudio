@@ -74,10 +74,11 @@
     <file name="UDP_GBE_MAC.sdc" type="sdc" group="hdl" path="hdl/UDP_GBE_MAC.sdc"/>
     <file name="UDP_MAC_GE.vhd" type="vhdl" group="hdl" path="hdl/UDP_MAC_GE.vhd"/>
     <file name="eth_marvell_88e1111.vhd" type="vhdl" group="hdl" path="hdl/eth_marvell_88e1111.vhd"/>
+    <file name="eth_marvell_88e1111_slave.vhd" type="vhdl" group="hdl" path="hdl/eth_marvell_88e1111_slave.vhd"/>
     <file name="eth_marvell_88e1111.io" type="io" group="blockdef" path="eth_marvell_88e1111.io"/>
   </files>
   <resets>
-    <reset name="reset" group="reset_n" direction="out"/>
+    <reset name="reset_n" group="reset_n" direction="in"/>
   </resets>
   <clocks>
     <clock name="clk_hal" domain="clk_eth" typical="125000000" direction="out"/>

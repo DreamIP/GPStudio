@@ -4,8 +4,6 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity gbe_mac is
 port(
-	
-	CLK50M				: IN STD_LOGIC;
 	iRst_n 				: IN  STD_LOGIC;	
     ---------------------------------------------------------------------------
     -- RGMII Interface
@@ -128,7 +126,7 @@ Port(
 end component;
 
 signal cEthClk  : std_logic; 
-signal  cEnetRxDV, cEnetRxErr : std_logic;
+signal cEnetRxDV, cEnetRxErr : std_logic;
 signal cEnetTxEn, cEnetTxErr : std_logic;  
 
 signal cEnetRxData, cEnetTxData : std_logic_vector(7 downto 0);
@@ -188,7 +186,8 @@ rgmii_tx_top_2_inst : rgmii_tx_top_2
       oRxData => cEnetRxData,
       oRxDV   => cEnetRxDV,
       oRxErr  => cEnetRxErr,
-      oEthClk => cEthClk);
+      oEthClk => cEthClk
+    );
 	  
 	  CLK_OUT <= cEthClk;
 
