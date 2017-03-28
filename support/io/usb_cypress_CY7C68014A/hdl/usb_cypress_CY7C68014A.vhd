@@ -13,151 +13,184 @@ use work.ComFlow_pkg.all;
 -- ca permettrait de specifier les valeurs des identifiants des trames par GPStudio
 
 -- Header trame USB
--- TRAME USB 16 bits	: permier mot header:  FLOW ID/FLAG  (8b/8b)
---						: second mot header :  Packet number  (16b)
+-- TRAME USB 16 bits    : permier mot header:  FLOW ID/FLAG  (8b/8b)
+--                      : second mot header :  Packet number  (16b)
 
 entity usb_cypress_CY7C68014A is
-	generic (
-		MASTER_ADDR_WIDTH   : integer;
-		IN0_SIZE            : integer := 8;
-		IN1_SIZE            : integer := 8;
-		IN2_SIZE            : integer := 8;
-		IN3_SIZE            : integer := 8;
-		OUT0_SIZE           : integer := 16;
-		OUT1_SIZE           : integer := 16;
-		IN0_NBWORDS         : integer := 32768;
-		IN1_NBWORDS         : integer := 32768;
-		IN2_NBWORDS         : integer := 1280;
-		IN3_NBWORDS         : integer := 1280;
-		OUT0_NBWORDS        : integer := 1024;
-		OUT1_NBWORDS        : integer := 1024;
-		CLK_PROC_FREQ       : integer := 48000000
-	);
-	port (
-		clk_proc        : in std_logic;
-		clk_hal         : out std_logic;
-		reset           : out std_logic;
+    generic (
+        MASTER_ADDR_WIDTH   : integer;
+        IN0_SIZE            : integer := 8;
+        IN1_SIZE            : integer := 8;
+        IN2_SIZE            : integer := 8;
+        IN3_SIZE            : integer := 8;
+        OUT0_SIZE           : integer := 16;
+        OUT1_SIZE           : integer := 16;
+        IN0_NBWORDS         : integer := 32768;
+        IN1_NBWORDS         : integer := 32768;
+        IN2_NBWORDS         : integer := 1280;
+        IN3_NBWORDS         : integer := 1280;
+        OUT0_NBWORDS        : integer := 1024;
+        OUT1_NBWORDS        : integer := 1024;
+        CLK_PROC_FREQ       : integer
+    );
+    port (
+        clk_proc        : in std_logic;
+        clk_hal         : out std_logic;
+        reset           : out std_logic;
 
-		------ external ports ------
-		rst             : in std_logic;
-		ifclk           : in std_logic;
-		flaga           : in std_logic;
-		flagb           : in std_logic;
-		flagc           : in std_logic;
-		flagd           : in std_logic;
-		fd_io           : inout std_logic_vector(15 downto 0);
-		sloe            : out std_logic;
-		slrd            : out std_logic;
-		slwr            : out std_logic;
-		pktend          : out std_logic;
-		addr            : out std_logic_vector(1 downto 0);
+        ------ external ports ------
+        rst             : in std_logic;
+        ifclk           : in std_logic;
+        flaga           : in std_logic;
+        flagb           : in std_logic;
+        flagc           : in std_logic;
+        flagd           : in std_logic;
+        fd_io           : inout std_logic_vector(15 downto 0);
+        sloe            : out std_logic;
+        slrd            : out std_logic;
+        slwr            : out std_logic;
+        pktend          : out std_logic;
+        addr            : out std_logic_vector(1 downto 0);
 
-		------ in0 flow ------
-		in0_data        : in std_logic_vector(IN0_SIZE-1 downto 0);
-		in0_fv          : in std_logic;
-		in0_dv          : in std_logic;
-		------ in1 flow ------
-		in1_data        : in std_logic_vector(IN1_SIZE-1 downto 0);
-		in1_fv          : in std_logic;
-		in1_dv          : in std_logic;
-		------ in2 flow ------
-		in2_data        : in std_logic_vector(IN2_SIZE-1 downto 0);
-		in2_fv          : in std_logic;
-		in2_dv          : in std_logic;
-		------ in3 flow ------
-		in3_data        : in std_logic_vector(IN3_SIZE-1 downto 0);
-		in3_fv          : in std_logic;
-		in3_dv          : in std_logic;
+        ------ in0 flow ------
+        in0_data        : in std_logic_vector(IN0_SIZE-1 downto 0);
+        in0_fv          : in std_logic;
+        in0_dv          : in std_logic;
+        ------ in1 flow ------
+        in1_data        : in std_logic_vector(IN1_SIZE-1 downto 0);
+        in1_fv          : in std_logic;
+        in1_dv          : in std_logic;
+        ------ in2 flow ------
+        in2_data        : in std_logic_vector(IN2_SIZE-1 downto 0);
+        in2_fv          : in std_logic;
+        in2_dv          : in std_logic;
+        ------ in3 flow ------
+        in3_data        : in std_logic_vector(IN3_SIZE-1 downto 0);
+        in3_fv          : in std_logic;
+        in3_dv          : in std_logic;
 
 
-		------ out0 flow ------
-		out0_data       : out std_logic_vector(OUT0_SIZE-1 downto 0);
-		out0_fv         : out std_logic;
-		out0_dv         : out std_logic;
+        ------ out0 flow ------
+        out0_data       : out std_logic_vector(OUT0_SIZE-1 downto 0);
+        out0_fv         : out std_logic;
+        out0_dv         : out std_logic;
 
-		------ out1 flow ------
-		out1_data       : out std_logic_vector(OUT1_SIZE-1 downto 0);
-		out1_fv         : out std_logic;
-		out1_dv         : out std_logic;
+        ------ out1 flow ------
+        out1_data       : out std_logic_vector(OUT1_SIZE-1 downto 0);
+        out1_fv         : out std_logic;
+        out1_dv         : out std_logic;
 
-		---- ===== Masters =====
+        ---- ===== Masters =====
 
-		------ bus_master ------
-		master_addr_o   : out std_logic_vector(MASTER_ADDR_WIDTH-1 downto 0);
-		master_wr_o     : out std_logic;
-		master_rd_o     : out std_logic;
-		master_datawr_o : out std_logic_vector(31 downto 0);
-		master_datard_i : in std_logic_vector(31 downto 0);
+        ------ bus_master ------
+        master_addr_o   : out std_logic_vector(MASTER_ADDR_WIDTH-1 downto 0);
+        master_wr_o     : out std_logic;
+        master_rd_o     : out std_logic;
+        master_datawr_o : out std_logic_vector(31 downto 0);
+        master_datard_i : in std_logic_vector(31 downto 0);
 
-		---- ===== Slaves =====
+        ---- ===== Slaves =====
 
-		------ bus_sl ------
-		addr_rel_i      : in std_logic_vector(3 downto 0);
-		wr_i            : in std_logic;
-		rd_i            : in std_logic;
-		datawr_i        : in std_logic_vector(31 downto 0);
-		datard_o        : out std_logic_vector(31 downto 0)
-	);
+        ------ bus_sl ------
+        addr_rel_i      : in std_logic_vector(3 downto 0);
+        wr_i            : in std_logic;
+        rd_i            : in std_logic;
+        datawr_i        : in std_logic_vector(31 downto 0);
+        datard_o        : out std_logic_vector(31 downto 0)
+    );
 end entity;
 
 
 architecture rtl of usb_cypress_CY7C68014A is
+	constant DATA_HAL_SIZE        : INTEGER := 16;
+	constant CLK_HAL_FREQ         : INTEGER := 48000000;
+
 -- SLAVE BUS
-	signal enable_s                 : std_logic := '0';
-	signal enable_in0_s             : std_logic := '0';
-	signal enable_in1_s             : std_logic := '0';
-	signal enable_in2_s             : std_logic := '0';
-	signal enable_in3_s             : std_logic := '0';
+    signal status_enable          : std_logic := '0';
+    signal flow_in0_enable        : std_logic := '0';
+    signal flow_in1_enable        : std_logic := '0';
+    signal flow_in2_enable        : std_logic := '0';
+    signal flow_in3_enable        : std_logic := '0';
 
 -- USBFLOW_IN
-	signal flow_in1_data_s          : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_in1_wr_s            : std_logic := '0';
-	signal flow_in1_full_s          : std_logic := '0';
-	signal flow_in1_pktend_s        : std_logic := '0';
+    signal hal_out_data           : std_logic_vector(DATA_HAL_SIZE-1 downto 0) := (others => '0');
+    signal hal_out_data_wr        : std_logic := '0';
+    signal hal_out_data_full      : std_logic := '0';
+    signal hal_out_data_end       : std_logic := '0';
 
 -- USBFLOW OUT
-	signal flow_out_data_s          : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_out_empty_s         : std_logic := '0';
-	signal flow_out_rd_s            : std_logic := '0';
-	signal flow_out_rdy_s           : std_logic := '0';
-	signal flow_out_size_packet_s   : std_logic_vector(15 downto 0) := (others => '0');
+    signal hal_in_data            : std_logic_vector(DATA_HAL_SIZE-1 downto 0) := (others => '0');
+    signal hal_in_empty           : std_logic := '0';
+    signal hal_in_rd              : std_logic := '0';
+    signal hal_in_rdy             : std_logic := '0';
+    signal hal_in_size_packet     : std_logic_vector(15 downto 0) := (others => '0');
 
-	signal flow_out_data_0_s        : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_out_empty_0_s       : std_logic := '0';
-	signal flow_out_rd_0_s          : std_logic := '0';
-	signal flow_out_rdy_0_s         : std_logic := '0';
-	signal flow_out_size_0_packet_s : std_logic_vector(15 downto 0) := (others => '0');
-    
-	signal flow_out_data_1_s        : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_out_empty_1_s       : std_logic := '0';
-	signal flow_out_rd_1_s          : std_logic := '0';
-	signal flow_out_rdy_1_s         : std_logic := '0';
-	signal flow_out_size_1_packet_s : std_logic_vector(15 downto 0) := (others => '0');
-    
-	signal flow_out_data_2_s        : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_out_empty_2_s       : std_logic := '0';
-	signal flow_out_rd_2_s          : std_logic := '0';
-	signal flow_out_rdy_2_s         : std_logic := '0';
-	signal flow_out_size_2_packet_s : std_logic_vector(15 downto 0) := (others => '0');
-    
-	signal flow_out_data_3_s        : std_logic_vector(15 downto 0) := (others => '0');
-	signal flow_out_empty_3_s       : std_logic := '0';
-	signal flow_out_rd_3_s          : std_logic := '0';
-	signal flow_out_rdy_3_s         : std_logic := '0';
-	signal flow_out_size_3_packet_s : std_logic_vector(15 downto 0) := (others => '0');
-
-	-- FLOW_PARAMS
-    signal update_port_s        : std_logic := '0';
+    -- FLOW_PARAMS
+    signal update_port_s          : std_logic := '0';
 
     -- clock
-    signal clk_hal_s            : std_logic := '0';
+    signal clk_hal_s              : std_logic := '0';
+
+    component usb_cypress_CY7C68014A_hal
+        port (
+            usb_ifclk       : in    std_logic;
+            usb_flaga       : in    std_logic;
+            usb_flagb       : in    std_logic;
+            usb_flagc       : in    std_logic;
+            usb_flagd       : in    std_logic;
+            usb_fd_io       : inout std_logic_vector(15 downto 0);
+            usb_sloe        : out   std_logic;
+            usb_slrd        : out   std_logic;
+            usb_slwr        : out   std_logic;
+            usb_pktend      : out   std_logic;
+            usb_addr        : out   std_logic_vector(1 downto 0);
+
+            usb_rst         : in    std_logic;
+
+            out_data_o      : out   std_logic_vector(15 downto 0);
+            out_data_wr_o   : out   std_logic;
+            out_data_full_i : in    std_logic;
+            out_data_end_o  : out   std_logic;
+
+            in_data_i       : in    std_logic_vector(15 downto 0);
+            in_data_rd_o    : out   std_logic;
+            in_data_empty_i : in    std_logic;
+            in_data_rdy_i   : in    std_logic
+        );
+    end component;
+
+    component usb_cypress_CY7C68014A_slave
+        generic (
+            CLK_PROC_FREQ : INTEGER
+        );
+        port (
+            clk_proc        : in std_logic;
+            reset_n         : in std_logic;
+
+            ---------------- dynamic parameters ports ---------------
+            status_enable   : out std_logic;
+            flow_in0_enable : out std_logic;
+            flow_in1_enable : out std_logic;
+            flow_in2_enable : out std_logic;
+            flow_in3_enable : out std_logic;
+
+            --======================= Slaves ========================
+
+            ------------------------- bus_sl ------------------------
+            addr_rel_i      : in std_logic_vector(3 downto 0);
+            wr_i            : in std_logic;
+            rd_i            : in std_logic;
+            datawr_i        : in std_logic_vector(31 downto 0);
+            datard_o        : out std_logic_vector(31 downto 0)
+        );
+    end component;
 
 begin
 
 reset <= rst;
 
 -- USB HAL, control of USB cypress
-USB_HAL_INST : usb_cypress_CY7C68014A_hal
+usb_hal_inst : usb_cypress_CY7C68014A_hal
 port map (
     usb_ifclk           => ifclk,
     usb_flaga           => flaga,
@@ -169,24 +202,24 @@ port map (
     usb_slrd            => slrd,
     usb_slwr            => slwr,
     usb_pktend          => pktend,
-    usb_rst		        => rst,
+    usb_rst             => rst,
     usb_addr            => addr,
 
-    flow_in_data_o      => flow_in1_data_s,
-    flow_in_wr_o        => flow_in1_wr_s,
-    flow_in_full_i      => flow_in1_full_s,
-    flow_in_end_o       => flow_in1_pktend_s,
+    out_data_o          => hal_out_data,
+    out_data_wr_o       => hal_out_data_wr,
+    out_data_full_i     => hal_out_data_full,
+    out_data_end_o      => hal_out_data_end,
 
-    flow_out_data_i     => flow_out_data_s,
-    flow_out_rd_o       => flow_out_rd_s,
-    flow_out_empty_i    => flow_out_empty_s,
-    flow_out_rdy_i      => flow_out_rdy_s
+    in_data_i           => hal_in_data,
+    in_data_rd_o        => hal_in_rd,
+    in_data_empty_i     => hal_in_empty,
+    in_data_rdy_i       => hal_in_rdy
 );
 
--- 
-SLAVE_BUS_INST : component usb_cypress_CY7C68014A_slave
+-- slave
+usb_slave_inst : component usb_cypress_CY7C68014A_slave
 generic map (
-    CLK_PROC_FREQ  => CLK_PROC_FREQ
+    CLK_PROC_FREQ   => CLK_PROC_FREQ
 )
 port map (
     clk_proc        => clk_proc,
@@ -196,302 +229,87 @@ port map (
     datawr_i        => datawr_i,
     rd_i            => rd_i,
     datard_o        => datard_o,
-    status_enable   => enable_s,
-    flow_in0_enable => enable_in0_s,
-    flow_in1_enable => enable_in1_s,
-    flow_in2_enable => enable_in2_s,
-    flow_in3_enable => enable_in3_s
+    status_enable   => status_enable,
+    flow_in0_enable => flow_in0_enable,
+    flow_in1_enable => flow_in1_enable,
+    flow_in2_enable => flow_in2_enable,
+    flow_in3_enable => flow_in3_enable
 );
 
---FLOW_OUT out0
-FO0_disabled : if OUT0_NBWORDS = 0 generate
-	out0_data   <= (others => '0');
-	out0_fv     <= '0';
-	out0_dv     <= '0';
-end generate FO0_disabled;
+-- com controler
+gp_com_inst : component gp_com
+generic map (
+    IN0_SIZE          => IN0_SIZE,
+    IN1_SIZE          => IN1_SIZE,
+    IN2_SIZE          => IN2_SIZE,
+    IN3_SIZE          => IN3_SIZE,
+    OUT0_SIZE         => OUT0_SIZE,
+    OUT1_SIZE         => OUT1_SIZE,
+    IN0_NBWORDS       => IN0_NBWORDS,
+    IN1_NBWORDS       => IN1_NBWORDS,
+    IN2_NBWORDS       => IN2_NBWORDS,
+    IN3_NBWORDS       => IN3_NBWORDS,
+    OUT0_NBWORDS      => OUT0_NBWORDS,
+    OUT1_NBWORDS      => OUT1_NBWORDS,
+    CLK_PROC_FREQ     => CLK_PROC_FREQ,
+    CLK_HAL_FREQ      => 48000000,
+    DATA_HAL_SIZE     => DATA_HAL_SIZE,
+    MASTER_ADDR_WIDTH => MASTER_ADDR_WIDTH
+)
+port map (
+    clk_proc          => clk_proc,
+    reset_n           => rst,
 
-FO0_enabled : if OUT0_NBWORDS > 0 generate
-    FLOW_OUT0: component com_to_flow
-    generic map (
-        FIFO_DEPTH  => OUT0_NBWORDS,
-        FLOW_ID     => 1,
-        FLAGS_CODES => InitFlagCodes,
-        OUTPUT_SIZE => OUT0_SIZE
-    )
-    port map (
-        clk_hal     => clk_hal_s,
-        clk_proc    => clk_proc,
-        rst_n       => rst,
+    clk_hal           => clk_hal_s,
 
-        data_wr_i   => flow_in1_wr_s,
-        data_i      => flow_in1_data_s,
-        pktend_i    => flow_in1_pktend_s,
-        enable_i    => enable_s,
-
-        data_o      => out0_data,
-        fv_o        => out0_fv,
-        dv_o        => out0_dv,
-        flow_full_o => open
-    );
-end generate FO0_enabled;
-
---FLOW_OUT out1
-FO1_disabled : if OUT1_NBWORDS = 0 generate
-	out1_data   <= (others => '0');
-	out1_fv     <= '0';
-	out1_dv     <= '0';
-end generate FO1_disabled;
-
-FO1_enabled : if OUT1_NBWORDS > 0 generate
-    FLOW_OUT1: component com_to_flow
-    generic map (
-        FIFO_DEPTH  => OUT1_NBWORDS,
-        FLOW_ID     => 2,
-        FLAGS_CODES => InitFlagCodes,
-        OUTPUT_SIZE => OUT1_SIZE
-    )
-    port map (
-        clk_hal     => clk_hal_s,
-        clk_proc    => clk_proc,
-        rst_n       => rst,
-
-        data_wr_i   => flow_in1_wr_s,
-        data_i      => flow_in1_data_s,
-        pktend_i    => flow_in1_pktend_s,
-        enable_i    => enable_s,
-
-        data_o      => out1_data,
-        fv_o        => out1_fv,
-        dv_o        => out1_dv,
-        flow_full_o => open
-    );
-end generate FO1_enabled;
-
-------------------------------------------------------------
---FLOW IN in0
---Disable flow if not used
-FI0_disabled : if IN0_NBWORDS = 0 generate
-	flow_out_rdy_0_s <= '0';
-	flow_out_empty_0_s <= '0';
-	flow_out_data_0_s <= (others => '0');
-end generate FI0_disabled;
-
-FI0_enabled : if IN0_NBWORDS > 0 generate
-    FLOW_IN0: component flow_to_com
-    generic map (
-        INPUT_SIZE      => IN0_SIZE,
-        FIFO_DEPTH      => IN0_NBWORDS,
-        OUTPUT_SIZE     => 16,
-        FLOW_ID         => 128,
-        PACKET_SIZE     => 256, -- header inclus
-        FLAGS_CODES     => InitFlagCodes
-    )
-    port map (
-        clk_proc        => clk_proc,
-        clk_hal         => clk_hal_s,
-        rst_n           => rst,
-
-        in_data         => in0_data,
-        in_fv           => in0_fv,
-        in_dv           => in0_dv,
-
-        enable_flow_i   => enable_in0_s,
-        enable_global_i => enable_s,
-
-        -- to arbitrer
-        rdreq_i         => flow_out_rd_0_s, 
-        data_o          => flow_out_data_0_s,
-        flow_rdy_o      => flow_out_rdy_0_s,
-        f_empty_o       => flow_out_empty_0_s,
-        size_packet_o   => flow_out_size_0_packet_s
-    );
-end generate FI0_enabled;
-------------------------------------------------------------
-
-------------------------------------------------------------
---FLOW IN in1
-FI1_disabled : if IN1_NBWORDS = 0 generate
-	flow_out_rdy_1_s    <= '0';
-	flow_out_empty_1_s  <= '0';
-	flow_out_data_1_s   <= (others => '0');
-end generate FI1_disabled;
-
-FI1_enabled : if IN1_NBWORDS > 0 generate
-    FLOW_IN1: component flow_to_com
-    generic map (
-        INPUT_SIZE      => IN1_SIZE,
-        FIFO_DEPTH      => IN1_NBWORDS,
-        OUTPUT_SIZE     => 16,
-        FLOW_ID         => 129,
-        PACKET_SIZE     => 256, -- header inclus
-        FLAGS_CODES     => InitFlagCodes
-    )
-    port map (
-        clk_proc        => clk_proc,
-        clk_hal         => clk_hal_s,
-        rst_n           => rst,
-
-        in_data         => in1_data,
-        in_fv           => in1_fv,
-        in_dv           => in1_dv,
-
-        enable_flow_i   => enable_in1_s,
-        enable_global_i => enable_s,
-
-        -- to arbitrer
-        rdreq_i         => flow_out_rd_1_s,
-        data_o          => flow_out_data_1_s,
-        flow_rdy_o      => flow_out_rdy_1_s,
-        f_empty_o       => flow_out_empty_1_s,
-        size_packet_o   => flow_out_size_1_packet_s
-    );
-end generate FI1_enabled;
-------------------------------------------------------------
-
-------------------------------------------------------------
---FLOW IN in2
-FI2_disabled : if IN2_NBWORDS = 0 generate
-	flow_out_rdy_2_s <= '0';
-	flow_out_empty_2_s <= '0';
-	flow_out_data_2_s <= (others => '0');
-end generate FI2_disabled;
-
-FI2_enabled : if IN2_NBWORDS > 0 generate
-    FLOW_IN2: component flow_to_com
-    generic map (
-        INPUT_SIZE      => IN2_SIZE,
-        FIFO_DEPTH      => IN2_NBWORDS,
-        OUTPUT_SIZE     => 16,
-        FLOW_ID         => 130,
-        PACKET_SIZE     => 256, -- header inclus
-        FLAGS_CODES     => InitFlagCodes
-    )
-    port map (
-        clk_proc        => clk_proc,
-        clk_hal         => clk_hal_s,
-        rst_n           => rst,
-
-        in_data         => in2_data,
-        in_fv           => in2_fv,
-        in_dv           => in2_dv,
-
-        enable_flow_i   => enable_in2_s,
-        enable_global_i => enable_s,
-
-        -- to arbitrer
-        rdreq_i         => flow_out_rd_2_s,
-        data_o          => flow_out_data_2_s,
-        flow_rdy_o      => flow_out_rdy_2_s,
-        f_empty_o       => flow_out_empty_2_s,
-        size_packet_o   => flow_out_size_2_packet_s
-    );
-end generate FI2_enabled;
-------------------------------------------------------------
-
-------------------------------------------------------------
---FLOW IN in3
-FI3_disabled : if IN3_NBWORDS = 0 generate
-	flow_out_rdy_3_s <= '0';
-	flow_out_empty_3_s <= '0';
-	flow_out_data_3_s <= (others => '0');
-end generate FI3_disabled;
-
-FI3_enabled : if IN3_NBWORDS > 0 generate
-    FLOW_IN3: component flow_to_com
-    generic map (
-        INPUT_SIZE      => IN3_SIZE,
-        FIFO_DEPTH      => IN3_NBWORDS,
-        OUTPUT_SIZE     => 16,
-        FLOW_ID         => 131,
-        PACKET_SIZE     => 256, -- header inclus
-        FLAGS_CODES     => InitFlagCodes
-    )
-    port map (
-        clk_proc        => clk_proc,
-        clk_hal         => clk_hal_s,
-        rst_n           => rst,
-
-        in_data         => in3_data,
-        in_fv           => in3_fv,
-        in_dv           => in3_dv,
-
-        enable_flow_i   => enable_in3_s,
-        enable_global_i => enable_s,
-
-        -- to arbitrer
-        rdreq_i         => flow_out_rd_3_s,
-        data_o          => flow_out_data_3_s,
-        flow_rdy_o      => flow_out_rdy_3_s,
-        f_empty_o       => flow_out_empty_3_s,
-        size_packet_o   => flow_out_size_3_packet_s
-    );
-end generate FI3_enabled;
-------------------------------------------------------------
-
--- component flow_to_com_arb4
-FLOW_ARB : component flow_to_com_arb4
-    port map (
-		clk             => clk_hal_s,
-		rst_n           => rst,
-
-		-- fv 0 signals
-		rdreq_0_o       => flow_out_rd_0_s,
-		data_0_i        => flow_out_data_0_s,
-		flow_rdy_0_i    => flow_out_rdy_0_s,
-		f_empty_0_i     => flow_out_empty_0_s,
-		size_packet_0_i => flow_out_size_0_packet_s,
-
-		-- fv 1 signals
-		rdreq_1_o       => flow_out_rd_1_s,
-		data_1_i        => flow_out_data_1_s,
-		flow_rdy_1_i    => flow_out_rdy_1_s,
-		f_empty_1_i     => flow_out_empty_1_s,
-		size_packet_1_i => flow_out_size_1_packet_s,
-
-		-- fv 2 signals
-		rdreq_2_o       => flow_out_rd_2_s,
-		data_2_i        => flow_out_data_2_s,
-		flow_rdy_2_i    => flow_out_rdy_2_s,
-		f_empty_2_i     => flow_out_empty_2_s,
-		size_packet_2_i => flow_out_size_2_packet_s,
-
-		-- fv 3 signals
-		rdreq_3_o       => flow_out_rd_3_s,
-		data_3_i        => flow_out_data_3_s,
-		flow_rdy_3_i    => flow_out_rdy_3_s,
-		f_empty_3_i     => flow_out_empty_3_s,
-		size_packet_3_i => flow_out_size_3_packet_s,
-
-		-- fv usb signals
-		rdreq_usb_i     => flow_out_rd_s,
-		data_usb_o      => flow_out_data_s,
-		flow_rdy_usb_o  => flow_out_rdy_s,
-		f_empty_usb_o   => flow_out_empty_s,
-		size_packet_o   => flow_out_size_packet_s
-	);
-
---  FLOW_PARAMS module --> Parameter Interconnect Master
-FLOW_PARAMS : component com_to_master_pi
-    generic map (
-        FIFO_DEPTH          => 64,
-        FLOW_ID_SET         => 15,
-        MASTER_ADDR_WIDTH   => MASTER_ADDR_WIDTH
-    )
-    port map (
-        clk_hal             => clk_hal_s,
-        clk_proc            => clk_proc,
-        rst_n               => rst,
-        data_wr_i           => flow_in1_wr_s,
-        data_i              => flow_in1_data_s,
-        pktend_i            => flow_in1_pktend_s,
-        fifo_full_o         => flow_in1_full_s,
-        param_addr_o        => master_addr_o,
-        param_data_o        => master_datawr_o,
-        param_wr_o          => master_wr_o
-        -- rajouter fin d'ecriture dans la memoire...
-        --~ tmp_update_port_o => update_port_s
-    );
+    from_hal_data      => hal_out_data,
+    from_hal_wr        => hal_out_data_wr,
+    from_hal_full      => hal_out_data_full,
+    from_hal_pktend    => hal_out_data_end,
     
+    to_hal_data        => hal_in_data,
+    to_hal_rd          => hal_in_rd,
+    to_hal_empty       => hal_in_empty,
+    to_hal_rdy         => hal_in_rdy,
+    to_hal_size_packet => hal_in_size_packet,
+
+    status_enable     => status_enable,
+    flow_in0_enable   => flow_in0_enable,
+    flow_in1_enable   => flow_in1_enable,
+    flow_in2_enable   => flow_in2_enable,
+    flow_in3_enable   => flow_in3_enable,
+
+    in0_data          => in0_data,
+    in0_fv            => in0_fv,
+    in0_dv            => in0_dv,
+
+    in1_data          => in1_data,
+    in1_fv            => in1_fv,
+    in1_dv            => in1_dv,
+
+    in2_data          => in2_data,
+    in2_fv            => in2_fv,
+    in2_dv            => in2_dv,
+
+    in3_data          => in3_data,
+    in3_fv            => in3_fv,
+    in3_dv            => in3_dv,
+
+    out0_data         => out0_data,
+    out0_fv           => out0_fv,
+    out0_dv           => out0_dv,
+
+    out1_data         => out1_data,
+    out1_fv           => out1_fv,
+    out1_dv           => out1_dv,
+
+    master_addr_o     => master_addr_o,
+    master_wr_o       => master_wr_o,
+    master_rd_o       => master_rd_o,
+    master_datawr_o   => master_datawr_o,
+    master_datard_i   => master_datard_i
+);
+
     clk_hal_s <= ifclk;
     clk_hal <= clk_hal_s;
 

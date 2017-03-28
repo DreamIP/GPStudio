@@ -19,5 +19,7 @@
 
     <file name="ComFlow_pkg.vhd" type="vhdl" group="hdl" path="utils/src/ComFlow_pkg.vhd"/>
     <file name="synchronizer.vhd" type="vhdl" group="hdl" path="utils/src/synchronizer.vhd"/>
+
+    <file name="gp_com.vhd" type="vhdl" group="hdl" path="gp_com.vhd"/>
   </files>
 </component>

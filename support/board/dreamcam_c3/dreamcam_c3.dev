@@ -16,7 +16,6 @@
 			<attribute name="MAX_CORE_JUNCTION_TEMP" value="85" type="global"/>
 			<attribute name="ERROR_CHECK_FREQUENCY_DIVISOR" value="1" type="global"/>
 			<attribute name="NOMINAL_CORE_SUPPLY_VOLTAGE" value="1.2V" type="global"/>
-			<attribute name="STRATIX_DEVICE_IO_STANDARD" value="2.5 V" type="global"/>
 		</attributes>
 	</toolchain>
 	<global>

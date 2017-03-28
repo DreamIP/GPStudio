@@ -16,7 +16,7 @@ entity com_to_flow is
         FIFO_DEPTH  : POSITIVE := 1024;
         FLOW_ID     : INTEGER := 1;
         FLAGS_CODES : my_array_t := InitFlagCodes;
-        OUTPUT_SIZE : INTEGER := 16
+        FLOW_SIZE   : INTEGER := 16
     );
     port (
         clk_proc    : in std_logic;
@@ -28,7 +28,7 @@ entity com_to_flow is
         pktend_i    : in std_logic;
         enable_i    : in std_logic;
 
-        data_o      : out std_logic_vector(OUTPUT_SIZE-1 downto 0);
+        data_o      : out std_logic_vector(FLOW_SIZE-1 downto 0);
         fv_o        : out std_logic;
         dv_o        : out std_logic;
         flow_full_o : out std_logic
@@ -125,7 +125,7 @@ port map (
 RD_process : component read_flow_nbits
 generic map (
     FLAGS_CODES => FLAGS_CODES,
-    DATA_SZ     => OUTPUT_SIZE
+    DATA_SZ     => FLOW_SIZE
 )
 port map (
     clk         => clk_proc,

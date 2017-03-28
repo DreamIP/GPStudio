@@ -13,7 +13,7 @@ use work.ComFlow_pkg.all;
 
 entity flow_to_com is
     generic (
-        INPUT_SIZE          : POSITIVE := 8;
+        FLOW_SIZE           : POSITIVE := 8;
         OUTPUT_SIZE         : POSITIVE := 16;
         FIFO_DEPTH          : INTEGER := 1024;
         FLOW_ID             : INTEGER := 1;
@@ -21,11 +21,11 @@ entity flow_to_com is
         FLAGS_CODES         : my_array_t := InitFlagCodes
     );
     port (
-        clk_proc              : in std_logic;
+        clk_proc            : in std_logic;
         clk_hal             : in std_logic;
         rst_n               : in std_logic;
 
-        in_data             : in std_logic_vector(INPUT_SIZE-1 downto 0);
+        in_data             : in std_logic_vector(FLOW_SIZE-1 downto 0);
         in_fv               : in std_logic;
         in_dv               : in std_logic;
 
@@ -64,7 +64,7 @@ component flowto16
     port (
         rst_n       : in  std_logic;
         clk         : in  std_logic;
-        in_data     : in  std_logic_vector(INPUT_SIZE-1 downto 0);
+        in_data     : in  std_logic_vector(FLOW_SIZE-1 downto 0);
         in_fv       : in  std_logic;
         in_dv       : in  std_logic;
         out_data    : out std_logic_vector(OUTPUT_SIZE-1 downto 0);
@@ -101,7 +101,7 @@ component com_flow_fifo_tx
         flow_rdy_o          : out std_logic;
         f_empty_o           : out std_logic;
         fifos_f_o           : out std_logic;
-        size_packet_o   : out std_logic_vector(15 downto 0)
+        size_packet_o       : out std_logic_vector(15 downto 0)
     );
 end component;
 
@@ -157,7 +157,7 @@ begin
 -- Adapt input flow size to 16 bits
 flowto16_inst : component flowto16
 generic map (
-    INPUT_SIZE      => INPUT_SIZE,
+    INPUT_SIZE      => FLOW_SIZE,
     FIFO_DEPTH      => 128
 )
 port map (

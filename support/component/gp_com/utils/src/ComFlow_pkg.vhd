@@ -25,21 +25,21 @@ package ComFlow_pkg is
 	constant EoL:integer := 4;
 	-- Struct pour les flags s
 	type my_array_t is array (0 to 4) of std_logic_vector(7 downto 0);
-	constant InitFlagCodes : my_array_t := (X"AA", -- Start of Frame Flag
-											X"BA", --End of Frame Flag
-											X"BC", -- Start+end Flow
-											X"DA", -- Start of Line
-											X"DB" -- End of Line
-
-								);
+	constant InitFlagCodes : my_array_t := (
+        X"AA", -- Start of Frame Flag
+        X"BA", --End of Frame Flag
+        X"BC", -- Start+end Flow
+        X"DA", -- Start of Line
+        X"DB" -- End of Line
+    );
 
 	-- Component Declaration
     component com_to_flow
         generic (
-            FIFO_DEPTH  : POSITIVE := 1024;
-            FLOW_ID     : INTEGER := 1;
+            FIFO_DEPTH  : POSITIVE   := 1024;
+            FLOW_ID     : INTEGER    := 1;
             FLAGS_CODES : my_array_t := InitFlagCodes;
-            OUTPUT_SIZE : INTEGER:=16
+            FLOW_SIZE   : INTEGER    := 16
         );
         port(
             clk_hal     : in std_logic;
@@ -51,7 +51,7 @@ package ComFlow_pkg is
             pktend_i    : in std_logic;
             enable_i    : in std_logic;
 
-            data_o      : out std_logic_vector(OUTPUT_SIZE-1 downto 0);
+            data_o      : out std_logic_vector(FLOW_SIZE-1 downto 0);
             fv_o        : out std_logic;
             dv_o        : out std_logic;
             flow_full_o : out std_logic
@@ -60,11 +60,11 @@ package ComFlow_pkg is
 
     component flow_to_com is
         generic (
-            INPUT_SIZE      : POSITIVE := 8;
-            OUTPUT_SIZE     : POSITIVE := 8;
-            FIFO_DEPTH      : POSITIVE := 1024;
-            FLOW_ID         : INTEGER := 1;
-            PACKET_SIZE     : INTEGER := 256;
+            FLOW_SIZE       : POSITIVE   := 8;
+            OUTPUT_SIZE     : POSITIVE   := 8;
+            FIFO_DEPTH      : POSITIVE   := 1024;
+            FLOW_ID         : INTEGER    := 1;
+            PACKET_SIZE     : INTEGER    := 256;
             FLAGS_CODES     : my_array_t := InitFlagCodes
         );
         port(
@@ -72,9 +72,10 @@ package ComFlow_pkg is
             clk_hal         : in std_logic;
             rst_n           : in std_logic;
             
-            in_data         : in std_logic_vector(INPUT_SIZE-1 downto 0);
+            in_data         : in std_logic_vector(FLOW_SIZE-1 downto 0);
             in_fv           : in std_logic;
             in_dv           : in std_logic;
+
             rdreq_i         : in std_logic;
             enable_flow_i   : in std_logic;
             enable_global_i : in std_logic;
@@ -91,9 +92,9 @@ package ComFlow_pkg is
     component com_to_master_pi
         generic (
             FIFO_DEPTH          : POSITIVE := 64;
-            FLOW_ID_SET         : integer := 12;
-            --FLOW_ID_GET       : integer := 13
-            MASTER_ADDR_WIDTH   : integer
+            FLOW_ID_SET         : INTEGER  := 12;
+            --FLOW_ID_GET       : INTEGER  := 13
+            MASTER_ADDR_WIDTH   : INTEGER
         );
         port (
             clk_hal             : in std_logic; -- clk_usb
@@ -108,63 +109,13 @@ package ComFlow_pkg is
             fifo_full_o         : out std_logic;
 
             -- signaux pour wishbone
-            param_addr_o        : out std_logic_vector(MASTER_ADDR_WIDTH-1 DOWNTO 0);
+            param_addr_o        : out std_logic_vector(MASTER_ADDR_WIDTH-1 downto 0);
             param_data_o        : out std_logic_vector(31 downto 0);
             param_wr_o          : out std_logic;
 
             -- may add RAM arbiter connexion
             -- tmp signal to trigger caph update reg
             tmp_update_port_o   : out std_logic
-        );
-    end component;
-
-	component usb_cypress_CY7C68014A_hal
-        port(
-            usb_ifclk    : in    std_logic;
-            usb_flaga    : in    std_logic;
-            usb_flagb    : in    std_logic;
-            usb_flagc    : in    std_logic;
-            usb_flagd    : in    std_logic;
-            usb_fd_io    : inout std_logic_vector(15 downto 0);
-            usb_sloe     : out   std_logic;
-            usb_slrd     : out   std_logic;
-            usb_slwr     : out   std_logic;
-            usb_pktend   : out   std_logic;
-            usb_addr     : out   std_logic_vector(1 downto 0);
-
-            usb_rst		  : in 	std_logic;
-
-            flow_in_data_o  : out   std_logic_vector(15 downto 0);
-            flow_in_wr_o	: out   std_logic;
-            flow_in_full_i: in   std_logic;
-            flow_in_end_o : out std_logic;
-
-            flow_out_data_i  : in   std_logic_vector(15 downto 0);
-            flow_out_rd_o	: out   std_logic;
-            flow_out_empty_i: in   std_logic;
-            flow_out_rdy_i : in std_logic
-        );
-	end component;
-
-    component usb_cypress_CY7C68014A_slave is
-        generic (
-            CLK_PROC_FREQ   : integer
-        );
-        port(
-            clk_proc        : in std_logic;
-            reset_n         : in std_logic;
-
-            addr_rel_i      : in std_logic_vector(3 downto 0);
-            wr_i            : in std_logic;
-            rd_i            : in std_logic;
-            datawr_i        : in std_logic_vector(31 downto 0);
-            datard_o        : out std_logic_vector(31 downto 0);
-
-            status_enable   : out std_logic;
-            flow_in0_enable : out std_logic;
-            flow_in1_enable : out std_logic;
-            flow_in2_enable : out std_logic;
-            flow_in3_enable : out std_logic
         );
     end component;
 
@@ -207,6 +158,88 @@ package ComFlow_pkg is
             flow_rdy_usb_o  : out std_logic;
             f_empty_usb_o   : out std_logic;
             size_packet_o   : out std_logic_vector(15 downto 0)
+        );
+    end component;
+    
+    component gp_com
+        generic (
+            IN0_SIZE          : INTEGER := 8;
+            IN1_SIZE          : INTEGER := 8;
+            IN2_SIZE          : INTEGER := 8;
+            IN3_SIZE          : INTEGER := 8;
+            OUT0_SIZE         : INTEGER := 8;
+            OUT1_SIZE         : INTEGER := 8;
+            IN0_NBWORDS       : INTEGER := 1280;
+            IN1_NBWORDS       : INTEGER := 1280;
+            IN2_NBWORDS       : INTEGER := 1280;
+            IN3_NBWORDS       : INTEGER := 1280;
+            OUT0_NBWORDS      : INTEGER := 1024;
+            OUT1_NBWORDS      : INTEGER := 1024;
+            CLK_PROC_FREQ     : INTEGER;
+            CLK_HAL_FREQ      : INTEGER;
+            DATA_HAL_SIZE     : INTEGER;
+            MASTER_ADDR_WIDTH : INTEGER
+        );
+        port (
+            clk_proc           : in std_logic;
+            reset_n            : in std_logic;
+
+            ------ hal connections ------
+            clk_hal            : in std_logic;
+
+            from_hal_data      : in   std_logic_vector(DATA_HAL_SIZE-1 downto 0);
+            from_hal_wr	       : in   std_logic;
+            from_hal_full      : out  std_logic;
+            from_hal_pktend    : in   std_logic;
+
+            to_hal_data        : out  std_logic_vector(DATA_HAL_SIZE-1 downto 0);
+            to_hal_rd	       : in   std_logic;
+            to_hal_empty       : out  std_logic;
+            to_hal_rdy         : out  std_logic;
+            to_hal_size_packet : out  std_logic_vector(15 downto 0);
+
+            -------- slave -------
+            status_enable      : in std_logic;
+            flow_in0_enable    : in std_logic;
+            flow_in1_enable    : in std_logic;
+            flow_in2_enable    : in std_logic;
+            flow_in3_enable    : in std_logic;
+                               
+            ------ in0 flow ------
+            in0_data           : in std_logic_vector(IN0_SIZE-1 downto 0);
+            in0_fv             : in std_logic;
+            in0_dv             : in std_logic;
+            ------ in1 flow ------
+            in1_data           : in std_logic_vector(IN1_SIZE-1 downto 0);
+            in1_fv             : in std_logic;
+            in1_dv             : in std_logic;
+            ------ in2 flow ------
+            in2_data           : in std_logic_vector(IN2_SIZE-1 downto 0);
+            in2_fv             : in std_logic;
+            in2_dv             : in std_logic;
+            ------ in3 flow ------
+            in3_data           : in std_logic_vector(IN3_SIZE-1 downto 0);
+            in3_fv             : in std_logic;
+            in3_dv             : in std_logic;
+
+
+            ------ out0 flow ------
+            out0_data          : out std_logic_vector(OUT0_SIZE-1 downto 0);
+            out0_fv            : out std_logic;
+            out0_dv            : out std_logic;
+            ------ out1 flow ------
+            out1_data          : out std_logic_vector(OUT1_SIZE-1 downto 0);
+            out1_fv            : out std_logic;
+            out1_dv            : out std_logic;
+
+            ---- ===== Masters =====
+
+            ------ bus_master ------
+            master_addr_o      : out std_logic_vector(MASTER_ADDR_WIDTH-1 downto 0);
+            master_wr_o        : out std_logic;
+            master_rd_o        : out std_logic;
+            master_datawr_o    : out std_logic_vector(31 downto 0);
+            master_datard_i    : in std_logic_vector(31 downto 0)
         );
     end component;
 
