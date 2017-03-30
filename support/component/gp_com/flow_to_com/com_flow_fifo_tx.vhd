@@ -71,7 +71,7 @@ component fifo_com_tx
         wrreq       : in  std_logic;
         q           : out std_logic_vector (OUT_SIZE-1 downto 0);
         rdempty     : out std_logic;
-        rdusedw     : out std_logic_vector (integer(ceil(log2(real(depth))))-1 downto 0);
+        rdusedw     : out std_logic_vector (integer(ceil(log2(real(DEPTH))*(real(IN_SIZE)/real(OUT_SIZE))))-1 downto 0);
         wrfull      : out std_logic;
         wrusedw     : out std_logic_vector (integer(ceil(log2(real(depth))))-1 downto 0)
     );
@@ -82,7 +82,7 @@ end component;
 ---------------------------------------------------------
 
 -------------
--- FIFO 1 SIGNALS
+-- FIFO SIGNALS
 -------------
 
     signal  fifo_data_wrreq_s   : std_logic := '0';
@@ -104,7 +104,10 @@ end component;
     type fsm_state_t is (Idle,WritePacket);
     signal fsm_state : fsm_state_t := Idle;
 
-    type RDUSB_fsm_state_t is (Idle, WaitoneClk, WaitSyncPktSize, FlowRdy, UnpileHeader, Unpile);
+    type RDUSB_fsm_state_t is (Idle, WaitoneClk, WaitSyncPktSize, FlowRdy,
+        HeaderFlag8,
+        HeaderFN, HeaderFN8, HeaderFN8_low,
+        Unpile);
     signal RDUSB_state          : RDUSB_fsm_state_t := Idle;
 
     signal data_wr_r            : std_logic := '0';
@@ -216,7 +219,7 @@ begin
         fifo_flag_rdreq_s <= '0';
         fifo_pkt_rdreq_s <= '0';
         pkt_cpt := (others=>'0');
-        counter:= 0;
+        counter := 0;
         RDUSB_state <= Idle;
 
     elsif rising_edge(clk_hal) then
@@ -230,6 +233,7 @@ begin
                     RDUSB_state <= WaitSyncPktSize;
                 end if;
 
+
             when WaitSyncPktSize =>
                 fifo_flag_rdreq_s <= '0';
                 counter := counter + 1;
@@ -239,35 +243,57 @@ begin
                     RDUSB_state <= WaitoneClk;
                 end if;
 
+
             when WaitoneClk =>
                 fifo_flag_rdreq_s <= '0';
                 fifo_pkt_rdreq_s <= '0';
                 RDUSB_state <= FlowRdy;
 
+
             when FlowRdy => -- si la fifo est depilable on monte le flag de flow rdy
-                flow_rdy_o <='1';
+                flow_rdy_o <= '1';
 
                 if (rdreq_i = '1') then -- si l'usb est pret
 
                     pkt_cpt := fifo_pkt_q_s;
                     size_packet_o <= fifo_pkt_q_s;
-                    data_s <= std_logic_vector(to_unsigned(FLOW_ID,8)) & fifo_flag_q_s(7 downto 0);
 
-                    fifo_data_rdreq_s <= '1'; -- assert fifo request here to be ready for Unpile state
-                    -- go to unpile packet number
-                    RDUSB_state <= UnpileHeader;
+                    -- ne marche pas car flag = BC au moment de dépiler ...
+                    if (fifo_flag_q_s(7 downto 0) = FLAGS_CODES(SoF)) then
+                        packet_number := X"0000";
+                    else
+                        packet_number := std_logic_vector(unsigned(packet_number) + X"0001");
+                    end if;
+
+                    if(HAL_WIDTH = 16) then
+                        data_s <= std_logic_vector(to_unsigned(FLOW_ID,8)) & fifo_flag_q_s(7 downto 0);
+                        fifo_data_rdreq_s <= '1'; -- assert fifo request here to be ready for Unpile state
+                        RDUSB_state <= HeaderFN;
+                    else
+                        data_s(7 downto 0) <= std_logic_vector(to_unsigned(FLOW_ID,8));
+                        RDUSB_state <= HeaderFlag8;
+                    end if;
                 end if;
 
 
-            when UnpileHeader =>
-                -- ne marche pas car flag = BC au moment de dépiler ...
-                if (fifo_flag_q_s(7 downto 0) = FLAGS_CODES(SoF)) then
-                    packet_number := X"0000";
-                else
-                    packet_number := std_logic_vector(unsigned(packet_number) + X"0001");
-                end if;
+            when HeaderFlag8 =>
+                data_s(7 downto 0) <= fifo_flag_q_s(7 downto 0);
+                RDUSB_state <= HeaderFN8;
 
-                data_s <= packet_number;
+
+            when HeaderFN => -- 16 bits mode only
+                data_s <= packet_number(HAL_WIDTH-1 downto 0);
+                RDUSB_state <= Unpile;
+
+
+            when HeaderFN8 => -- 8 bits mode only
+                data_s(7 downto 0) <= packet_number(15 downto 8);
+                fifo_data_rdreq_s <= '1'; -- assert fifo request here to be ready for Unpile state
+                RDUSB_state <= HeaderFN8_low;
+
+
+            when HeaderFN8_low => -- 8 bits mode only
+                data_s(7 downto 0) <= packet_number(7 downto 0);
                 RDUSB_state <= Unpile;
 
 

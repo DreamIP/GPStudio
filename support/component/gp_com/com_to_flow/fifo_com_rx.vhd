@@ -88,17 +88,15 @@ ARCHITECTURE syn OF fifo_com_rx IS
         rdempty : out std_logic;
         wrclk   : in std_logic;
         wrreq   : in std_logic;
-        wrusedw : out std_logic_vector (integer(ceil(log2(real(depth))))-1 downto 0);
         aclr    : in std_logic;
         data    : in std_logic_vector (IN_SIZE-1 downto 0);
-        rdreq   : in std_logic;
-        rdusedw : out std_logic_vector (integer(ceil(log2(real(DEPTH))*(real(IN_SIZE)/real(OUT_SIZE))))-1 downto 0)
+        rdreq   : in std_logic
     );
     end component;
 
 begin
 	wrfull  <= sub_wire0;
-	q       <= sub_wire1(IN_SIZE-1 downto 0);
+	q       <= sub_wire1;
 	rdempty <= sub_wire2;
     
     FIFO_GEN_SAME_WIDTH : if (IN_SIZE = OUT_SIZE) generate

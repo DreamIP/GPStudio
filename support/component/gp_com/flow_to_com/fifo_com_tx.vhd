@@ -23,7 +23,7 @@ entity fifo_com_tx is
         wrreq       : in  std_logic;
         q           : out std_logic_vector (OUT_SIZE-1 downto 0);
         rdempty     : out std_logic;
-        rdusedw     : out std_logic_vector (integer(ceil(log2(real(DEPTH))))-1 downto 0);
+        rdusedw     : out std_logic_vector (integer(ceil(log2(real(DEPTH))*(real(IN_SIZE)/real(OUT_SIZE))))-1 downto 0);
         wrfull      : out std_logic;
         wrusedw     : out std_logic_vector (integer(ceil(log2(real(DEPTH))))-1 downto 0)
     );
@@ -35,7 +35,7 @@ architecture syn of fifo_com_tx is
     signal sub_wire1    : std_logic_vector (OUT_SIZE-1 downto 0);
     signal sub_wire2    : std_logic;
     signal sub_wire3    : std_logic_vector (integer(ceil(log2(real(DEPTH))))-1 downto 0);
-    signal sub_wire4    : std_logic_vector (integer(ceil(log2(real(DEPTH))))-1 downto 0);
+    signal sub_wire4    : std_logic_vector (integer(ceil(log2(real(DEPTH))*(real(IN_SIZE)/real(OUT_SIZE))))-1 downto 0);
 
     component dcfifo
     generic (
@@ -105,8 +105,8 @@ begin
     wrfull     <= sub_wire0;
     q          <= sub_wire1(OUT_SIZE-1 downto 0);
     rdempty    <= sub_wire2;
-    wrusedw    <= sub_wire3(integer(ceil(log2(real(DEPTH))))-1 downto 0);
-    rdusedw    <= sub_wire4(integer(ceil(log2(real(DEPTH))*(real(IN_SIZE)/real(OUT_SIZE))))-1 downto 0);
+    wrusedw    <= sub_wire3;
+    rdusedw    <= sub_wire4;
 
     FIFO_GEN_SAME_WIDTH : if (IN_SIZE = OUT_SIZE) generate
         dcfifo_component : dcfifo
