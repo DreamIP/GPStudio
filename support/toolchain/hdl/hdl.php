@@ -132,7 +132,7 @@ class HDL_toolchain extends Toolchain
         }
         foreach ($resets as $reset)
         {
-            $generator->addSignal($reset, 1, 'std_logic');
+            $generator->addSignal($reset, 1, 'std_logic', "'1'");
         }
 
         // signals for flows interconnect

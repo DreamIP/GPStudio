@@ -221,9 +221,9 @@ class VHDL_generator
         array_push($this->ports, new Module_param($comment, 0, '', '', true));
     }
 
-    function addSignal($name, $size, $type)
+    function addSignal($name, $size, $type, $default = '')
     {
-        array_push($this->signals, new Module_param($name, $size, $type));
+        array_push($this->signals, new Module_param($name, $size, $type, $default));
     }
 
     function addSignalComment($comment)
@@ -420,22 +420,25 @@ class VHDL_generator
             }
             else
             {
+                $default = '';
+                if ($signal->default != '')
+                    $default = ' := ' . $signal->default;
                 if ($signal->size == 1 and $signal->type != 'std_logic_vector')
                 {
-                    $content.='	signal ' . str_pad($signal->name, $maxLenght, ' ') . ' : ' . $signal->type . ';' . "\r\n";
+                    $content.='	signal ' . str_pad($signal->name, $maxLenght, ' ') . ' : ' . $signal->type . $default . ';' . "\r\n";
                 }
                 else
                 {
-					if (is_numeric($signal->size))
-					{
-						//$content.='		' . str_pad($port->name, $maxLenght, ' ') . ' : ' . $port->type . ' std_logic_vector(' . ($port->size - 1) . ' downto 0)';
-						$content.='	signal ' . str_pad($signal->name, $maxLenght, ' ') . ' : ' . $signal->type . ' (' . ($signal->size - 1) . ' downto 0);' . "\r\n";
-					}
-					else
-					{
-						//$content.='		' . str_pad($port->name, $maxLenght, ' ') . ' : ' . $port->type . ' std_logic_vector(' . $port->size . '-1 downto 0)';
-						$content.='	signal ' . str_pad($signal->name, $maxLenght, ' ') . ' : ' . $signal->type . ' (' . $signal->size . '-1 downto 0);' . "\r\n";
-					}
+                    if (is_numeric($signal->size))
+                    {
+                        //$content.='		' . str_pad($port->name, $maxLenght, ' ') . ' : ' . $port->type . ' std_logic_vector(' . ($port->size - 1) . ' downto 0)';
+                        $content.='	signal ' . str_pad($signal->name, $maxLenght, ' ') . ' : ' . $signal->type . ' (' . ($signal->size - 1) . ' downto 0);' . "\r\n";
+                    }
+                    else
+                    {
+                        //$content.='		' . str_pad($port->name, $maxLenght, ' ') . ' : ' . $port->type . ' std_logic_vector(' . $port->size . '-1 downto 0)';
+                        $content.='	signal ' . str_pad($signal->name, $maxLenght, ' ') . ' : ' . $signal->type . ' (' . $signal->size . '-1 downto 0);' . "\r\n";
+                    }
                     
                 }
             }
