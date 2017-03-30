@@ -30,9 +30,12 @@ port (
 	udp_txi					: in udp_tx_type;						-- UDP tx cxns
 	udp_tx_result			: out std_logic_vector (1 downto 0);    -- tx status (changes during transmission)
 	udp_tx_data_out_ready	: out std_logic;						-- indicates udp_tx is ready to take data
+
 	-- UDP RX signals
 	udp_rx_start			: out std_logic;						-- indicates receipt of udp header
-	udp_rxo					: out udp_rx_type
+	udp_rxo					: out udp_rx_type;
+
+	CLK_OUT				: OUT STD_LOGIC
 );
 end entity;
 
@@ -134,12 +137,6 @@ signal mac_rx_data_int : std_logic_vector(7 downto 0);
 signal mac_tx_dv_int, mac_tx_ready_int, mac_tx_sof_int, mac_tx_eof_int : std_logic;
 signal mac_tx_data_int : std_logic_vector(7 downto 0);
 
---TEST LOOPBACK
-signal udp_tx_start_int, udp_rx_start_int : std_logic;
-signal udp_txi_int : udp_tx_type;
-signal udp_rxo_int : udp_rx_type;
-
-signal udp_tx_data_out_ready_int : std_logic;
 signal count : unsigned(31 downto 0);
 signal iRst_n_debounced_int : std_logic;
 
@@ -158,7 +155,6 @@ begin
 		end if;
 	end if;
 end process;
-
 
 
 control_int.ip_controls.arp_controls.clear_cache <= '0';
@@ -238,11 +234,6 @@ PORT MAP (
     CLK_OUT				=> clk_int
 );
 
-
-
-
-
-
-
+CLK_OUT <= clk_int;
 
 end architecture;

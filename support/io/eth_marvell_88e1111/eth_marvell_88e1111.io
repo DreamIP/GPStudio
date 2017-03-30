@@ -74,6 +74,7 @@
     <file name="UDP_GBE_MAC.sdc" type="sdc" group="hdl" path="hdl/UDP_GBE_MAC.sdc"/>
     <file name="UDP_MAC_GE.vhd" type="vhdl" group="hdl" path="hdl/UDP_MAC_GE.vhd"/>
     <file name="eth_marvell_88e1111.vhd" type="vhdl" group="hdl" path="hdl/eth_marvell_88e1111.vhd"/>
+    <file name="eth_marvell_88e1111_hal.vhd" type="vhdl" group="hdl" path="hdl/eth_marvell_88e1111_hal.vhd"/>
     <file name="eth_marvell_88e1111_slave.vhd" type="vhdl" group="hdl" path="hdl/eth_marvell_88e1111_slave.vhd"/>
     <file name="eth_marvell_88e1111.io" type="io" group="blockdef" path="eth_marvell_88e1111.io"/>
   </files>
