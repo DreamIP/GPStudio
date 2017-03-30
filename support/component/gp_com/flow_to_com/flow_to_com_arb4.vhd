@@ -14,41 +14,44 @@ use work.ComFlow_pkg.all;
 
 -- Flow out arbiter 4 ways
 entity flow_to_com_arb4 is
+    generic (
+        DATA_HAL_SIZE       : POSITIVE := 16
+    );
     port (
         clk             : in std_logic;
         rst_n           : in std_logic;
 
         -- fv 0 signals
         rdreq_0_o       : out std_logic;
-        data_0_i        : in std_logic_vector(15 downto 0);
+        data_0_i        : in std_logic_vector(DATA_HAL_SIZE-1 downto 0);
         flow_rdy_0_i    : in std_logic;
         f_empty_0_i     : in std_logic;
         size_packet_0_i : in std_logic_vector(15 downto 0);
 
         -- fv 1 signals
         rdreq_1_o       : out std_logic;
-        data_1_i        : in std_logic_vector(15 downto 0);
+        data_1_i        : in std_logic_vector(DATA_HAL_SIZE-1 downto 0);
         flow_rdy_1_i    : in std_logic;
         f_empty_1_i     : in std_logic;
         size_packet_1_i : in std_logic_vector(15 downto 0);
 
         -- fv 2 signals
         rdreq_2_o       : out std_logic;
-        data_2_i        : in std_logic_vector(15 downto 0);
+        data_2_i        : in std_logic_vector(DATA_HAL_SIZE-1 downto 0);
         flow_rdy_2_i    : in std_logic;
         f_empty_2_i     : in std_logic;
         size_packet_2_i : in std_logic_vector(15 downto 0);
 
         -- fv 3 signals
         rdreq_3_o       : out std_logic;
-        data_3_i        : in std_logic_vector(15 downto 0);
+        data_3_i        : in std_logic_vector(DATA_HAL_SIZE-1 downto 0);
         flow_rdy_3_i    : in std_logic;
         f_empty_3_i     : in std_logic;
         size_packet_3_i : in std_logic_vector(15 downto 0);
 
         -- fv usb signals
         rdreq_usb_i     : in std_logic;
-        data_usb_o      : out std_logic_vector(15 downto 0);
+        data_usb_o      : out std_logic_vector(DATA_HAL_SIZE-1 downto 0);
         flow_rdy_usb_o  : out std_logic;
         f_empty_usb_o   : out std_logic;
         size_packet_o   : out std_logic_vector(15 downto 0)
@@ -60,7 +63,6 @@ architecture rtl of flow_to_com_arb4 is
 --	SIGNALS
 ---------------------------------------------------------
     signal sel : std_logic_vector(1 downto 0) := (others=>'0');
-
 
     type fsm_state_t is (Idle, Hold);
     signal fsm_state    : fsm_state_t := Idle;

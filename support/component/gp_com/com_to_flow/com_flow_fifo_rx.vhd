@@ -12,7 +12,9 @@ use ieee.numeric_std.all;
 entity  com_flow_fifo_rx is
     generic (
         FIFO_DEPTH  : POSITIVE := 1024;
-        FLOW_ID     : INTEGER := 1
+        FLOW_ID     : INTEGER := 1;
+        IN_SIZE     : POSITIVE := 16;
+        OUT_SIZE    : POSITIVE := 16
     );
     port (
         clk_hal     : in std_logic;
@@ -21,12 +23,12 @@ entity  com_flow_fifo_rx is
         rst_n       : in std_logic;
 
         data_wr_i   : in std_logic;
-        data_i      : in std_logic_vector(15 downto 0);
+        data_i      : in std_logic_vector(IN_SIZE-1 downto 0);
         rdreq_i     : in std_logic;
         pktend_i    : in std_logic;
         enable_i    : in std_logic;
 
-        data_o      : out std_logic_vector(15 downto 0);
+        data_o      : out std_logic_vector(OUT_SIZE-1 downto 0);
         flow_rdy_o  : out std_logic;
         f_empty_o   : out std_logic;
         fifos_f_o   : out std_logic;
@@ -41,16 +43,18 @@ architecture rtl of com_flow_fifo_rx is
 ---------------------------------------------------------
     component fifo_com_rx IS
     generic (
-        DEPTH       : POSITIVE := FIFO_DEPTH
+        DEPTH       : POSITIVE := FIFO_DEPTH;
+        IN_SIZE     : POSITIVE;
+        OUT_SIZE    : POSITIVE
     );
     port (
         aclr		: in std_logic := '0';
-        data		: in std_logic_vector(15 downto 0);
+        data		: in std_logic_vector(IN_SIZE-1 downto 0);
         rdclk		: in std_logic;
         rdreq		: in std_logic;
         wrclk		: in std_logic;
         wrreq		: in std_logic;
-        q		    : out std_logic_vector(15 downto 0);
+        q		    : out std_logic_vector(OUT_SIZE-1 downto 0);
         rdempty		: out std_logic;
         wrfull		: out std_logic
     );
@@ -74,12 +78,12 @@ architecture rtl of com_flow_fifo_rx is
 -------------
 -- FIFO 1 SIGNALS
 -------------
-	signal fifo_1_data_s        : std_logic_vector(15 downto 0) := (others=>'0');
+	signal fifo_1_data_s        : std_logic_vector(IN_SIZE-1 downto 0) := (others=>'0');
 	signal fifo_1_wrclk_s       : std_logic := '0';
 	signal fifo_1_wrreq_s       : std_logic := '0';
 	signal fifo_1_wrfull_s      : std_logic := '0';
 
-	signal fifo_1_q_s           : std_logic_vector(15 downto 0) := (others=>'0');
+	signal fifo_1_q_s           : std_logic_vector(OUT_SIZE-1 downto 0) := (others=>'0');
 	signal fifo_1_rdclk_s       : std_logic := '0';
 	signal fifo_1_rdreq_s       : std_logic := '0';
 	signal fifo_1_rdempty_s     : std_logic := '0';
@@ -93,12 +97,12 @@ architecture rtl of com_flow_fifo_rx is
 -------------
 -- FIFO 2 SIGNALS
 -------------
-	signal fifo_2_data_s        : std_logic_vector(15 downto 0) := (others=>'0');
+	signal fifo_2_data_s        : std_logic_vector(IN_SIZE-1 downto 0) := (others=>'0');
 	signal fifo_2_wrclk_s       : std_logic := '0';
 	signal fifo_2_wrreq_s       : std_logic := '0';
 	signal fifo_2_wrfull_s      : std_logic := '0';
 
-	signal fifo_2_q_s           : std_logic_vector(15 downto 0) := (others=>'0');
+	signal fifo_2_q_s           : std_logic_vector(OUT_SIZE-1 downto 0) := (others=>'0');
 	signal fifo_2_rdclk_s       : std_logic := '0';
 	signal fifo_2_rdreq_s       : std_logic := '0';
 	signal fifo_2_rdempty_s     : std_logic := '0';
@@ -113,7 +117,7 @@ architecture rtl of com_flow_fifo_rx is
 -------------
 -- FSM Signal
 -------------
-	type fsm_state_t is (Idle, DecodeFN, ReceivePacket, SwapFifos, Full, tmp);
+	type fsm_state_t is (Idle, DecodeFN, DecodeFN8, DecodeFN8_low, ReceivePacket, SwapFifos, Full, tmp);
 	signal fsm_state : fsm_state_t := Idle;
 
 	-- mux/demux fifos
@@ -124,7 +128,7 @@ architecture rtl of com_flow_fifo_rx is
 	signal frame_number : std_logic_vector(15 downto 0) := (others=>'0');
 
 	signal cur_fifo_wrreq_s     : std_logic := '0';
-	signal cur_fifo_data_s      : std_logic_vector(15 downto 0) := (others=>'0');
+	signal cur_fifo_data_s      : std_logic_vector(IN_SIZE-1 downto 0) := (others=>'0');
 	signal cur_fifo_readable    : std_logic := '0';
 	signal cur_fifo_readable_r  : std_logic := '0';
 	signal other_fifo_readable  : std_logic := '0';
@@ -147,7 +151,9 @@ begin
 
     FIFO_1 : fifo_com_rx
 	generic map (
-		DEPTH => FIFO_DEPTH
+		DEPTH       => FIFO_DEPTH,
+        IN_SIZE     => IN_SIZE,
+        OUT_SIZE    => OUT_SIZE
 	)
 	port map (
 		aclr 		=> fifo_1_aclr_s,
@@ -163,7 +169,9 @@ begin
 
     FIFO_2 : fifo_com_rx
   	generic map (
-		DEPTH => FIFO_DEPTH
+		DEPTH => FIFO_DEPTH,
+        IN_SIZE     => IN_SIZE,
+        OUT_SIZE    => OUT_SIZE
 	)
 	port map (
 		aclr 		=> fifo_2_aclr_s,
@@ -215,8 +223,12 @@ begin
 	--				flag_s <= data_i; le flag est gere dans un process specifique
 
 					-- on check si le paquet est  pour nous
-					if (data_i(15 downto 8) = std_logic_vector(to_unsigned(FLOW_ID,8)) ) then
-						fsm_state <= DecodeFN;
+					if (data_i(IN_SIZE-1 downto IN_SIZE-8) = std_logic_vector(to_unsigned(FLOW_ID,8)) ) then
+						if(IN_SIZE = 16) then
+                            fsm_state <= DecodeFN;
+                        else
+                            fsm_state <= DecodeFN8;
+                        end if;
 
 					else
 						fsm_state <= Idle;
@@ -225,7 +237,15 @@ begin
 
 			-- on lit le frane number
 			when DecodeFN =>
-				frame_number <= data_i;
+				frame_number(IN_SIZE-1 downto 0) <= data_i;
+				fsm_state <= ReceivePacket;
+
+			when DecodeFN8 =>
+				frame_number(15 downto 8) <= data_i(7 downto 0);
+				fsm_state <= DecodeFN8_low;
+
+			when DecodeFN8_low =>
+				frame_number(7 downto 0) <= data_i(7 downto 0);
 				fsm_state <= ReceivePacket;
 
 			-- reception du packet USB

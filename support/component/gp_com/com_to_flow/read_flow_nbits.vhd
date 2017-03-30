@@ -18,17 +18,19 @@ use work.ComFlow_pkg.all;
 entity read_flow_nbits is
     generic (
         FLAGS_CODES : my_array_t := InitFlagCodes;
-        DATA_SZ :integer
+        DATA_SZ     : INTEGER;
+        IN_SIZE     : POSITIVE;
+        OUT_SIZE    : POSITIVE
     );
     port(
         clk         : in std_logic;
         rst_n       : in std_logic;
 
-        data_i      : in std_logic_vector(15 downto 0);
+        data_i      : in std_logic_vector(IN_SIZE-1 downto 0);
         flow_rdy_i  : in std_logic;
         f_empty_i   : in std_logic;
         enable_i    : in std_logic;
-        flag_i      : in std_logic_vector(7 downto 0);
+        flag_i      : in std_logic_vector(OUT_SIZE-1 downto 0);
 
         read_data_o : out std_logic;
         data_o      : out std_logic_vector(DATA_SZ-1 downto 0);
@@ -50,7 +52,7 @@ architecture rtl of read_flow_nbits is
 	signal fsm_state : fsm_state_t := Idle;
 	signal f_empty_r : std_logic:='0';
 	signal flow_rdy_r : std_logic:='0';
-	signal tmp : unsigned(15 downto 0);
+	signal tmp : unsigned(IN_SIZE-1 downto 0);
 	signal cpt_s : integer range 0 to CPT_MAX := 1;
 
 

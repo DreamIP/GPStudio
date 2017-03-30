@@ -33,6 +33,7 @@ entity gp_com is
 		CLK_PROC_FREQ      : INTEGER;
 		CLK_HAL_FREQ       : INTEGER;
 		DATA_HAL_SIZE      : INTEGER;
+		PACKET_HAL_SIZE    : INTEGER;
         MASTER_ADDR_WIDTH  : INTEGER
 	);
 	port (
@@ -141,10 +142,11 @@ end generate FO0_disabled;
 FO0_enabled : if OUT0_NBWORDS > 0 generate
     FLOW_OUT0: component com_to_flow
     generic map (
-        FIFO_DEPTH  => OUT0_NBWORDS,
-        FLOW_ID     => 1,
-        FLAGS_CODES => InitFlagCodes,
-        FLOW_SIZE   => OUT0_SIZE
+        FIFO_DEPTH    => OUT0_NBWORDS,
+        FLOW_ID       => 1,
+        FLAGS_CODES   => InitFlagCodes,
+        FLOW_SIZE     => OUT0_SIZE,
+        DATA_HAL_SIZE => DATA_HAL_SIZE
     )
     port map (
         clk_hal     => clk_hal,
@@ -173,10 +175,11 @@ end generate FO1_disabled;
 FO1_enabled : if OUT1_NBWORDS > 0 generate
     FLOW_OUT1: component com_to_flow
     generic map (
-        FIFO_DEPTH  => OUT1_NBWORDS,
-        FLOW_ID     => 2,
-        FLAGS_CODES => InitFlagCodes,
-        FLOW_SIZE   => OUT1_SIZE
+        FIFO_DEPTH    => OUT1_NBWORDS,
+        FLOW_ID       => 2,
+        FLAGS_CODES   => InitFlagCodes,
+        FLOW_SIZE     => OUT1_SIZE,
+        DATA_HAL_SIZE => DATA_HAL_SIZE
     )
     port map (
         clk_hal     => clk_hal,
@@ -209,10 +212,10 @@ FI0_enabled : if IN0_NBWORDS > 0 generate
     generic map (
         FLOW_SIZE       => IN0_SIZE,
         FIFO_DEPTH      => IN0_NBWORDS,
-        OUTPUT_SIZE     => 16,
         FLOW_ID         => 128,
-        PACKET_SIZE     => 256, -- header inclus
-        FLAGS_CODES     => InitFlagCodes
+        PACKET_SIZE     => PACKET_HAL_SIZE, -- header inclus
+        FLAGS_CODES     => InitFlagCodes,
+        DATA_HAL_SIZE   => DATA_HAL_SIZE
     )
     port map (
         clk_proc        => clk_proc,
@@ -249,10 +252,10 @@ FI1_enabled : if IN1_NBWORDS > 0 generate
     generic map (
         FLOW_SIZE       => IN1_SIZE,
         FIFO_DEPTH      => IN1_NBWORDS,
-        OUTPUT_SIZE     => 16,
         FLOW_ID         => 129,
-        PACKET_SIZE     => 256, -- header inclus
-        FLAGS_CODES     => InitFlagCodes
+        PACKET_SIZE     => PACKET_HAL_SIZE, -- header inclus
+        FLAGS_CODES     => InitFlagCodes,
+        DATA_HAL_SIZE   => DATA_HAL_SIZE
     )
     port map (
         clk_proc        => clk_proc,
@@ -289,10 +292,10 @@ FI2_enabled : if IN2_NBWORDS > 0 generate
     generic map (
         FLOW_SIZE       => IN2_SIZE,
         FIFO_DEPTH      => IN2_NBWORDS,
-        OUTPUT_SIZE     => 16,
         FLOW_ID         => 130,
-        PACKET_SIZE     => 256, -- header inclus
-        FLAGS_CODES     => InitFlagCodes
+        PACKET_SIZE     => PACKET_HAL_SIZE, -- header inclus
+        FLAGS_CODES     => InitFlagCodes,
+        DATA_HAL_SIZE   => DATA_HAL_SIZE
     )
     port map (
         clk_proc        => clk_proc,
@@ -329,10 +332,10 @@ FI3_enabled : if IN3_NBWORDS > 0 generate
     generic map (
         FLOW_SIZE       => IN3_SIZE,
         FIFO_DEPTH      => IN3_NBWORDS,
-        OUTPUT_SIZE     => 16,
         FLOW_ID         => 131,
-        PACKET_SIZE     => 256, -- header inclus
-        FLAGS_CODES     => InitFlagCodes
+        PACKET_SIZE     => PACKET_HAL_SIZE, -- header inclus
+        FLAGS_CODES     => InitFlagCodes,
+        DATA_HAL_SIZE   => DATA_HAL_SIZE
     )
     port map (
         clk_proc        => clk_proc,
@@ -358,6 +361,9 @@ end generate FI3_enabled;
 
 -- component flow_to_com_arb4
 FLOW_ARB : component flow_to_com_arb4
+    generic map (
+        DATA_HAL_SIZE   => DATA_HAL_SIZE
+    )
     port map (
 		clk             => clk_hal,
 		rst_n           => reset_n,
@@ -403,7 +409,8 @@ FLOW_PARAMS : component com_to_master_pi
     generic map (
         FIFO_DEPTH          => 64,
         FLOW_ID_SET         => 15,
-        MASTER_ADDR_WIDTH   => MASTER_ADDR_WIDTH
+        MASTER_ADDR_WIDTH   => MASTER_ADDR_WIDTH,
+        DATA_HAL_SIZE       => DATA_HAL_SIZE
     )
     port map (
         clk_hal             => clk_hal,

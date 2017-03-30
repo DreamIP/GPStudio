@@ -14,10 +14,10 @@ use work.ComFlow_pkg.all;
 
 entity com_flow_fifo_tx is
     generic (
-        FIFO_DEPTH      : integer := 1024;
-        FLOW_ID         : integer := 1;
-        PACKET_SIZE     : integer := 256;
-        HAL_WIDTH       : integer := 16;
+        FIFO_DEPTH      : INTEGER := 1024;
+        FLOW_ID         : INTEGER := 1;
+        PACKET_SIZE     : INTEGER := 256;
+        HAL_WIDTH       : INTEGER := 16;
         FLAGS_CODES     : my_array_t := InitFlagCodes
     );
     port (
@@ -35,9 +35,9 @@ entity com_flow_fifo_tx is
         fifo_pkt_wr_i   : in std_logic;
         fifo_pkt_data_i : in std_logic_vector(15 downto 0);
 
-        -- to arbitrer
+        -- to hal via arbitrer
         rdreq_i         : in std_logic;
-        data_o          : out std_logic_vector(15 downto 0);
+        data_o          : out std_logic_vector(HAL_WIDTH-1 downto 0);
         flow_rdy_o      : out std_logic;
         f_empty_o       : out std_logic;
         fifos_f_o       : out std_logic;
@@ -85,16 +85,16 @@ end component;
 -- FIFO 1 SIGNALS
 -------------
 
-    signal  fifo_data_wrreq_s      : std_logic := '0';
-    signal  fifo_data_wrfull_s     : std_logic := '0';
-    signal  fifo_data_rdreq_s      : std_logic := '0';
-    signal  fifo_data_rdempty_s    : std_logic := '0';
+    signal  fifo_data_wrreq_s   : std_logic := '0';
+    signal  fifo_data_wrfull_s  : std_logic := '0';
+    signal  fifo_data_rdreq_s   : std_logic := '0';
+    signal  fifo_data_rdempty_s : std_logic := '0';
 
 -- registers
-    signal fifo_data_rdempty_r     : std_logic := '0';
+    signal fifo_data_rdempty_r  : std_logic := '0';
     signal flag_s               : std_logic_vector(15 downto 0) := (others=>'0');
 
-    signal fifo_data_q_s           : std_logic_vector(15 downto 0) := (others=>'0');
+    signal fifo_data_q_s        : std_logic_vector(HAL_WIDTH-1 downto 0) := (others=>'0');
     signal fifo_flag_q_s        : std_logic_vector(15 downto 0) := (others=>'0');
     signal fifo_flag_rdreq_s    : std_logic := '0';
 
@@ -116,12 +116,12 @@ end component;
     signal fifo_pkt_rdempty_s   : std_logic := '0';
     signal fifo_pkt_wr_s        : std_logic := '0';
     signal fifo_pkt_rdreq_s     : std_logic := '0';
-    signal fifo_pkt_data_s      : std_logic_vector(15 downto 0) := (others=>'0');
+    signal fifo_pkt_data_s      : std_logic_vector(HAL_WIDTH-1 downto 0) := (others=>'0');
     signal fifo_pkt_q_s         : std_logic_vector(15 downto 0) := (others=>'0');
 
     signal aclr                 : std_logic := '0';
     signal packet_counter       : unsigned(15 downto 0) := (others=>'0');
-    signal data_s               : std_logic_vector(15 downto 0) := (others=>'0');
+    signal data_s               : std_logic_vector(HAL_WIDTH-1 downto 0) := (others=>'0');
 
 
 begin
@@ -185,7 +185,7 @@ begin
     (
         DEPTH       => FIFO_PKT_SIZE,
         IN_SIZE     => 16,
-        OUT_SIZE    => HAL_WIDTH
+        OUT_SIZE    => 16
     )
     port map
     (
@@ -202,9 +202,8 @@ begin
         wrfull      => fifo_pkt_wrfull_s
     );
 
---- Connexion au composant USB SM
-RDUSB : process (clk_hal, rst_n)
-    variable cpt : integer range 0 to PACKET_SIZE := 0;
+--- Connections to hal communication, FSM
+RDHAL_FSM : process (clk_hal, rst_n)
     variable pkt_cpt : std_logic_vector(15 downto 0) := (others=>'0');
     variable packet_number : std_logic_vector(15 downto 0) := (others=>'0');
     variable counter : integer range 0 to 4 := 0;
@@ -218,9 +217,12 @@ begin
         fifo_pkt_rdreq_s <= '0';
         pkt_cpt := (others=>'0');
         counter:= 0;
+        RDUSB_state <= Idle;
+
     elsif rising_edge(clk_hal) then
         case RDUSB_state is
             when Idle =>
+                counter := 0;
                 flow_rdy_o <= '0';
                 fifo_flag_rdreq_s <= '0';
                 fifo_pkt_rdreq_s <= '0';
@@ -238,9 +240,9 @@ begin
                 end if;
 
             when WaitoneClk =>
-                RDUSB_state <= FlowRdy;
                 fifo_flag_rdreq_s <= '0';
                 fifo_pkt_rdreq_s <= '0';
+                RDUSB_state <= FlowRdy;
 
             when FlowRdy => -- si la fifo est depilable on monte le flag de flow rdy
                 flow_rdy_o <='1';
@@ -249,15 +251,11 @@ begin
 
                     pkt_cpt := fifo_pkt_q_s;
                     size_packet_o <= fifo_pkt_q_s;
-                    cpt := 0;
-                    -- header 1 en sortie
                     data_s <= std_logic_vector(to_unsigned(FLOW_ID,8)) & fifo_flag_q_s(7 downto 0);
-                    -- assert fifo request here to be ready for Unpile state
-                    fifo_data_rdreq_s <= '1';
+
+                    fifo_data_rdreq_s <= '1'; -- assert fifo request here to be ready for Unpile state
                     -- go to unpile packet number
                     RDUSB_state <= UnpileHeader;
-                    cpt := cpt+1;
-                --  pkt_cpt := std_logic_vector(unsigned(pkt_cpt) - X"0001");
                 end if;
 
 
@@ -271,23 +269,18 @@ begin
 
                 data_s <= packet_number;
                 RDUSB_state <= Unpile;
-                cpt := cpt+1;
-                --  pkt_cpt := std_logic_vector(unsigned(pkt_cpt) - X"0001");
 
 
             when Unpile =>
                 data_s <= fifo_data_q_s;
 
-                cpt := cpt+1;
                 pkt_cpt := std_logic_vector(unsigned(pkt_cpt) - X"0001");
-                --if (cpt = PACKET_SIZE or fifo_data_rdempty_s='1') then
                 if (pkt_cpt = X"0001") then
                     fifo_data_rdreq_s <= '0';
                 end if;
 
                 if (pkt_cpt = X"0000") then
                     flow_rdy_o <= '0';
-                    --fifo_data_rdreq_s <= '0';
                     RDUSB_state <= Idle;
                 end if;
         end case;

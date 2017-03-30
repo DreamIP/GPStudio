@@ -9,9 +9,9 @@ use altera_mf.all;
 entity fifo_com_tx is
     generic
     (
-        DEPTH : positive;
-        IN_SIZE : positive;
-        OUT_SIZE : positive
+        DEPTH       : POSITIVE;
+        IN_SIZE     : POSITIVE;
+        OUT_SIZE    : POSITIVE
     );
     port
     (

@@ -14,7 +14,7 @@ use work.ComFlow_pkg.all;
 entity flow_to_com is
     generic (
         FLOW_SIZE           : POSITIVE := 8;
-        OUTPUT_SIZE         : POSITIVE := 16;
+        DATA_HAL_SIZE       : POSITIVE := 16;
         FIFO_DEPTH          : INTEGER := 1024;
         FLOW_ID             : INTEGER := 1;
         PACKET_SIZE         : INTEGER := 256;
@@ -34,7 +34,7 @@ entity flow_to_com is
 
         -- to arbitrer
         rdreq_i             : in std_logic;
-        data_o              : out std_logic_vector(OUTPUT_SIZE-1 downto 0);
+        data_o              : out std_logic_vector(DATA_HAL_SIZE-1 downto 0);
         flow_rdy_o          : out std_logic;
         f_empty_o           : out std_logic;
         size_packet_o       : out std_logic_vector(15 downto 0)
@@ -67,7 +67,7 @@ component flowto16
         in_data     : in  std_logic_vector(FLOW_SIZE-1 downto 0);
         in_fv       : in  std_logic;
         in_dv       : in  std_logic;
-        out_data    : out std_logic_vector(OUTPUT_SIZE-1 downto 0);
+        out_data    : out std_logic_vector(15 downto 0);
         out_fv      : out std_logic;
         out_dv      : out std_logic
     );
@@ -78,6 +78,7 @@ component com_flow_fifo_tx
         FIFO_DEPTH          : INTEGER := 1024;
         FLOW_ID             : INTEGER := 1;
         PACKET_SIZE         : INTEGER := 256;
+        HAL_WIDTH           : INTEGER := 16;
         FLAGS_CODES         : my_array_t := InitFlagCodes
     );
     port (
@@ -97,7 +98,7 @@ component com_flow_fifo_tx
         fifo_pkt_data_i     : in std_logic_vector(15 downto 0);
 
         -- to arbitrer
-        data_o              : out std_logic_vector(15 downto 0);
+        data_o              : out std_logic_vector(HAL_WIDTH-1 downto 0);
         flow_rdy_o          : out std_logic;
         f_empty_o           : out std_logic;
         fifos_f_o           : out std_logic;
@@ -216,7 +217,8 @@ generic map (
     FIFO_DEPTH      => FIFO_DEPTH,
     FLOW_ID         => FLOW_ID,
     PACKET_SIZE     => PACKET_SIZE,
-    FLAGS_CODES     => FLAGS_CODES
+    FLAGS_CODES     => FLAGS_CODES,
+    HAL_WIDTH       => DATA_HAL_SIZE
 )
 port map (
     clk_proc        => clk_proc,

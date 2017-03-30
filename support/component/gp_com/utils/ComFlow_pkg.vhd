@@ -36,32 +36,33 @@ package ComFlow_pkg is
 	-- Component Declaration
     component com_to_flow
         generic (
-            FIFO_DEPTH  : POSITIVE   := 1024;
-            FLOW_ID     : INTEGER    := 1;
-            FLAGS_CODES : my_array_t := InitFlagCodes;
-            FLOW_SIZE   : INTEGER    := 16
+            FIFO_DEPTH    : POSITIVE   := 1024;
+            FLOW_ID       : INTEGER    := 1;
+            FLAGS_CODES   : my_array_t := InitFlagCodes;
+            FLOW_SIZE     : INTEGER    := 16;
+            DATA_HAL_SIZE : INTEGER    := 16
         );
         port(
-            clk_hal     : in std_logic;
-            clk_proc    : in std_logic;
-            rst_n       : in std_logic;
+            clk_hal       : in std_logic;
+            clk_proc      : in std_logic;
+            rst_n         : in std_logic;
 
-            data_wr_i   : in std_logic;
-            data_i      : in std_logic_vector(15 downto 0);
-            pktend_i    : in std_logic;
-            enable_i    : in std_logic;
+            data_wr_i     : in std_logic;
+            data_i        : in std_logic_vector(DATA_HAL_SIZE-1 downto 0);
+            pktend_i      : in std_logic;
+            enable_i      : in std_logic;
 
-            data_o      : out std_logic_vector(FLOW_SIZE-1 downto 0);
-            fv_o        : out std_logic;
-            dv_o        : out std_logic;
-            flow_full_o : out std_logic
+            data_o        : out std_logic_vector(FLOW_SIZE-1 downto 0);
+            fv_o          : out std_logic;
+            dv_o          : out std_logic;
+            flow_full_o   : out std_logic
         );
     end component;
 
     component flow_to_com is
         generic (
             FLOW_SIZE       : POSITIVE   := 8;
-            OUTPUT_SIZE     : POSITIVE   := 8;
+            DATA_HAL_SIZE   : POSITIVE := 16;
             FIFO_DEPTH      : POSITIVE   := 1024;
             FLOW_ID         : INTEGER    := 1;
             PACKET_SIZE     : INTEGER    := 256;
@@ -80,7 +81,7 @@ package ComFlow_pkg is
             enable_flow_i   : in std_logic;
             enable_global_i : in std_logic;
 
-            data_o          : out std_logic_vector(OUTPUT_SIZE-1 downto 0);
+            data_o          : out std_logic_vector(DATA_HAL_SIZE-1 downto 0);
             flow_rdy_o      : out std_logic;
             f_empty_o       : out std_logic;
             size_packet_o   : out std_logic_vector(15 downto 0)
@@ -94,7 +95,8 @@ package ComFlow_pkg is
             FIFO_DEPTH          : POSITIVE := 64;
             FLOW_ID_SET         : INTEGER  := 12;
             --FLOW_ID_GET       : INTEGER  := 13
-            MASTER_ADDR_WIDTH   : INTEGER
+            MASTER_ADDR_WIDTH   : INTEGER;
+            DATA_HAL_SIZE       : POSITIVE := 16
         );
         port (
             clk_hal             : in std_logic; -- clk_usb
@@ -103,7 +105,7 @@ package ComFlow_pkg is
             
             -- USB driver connexion
             data_wr_i           : in std_logic;
-            data_i              : in std_logic_vector(15 downto 0);
+            data_i              : in std_logic_vector(DATA_HAL_SIZE-1 downto 0);
             -- rdreq_i          : in std_logic;
             pktend_i            : in std_logic;
             fifo_full_o         : out std_logic;
@@ -120,41 +122,44 @@ package ComFlow_pkg is
     end component;
 
     component flow_to_com_arb4
+        generic (
+            DATA_HAL_SIZE       : POSITIVE := 16
+        );
         port (
             clk             : in std_logic;
             rst_n           : in std_logic;
             
             -- fv 0 signals
             rdreq_0_o       : out std_logic;
-            data_0_i        : in std_logic_vector(15 downto 0);
+            data_0_i        : in std_logic_vector(DATA_HAL_SIZE-1 downto 0);
             flow_rdy_0_i    : in std_logic;
             f_empty_0_i     : in std_logic;
             size_packet_0_i : in std_logic_vector(15 downto 0);
 
             -- fv 1signals
             rdreq_1_o       : out std_logic;
-            data_1_i        : in std_logic_vector(15 downto 0);
+            data_1_i        : in std_logic_vector(DATA_HAL_SIZE-1 downto 0);
             flow_rdy_1_i    : in std_logic;
             f_empty_1_i     : in std_logic;
             size_packet_1_i : in std_logic_vector(15 downto 0);
 
             -- fv 2 signals
             rdreq_2_o       : out std_logic;
-            data_2_i        : in std_logic_vector(15 downto 0);
+            data_2_i        : in std_logic_vector(DATA_HAL_SIZE-1 downto 0);
             flow_rdy_2_i    : in std_logic;
             f_empty_2_i     : in std_logic;
             size_packet_2_i : in std_logic_vector(15 downto 0);
 
             -- fv 3 signals
             rdreq_3_o       : out std_logic;
-            data_3_i        : in std_logic_vector(15 downto 0);
+            data_3_i        : in std_logic_vector(DATA_HAL_SIZE-1 downto 0);
             flow_rdy_3_i    : in std_logic;
             f_empty_3_i     : in std_logic;
             size_packet_3_i : in std_logic_vector(15 downto 0);
 
             -- fv usb signals
             rdreq_usb_i     : in std_logic;
-            data_usb_o      : out std_logic_vector(15 downto 0);
+            data_usb_o      : out std_logic_vector(DATA_HAL_SIZE-1 downto 0);
             flow_rdy_usb_o  : out std_logic;
             f_empty_usb_o   : out std_logic;
             size_packet_o   : out std_logic_vector(15 downto 0)
@@ -178,6 +183,7 @@ package ComFlow_pkg is
             CLK_PROC_FREQ     : INTEGER;
             CLK_HAL_FREQ      : INTEGER;
             DATA_HAL_SIZE     : INTEGER;
+		    PACKET_HAL_SIZE   : INTEGER;
             MASTER_ADDR_WIDTH : INTEGER
         );
         port (
