@@ -103,7 +103,7 @@ architecture syn of fifo_com_tx is
 
 begin
     wrfull     <= sub_wire0;
-    q          <= sub_wire1(OUT_SIZE-1 downto 0);
+    q          <= sub_wire1;
     rdempty    <= sub_wire2;
     wrusedw    <= sub_wire3;
     rdusedw    <= sub_wire4;
@@ -164,7 +164,7 @@ begin
             wrclk   => wrclk,
             wrreq   => wrreq,
             aclr    => aclr,
-            data    => data,
+            data    => data(7 downto 0) & data(15 downto 8), -- inverse bytes
             rdreq   => rdreq,
             wrfull  => sub_wire0,
             q       => sub_wire1,

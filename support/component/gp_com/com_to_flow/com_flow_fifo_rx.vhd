@@ -117,7 +117,7 @@ architecture rtl of com_flow_fifo_rx is
 -------------
 -- FSM Signal
 -------------
-	type fsm_state_t is (Idle, DecodeFN, DecodeFN8, DecodeFN8_low, ReceivePacket, SwapFifos, Full, tmp);
+	type fsm_state_t is (Idle, Flag8, DecodeFN, DecodeFN8, DecodeFN8_low, ReceivePacket, SwapFifos, Full, tmp);
 	signal fsm_state : fsm_state_t := Idle;
 
 	-- mux/demux fifos
@@ -125,6 +125,7 @@ architecture rtl of com_flow_fifo_rx is
 
 	-- flag
 	signal data_wr_r    : std_logic:= '0';
+	signal data_wr_r2   : std_logic:= '0';
 	signal frame_number : std_logic_vector(15 downto 0) := (others=>'0');
 
 	signal cur_fifo_wrreq_s     : std_logic := '0';
@@ -215,6 +216,7 @@ begin
 
 	elsif (rising_edge(clk_hal)) then
 		data_wr_r <= data_wr_i;
+        data_wr_r2 <= data_wr_r;
 
 		case fsm_state is
 			when Idle =>
@@ -227,13 +229,16 @@ begin
 						if(IN_SIZE = 16) then
                             fsm_state <= DecodeFN;
                         else
-                            fsm_state <= DecodeFN8;
+                            fsm_state <= Flag8;
                         end if;
 
 					else
 						fsm_state <= Idle;
 					end if;
 				end if;
+
+			when Flag8 =>
+				fsm_state <= DecodeFN8;
 
 			-- on lit le frane number
 			when DecodeFN =>
@@ -257,7 +262,7 @@ begin
 				if (cur_fifo_full_s = '1' or pktend_i = '1') then
 					-- si le paquet est arrive on indique que
 					-- la fifo courante est disponible Ã  la lecture en sortie
-					cur_fifo_readable <='1';
+					cur_fifo_readable <= '1';
 					cur_fifo_wrreq_s <= '0'; -- deassert cur_fifo_wrreq
 
 					-- si les deux fifos sont full => etat FULL
@@ -273,17 +278,17 @@ begin
 				end if;
 
 			when SwapFifos =>
-				cur_fifo_readable <='0';
+				cur_fifo_readable <= '0';
 				fifo_sel <= not (fifo_sel);
 				fsm_state <= Idle;
 
 			when Full =>
-				fifos_f_o <='1';
+				fifos_f_o <= '1';
 				if (other_fifo_readable='0') then
 					-- fifo_sel <= not (fifo_sel);
 					-- fsm_state <= tmp;
 
-					fifos_f_o <='0';
+					fifos_f_o <= '0';
 					cur_fifo_readable <= '0';
 					fifo_sel <= not (fifo_sel);
 					fsm_state <= Idle;
@@ -351,7 +356,7 @@ begin
 	elsif rising_edge(clk_hal) then
 
 		--data_wr_r <= data_wr_i; -- deja fait dans le FSM Process
-		if (data_wr_r ='0' and data_wr_i = '1') then
+		if ((data_wr_r ='0' and data_wr_i = '1' and IN_SIZE=16) or (data_wr_r2 ='0' and data_wr_i = '1' and IN_SIZE=8)) then
 			case (fifo_sel) is -- mise a jour
 				when '0' =>
 					-- le flag est situÃƒÂ© dans les 8 LSB du premier mot qui arrive dans l'USB

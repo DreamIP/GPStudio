@@ -93,7 +93,7 @@ begin
 				param_wr_o <= '0';
 
 				-- escape if case of bad trame
-				if (f_empty_r='0' and f_empty_i='1' ) then
+				if (f_empty_i='1' ) then
 					read_data_o <='0';
 					fsm_state <= Idle;
 					update_port_o<='1';
@@ -106,7 +106,7 @@ begin
 				param_wr_o <= '0';
 
 				-- escape if case of bad trame
-				if (f_empty_r='0' and f_empty_i='1' ) then
+				if (f_empty_i='1' ) then
 					read_data_o <='0';
 					fsm_state <= Idle;
 					update_port_o<='1';
@@ -119,20 +119,21 @@ begin
 				param_wr_o <= '0';
 				param_addr_o <= param_addr_s(MASTER_ADDR_WIDTH-1 downto 0);
 
-				if (f_empty_r='0' and f_empty_i='1' ) then
+				if (f_empty_i='1' ) then
 					read_data_o <='0';
 					fsm_state <= Idle;
 					update_port_o<='1';
+                else
+                    fsm_state <= ReadDataLSB;
 				end if;
 
-				fsm_state <= ReadDataLSB;
 
 			when ReadDataLSB =>
 
 				param_data_o(15 downto 0) <= data_i;
 				param_wr_o <= '1';
 
-				if (f_empty_r='0' and f_empty_i='1' ) then
+				if (f_empty_i='1' ) then
 					read_data_o <='0';
 					fsm_state <= Idle;
 					update_port_o<='1';

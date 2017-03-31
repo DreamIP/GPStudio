@@ -96,7 +96,6 @@ ARCHITECTURE syn OF fifo_com_rx IS
 
 begin
 	wrfull  <= sub_wire0;
-	q       <= sub_wire1;
 	rdempty <= sub_wire2;
     
     FIFO_GEN_SAME_WIDTH : if (IN_SIZE = OUT_SIZE) generate
@@ -127,6 +126,8 @@ begin
             q       => sub_wire1,
             rdempty => sub_wire2
         );
+
+        q          <= sub_wire1;
     end generate;
 
     FIFO_GEN_MIXED_WIDTH : if (IN_SIZE /= OUT_SIZE) generate
@@ -159,5 +160,7 @@ begin
             q       => sub_wire1,
             rdempty => sub_wire2
         );
+
+        q       <= sub_wire1(7 downto 0) & sub_wire1(15 downto 8); -- inverse bytes
     end generate;
 end syn;
