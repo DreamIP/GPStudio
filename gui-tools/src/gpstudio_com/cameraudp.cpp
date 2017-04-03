@@ -20,6 +20,9 @@
 
 #include "cameraudp.h"
 
+#include <QUdpSocket>
+#include <QHostAddress>
+
 CameraUDP::CameraUDP()
 {
 }
@@ -27,6 +30,11 @@ CameraUDP::CameraUDP()
 bool CameraUDP::connect(const CameraInfo &info)
 {
     Q_UNUSED(info);
+    _udpSocket = new QUdpSocket();
+    if (!_udpSocket->bind(QHostAddress("172.27.1.74"), 1947))
+    {
+        qDebug()<<"Failed bind";
+    }
     return true;
 }
 
@@ -49,20 +57,40 @@ QByteArray CameraUDP::read(const unsigned maxSize, const int timeOut, bool *stat
 {
     Q_UNUSED(maxSize);
     Q_UNUSED(timeOut);
-    Q_UNUSED(state);
+
+    QHostAddress sender;
+    quint16 senderPort;
+    QByteArray datagram;
+
+    (*state) = true;
+    if(!_udpSocket->hasPendingDatagrams())
+        return QByteArray();
+
+    datagram.resize(_udpSocket->pendingDatagramSize());
+
+    _udpSocket->readDatagram(datagram.data(), datagram.size(), &sender, &senderPort);
+    if(sender == QHostAddress("172.27.10.5"))
+    {
+        return datagram;
+    }
+
     return QByteArray();
 }
 
 bool CameraUDP::write(const QByteArray &array, const int timeOut)
 {
-    Q_UNUSED(array);
     Q_UNUSED(timeOut);
+    if(array.size()==0)
+        return true;
+    _udpSocket->writeDatagram(array.data(), array.size(), QHostAddress("172.27.10.5"), 32768);
     return true;
 }
 
 QVector<CameraInfo> CameraUDP::avaibleCams(const CameraInfo &info)
 {
+    Q_UNUSED(info);
     QVector<CameraInfo> avaibleCams;
+    avaibleCams.append(CameraInfo("DreamCam Ethernet", "Eth", "172.27.10.5"));
     return avaibleCams;
 }
 

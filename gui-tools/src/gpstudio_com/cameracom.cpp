@@ -131,7 +131,9 @@ void CameraCom::run()
     QMap<int,int> prev_numpacket;
 
     for (int i=0;i<_inputFlows.size();i++)
+    {
         prev_numpacket[_inputFlows[i]->idFlow()] = -1;
+    }
 
     bool succes;
 
@@ -149,15 +151,16 @@ void CameraCom::run()
         int start=0;
         while(start<received.size())
         {
-            const QByteArray &packet = received.mid(start, 512);
+            const QByteArray &packet = received.mid(start, _cameraIO->sizePacket());
             if(packet.size()<=4)
             {
-                start+=512;
+                start+=_cameraIO->sizePacket();
                 continue;
             }
 
             unsigned char idFlow = packet[0];
             unsigned char flagFlow = packet[1];
+
             unsigned short numpacket = ((unsigned short)((unsigned char)packet[2])*256)+(unsigned char)packet[3];
 
             for(int i=0; i<_inputFlows.size(); i++)
@@ -190,7 +193,7 @@ void CameraCom::run()
                 //emit flowReadyToRead(received);
             }
 
-            start+=512;
+            start+=_cameraIO->sizePacket();
         }
         for(int i=0; i<_outputFlows.size(); i++)
         {

@@ -86,17 +86,17 @@ void ConfigNodeDialog::selectBoard(const QString &boardName)
     widget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
     _iosLayout = new QVBoxLayout();
-    _iosLayout->setContentsMargins(0,0,0,0);
+    _iosLayout->setContentsMargins(10, 10, 10, 10);
 
     QMapIterator<QString, IOBoardLibGroup> i(board->iosGroups());
     while (i.hasNext())
     {
         i.next();
 
-        QGroupBox *group = new QGroupBox(i.value().name());
+        QGroupBox *group = new QGroupBox(i.key());
 
         QLayout *groupLayout = new QVBoxLayout();
-        groupLayout->setContentsMargins(0,10,0,0);
+        groupLayout->setContentsMargins(10, 10, 10, 10);
 
         foreach(QString ioName, i.value().ios())
         {

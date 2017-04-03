@@ -252,12 +252,10 @@ begin
 
             when FlowRdy => -- si la fifo est depilable on monte le flag de flow rdy
                 flow_rdy_o <= '1';
+                size_packet_o <= std_logic_vector(unsigned(fifo_pkt_q_s(14 downto 0) & '0') + X"0004");
+                pkt_cpt := fifo_pkt_q_s(14 downto 0) & '0';
 
                 if (rdreq_i = '1') then -- si l'usb est pret
-
-                    pkt_cpt := fifo_pkt_q_s;
-                    size_packet_o <= fifo_pkt_q_s;
-
                     -- ne marche pas car flag = BC au moment de dépiler ...
                     if (fifo_flag_q_s(7 downto 0) = FLAGS_CODES(SoF)) then
                         packet_number := X"0000";

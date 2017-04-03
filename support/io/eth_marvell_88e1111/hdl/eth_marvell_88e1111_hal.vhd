@@ -83,13 +83,22 @@ end component;
     signal udp_rx_start          : std_logic;
     signal udp_rxo               : udp_rx_type;
     
+    signal udp_header_valid_prev : std_logic;
+    signal out_data_end_s : std_logic;
+    
     signal CLK_OUT               : std_logic;
 
     constant IP_DEST : std_logic_vector(31 downto 0) := x"AC1B014A";
+    constant PORT_DEST : std_logic_vector(15 downto 0) := x"079B";
+	constant PORT_SRC : std_logic_vector(15 downto 0) := x"079B";
     
     -- fsm read
-	type fsm_read_state_t is (Read_Idle, Read_Receive, Read_End);
+	type fsm_read_state_t is (Read_Idle, Read_Receive);
 	signal fsm_read_state : fsm_read_state_t := Read_Idle;
+	
+	-- fsm write
+	type fsm_write_state_t is (Write_Idle, Wait_udp_tx_ready, wait_one_cycle_to_read_ff, transmit_tx);
+	signal fsm_write_state : fsm_write_state_t := Write_Idle;
 
 begin
 
@@ -113,7 +122,7 @@ begin
         ---------------------------------------------------------------------------
         -- user Interface
         ---------------------------------------------------------------------------
-        udp_tx_start            => '0',--udp_tx_start,
+        udp_tx_start            => udp_tx_start,
         udp_txi                 => udp_txi,
         udp_tx_result           => open,
         udp_tx_data_out_ready   => udp_tx_data_out_ready,
@@ -126,18 +135,28 @@ begin
 
     clk_hal <= CLK_OUT;
 
+	--------------------------------------------
+	-----------------READ SIDE------------------
     read_proc : process (CLK_OUT, reset_n)
     begin
 	    if(reset_n='0') then
 			fsm_read_state <= Read_Idle;
+            udp_header_valid_prev <= '0';
+
 		elsif(rising_edge(CLK_OUT)) then
+            udp_header_valid_prev <= udp_rxo.hdr.is_valid;
+            out_data_end_o <= out_data_end_s;
+            
             case fsm_read_state is
                 when Read_Idle =>
-                    if(udp_rxo.hdr.is_valid = '1' and udp_rxo.hdr.src_ip_addr = IP_DEST) then
+                    if(udp_header_valid_prev = '0'
+                    and udp_rxo.hdr.is_valid = '1'
+                    and udp_rxo.hdr.src_ip_addr = IP_DEST
+                    and udp_rxo.hdr.src_port = PORT_DEST) then
                         fsm_read_state <= Read_Receive;
                     end if;
                     out_data_wr_o <= '0';
-                    out_data_end_o <= '0';
+                    out_data_end_s <= '0';
 
 
                 when Read_Receive =>
@@ -145,22 +164,114 @@ begin
                         out_data_o <= udp_rxo.data.data_in;
                         out_data_wr_o <= '1';
                         if(udp_rxo.data.data_in_last = '1') then
-                            out_data_end_o <= '1';
-                            fsm_read_state <= Read_End;
+                            out_data_end_s <= '1';
+                            fsm_read_state <= Read_Idle;
                         else
-                            out_data_end_o <= '0';
+                            out_data_end_s <= '0';
                             fsm_read_state <= Read_Receive;
                         end if;
                     end if;
-                    
-
-
-                when Read_End =>
-                            fsm_read_state <= Read_Idle;
 
                 when others =>
             end case;
 		end if;
 	end process;
-
+	
+	--------------------------------------------
+	-----------------WRITE SIDE------------------
+	udp_txi.hdr.dst_ip_addr		<= IP_DEST;
+	udp_txi.hdr.dst_port		<= PORT_DEST;
+	udp_txi.hdr.src_port		<= PORT_SRC;
+	--udp_txi.hdr.data_length		<= in_data_size_packet;
+	udp_txi.hdr.checksum		<= (others => '0');
+	
+	
+	
+	write_proc : process(CLK_OUT, reset_n)
+	begin		
+	    if(reset_n='0') then
+			in_data_rd_o				<= '0';
+			udp_tx_start				<= '0';
+			udp_txi.hdr.data_length		<= (others => '0');
+			udp_txi.data.data_out_valid	<= '0';
+			udp_txi.data.data_out_last	<= '0';
+			udp_txi.data.data_out		<= (others => '0');			
+			fsm_write_state 			<= Write_Idle;
+			
+		elsif rising_edge(CLK_OUT) then
+			case fsm_write_state is
+			
+			------
+			when Write_Idle	=>
+				if in_data_rdy_i = '1' and in_data_empty_i = '0' then
+					in_data_rd_o				<= '0';
+					udp_tx_start				<= '1';--
+					udp_txi.hdr.data_length		<= in_data_size_packet;
+					fsm_write_state				<= Wait_udp_tx_ready;
+				else
+					in_data_rd_o				<= '0';
+					udp_tx_start				<= '0';					
+					udp_txi.hdr.data_length		<= (others => '0');
+					fsm_write_state				<= Write_Idle;								
+				end if;
+				udp_txi.data.data_out_valid	<= '0';
+				udp_txi.data.data_out_last	<= '0';
+				udp_txi.data.data_out		<= (others => '0');	
+				
+			------	
+			when Wait_udp_tx_ready =>
+				if udp_tx_data_out_ready = '1' then
+					in_data_rd_o	<= '1';--					
+					udp_tx_start	<= '0';--
+					fsm_write_state	<= wait_one_cycle_to_read_ff;
+				else
+					in_data_rd_o	<= '0';
+					udp_tx_start	<= '1';--
+					fsm_write_state	<= Wait_udp_tx_ready;				
+				end if;
+				udp_txi.hdr.data_length		<= udp_txi.hdr.data_length;
+				udp_txi.data.data_out_valid	<= '0';
+				udp_txi.data.data_out_last	<= '0';
+				udp_txi.data.data_out		<= (others => '0');	
+				
+			------	
+			when wait_one_cycle_to_read_ff =>
+				in_data_rd_o				<= '1';
+				udp_tx_start				<= '0';
+				udp_txi.hdr.data_length		<= udp_txi.hdr.data_length;
+				udp_txi.data.data_out_valid	<= '0';
+				udp_txi.data.data_out_last	<= '0';
+				udp_txi.data.data_out		<= (others => '0');			
+				fsm_write_state 			<= transmit_tx;
+				
+			------	
+			when transmit_tx =>				
+				if in_data_rdy_i = '0' then --stop reading ff
+					in_data_rd_o				<= '0';--stop
+					udp_txi.data.data_out_last	<= '1';
+					fsm_write_state				<= Write_Idle;					
+				else
+					in_data_rd_o				<= '1';--hold on
+					udp_txi.data.data_out_last	<= '0';
+					fsm_write_state				<= transmit_tx;				
+				end if;
+				udp_tx_start				<= '0';
+				udp_txi.hdr.data_length		<= udp_txi.hdr.data_length;
+				udp_txi.data.data_out_valid	<= '1';
+				udp_txi.data.data_out		<= in_data_i;
+				
+				
+			when others =>
+				in_data_rd_o				<= '0';
+				udp_tx_start				<= '0';
+				udp_txi.hdr.data_length		<= (others => '0');
+				udp_txi.data.data_out_valid	<= '0';
+				udp_txi.data.data_out_last	<= '0';
+				udp_txi.data.data_out		<= (others => '0');			
+				fsm_write_state 			<= Write_Idle;
+			
+			end case;			
+		
+		end if;
+	end process;
 end rtl;

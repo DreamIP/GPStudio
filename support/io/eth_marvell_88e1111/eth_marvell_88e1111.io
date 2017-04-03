@@ -81,9 +81,6 @@
   <resets>
     <reset name="reset_n" group="reset_n" direction="in"/>
   </resets>
-  <clocks>
-    <clock name="clk_hal" domain="clk_eth" typical="125000000" direction="out"/>
-  </clocks>
   <ports>
     <port name="gtx_clk" type="out" size="1"/>
     <port name="tx_en" type="out" size="1"/>
@@ -123,8 +120,8 @@
     <param name="IN1_NBWORDS" type="int" hard="1" value="32768"/>
     <param name="IN2_NBWORDS" type="int" hard="1" value="32768"/>
     <param name="IN3_NBWORDS" type="int" hard="1" value="32768"/>
-    <param name="OUT0_NBWORDS" type="int" hard="1" value="1024"/>
-    <param name="OUT1_NBWORDS" type="int" hard="1" value="1024"/>
+    <param name="OUT0_NBWORDS" type="int" hard="1" value="2000"/>
+    <param name="OUT1_NBWORDS" type="int" hard="1" value="2000"/>
     <param name="status" regaddr="0">
       <bitfields>
         <bitfield name="enable" bitfield="0" propertymap="enable.value"/>
@@ -159,11 +156,10 @@
     <property name="enableflow4" caption="Enable Flow 4" type="bool" value="1"/>
   </properties>
   <clocks>
-    <clock name="clk_hal" typical="125000000" direction="out"/>
-    <clock name="clk_proc" direction="in"/>
+    <clock name="clk_hal" typical="126000000" direction="out"/>
   </clocks>
   <pins/>
-  <com_driver driverio="usb">
+  <com_driver driverio="eth_udp">
     <com_connects>
       <com_connect link="out0" id="1" type="flowout"/>
       <com_connect link="out1" id="2" type="flowout"/>

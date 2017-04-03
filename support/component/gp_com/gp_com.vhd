@@ -28,8 +28,8 @@ entity gp_com is
 		IN1_NBWORDS        : INTEGER := 1280;
 		IN2_NBWORDS        : INTEGER := 1280;
 		IN3_NBWORDS        : INTEGER := 1280;
-		OUT0_NBWORDS       : INTEGER := 1024;
-		OUT1_NBWORDS       : INTEGER := 1024;
+		OUT0_NBWORDS       : INTEGER := 2000;
+		OUT1_NBWORDS       : INTEGER := 2000;
 		CLK_PROC_FREQ      : INTEGER;
 		CLK_HAL_FREQ       : INTEGER;
 		DATA_HAL_SIZE      : INTEGER;

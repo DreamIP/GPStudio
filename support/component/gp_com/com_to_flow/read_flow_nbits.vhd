@@ -86,10 +86,10 @@ begin
 				end if;
 
 			when DecodeFlag =>
-				if (flag_i = FLAGS_CODES(SoF)) then
+				if (flag_i = FLAGS_CODES(SoF) or flag_i = FLAGS_CODES(Data)) then
                     fv_o <= '1';
                 end if; -- si debut d'image on monte le fv
-				if (flag_i = FLAGS_CODES(EoF)) then
+				if (flag_i = FLAGS_CODES(EoF) or flag_i = FLAGS_CODES(Data)) then
                     last_packet :='1' ;
                 end if;
 				read_data_o <= '1';

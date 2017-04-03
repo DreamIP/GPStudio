@@ -252,62 +252,63 @@ generic map (
     OUT0_NBWORDS      => OUT0_NBWORDS,
     OUT1_NBWORDS      => OUT1_NBWORDS,
     CLK_PROC_FREQ     => CLK_PROC_FREQ,
-    CLK_HAL_FREQ      => 48000000,
+    CLK_HAL_FREQ      => CLK_HAL_FREQ,
     DATA_HAL_SIZE     => DATA_HAL_SIZE,
+    PACKET_HAL_SIZE   => 256,
     MASTER_ADDR_WIDTH => MASTER_ADDR_WIDTH
 )
 port map (
-    clk_proc          => clk_proc,
-    reset_n           => rst,
+    clk_proc           => clk_proc,
+    reset_n            => rst,
 
-    clk_hal           => clk_hal_s,
+    clk_hal            => clk_hal_s,
 
     from_hal_data      => hal_out_data,
     from_hal_wr        => hal_out_data_wr,
     from_hal_full      => hal_out_data_full,
     from_hal_pktend    => hal_out_data_end,
-    
+
     to_hal_data        => hal_in_data,
     to_hal_rd          => hal_in_rd,
     to_hal_empty       => hal_in_empty,
     to_hal_rdy         => hal_in_rdy,
     to_hal_size_packet => hal_in_size_packet,
 
-    status_enable     => status_enable,
-    flow_in0_enable   => flow_in0_enable,
-    flow_in1_enable   => flow_in1_enable,
-    flow_in2_enable   => flow_in2_enable,
-    flow_in3_enable   => flow_in3_enable,
+    status_enable      => status_enable,
+    flow_in0_enable    => flow_in0_enable,
+    flow_in1_enable    => flow_in1_enable,
+    flow_in2_enable    => flow_in2_enable,
+    flow_in3_enable    => flow_in3_enable,
 
-    in0_data          => in0_data,
-    in0_fv            => in0_fv,
-    in0_dv            => in0_dv,
+    in0_data           => in0_data,
+    in0_fv             => in0_fv,
+    in0_dv             => in0_dv,
 
-    in1_data          => in1_data,
-    in1_fv            => in1_fv,
-    in1_dv            => in1_dv,
+    in1_data           => in1_data,
+    in1_fv             => in1_fv,
+    in1_dv             => in1_dv,
 
-    in2_data          => in2_data,
-    in2_fv            => in2_fv,
-    in2_dv            => in2_dv,
+    in2_data           => in2_data,
+    in2_fv             => in2_fv,
+    in2_dv             => in2_dv,
 
-    in3_data          => in3_data,
-    in3_fv            => in3_fv,
-    in3_dv            => in3_dv,
+    in3_data           => in3_data,
+    in3_fv             => in3_fv,
+    in3_dv             => in3_dv,
 
-    out0_data         => out0_data,
-    out0_fv           => out0_fv,
-    out0_dv           => out0_dv,
+    out0_data          => out0_data,
+    out0_fv            => out0_fv,
+    out0_dv            => out0_dv,
 
-    out1_data         => out1_data,
-    out1_fv           => out1_fv,
-    out1_dv           => out1_dv,
+    out1_data          => out1_data,
+    out1_fv            => out1_fv,
+    out1_dv            => out1_dv,
 
-    master_addr_o     => master_addr_o,
-    master_wr_o       => master_wr_o,
-    master_rd_o       => master_rd_o,
-    master_datawr_o   => master_datawr_o,
-    master_datard_i   => master_datard_i
+    master_addr_o      => master_addr_o,
+    master_wr_o        => master_wr_o,
+    master_rd_o        => master_rd_o,
+    master_datawr_o    => master_datawr_o,
+    master_datard_i    => master_datard_i
 );
 
     clk_hal_s <= ifclk;

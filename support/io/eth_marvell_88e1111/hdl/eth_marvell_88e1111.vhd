@@ -194,7 +194,7 @@ begin
     udp_hal_inst : eth_marvell_88e1111_hal
     port map (
         clk_proc            => clk_proc,
-        clk_hal             => clk_hal,
+        clk_hal             => clk_hal_s,
         reset_n             => reset_n,
 
         ---------------------------------------------------------------------------
@@ -243,7 +243,7 @@ generic map (
     CLK_PROC_FREQ     => CLK_PROC_FREQ,
     CLK_HAL_FREQ      => CLK_HAL_FREQ,
     DATA_HAL_SIZE     => DATA_HAL_SIZE,
-    PACKET_HAL_SIZE   => 1024,
+    PACKET_HAL_SIZE   => 733,
     MASTER_ADDR_WIDTH => MASTER_ADDR_WIDTH
 )
 port map (
@@ -299,5 +299,7 @@ port map (
     master_datawr_o    => master_datawr_o,
     master_datard_i    => master_datard_i
 );
+
+clk_hal <= clk_hal_s;
 
 end rtl;

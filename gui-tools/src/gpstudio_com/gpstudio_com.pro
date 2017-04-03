@@ -1,4 +1,4 @@
-QT       += core
+QT       += core network
 
 TARGET = gpstudio_com
 TEMPLATE = lib

@@ -24,6 +24,8 @@
 #include "gpstudio_com_common.h"
 #include "cameraio.h"
 
+class QUdpSocket;
+
 class GPSTUDIO_COM_EXPORT CameraUDP : public CameraIO
 {
 public:
@@ -39,9 +41,12 @@ public:
 
     static QVector<CameraInfo> avaibleCams(const CameraInfo &info);
 
-    int sizePacket() const {return 1024;}
+    int sizePacket() const {return 1468;}
 
     int status() const;
+
+private:
+    QUdpSocket *_udpSocket;
 };
 
 #endif // CAMERAUDP_H
