@@ -44,10 +44,18 @@
 					<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
 				</attributes>
 			</pin>
+			<pin name="PIN_Y16" mapto="reset_n">
+				<attributes>
+					<attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
+				</attributes>
+			</pin>
 		</pins>
 		<clocks>
 			<clock name="clock_50_i" typical="50M" desc=""/>
 		</clocks>
+		<resets>
+			<reset name="reset_n" group="reset_n" direction="in"/>
+		</resets>
 	</global>
 	<ios>
 		<io name="led" type="him_output" driver="leds" optional="true" description="Top red led">
@@ -107,9 +115,9 @@
                 </pin>
 			</pins>
 		</io>
-		<io name="key" type="him_input" driver="keys" optional="true" description="4 push buttons">
+		<io name="key" type="him_input" driver="keys" optional="true" description="3 push buttons">
 			<params>
-				<param name="KEYCOUNT" value="4"/>
+				<param name="KEYCOUNT" value="3"/>
 			</params>
 			<pins>
                 <pin name="key[0]" mapto="PIN_AA14">
@@ -123,11 +131,6 @@
                     </attributes>
                 </pin>
                 <pin name="key[2]" mapto="PIN_W15">
-                    <attributes>
-                        <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
-                    </attributes>
-                </pin>
-                <pin name="key[3]" mapto="PIN_Y16">
                     <attributes>
                         <attribute name="IO_STANDARD" value="3.3-V LVTTL" type="instance"/>
                     </attributes>

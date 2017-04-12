@@ -31,7 +31,7 @@ gpdevice addflow -n in -d in -s 8
 #Flow properties
 
 #Reset
-#gpdevice addreset -n reset_n -d in -g reset_n
+gpdevice addreset -n reset_n -d in -g reset_i
 
 #External ports
 gpdevice addextport -n vga_blank_n -t out -s 1
@@ -54,7 +54,7 @@ gpdevice addbitfield -n status_reg.enable_bit -b 0 -m enable.value
 
 # Generate top, process and slave
 # gpdevice generate -o hdl/ 
-gpdevice generatetop -o hdl/
+ gpdevice generatetop -o hdl/
 #gpdevice generateprocess -o hdl/
 #gpdevice generateslave -o hdl/
 #gpdevice generatetb -o hdl/
