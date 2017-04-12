@@ -20,8 +20,9 @@ gpdevice addfile -p hdl/PLL108/PLL108_0002.v -t verilog -g hdl
 
 #Clocks
 
-gpdevice addclock -n vga_clk108 -d in
-gpdevice setclock -n vga_clk108 -f 108M
+# 108MHz clock not supported. Generated internally
+#gpdevice addclock -n vga_clk108 -d in
+#gpdevice setclock -n vga_clk108 -f 108M
 
 #Flows
 
@@ -53,7 +54,7 @@ gpdevice addbitfield -n status_reg.enable_bit -b 0 -m enable.value
 
 # Generate top, process and slave
 # gpdevice generate -o hdl/ 
-#gpdevice generatetop -o hdl/
+gpdevice generatetop -o hdl/
 #gpdevice generateprocess -o hdl/
 #gpdevice generateslave -o hdl/
 #gpdevice generatetb -o hdl/

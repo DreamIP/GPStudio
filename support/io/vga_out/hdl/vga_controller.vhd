@@ -83,7 +83,7 @@ end component PLL108;
     port(
       CLOCK            : in  std_logic;
       PIX_IN           : in  std_logic_vector(7 downto 0);
-      RESET_N            : in  std_logic;
+      RESET            : in  std_logic;
       HSYNC, VSYNC     : out std_logic;
       SYNC, BLANK      : out std_logic;
       RED, GREEN, BLUE : out std_logic_vector(7 downto 0);
@@ -136,7 +136,7 @@ begin
     (
       CLOCK  => OSC_108_own,
       PIX_IN => PIX_IN,
-      RESET_N  => RESET_N,
+      RESET  => not RESET_N,
       HSYNC  => VGA_HS,
       VSYNC  => VGA_VS,
       SYNC   => VGA_SYNC,

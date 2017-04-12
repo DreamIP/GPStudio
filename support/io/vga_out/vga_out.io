@@ -81,8 +81,5 @@
   <properties>
     <property name="enable" type="bool" value="0"/>
   </properties>
-  <clocks>
-    <clock name="vga_clk108" typical="108000000" direction="in"/>
-  </clocks>
   <pins/>
 </io>

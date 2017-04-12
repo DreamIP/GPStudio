@@ -5,13 +5,11 @@ library std;
 
 entity vga_out is
 	generic (
-		CLK_PROC_FREQ   : integer;
-		VGA_CLK108_FREQ : integer;
-		IN_SIZE         : integer
+		CLK_PROC_FREQ : integer;
+		IN_SIZE       : integer
 	);
 	port (
 		clk_proc    : in std_logic;
-		vga_clk108  : in std_logic;
 		reset_n     : in std_logic;
 
 		--------------------- external ports --------------------
@@ -41,55 +39,78 @@ entity vga_out is
 end vga_out;
 
 architecture rtl of vga_out is
+component vga_out_process
+	generic (
+		CLK_PROC_FREQ : integer;
+		IN_SIZE       : integer
+	);
+	port (
+		clk_proc              : in std_logic;
+		reset_n               : in std_logic;
 
-  --/*D5M controller */--
-  component vga_controller
-    port
-      (
-        OSC_50                       : in  std_logic;
-        RESET_N                        : in  std_logic;
-        VGA_HS, VGA_VS               : out std_logic;
-        VGA_SYNC, VGA_BLANK          : out std_logic;
-        VGA_RED, VGA_GREEN, VGA_BLUE : out std_logic_vector(7 downto 0);
-        CLOCK108                     : in std_logic;
+		---------------- dynamic parameters ports ---------------
+		status_reg_enable_bit : in std_logic;
 
-		  x_offset : in integer range 0 to 1280; -- offset of the upper left pixel
-        y_offset : in integer range 0 to 1024;
-	 
-        data : in std_logic_vector(7 downto 0);
-        fv   : in std_logic;            -- frame valid
-        dv   : in std_logic             -- data valid
-        );
-  end component vga_controller;
+		------------------------- in flow -----------------------
+		in_data               : in std_logic_vector(IN_SIZE-1 downto 0);
+		in_fv                 : in std_logic;
+		in_dv                 : in std_logic
+	);
+end component;
 
+component vga_out_slave
+	generic (
+		CLK_PROC_FREQ : integer
+	);
+	port (
+		clk_proc              : in std_logic;
+		reset_n               : in std_logic;
+
+		---------------- dynamic parameters ports ---------------
+		status_reg_enable_bit : out std_logic;
+
+		--======================= Slaves ========================
+
+		------------------------- bus_sl ------------------------
+		addr_rel_i            : in std_logic_vector(3 downto 0);
+		wr_i                  : in std_logic;
+		rd_i                  : in std_logic;
+		datawr_i              : in std_logic_vector(31 downto 0);
+		datard_o              : out std_logic_vector(31 downto 0)
+	);
+end component;
 
 	signal status_reg_enable_bit : std_logic;
 
 begin
+	vga_out_process_inst : vga_out_process
+    generic map (
+		CLK_PROC_FREQ => CLK_PROC_FREQ,
+		IN_SIZE       => IN_SIZE
+	)
+    port map (
+		clk_proc              => clk_proc,
+		reset_n               => reset_n,
+		status_reg_enable_bit => status_reg_enable_bit,
+		in_data               => in_data,
+		in_fv                 => in_fv,
+		in_dv                 => in_dv
+	);
 
-  vga_controller_inst : vga_controller
-    port map
-    (
-      -- External I/Os
-      OSC_50    => clk_proc,
-      RESET_N     => reset_n,
-      VGA_HS    => vga_hs,
-      VGA_VS    => vga_vs,
-      VGA_SYNC  => vga_sync_n,
-      VGA_BLANK => vga_blank_n,
-      VGA_RED   => vga_r,
-      VGA_GREEN => vga_g,
-      VGA_BLUE  => vga_b,
-      CLOCK108  => vga_clk108,
+	vga_out_slave_inst : vga_out_slave
+    generic map (
+		CLK_PROC_FREQ => CLK_PROC_FREQ
+	)
+    port map (
+		clk_proc              => clk_proc,
+		reset_n               => reset_n,
+		status_reg_enable_bit => status_reg_enable_bit,
+		addr_rel_i            => addr_rel_i,
+		wr_i                  => wr_i,
+		rd_i                  => rd_i,
+		datawr_i              => datawr_i,
+		datard_o              => datard_o
+	);
 
-      x_offset  => to_integer(X"0190"),
-      y_offset  => to_integer(X"0190"),
-		
-      -- Input flow
-      data => in_data,
-      fv   => in_fv,
-      dv   => in_dv
-      );
-      
-      vga_clk <= vga_clk108;
+
 end rtl;
