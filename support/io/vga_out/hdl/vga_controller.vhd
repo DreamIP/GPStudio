@@ -55,7 +55,7 @@ entity vga_controller is
     VGA_HS, VGA_VS               : out std_logic;
     VGA_SYNC, VGA_BLANK          : out std_logic;
     VGA_RED, VGA_GREEN, VGA_BLUE : out std_logic_vector(7 downto 0);
-    CLOCK108                     : in std_logic;
+    CLOCK108                     : out std_logic;
 
     x_offset : in integer range 0 to 1280; -- offset of the upper left pixel
     y_offset : in integer range 0 to 1024;
@@ -127,7 +127,7 @@ begin
   port map
   (
     refclk => OSC_50,
-    rst => RESET_N,
+    rst => not RESET_N,
     outclk_0 => OSC_108_own
   );
 
@@ -259,5 +259,7 @@ begin
     end if;
   end process;
 
+  CLOCK108 <= OSC_108_own;
+  
 end hdl;
 

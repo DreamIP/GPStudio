@@ -49,7 +49,7 @@ architecture rtl of vga_out is
         VGA_HS, VGA_VS               : out std_logic;
         VGA_SYNC, VGA_BLANK          : out std_logic;
         VGA_RED, VGA_GREEN, VGA_BLUE : out std_logic_vector(7 downto 0);
-        CLOCK108                     : in std_logic;
+        CLOCK108                     : out std_logic;
 
 		  x_offset : in integer range 0 to 1280; -- offset of the upper left pixel
         y_offset : in integer range 0 to 1024;
