@@ -50,6 +50,11 @@ Altera families:
 
 Xilinx not yet supported for project creation but have been planned.
 
+## Funding
+
+This project is supported by Europe via FEDER : 
+![FEDER](feder.png)
+
 ## License
 > This program is free software: you can redistribute it and/or modify
 > it under the terms of the GNU General Public License as published by
