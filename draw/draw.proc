@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="draw" categ="various" pi_size_addr_rel="2" desc="Draw shape">
+  <parts>
+    <part name="main">
+      <svg style="background-color: rgb(255, 255, 255);" width="128px" height="128px">
+        <g transform="matrix(1.1209388,0,0,1.1205349,-7.2300546,-7.1234444)" id="g6">
+          <rect x="6.4499998" y="6.4499998" width="114.19" height="114.19" pointer-events="none" id="rect8" style="fill:#ffffff;stroke:none"/>
+          <rect x="50" y="50" width="30" height="30" pointer-events="none" id="rect10" style="fill:#ffffff;stroke:#ff0000;stroke-width:1.84000002999999990;fill-opacity:1;opacity:1"/>
+		  <text x="80" y="110" font-size="15">Draw</text>
+        </g>
+      </svg>
+    </part>
+  </parts>
+  <infos>
+    <info name="author" value="Edouard Hendrickx"/>
+    <info name="company" value="Institut Pascal"/>
+    <info name="revision" value="1.0"/>
+    <info name="releasedate" value="2017-04-20"/>
+  </infos>
+  <files>
+    <file name="draw.proc" type="proc" group="blockdef" path="draw.proc"/>
+    <file name="draw.vhd" type="vhdl" group="hdl" path="hdl/draw.vhd"/>
+    <file name="draw_process.vhd" type="vhdl" group="hdl" path="hdl/draw_process.vhd"/>
+    <file name="draw_slave.vhd" type="vhdl" group="hdl" path="hdl/draw_slave.vhd"/>
+  </files>
+  <resets>
+    <reset name="reset_n" group="reset_n" direction="in"/>
+  </resets>
+  <flows>
+    <flow name="Img" size="8" type="in"/>
+    <flow name="coord" size="8" type="out">
+      <properties>
+        <property name="datatype" type="flowtype" value="features"/>
+        <property name="featuretype" type="featuretype" value="point"/>
+      </properties>
+    </flow>
+  </flows>
+  <params>
+    <param name="status_reg" regaddr="0">
+      <bitfields>
+        <bitfield name="enable_bit" bitfield="0" propertymap="enable.value"/>
+      </bitfields>
+    </param>
+	<param name="inImg_size_reg" regaddr="1">
+      <bitfields>
+        <bitfield name="in_w_reg" bitfield="11-0" propertymap="Img.width.value"/>
+        <bitfield name="in_h_reg" bitfield="27-16" propertymap="Img.height.value"/>
+      </bitfields>
+    </param>
+  </params>
+  <properties>
+    <property name="enable" type="bool" value="0"/>
+  </properties>
+</process>
