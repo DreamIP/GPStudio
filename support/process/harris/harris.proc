@@ -62,10 +62,8 @@
     <file name="harris.vhd" type="vhdl" group="hdl" path="hdl/harris.vhd"/>
     <file name="harris_process.vhd" type="vhdl" group="hdl" path="hdl/harris_process.vhd"/>
     <file name="harris_slave.vhd" type="vhdl" group="hdl" path="hdl/harris_slave.vhd"/>
-    <file name="pipliner_7x7.vhd" type="vhdl" group="hdl" path="hdl/pipliner_7x7.vhd"/>
-    <file name="pipliner_filter.vhd" type="vhdl" group="hdl" path="hdl/pipliner_filter.vhd"/>
-    <file name="harris_pack.vhd" type="vhdl" group="hdl" path="hdl/harris_pack.vhd"/>
-    <file name="harris_wrapper.vhd" type="vhdl" group="hdl" path="hdl/harris_wrapper.vhd"/>
+	<file name="generic_window_extractor.vhd" type="vhdl" group="hdl" path="hdl/generic_window_extractor.vhd"/>
+	<file name="window_pkg.vhd" type="vhdl" group="hdl" path="hdl/window_pkg.vhd"/>
     <file name="harris.proc" type="proc" group="blockdef" path="harris.proc"/>
   </files>
   <resets>
@@ -73,11 +71,17 @@
   </resets>
   <flows>
     <flow name="in" size="8" type="in" desc="Input image to describe"/>
-    <flow name="out" size="8" type="out" desc="Output image convoluted">
+    <!-- <flow name="out" size="8" type="out" desc="Output image convoluted">
       <properties>
         <property name="datatype" type="flowtype" value="image"/>
         <property name="width" type="int" propertymap="in.width.value"/>
-        <property name="height" type="int" propertymap="in.height.value"/>
+        <property name="height" type="int" propertymap="in.height.value-4"/>
+      </properties>
+    </flow> -->
+	<flow name="out" size="8" type="out">
+      <properties>
+        <property name="datatype" type="flowtype" value="features"/>
+        <property name="featuretype" type="featuretype" value="point"/>
       </properties>
     </flow>
   </flows>
@@ -91,7 +95,7 @@
     <param name="width" regaddr="1" propertymap="imgwidth.value" default="320" desc="Image width"/>
   </params>
   <properties>
-    <property name="enable" type="bool" desc="Enable or disable process"/>
+    <property name="enable" type="bool" value="true" desc="Enable or disable process"/>
     <property name="imgwidth" type="int" value="320" min="0" max="1080" desc="Width of input image"/>
   </properties>
 </process>

@@ -23,21 +23,21 @@ architecture rtl of harris_slave is
 
 	constant ENABLE_REG_ADDR	        : natural := 0;
 	constant WIDTHIMG_REG_ADDR	        : natural := 1;
-	signal enable_reg 			: std_logic;
-	signal widthimg_reg 		        : std_logic_vector(15 downto 0);
 	
+	signal enable_reg 					: std_logic;
+	signal widthimg_reg 		        : std_logic_vector(15 downto 0);
 
 begin
 
 	write_reg : process (clk_proc, reset_n)
 	begin
 		if(reset_n='0') then
-			enable_reg <= '0';
-			widthimg_reg <= std_logic_vector(to_unsigned(320, 16));
-			
+			enable_reg 		<= '0';
+			widthimg_reg	<= std_logic_vector(to_unsigned(320, 16));
 			
 		elsif(rising_edge(clk_proc)) then
 			if(wr_i='1') then
+			
 			case addr_rel_i is
 				when std_logic_vector(to_unsigned(ENABLE_REG_ADDR, 4))	=>	enable_reg 		<= datawr_i(0);                 
 				when std_logic_vector(to_unsigned(WIDTHIMG_REG_ADDR, 4))=>	widthimg_reg 	  <= datawr_i(15 downto 0);
@@ -50,7 +50,4 @@ begin
 	enable_o 	<= enable_reg;
 	widthimg_o 	<= widthimg_reg;
 
-	
-	
-	
 end rtl;

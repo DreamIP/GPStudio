@@ -6,10 +6,10 @@ use IEEE.NUMERIC_STD.all;
 
 entity harris is
 	generic (
-		LINE_WIDTH_MAX 	: integer	     :=	320;
+		LINE_WIDTH_MAX 	: integer	:=	320;
 		IN_SIZE 		: integer	:=	8;
 		OUT_SIZE 		: integer	:=	8;
-		CLK_PROC_FREQ 	: integer 	     :=  48000000
+		CLK_PROC_FREQ 	: integer 	:=  48000000
 	);
 	port (
 		clk_proc 	: in std_logic;
@@ -71,10 +71,9 @@ component harris_process
 	);
 end component;
 
+	signal 	enable_s    : std_logic;
+	signal 	widthimg_s 	: std_logic_vector(15 downto 0);
 	
-
-	signal 	enable_s        : std_logic;
-	signal 	widthimg_s 	: std_logic_vector(15 downto 0);	
 begin
 
 	harris_slave_inst : harris_slave
@@ -90,9 +89,7 @@ begin
 	
 		enable_o	=>	enable_s,
 		widthimg_o	=>	widthimg_s
-		
-	);
-		
+	);	
 
 	harris_process_inst : harris_process
     generic map (
