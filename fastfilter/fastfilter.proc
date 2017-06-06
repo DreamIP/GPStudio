@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="fastfilter" categ="various" pi_size_addr_rel="2" desc="FAST filter">
+  <parts>
+    <part name="main">
+	<svg
+	   width="127px"
+	   height="127px"
+	   style="background-color: rgb(255, 255, 255);"
+	   id="svg14">
+	  <defs
+		 id="defs2" />
+	  <g
+		 id="g39">
+		<g
+		   id="g12"
+		   transform="translate(0.5,0.5)">
+		  <path
+			 id="path4"
+			 pointer-events="none"
+			 transform="rotate(-90,60.5,60)"
+			 stroke-miterlimit="10"
+			 stroke="#000000"
+			 fill="#000000"
+			 d="M 21 35 L 100 60 L 21 85 Z" />
+		  <rect
+			 id="rect6"
+			 pointer-events="none"
+			 stroke-width="2"
+			 stroke="#ff0000"
+			 fill="#ff0000"
+			 height="5"
+			 width="5"
+			 y="97"
+			 x="33" />
+		  <rect
+			 id="rect8"
+			 pointer-events="none"
+			 stroke-width="2"
+			 stroke="#ff0000"
+			 fill="#ff0000"
+			 height="5"
+			 width="5"
+			 y="97"
+			 x="82" />
+		  <rect
+			 id="rect10"
+			 pointer-events="none"
+			 stroke-width="2"
+			 stroke="#ff0000"
+			 fill="#ff0000"
+			 height="5"
+			 width="5"
+			 y="18"
+			 x="58" />
+		</g>
+	  </g>
+	</svg>	
+    </part>
+  </parts>
+  <files>
+    <file name="fastfilter.vhd"           type="vhdl" group="hdl" path="./hdl/fastfilter.vhd"                  />
+    <file name="fastfilter_process.vhd"   type="vhdl" group="hdl" path="./hdl/fastfilter_process.vhd"          />
+    <file name="fastfilter_slave.vhd"     type="vhdl" group="hdl" path="./hdl/fastfilter_slave.vhd"            />
+
+    <file name="fastfilter_types.vhd"          type="vhdl" group="hdl" path="./hdl/components/fastfilter_types.vhd"      />
+    <file name="fastfilterElement.vhd"        type="vhdl" group="hdl" path="./hdl/components/fastfilterElement.vhd"    />
+    <file name="neighExtractor2.vhd"     type="vhdl" group="hdl" path="./hdl/components/neighExtractor2.vhd" />
+    <file name="taps2.vhd"               type="vhdl" group="hdl" path="./hdl/components/taps2.vhd"           />
+
+  </files>
+  <resets>
+    <reset name="reset_n" group="reset_n" direction="in"/>
+  </resets>
+
+  <flows>
+      <flow name="in"   size="8" type="in" desc="Input image to describe"/>
+
+      <flow name="out1" size="8" type="out" desc="Output 1 - Fast">
+          <properties>
+              <property name="datatype" type="flowtype" value="image"/>
+              <property name="width"    type="int" value="310"/>
+	          <property name="height"   type="int" value="230"/>
+          </properties>
+      </flow>
+  </flows>
+
+  <params>
+    <param name="IMAGE_WIDTH" type="int" hard="1" value="314" desc="Image Width"/>
+    <param name="control" regaddr="0" default="0" desc="Status Control Register">
+        <bitfields>
+          <bitfield name="enable" bitfield="0" propertymap="enable.value" desc="On/Off bit"/>
+        </bitfields>
+  </param>
+  </params>
+
+
+  <properties>
+    <property name="enable" type="bool" value="false" desc="Enable or disable process"/>
+  </properties>
+</process>
