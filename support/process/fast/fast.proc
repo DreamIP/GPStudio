@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="Fast" categ="various" pi_size_addr_rel="2" desc="Corner detection">
+  <parts>
+    <part name="main">
+	<svg
+	   width="127px"
+	   height="127px"
+	   style="background-color: rgb(255, 255, 255);">
+	  <defs
+		 id="defs2" />
+	  <g
+		 id="g46"
+		 transform="matrix(1.0583333,0,0,1.0583333,-0.14583333,-7.2041667)">
+		<g
+		   id="g26"
+		   transform="translate(0.5,0.5)">
+		  <rect
+			 id="rect4" transform="translate(2,3)" height="120" width="120" y="0" x="0" style="opacity:0.25;fill:none;stroke:none" />
+		  <path
+			 id="path6" pointer-events="none" transform="rotate(-90,60.5,60)" stroke-miterlimit="10" d="M 21,35 100,60 21,85 Z" style="fill:#000000;stroke:#000000;stroke-miterlimit:10" />
+		  <rect
+			 id="rect8" pointer-events="none" height="5" width="5" y="97" x="33" style="fill:#ff0000;stroke:#ff0000;stroke-width:2" />
+		  <rect
+			 id="rect10" pointer-events="none" height="5" width="5" y="97" x="82" style="fill:#ff0000;stroke:#ff0000;stroke-width:2" />
+		  <rect
+			 id="rect12" pointer-events="none" height="5" width="5"  y="17" x="58" style="fill:#ff0000;stroke:#ff0000;stroke-width:2" />
+		  <rect
+			 id="rect14" pointer-events="none" height="5" width="5" y="26" x="52" style="fill:#ff0000;stroke:#ff0000;stroke-width:2" />
+		  <rect
+			 id="rect16" pointer-events="none" height="5" width="5" y="25" x="61" style="fill:#ff0000;stroke:#ff0000;stroke-width:2" />
+		  <rect
+			 id="rect18" pointer-events="none" height="5" width="5" y="100" x="41" style="fill:#ff0000;stroke:#ff0000;stroke-width:2" />
+		  <rect
+			 id="rect20" pointer-events="none" height="5" width="5" y="89" x="36" style="fill:#ff0000;stroke:#ff0000;stroke-width:2" />
+		  <rect
+			 id="rect22" pointer-events="none" height="5" width="5" y="97" x="74" style="fill:#ff0000;stroke:#ff0000;stroke-width:2" />
+		  <rect
+			 id="rect24" pointer-events="none" height="5" width="5" y="89" x="84" style="fill:#ff0000;stroke:#ff0000;stroke-width:2" />
+		</g>
+		<text x="5" y="25" font-size="20">Fa</text>
+	  </g>
+	</svg>
+    </part>
+  </parts>
+<infos>
+    <info name="author" value="Edouard Hendrickx"/>
+    <info name="email" value="edouard.hendrickx@uca.fr"/>
+    <info name="company" value="Institut Pascal"/>
+    <info name="revision" value="1.0"/>
+    <info name="releasedate" value="2016-11-15"/>
+ </infos>
+  <files>
+    <file name="fast.vhd"           type="vhdl" group="hdl" path="./hdl/fast.vhd"                  />
+    <file name="fast_process.vhd"   type="vhdl" group="hdl" path="./hdl/fast_process.vhd"          />
+    <file name="fast_slave.vhd"     type="vhdl" group="hdl" path="./hdl/fast_slave.vhd"            />
+
+    <file name="fast_types.vhd"          type="vhdl" group="hdl" path="./hdl/components/fast_types.vhd"      />
+    <file name="fastElement.vhd"        type="vhdl" group="hdl" path="./hdl/components/fastElement.vhd"    />
+    <file name="neighExtractor.vhd"     type="vhdl" group="hdl" path="./hdl/components/neighExtractor.vhd" />
+    <file name="taps.vhd"               type="vhdl" group="hdl" path="./hdl/components/taps.vhd"           />
+
+  </files>
+  <resets>
+    <reset name="reset_n" group="reset_n" direction="in"/>
+  </resets>
+
+  <flows>
+      <flow name="in"   size="8" type="in" desc="Input image to describe"/>
+
+      <flow name="out1" size="8" type="out" desc="Output 1 - Fast">
+          <properties>
+              <property name="datatype" type="flowtype" value="image"/>
+              <property name="width"    type="int" value="314"/>
+	          <property name="height"   type="int" value="234"/>
+          </properties>
+      </flow>
+  </flows>
+
+  <params>
+    <param name="IMAGE_WIDTH" type="int" hard="1" value="320" desc="Image Width"/>
+    <param name="control" regaddr="0" default="0" desc="Status Control Register">
+        <bitfields>
+          <bitfield name="enable" bitfield="0" propertymap="enable.value" desc="On/Off bit"/>
+        </bitfields>
+  </param>
+  </params>
+
+
+  <properties>
+    <property name="enable" type="bool" value="true" desc="Enable or disable process"/>
+  </properties>
+</process>
