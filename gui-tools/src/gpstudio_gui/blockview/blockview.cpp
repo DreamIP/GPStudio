@@ -265,8 +265,13 @@ void BlockView::mouseReleaseEvent(QMouseEvent *event)
                 && _startConnectItem->modelFlow()->type() != processItem->modelFlow()->type())
         {
             bool ok = true;
-            ModelFlowConnect connect(_startConnectItem->blockName(), _startConnectItem->name(),
-                                     processItem->blockName(),       processItem->name());
+            ModelFlowConnect connect;
+            if(_startConnectItem->modelFlow()->type() == "out")
+                connect = ModelFlowConnect(_startConnectItem->blockName(), _startConnectItem->name(),
+                                           processItem->blockName(),       processItem->name());
+            else
+                connect = ModelFlowConnect(processItem->blockName(),       processItem->name(),
+                                           _startConnectItem->blockName(), _startConnectItem->name());
             if(_startConnectItem->modelFlow()->parent() == processItem->modelFlow()->parent())
             {
                 if(_startConnectItem->modelFlow()->parent()->type() != ModelBlock::IOCom)
