@@ -14,7 +14,7 @@ entity kernel_3x3 is
         reset_n           : in  std_logic;
         clk_proc          : in  std_logic;
         in_dv             : in  std_logic;
-        in_dv             : in  std_logic;
+        in_fv             : in  std_logic;
         enable_i          : in  std_logic;
         p11,p12,p13       : in  std_logic_vector(PIX_WIDTH-1 downto 0);
         p21,p22,p23       : in  std_logic_vector(PIX_WIDTH-1 downto 0);
@@ -24,7 +24,7 @@ entity kernel_3x3 is
         ker31,ker32,ker33 : in  std_logic_vector(PIX_WIDTH-1 downto 0);
         norm              : in  std_logic_vector(PIX_WIDTH-1 downto 0);
         out_data          : out std_logic_vector(PIX_WIDTH-1 downto 0);
-        out_dv            : out std_logic
+        out_dv            : out std_logic;
         out_fv            : out std_logic
         );
 end kernel_3x3;
